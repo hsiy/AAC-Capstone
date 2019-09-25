@@ -28,7 +28,10 @@ class SLOText(models.Model):
     date = models.DateField()
     goalText = models.CharField(max_length=600)
     slo = models.ForeignKey(SLO, on_delete=models.CASCADE)
-    reports = models.ManyToManyField(Report)
+    #reports = models.ManyToManyField(Report)
+class SLOInReport(models.Model):
+    slo = models.ForeignKey(SLOText, on_delete=models.CASCADE)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE)
 class GradGoal(models.Model):
     text = models.CharField(max_length=300)
 class SLOsToStakeholder(models.Model):
@@ -36,16 +39,16 @@ class SLOsToStakeholder(models.Model):
     report = models.ManyToManyField(Report)
 class Assessment(models.Model):
     title = models.CharField(max_length=300)
-class AssessmentVersion(models.Model):
-    report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
-    date = models.DateField()
-    description = models.CharField(max_length=1000)
     domainExamination = models.BooleanField()
     domainProduct = models.BooleanField()
     domainPerformance = models.BooleanField()
     directMeasure = models.BooleanField()
     #false = indirect measure
+class AssessmentVersion(models.Model):
+    report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
+    date = models.DateField()
+    description = models.CharField(max_length=1000)
     finalTerm = models.BooleanField()
     #false = final year
     where = models.CharField(max_length=500)
