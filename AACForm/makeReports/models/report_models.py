@@ -1,4 +1,5 @@
 from django.db import models
+from makeReports.choices import *
 class Report(models.Model):
     year = models.DateField()
     author = models.CharField(max_length=100, blank=True)
@@ -8,7 +9,7 @@ class Report(models.Model):
     rubric = models.OneToOneField(GradedRubric, on_delete=models.CASCADE)
     submitted = models.BooleanField()
 class College(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, choices=COLLEGES_CHOICES)
 class Department(models.Model):
     name = models.CharField(max_length=100)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
@@ -22,7 +23,7 @@ class Comment(models.Model):
     #not sure how yet to deal with comments and version control
     text = models.CharField(max_length=2000)
 class SLO(models.Model):
-    blooms = models.CharField(max_length=50)
+    blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
     gradGoals = models.ManyToManyField(GradGoal)
 class SLOText(models.Model):
     date = models.DateField()
