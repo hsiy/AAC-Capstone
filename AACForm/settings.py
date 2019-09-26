@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'AACForm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd2l572kbfjiffo',                      
+        'USER': 'bwsqrclshcgdfz',
+        'PASSWORD': '7b786042eba0c72cac3f2e91ad94728ea16a6e172b21aa727bb81778768e5c67',
+        'HOST': 'ec2-54-197-238-238.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 

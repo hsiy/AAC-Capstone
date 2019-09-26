@@ -3,10 +3,14 @@ from makeReports.choices import *
 class Report(models.Model):
     year = models.DateField()
     author = models.CharField(max_length=100, blank=True)
-    degreeProgram = models.ForeignKey(DegreeProgram, on_delete=models.CASCADE)
+    degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE)
     beginData = models.DateField()
     endData = models.DateField()
-    rubric = models.OneToOneField(GradedRubric, on_delete=models.CASCADE)
+    rubric = models.OneToOneField('GradedRubric', on_delete=models.CASCADE)
+    section1Comment = models.CharField(max_length=2000, blank=True)
+    section2Comment = models.CharField(max_length=2000, blank=True)
+    section3Comment = models.CharField(max_length=2000, blank=True)
+    section4Comment = models.CharField(max_length=2000, blank=True)
     submitted = models.BooleanField()
 class College(models.Model):
     name = models.CharField(max_length=100, choices=COLLEGES_CHOICES)
@@ -19,12 +23,9 @@ class DegreeProgram(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     cycle = models.IntegerField(blank=True)
     #not all degree programs are on a clear cycle
-class Comment(models.Model):
-    #not sure how yet to deal with comments and version control
-    text = models.CharField(max_length=2000)
 class SLO(models.Model):
     blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
-    gradGoals = models.ManyToManyField(GradGoal)
+    gradGoals = models.ManyToManyField('GradGoal')
 class SLOText(models.Model):
     date = models.DateField()
     goalText = models.CharField(max_length=600)
@@ -34,7 +35,7 @@ class SLOInReport(models.Model):
     slo = models.ForeignKey(SLOText, on_delete=models.CASCADE)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
 class GradGoal(models.Model):
-    text = models.CharField(max_length=300)
+    text = models.CharField(max_length=300, choices=GRAD_GOAL_CHOICES)
 class SLOsToStakeholder(models.Model):
     text = models.CharField(max_length=2000)
     report = models.ManyToManyField(Report)
@@ -106,8 +107,8 @@ class RubricItem(models.Model):
     section = models.PositiveIntegerField()
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
 class GradedRubricItem(models.Model):
-    rubric = models.ForeignKey(GradedRubric, on_delete=models.CASCADE)
+    rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
-    grade = models.CharField(max_length=300)
+    grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
 #to be added: classes for messaging system, classes for user authentication
 
