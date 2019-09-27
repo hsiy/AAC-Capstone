@@ -27,6 +27,7 @@ class CreateNewSLO(forms.Form):
     gradGoals = forms.MultipleModelChoiceField(choices=GradGoal.objects.all(), required=False)
 class ImportSLO(forms.Form):
     slo = forms.ModelChoiceField(queryset=None, to_field_name='sloText__goalText')
+    #of type SLOInReport
     def __init__(self, *args, **kwargs):
         super(ImportSLO, self).__init__(*args, **kwargs)
         sloChoices = kwargs.pop('sloChoices',None)
@@ -34,4 +35,4 @@ class ImportSLO(forms.Form):
 class EditSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600) 
 class SLOsToStakeholderEntry(forms.Form):
-    text = forms.CharField(max_length=2000)
+    text = forms.CharField(max_length=2000, widget=forms.Textarea)
