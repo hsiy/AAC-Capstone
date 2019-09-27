@@ -24,7 +24,7 @@ from choices import *
 class CreateNewSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600) 
     blooms = forms.CharField(max_length=50, choices=BLOOMS_CHOICES)
-    gradGoals = forms.MultipleChoiceField(choices=GRAD_GOAL_CHOICES, required=False)
+    gradGoals = forms.MultipleModelChoiceField(choices=GradGoal.objects.all(), required=False)
 class ImportSLO(forms.Form):
     slo = forms.ModelChoiceField(queryset=None, to_field_name='sloText__goalText')
     def __init__(self, *args, **kwargs):
@@ -33,3 +33,5 @@ class ImportSLO(forms.Form):
         self.fields['slo'].queryset = sloChoices
 class EditSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600) 
+class SLOsToStakeholderEntry(forms.Form):
+    text = forms.CharField(max_length=2000)
