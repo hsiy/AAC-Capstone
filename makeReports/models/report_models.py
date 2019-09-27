@@ -19,7 +19,7 @@ class Department(models.Model):
     college = models.ForeignKey(College, on_delete=models.CASCADE)
 class DegreeProgram(models.Model):
     name = models.CharField(max_length=100)
-    level = models.CharField(max_length=75)
+    level = models.CharField(max_length=75, choices= LEVELS)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     cycle = models.IntegerField(blank=True)
     #not all degree programs are on a clear cycle
@@ -32,7 +32,8 @@ class SLOText(models.Model):
     slo = models.ForeignKey(SLO, on_delete=models.CASCADE)
     #reports = models.ManyToManyField(Report)
 class SLOInReport(models.Model):
-    slo = models.ForeignKey(SLOText, on_delete=models.CASCADE)
+    sloText = models.ForeignKey(SLOText, on_delete=models.CASCADE)
+    firstInstance = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
 class GradGoal(models.Model):
     text = models.CharField(max_length=300, choices=GRAD_GOAL_CHOICES)

@@ -14,3 +14,4 @@ GRAD_GOAL_CHOICES = ((1,"Something"),(2,"Something else"))
 RUBRIC_GRADES_CHOICES = (("DNM","Does Not Meet/Did Not Include"),
 ("MC", "Meets with Concerns"),
 ("ME", "Meets"))
+LEVELS = (("UG", "Undergraduate"),("GR", "Graduate"))
