@@ -1,5 +1,6 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 *.cpython-36.pyc
+<<<<<<< HEAD
 *.cpython-37.pyc
 env/
 .vscode/
@@ -10,3 +11,6 @@ env/
 AACForm/staticfiles/
 AACForm/staticfiles/*
 AACForm/My Project-7fa0f5fdaa9f.json
+=======
+env/
+>>>>>>> More attempts at gitignore
