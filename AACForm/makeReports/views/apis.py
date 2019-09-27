@@ -25,7 +25,7 @@ class SLOserializer(serializers.HyperlinkedModelSerializer):
     """
     class Meta:
         model = SLOInReport
-        fields = ['pk', 'name']
+        fields = ['pk', 'goalText']
 class DeptByColListAPI(generics.ListAPIView):
     """
     JSON API to gets active departments within specified college
@@ -39,7 +39,7 @@ class ProgByDeptListAPI(generics.ListAPIView):
     JSON API to gets active degree programs within specified department
     """
     queryset = DegreeProgram.active_objects.all()
-    filter_backends = (filters.DjangoFilterBackend)
+    filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = (['department'])
     serializer_class = ProgSerializer
 class SloByDPListAPI(generics.ListAPIView):
@@ -47,7 +47,7 @@ class SloByDPListAPI(generics.ListAPIView):
     JSON API to gets past slos within specified degree program
     """
     queryset = SLOInReport.objects.all()
-    filter_backends = (filters.DjangoFilterBackend)
-    filterset_fields = (['report.degreeProgram'])
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = (['report__degreeProgram'])
     serializer_class = SLOserializer
 
