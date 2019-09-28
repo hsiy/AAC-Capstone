@@ -82,8 +82,8 @@ class AddSLOGRTestPage(ReportSetupTest):
         Tests post creates SLO
         """
         form_data = {
-            'goaltext':'text of slo',
-            'blooms': BLOOMS_CHOICES[1]
+            'text':'text of slo',
+            'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo').count()
@@ -113,8 +113,8 @@ class AddSLOUGTestPage(ReportSetupTest):
         Tests post creates SLO
         """
         form_data = {
-            'goaltext':'text of slo2',
-            'blooms': BLOOMS_CHOICES[1]
+            'text':'text of slo2',
+            'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo2').count()
@@ -129,7 +129,8 @@ class ImportSLOTestPage(ReportSetupTest):
         """
         super(ImportSLOTestPage,self).setUp()
         self.inDp = mommy.make('DegreeProgram',department=self.dept)
-        self.inSLO = mommy.make("SLOInReport",report__degreeProgram=self.inDp, report__year=self.rpt.year)
+        self.oRpt = mommy.make("Report",degreeProgram=self.inDp, year=self.rpt.year)
+        self.inSLO = mommy.make("SLOInReport",report=self.oRpt)
         self.outSLO = mommy.make("SLOInReport", report__year=self.rpt.year)
     def test_view(self):
         """
@@ -145,8 +146,13 @@ class ImportSLOTestPage(ReportSetupTest):
         Tests that the import posts
         """
         num = self.rpt.numberOfSLOs
-        response = self.client.post(reverse('makeReports:import-slo',kwargs={"report":self.rpt.pk})+"?dp="+str(self.inDp.pk)+"&year="+str(self.rpt.year))
+        fD = {
+            'slo': self.inSLO.pk
+        }
+        response = self.client.post(reverse('makeReports:import-slo',kwargs={"report":self.rpt.pk})+"?dp="+str(self.inDp.pk)+"&year="+str(self.rpt.year),fD)
+        self.rpt.refresh_from_db()
         self.assertEquals(num+1,self.rpt.numberOfSLOs)
+        self.assertEquals(1,SLOInReport.objects.filter(report=self.rpt).count())
 class EditNewSLOPageTest(ReportSetupTest):
     """
     Tests edit new SLO page

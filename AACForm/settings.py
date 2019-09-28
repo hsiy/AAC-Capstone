@@ -129,7 +129,7 @@ TEST_DATABASES = {
 }
 
 # Use when wanting PostgreSQL database
-#TEST_RUNNER =  "makeReports.tests.test_suite_runner.HerokuTestSuiteRunner"
+TEST_RUNNER =  "makeReports.tests.test_suite_runner.HerokuTestSuiteRunner"
 
 LOGIN_REDIRECT_URL="/"
 # Internationalization
