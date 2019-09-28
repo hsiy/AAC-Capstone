@@ -2,3 +2,4 @@
 *.cpython-36.pyc
 env/
 .vscode/
+.vscode/*
