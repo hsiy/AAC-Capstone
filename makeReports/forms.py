@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
-from choices import *
+from .choices import *
 """ class AddMovieForm(ModelForm):
     class Meta:
         model=Movie
@@ -23,8 +23,8 @@ from choices import *
  """
 class CreateNewSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600) 
-    blooms = forms.CharField(max_length=50, choices=BLOOMS_CHOICES)
-    gradGoals = forms.MultipleModelChoiceField(choices=GradGoal.objects.all(), required=False)
+    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES)
+    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False)
 class ImportSLO(forms.Form):
     slo = forms.ModelChoiceField(queryset=None, to_field_name='sloText__goalText')
     #of type SLOInReport

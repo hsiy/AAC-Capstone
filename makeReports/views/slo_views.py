@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, FormView
 from django.urls import reverse_lazy, reverse
 from makeReports.models import *
 from makeReports.forms import *
@@ -14,14 +14,14 @@ from django.views.generic.edit import FormMixin
 
 class SLOSummary(ListView):
     model = SLOInReport
-    template_name =""
-    success_url = ""
+    template_name ="makeReports/sloSummary.html"
+    context_object_name = "slo_list"
     def get_queryset(self):
         report = Report.objects.get(pk=self.request.GET['report'])
         objs = SLOInReport.objects.filter(report=report)
         return objs
 class AddNewSLO(FormView):
-    template_name = ""
+    template_name = "makeReports/addSLO.html"
     form_class = CreateNewSLO
     success_url = ""
     def form_valid(self, form):
@@ -44,7 +44,7 @@ class ImportSLO(FormView):
         SLOInReport.objects.creat(sloText=SLOText, firstInstance=False, report=rpt)
         return super(ImportSLO,self).form_valid(form)
 class EditSLO(FormView):
-    template_name = ""
+    template_name = "makeReports/editSLO.html"
     form_class = EditSLO
     success_url = ""
     def form_valid(self,form):
@@ -57,7 +57,7 @@ class EditSLO(FormView):
         slo.save()
         return super(EditSLO, self).form_valid(form)
 class StakeholderEntry(FormView):
-    template_name = ""
+    template_name = "makeReports/stakeholdersSLO.html"
     form_class = SLOsToStakeholderEntry
     success_url = ""
     def form_valid(self,form):
