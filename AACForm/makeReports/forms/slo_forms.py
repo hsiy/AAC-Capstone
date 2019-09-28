@@ -38,7 +38,7 @@ class ImportSLOForm(forms.Form):
     """
     Form to import pre-existing SLO
     """
-    slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ", widget=SLOMultipleChoicesJSWidget(attrs={'class':'form-control col-5'}))
+    slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ", widget=SLOMultipleChoicesJSWidget(attrs={'class':'form-control col-9'}))
     importAssessments = forms.BooleanField(required=False,label="Also import assessments with SLO")
     def __init__(self, *args, **kwargs):
         """
@@ -51,7 +51,6 @@ class ImportSLOForm(forms.Form):
         super(ImportSLOForm, self).__init__(*args, **kwargs)
         self.fields['slo'].queryset = sloChoices
     def clean(self):
-        print(self.fields['slo'])
         return super(ImportSLOForm,self).clean()
 class EditNewSLOForm(CleanSummer,forms.Form):
     """
