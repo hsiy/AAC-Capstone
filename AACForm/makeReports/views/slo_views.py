@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import TemplateView, DetailView, FormView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import TemplateView, DetailView
 from django.urls import reverse_lazy, reverse
 from makeReports.models import *
 from makeReports.forms import *
@@ -28,8 +28,7 @@ class AddNewSLO(FormView):
         gGoals = form.cleaned_data["gradGoals"]
         rpt = Report.objects.get(pk=self.request.GET['report'])
         sloObj = SLO.objects.create(blooms=form.cleaned_data['blooms'], gradGoals=form.cleaned_data['gradGoals'])
-        sloTxt = SLOText.objects.create(date=datetime.now(), goalText =form.cleaned_data['text'], slo=sloObj)
-        sloRpt = SLOInReport.objects.create(sloText=sloTxt, firstInstance= True)
+        sloRpt = SLOInReport.objects.create(date=datetime.now(), goalText =form.cleaned_data['text'], slo=sloObj, firstInstance= True)
         sloRpt.report.add(rpt)
         sloRpt.save()
         return super(AddNewSLO, self).form_valid(form)
@@ -38,24 +37,28 @@ class ImportSLO(FormView):
     form_class = ImportSLO
     success_url = ""
     def form_valid(self,form):
-        slo = form.cleaned_data['slo']
+        sloInRpt = form.cleaned_data['slo']
         rpt = Report.objects.get(pk=self.request.GET['report'])
-        SLOText = slo.sloText
-        SLOInReport.objects.creat(sloText=SLOText, firstInstance=False, report=rpt)
+        SLOInReport.objects.creat(slo=sloInRpt.slo, firstInstance=False, report=rpt, changedFromPrior=False)
         return super(ImportSLO,self).form_valid(form)
-class EditSLO(FormView):
-    template_name = "makeReports/editSLO.html"
-    form_class = EditSLO
+class EditImportedSLO(FormView):
+    template_name = "makeReports/editImportedSLO.html"
+    form_class = EditImportedSLO
     success_url = ""
     def form_valid(self,form):
-        slo = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
-        if slo.firstInstance:
-             slo.SLOText.goalText = form.cleaned_data['text']
-        else:
-            newTextobj = SLOText.objects.create(date=datetime.now(), goalText=form.cleaned_data['text'], slo = slo.sloText.slo)
-            slo.SLOText=newTextobj
-        slo.save()
-        return super(EditSLO, self).form_valid(form)
+        sloInRpt = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
+        newSLOInRpt = SLOInReport.objects.create(date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
+        return super(EditImportedSLO, self).form_valid(form)
+class EditNewSLO(FormView):
+    template_name = ""
+    form_class = EditNewSLO
+    success_url = ""
+    def form_valid(self, form):
+        sloIR = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
+        sloIR.goalText = form.cleaned_data['text']
+        sloIR.date = datetime.now()
+        sloIR.slo.blooms = form.cleaned_data['blooms']
+        sloIR.slo.gradGoals = form.cleaned_data['gradGoals']
 class StakeholderEntry(FormView):
     template_name = "makeReports/stakeholdersSLO.html"
     form_class = SLOsToStakeholderEntry

@@ -26,14 +26,17 @@ class DegreeProgram(models.Model):
 class SLO(models.Model):
     blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
     gradGoals = models.ManyToManyField('GradGoal')
-class SLOText(models.Model):
-    date = models.DateField()
-    goalText = models.CharField(max_length=600)
-    slo = models.ForeignKey(SLO, on_delete=models.CASCADE)
+#class SLOText(models.Model):
+#    date = models.DateField()
+#    goalText = models.CharField(max_length=600)
+#    slo = models.ForeignKey(SLO, on_delete=models.CASCADE)
     #reports = models.ManyToManyField(Report)
 class SLOInReport(models.Model):
-    sloText = models.ForeignKey(SLOText, on_delete=models.CASCADE)
+    date = models.DateField()
+    goalText = models.CharField(max_length=600)
+    slo = models.ForeignKey(SLO, on_delete=models.CASCADE)    
     firstInstance = models.BooleanField()
+    changedFromPrior = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
 class GradGoal(models.Model):
     text = models.CharField(max_length=300, choices=GRAD_GOAL_CHOICES)
