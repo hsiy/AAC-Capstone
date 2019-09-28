@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>SLO Summary</h3>
+<table class="table">
+    <tbody>
+            {% for slo in slo_list %}
+            <tr>
+                <td>
+                    {{slo.sloText.goalText}}
+                </td>
+                <td>
+                    {{slo.sloText.slo.blooms}}
+                </td>
+                <td>
+                    {% for gG in slo.sloText.slo.gradGoals.all() %}
+                        {% if forloop.last %}
+                            {{gG.text}}
+                        {% else %}
+                            {{gG.text}},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    Buttons!
+                </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    More buttons!
+</table>
+{% endblock %}

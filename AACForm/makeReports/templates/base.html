@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	{% block scripts %}{% endblock %}
+	{% load static %}
+	<title>Academic Assessment Reports</title>
+	{# Load the tag library #}
+	{% load bootstrap4 %}
+
+	{# Load CSS and JavaScript #}
+	{% bootstrap_css %}
+	{% bootstrap_javascript jquery='full' %}
+	{% block styles %}{% endblock %}
+</head>
+<body>
+	<div id="header-wrapper">
+		<header id="main-header">
+			<div id="header" class ="container">
+				<div id="logo">
+				<h1 style="color: #F3F3F3">Academic Assessment</h1>
+				</div>
+			</div>	
+		</header>
+			<div id="menu" class="container">
+				{% include 'navbar.html' %}
+			</div>
+	</div>
+	<div id="banner">
+	<div id="wrapper2">
+
+	{# Display django.contrib.messages as Bootstrap alerts #}
+	{% bootstrap_messages %}
+	<!--{% include 'navbar.html' %}-->
+	{% block content %}
+		<p>ERROR block content not included</p>
+	{% endblock %}
+	{% block endscripts %}{% endblock %}
+	</div>
+	</div>
+	<footer id="main-footer">
+		<p>Footer things</p>
+	</footer>
+
+</body>
+</html>
