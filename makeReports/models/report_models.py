@@ -1,11 +1,14 @@
 from django.db import models
 from makeReports.choices import *
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 class Report(models.Model):
     year = models.DateField()
     author = models.CharField(max_length=100, blank=True)
     degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE)
-    beginData = models.DateField()
-    endData = models.DateField()
+    beginData = models.DateField(blank=True)
+    endData = models.DateField(blank=True)
     rubric = models.OneToOneField('GradedRubric', on_delete=models.CASCADE)
     section1Comment = models.CharField(max_length=2000, blank=True)
     section2Comment = models.CharField(max_length=2000, blank=True)
@@ -22,6 +25,7 @@ class DegreeProgram(models.Model):
     level = models.CharField(max_length=75, choices= LEVELS)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     cycle = models.IntegerField(blank=True)
+    startingYear = models.PositiveIntegerField(blank=True)
     #not all degree programs are on a clear cycle
 class SLO(models.Model):
     blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
@@ -114,5 +118,10 @@ class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
     grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
-#to be added: classes for messaging system, classes for user authentication
-
+#to be added: classes for messaging system
+class Profile(models.Model):
+    #first name, last name and email are included in the built-in User class. Access them through the user field
+    aac = models.BooleanField()
+    #False = faculty member/dept account
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
