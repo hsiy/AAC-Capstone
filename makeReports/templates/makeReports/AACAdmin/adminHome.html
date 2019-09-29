@@ -8,6 +8,7 @@ Buttons!
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-dept'  %}">Create Department</a>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:dept-list'  %}">All Departments</a>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:report-list'  %}">All Reports</a>
+
 <h5>Generate This Year's Reports:</h5>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}

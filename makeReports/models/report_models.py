@@ -4,22 +4,26 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 class Report(models.Model):
-    year = models.DateField()
+    year = models.PositiveIntegerField()
     author = models.CharField(max_length=100, blank=True)
     degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE)
-    beginData = models.DateField(blank=True)
-    endData = models.DateField(blank=True)
-    rubric = models.OneToOneField('GradedRubric', on_delete=models.CASCADE)
-    section1Comment = models.CharField(max_length=2000, blank=True)
-    section2Comment = models.CharField(max_length=2000, blank=True)
-    section3Comment = models.CharField(max_length=2000, blank=True)
-    section4Comment = models.CharField(max_length=2000, blank=True)
+    beginData = models.DateField(blank=True, null=True)
+    endData = models.DateField(blank=True, null=True)
+    rubric = models.OneToOneField('GradedRubric', on_delete=models.SET_NULL, null=True)
+    section1Comment = models.CharField(max_length=2000, blank=True, null=True)
+    section2Comment = models.CharField(max_length=2000, blank=True, null=True)
+    section3Comment = models.CharField(max_length=2000, blank=True, null=True)
+    section4Comment = models.CharField(max_length=2000, blank=True, null=True)
     submitted = models.BooleanField()
 class College(models.Model):
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 class Department(models.Model):
     name = models.CharField(max_length=100)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
 class DegreeProgram(models.Model):
     name = models.CharField(max_length=100)
     level = models.CharField(max_length=75, choices= LEVELS)
@@ -27,6 +31,8 @@ class DegreeProgram(models.Model):
     cycle = models.IntegerField(blank=True)
     startingYear = models.PositiveIntegerField(blank=True)
     #not all degree programs are on a clear cycle
+    def __str__(self):
+        return self.name
 class SLO(models.Model):
     blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
     gradGoals = models.ManyToManyField('GradGoal')
@@ -42,11 +48,17 @@ class SLOInReport(models.Model):
     firstInstance = models.BooleanField()
     changedFromPrior = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.goalText
 class GradGoal(models.Model):
     text = models.CharField(max_length=300, choices=GRAD_GOAL_CHOICES)
+    def __str__(self):
+        return self.text
 class SLOsToStakeholder(models.Model):
     text = models.CharField(max_length=2000)
     report = models.ManyToManyField(Report)
+    def __str__(self):
+        return self.text
 class Assessment(models.Model):
     title = models.CharField(max_length=300)
     domainExamination = models.BooleanField()
@@ -54,6 +66,8 @@ class Assessment(models.Model):
     domainPerformance = models.BooleanField()
     directMeasure = models.BooleanField()
     #false = indirect measure
+    def __str__(self):
+        return self.title
 class AssessmentVersion(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)

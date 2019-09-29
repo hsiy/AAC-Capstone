@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Delete College</h3>
+Warning: This will remove all data associated with this college
+<form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ object.name }}"? This will result in permanent data loss.</p>
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Delete College</button>
+    {% endbuttons %}
+</form>
+{% endblock %}

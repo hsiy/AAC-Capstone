@@ -41,24 +41,20 @@ class EditImportedSLOForm(forms.Form):
 class Single2000Textbox(forms.Form):
     text = forms.CharField(max_length=2000, widget=forms.Textarea)
 class CreateReportByDept(forms.ModelForm):
-    model = Report
-    fields = ['year', 'degreeProgram']
-    
+    class Meta:
+        model = Report
+        fields = ['year', 'degreeProgram'] 
     def __init__(self,*args,**kwargs):
         dept = Department.objects.get(pk=kwargs.pop('dept'))
         super(CreateReportByDept, self).__init__(*args, **kwargs)
-        self.fields['degreeProgram'].queryset = DegreeProgram.objects.get(department=dept)
-class CreateDPByDept(forms.ModelForm):
-    model = DegreeProgram
-    fields = ['name','level','department','cycle','startingYear']
-    
-    def __init__(self,*args,**kwargs):
-        dept = Department.objects.get(pk=kwargs.pop('dept'))
-        super(CreateDPByDept, self).__init__(*args, **kwargs)
-        self.fields['department']=dept
+        self.fields['degreeProgram'].queryset = DegreeProgram.objects.filter(department=dept)
+class CreateDPByDept(forms.ModelForm):   
     class Meta:
-         widgets = {
-            'department': forms.HiddenInput(),
-        }
+        model = DegreeProgram
+        fields = ['name','level','cycle','startingYear']
 class JustHitButton(forms.Form):
-    nothing = forms.CharField(widget=forms.HiddenInput(), required=False)
+    nothing = forms.CharField( required=False, initial="nothing")
+class CreateDepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ['name', 'college']
