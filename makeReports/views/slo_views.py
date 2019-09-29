@@ -14,14 +14,14 @@ from django.views.generic.edit import FormMixin
 
 class SLOSummary(ListView):
     model = SLOInReport
-    template_name ="makeReports/sloSummary.html"
+    template_name ="makeReports/SLO/sloSummary.html"
     context_object_name = "slo_list"
     def get_queryset(self):
         report = Report.objects.get(pk=self.request.GET['report'])
         objs = SLOInReport.objects.filter(report=report)
         return objs
 class AddNewSLO(FormView):
-    template_name = "makeReports/addSLO.html"
+    template_name = "makeReports/SLO/addSLO.html"
     form_class = CreateNewSLO
     success_url = ""
     def form_valid(self, form):
@@ -33,7 +33,7 @@ class AddNewSLO(FormView):
         sloRpt.save()
         return super(AddNewSLO, self).form_valid(form)
 class ImportSLO(FormView):
-    template_name = "makeReports/importSLO.html"
+    template_name = "makeReports/SLO/importSLO.html"
     form_class = ImportSLOForm
     success_url = ""
     def get_form_kwargs(self, index):
@@ -53,7 +53,7 @@ class ImportSLO(FormView):
         context['currentDPpk'] = Report.objects.get(pk=self.request.GET['report']).degreeProgram.pk
         return context
 class EditImportedSLO(FormView):
-    template_name = "makeReports/editImportedSLO.html"
+    template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
     success_url = ""
     def form_valid(self,form):
@@ -61,7 +61,7 @@ class EditImportedSLO(FormView):
         newSLOInRpt = SLOInReport.objects.create(date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
         return super(EditImportedSLO, self).form_valid(form)
 class EditNewSLO(FormView):
-    template_name = "makeReports/editNewSLO.html"
+    template_name = "makeReports/SLO/editNewSLO.html"
     form_class = EditNewSLOForm
     success_url = ""
     def form_valid(self, form):
@@ -71,7 +71,7 @@ class EditNewSLO(FormView):
         sloIR.slo.blooms = form.cleaned_data['blooms']
         sloIR.slo.gradGoals = form.cleaned_data['gradGoals']
 class StakeholderEntry(FormView):
-    template_name = "makeReports/stakeholdersSLO.html"
+    template_name = "makeReports/SLO/stakeholdersSLO.html"
     form_class = Single2000Textbox
     success_url = ""
     def form_valid(self,form):
