@@ -33,14 +33,25 @@ class AddNewSLO(FormView):
         sloRpt.save()
         return super(AddNewSLO, self).form_valid(form)
 class ImportSLO(FormView):
-    template_name = ""
+    template_name = "makeReports/importSLO.html"
     form_class = ImportSLO
     success_url = ""
+    def get_form_kwargs(self, index):
+         kwargs = super().get_form_kwargs(index)
+         yearIn = self.request.GET['year']
+         dP = self.request.GET['dp']
+         rpt = Report.objects.get(year=yearIn, degreeProgram=DegreeProgram.objects.get(pk=dP))
+         kwargs['sloChoices'] = SLOInReport.objects.get(report=rpt)
+         return kwargs
     def form_valid(self,form):
-        sloInRpt = form.cleaned_data['slo']
         rpt = Report.objects.get(pk=self.request.GET['report'])
-        SLOInReport.objects.creat(slo=sloInRpt.slo, firstInstance=False, report=rpt, changedFromPrior=False)
+        for sloInRpt in form.cleaned_data['slo']:
+            SLOInReport.objects.create(date=datetime.now(),goalText=sloInRpt.goalText,slo=sloInRpt.slo, firstInstance=False, report=rpt, changedFromPrior=False)
         return super(ImportSLO,self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super(ImportSLO, self).get_context_data(**kwargs)
+        context['currentDPpk'] = Report.objects.get(pk=self.request.GET['report']).degreeProgram.pk
+        return context
 class EditImportedSLO(FormView):
     template_name = "makeReports/editImportedSLO.html"
     form_class = EditImportedSLO
@@ -50,7 +61,7 @@ class EditImportedSLO(FormView):
         newSLOInRpt = SLOInReport.objects.create(date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
         return super(EditImportedSLO, self).form_valid(form)
 class EditNewSLO(FormView):
-    template_name = ""
+    template_name = "makeReports/editNewSLO.html"
     form_class = EditNewSLO
     success_url = ""
     def form_valid(self, form):
@@ -67,5 +78,4 @@ class StakeholderEntry(FormView):
         rpt = Report.objects.get(pk=self.request.GET['report'])
         SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report = rpt)
         return super(StakeholderEntry,self).form_valid(form)
-
     

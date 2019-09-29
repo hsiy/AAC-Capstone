@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Import SLO</h3>
+<h5>Search For SLOs</h5>
+<form action="{% url 'makeReport:import-slo' %}" type="get">
+        <!--<input id="name" type="text" name="name"></div>-->
+        <div><label>Year</label> 
+            <input id="year" name="year" type="number">
+        </div>
+        <div> 
+            <label>Degree Program: </label>
+             <select id = "dp">
+                {% for degPro in degPro_list %}
+                    <option value = "{{degPro.pk}}" {% if degPro.pk is currentDPpk %}selected{% endif %}>{{degPro.name}}</option>
+               {% endfor %}
+             </select>
+        </div>
+</form>
+<h5>Select SLOs to Import</h5>
+<form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Add SLO</button>
+    {% endbuttons %}
+</form>
+{% endblock %}
