@@ -42,7 +42,7 @@ class Single2000Textbox(forms.Form):
     text = forms.CharField(max_length=2000, widget=forms.Textarea)
 class CreateReportByDept(forms.ModelForm):
     model = Report
-    fields = ('year', 'degreeProgram')
+    fields = ['year', 'degreeProgram']
     
     def __init__(self,*args,**kwargs):
         dept = Department.objects.get(pk=kwargs.pop('dept'))
@@ -50,7 +50,7 @@ class CreateReportByDept(forms.ModelForm):
         self.fields['degreeProgram'].queryset = DegreeProgram.objects.get(department=dept)
 class CreateDPByDept(forms.ModelForm):
     model = DegreeProgram
-    fields = ('name','level','department','cycle','startingYear')
+    fields = ['name','level','department','cycle','startingYear']
     
     def __init__(self,*args,**kwargs):
         dept = Department.objects.get(pk=kwargs.pop('dept'))

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Degree Program List for {{objects_list.first.department.name}}</h3>
+<ul class="list-group">
+{% for dp in objects_list %}
+    <li class = "list-group-item">{{dp.name}}, {{dp.level}} in {{dp.dept.college.name}} Cycle: Every {{dp.cycle}} years from {{dp.startingYear}}</li>
+{% endfor %}
+</ul>
+{% endblock %}
