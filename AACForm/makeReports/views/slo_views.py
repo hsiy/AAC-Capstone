@@ -17,7 +17,7 @@ class SLOSummary(ListView):
     template_name ="makeReports/SLO/sloSummary.html"
     context_object_name = "slo_list"
     def get_queryset(self):
-        report = Report.objects.get(pk=self.request.GET['report'])
+        report = Report.objects.get(pk=self.kwargs['report'])
         objs = SLOInReport.objects.filter(report=report)
         return objs
 class AddNewSLO(FormView):
@@ -26,7 +26,7 @@ class AddNewSLO(FormView):
     success_url = ""
     def form_valid(self, form):
         gGoals = form.cleaned_data["gradGoals"]
-        rpt = Report.objects.get(pk=self.request.GET['report'])
+        rpt = Report.objects.get(pk=self.kwargs['report'])
         sloObj = SLO.objects.create(blooms=form.cleaned_data['blooms'], gradGoals=form.cleaned_data['gradGoals'])
         sloRpt = SLOInReport.objects.create(date=datetime.now(), goalText =form.cleaned_data['text'], slo=sloObj, firstInstance= True)
         sloRpt.report.add(rpt)
@@ -38,26 +38,27 @@ class ImportSLO(FormView):
     success_url = ""
     def get_form_kwargs(self, index):
          kwargs = super().get_form_kwargs(index)
-         yearIn = self.request.GET['year']
-         dP = self.request.GET['dp']
-         rpt = Report.objects.get(year=yearIn, degreeProgram=DegreeProgram.objects.get(pk=dP))
-         kwargs['sloChoices'] = SLOInReport.objects.get(report=rpt)
+         yearIn = self.kwargs['year']
+         dP = self.kwargs['dp']
+         dPobj = DegreeProgram.objects.get(pk=dP)
+         #rpt = Report.objects.get(year=yearIn, degreeProgram=DegreeProgram.objects.get(pk=dP))
+         kwargs['sloChoices'] = SLOInReport.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
          return kwargs
     def form_valid(self,form):
-        rpt = Report.objects.get(pk=self.request.GET['report'])
+        rpt = Report.objects.get(pk=self.kwargs['report'])
         for sloInRpt in form.cleaned_data['slo']:
             SLOInReport.objects.create(date=datetime.now(),goalText=sloInRpt.goalText,slo=sloInRpt.slo, firstInstance=False, report=rpt, changedFromPrior=False)
         return super(ImportSLO,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(ImportSLO, self).get_context_data(**kwargs)
-        context['currentDPpk'] = Report.objects.get(pk=self.request.GET['report']).degreeProgram.pk
+        context['currentDPpk'] = Report.objects.get(pk=self.kwargs['report']).degreeProgram.pk
         return context
 class EditImportedSLO(FormView):
     template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
     success_url = ""
     def form_valid(self,form):
-        sloInRpt = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
+        sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
         newSLOInRpt = SLOInReport.objects.create(date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
         return super(EditImportedSLO, self).form_valid(form)
 class EditNewSLO(FormView):
@@ -65,7 +66,7 @@ class EditNewSLO(FormView):
     form_class = EditNewSLOForm
     success_url = ""
     def form_valid(self, form):
-        sloIR = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
+        sloIR = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
         sloIR.goalText = form.cleaned_data['text']
         sloIR.date = datetime.now()
         sloIR.slo.blooms = form.cleaned_data['blooms']
@@ -75,7 +76,7 @@ class StakeholderEntry(FormView):
     form_class = Single2000Textbox
     success_url = ""
     def form_valid(self,form):
-        rpt = Report.objects.get(pk=self.request.GET['report'])
+        rpt = Report.objects.get(pk=self.kwargs['report'])
         SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report = rpt)
         return super(StakeholderEntry,self).form_valid(form)
 class Section1Comment(FormView):
@@ -83,7 +84,7 @@ class Section1Comment(FormView):
     form_class = Single2000Textbox
     success_url = ""
     def form_valid(self, form):
-        rpt = Report.objects.get(pk=self.request.GET['report'])
+        rpt = Report.objects.get(pk=self.kwargs['report'])
         rpt.section1Comment = form.cleaned_data['text']
         rpt.save()
         return super(Section1Comment,self).form_valid(form)

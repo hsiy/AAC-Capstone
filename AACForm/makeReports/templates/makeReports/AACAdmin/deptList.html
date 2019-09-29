@@ -4,7 +4,15 @@
 <h3>Department List</h3>
 <ul class="list-group">
 {% for dept in object_list %}
-    <li class = "list-group-item">{{dept.name}} in {{dept.college.name}}</li>
+    <li class = "list-group-item">{{dept.name}} in {{dept.college.name}} 
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:dp-list' dept=dept.pk %}">Degree Programs</a>
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-dp' dept=dept.pk %}">Add Degree Program</a>
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-rpt' dept=dept.pk %}">Assign Report</a>
+        <a type="button" class="btn btn-danger" href="{% url 'makeReports:delete-dept' pk=dept.pk %}">Delete Department</a>
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-dept' pk=dept.pk %}">Update Department</a>
+
+
+    </li>
 {% endfor %}
 </ul>
 {% endblock %}
