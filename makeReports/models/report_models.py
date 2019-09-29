@@ -16,7 +16,7 @@ class Report(models.Model):
     section4Comment = models.CharField(max_length=2000, blank=True)
     submitted = models.BooleanField()
 class College(models.Model):
-    name = models.CharField(max_length=100, choices=COLLEGES_CHOICES)
+    name = models.CharField(max_length=100)
 class Department(models.Model):
     name = models.CharField(max_length=100)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
