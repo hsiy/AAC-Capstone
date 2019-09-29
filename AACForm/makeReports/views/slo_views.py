@@ -34,7 +34,7 @@ class AddNewSLO(FormView):
         return super(AddNewSLO, self).form_valid(form)
 class ImportSLO(FormView):
     template_name = "makeReports/importSLO.html"
-    form_class = ImportSLO
+    form_class = ImportSLOForm
     success_url = ""
     def get_form_kwargs(self, index):
          kwargs = super().get_form_kwargs(index)
@@ -54,7 +54,7 @@ class ImportSLO(FormView):
         return context
 class EditImportedSLO(FormView):
     template_name = "makeReports/editImportedSLO.html"
-    form_class = EditImportedSLO
+    form_class = EditImportedSLOForm
     success_url = ""
     def form_valid(self,form):
         sloInRpt = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
@@ -62,7 +62,7 @@ class EditImportedSLO(FormView):
         return super(EditImportedSLO, self).form_valid(form)
 class EditNewSLO(FormView):
     template_name = "makeReports/editNewSLO.html"
-    form_class = EditNewSLO
+    form_class = EditNewSLOForm
     success_url = ""
     def form_valid(self, form):
         sloIR = SLOInReport.objects.get(pk=self.request.GET['sloIR'])
@@ -72,10 +72,18 @@ class EditNewSLO(FormView):
         sloIR.slo.gradGoals = form.cleaned_data['gradGoals']
 class StakeholderEntry(FormView):
     template_name = "makeReports/stakeholdersSLO.html"
-    form_class = SLOsToStakeholderEntry
+    form_class = Single2000Textbox
     success_url = ""
     def form_valid(self,form):
         rpt = Report.objects.get(pk=self.request.GET['report'])
         SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report = rpt)
         return super(StakeholderEntry,self).form_valid(form)
-    
+class Section1Comment(FormView):
+    template_name = ""
+    form_class = Single2000Textbox
+    success_url = ""
+    def form_valid(self, form):
+        rpt = Report.objects.get(pk=self.request.GET['report'])
+        rpt.section1Comment = form.cleaned_data['text']
+        rpt.save()
+        return super(Section1Comment,self).form_valid(form)

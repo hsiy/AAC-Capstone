@@ -25,18 +25,28 @@ class CreateNewSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600) 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES)
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False)
-class ImportSLO(forms.Form):
+class ImportSLOForm(forms.Form):
     slo = forms.ModelMultipleChoiceField(queryset=None, to_field_name='sloText__goalText')
     #of type SLOInReport
     def __init__(self, *args, **kwargs):
-        super(ImportSLO, self).__init__(*args, **kwargs)
+        super(ImportSLOForm, self).__init__(*args, **kwargs)
         sloChoices = kwargs.pop('sloChoices',None)
         self.fields['slo'].queryset = sloChoices
-class EditNewSLO(forms.Form):
+class EditNewSLOForm(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600)
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False)
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False)
-class EditImportedSLO(forms.Form):
+class EditImportedSLOForm(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600)
-class SLOsToStakeholderEntry(forms.Form):
+class Single2000Textbox(forms.Form):
     text = forms.CharField(max_length=2000, widget=forms.Textarea)
+class CreateReportByDept(forms.ModelForm):
+    model = Report
+    fields = ('year', 'degreeProgram')
+    
+    def __init__(self,*args,**kwargs):
+        dept = Department.objects.get(pk=kwargs.pop('dept'))
+        super(CreateReportByDept, self).__init__(*args, **kwargs)
+        self.fields['degreeProgram'].queryset = DegreeProgram.objects.get(department=dept)
+class JustHitButton(forms.Form):
+    nothing = forms.CharField(widget=forms.HiddenInput(), required=False)
