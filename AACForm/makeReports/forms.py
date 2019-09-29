@@ -48,5 +48,17 @@ class CreateReportByDept(forms.ModelForm):
         dept = Department.objects.get(pk=kwargs.pop('dept'))
         super(CreateReportByDept, self).__init__(*args, **kwargs)
         self.fields['degreeProgram'].queryset = DegreeProgram.objects.get(department=dept)
+class CreateDPByDept(forms.ModelForm):
+    model = DegreeProgram
+    fields = ('name','level','department','cycle','startingYear')
+    
+    def __init__(self,*args,**kwargs):
+        dept = Department.objects.get(pk=kwargs.pop('dept'))
+        super(CreateDPByDept, self).__init__(*args, **kwargs)
+        self.fields['department']=dept
+    class Meta:
+         widgets = {
+            'department': forms.HiddenInput(),
+        }
 class JustHitButton(forms.Form):
     nothing = forms.CharField(widget=forms.HiddenInput(), required=False)
