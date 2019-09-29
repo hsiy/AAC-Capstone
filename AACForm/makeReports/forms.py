@@ -26,7 +26,7 @@ class CreateNewSLO(forms.Form):
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES)
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False)
 class ImportSLO(forms.Form):
-    slo = forms.ModelChoiceField(queryset=None, to_field_name='sloText__goalText')
+    slo = forms.ModelMultipleChoiceField(queryset=None, to_field_name='sloText__goalText')
     #of type SLOInReport
     def __init__(self, *args, **kwargs):
         super(ImportSLO, self).__init__(*args, **kwargs)
