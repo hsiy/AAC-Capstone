@@ -24,18 +24,18 @@ from .choices import *
 class CreateNewSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600) 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES)
-    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False)
+    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False,widget=forms.CheckboxSelectMultiple)
 class ImportSLOForm(forms.Form):
-    slo = forms.ModelMultipleChoiceField(queryset=None, to_field_name='sloText__goalText')
+    slo = forms.ModelMultipleChoiceField(queryset=None)
     #of type SLOInReport
     def __init__(self, *args, **kwargs):
-        super(ImportSLOForm, self).__init__(*args, **kwargs)
         sloChoices = kwargs.pop('sloChoices',None)
+        super(ImportSLOForm, self).__init__(*args, **kwargs)
         self.fields['slo'].queryset = sloChoices
 class EditNewSLOForm(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600)
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False)
-    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False)
+    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False,widget=forms.CheckboxSelectMultiple)
 class EditImportedSLOForm(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600)
 class Single2000Textbox(forms.Form):

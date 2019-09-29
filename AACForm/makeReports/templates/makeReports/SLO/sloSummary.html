@@ -7,13 +7,13 @@
             {% for slo in slo_list %}
             <tr>
                 <td>
-                    {{slo.sloText.goalText}}
+                    {{slo.goalText}}
                 </td>
                 <td>
-                    {{slo.sloText.slo.blooms}}
+                    {{slo.slo.get_blooms_display}}
                 </td>
                 <td>
-                    {% for gG in slo.sloText.slo.gradGoals.all() %}
+                    {% for gG in slo.slo.gradGoals.all %}
                         {% if forloop.last %}
                             {{gG.text}}
                         {% else %}
@@ -22,11 +22,16 @@
                     {% endfor %}
                 </td>
                 <td>
-                    Buttons!
+                    {% if slo.firstInstance %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rptPK sloIR=slo.pk %}">Edit SLO</a>
+                    {% else %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rptPK sloIR=slo.pk %}">Edit SLO</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
     </tbody>
-    More buttons!
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rptPK %}">Add SLO</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rptPK %}">Import SLO</a>
 </table>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
 <h3>Import SLO</h3>
 <h5>Search For SLOs</h5>
-<form action="{% url 'makeReport:import-slo' %}" type="get">
+<form action="{% url 'makeReports:import-slo' report=rpt %}" type="get">
         <!--<input id="name" type="text" name="name"></div>-->
         <div><label>Year</label> 
             <input id="year" name="year" type="number">

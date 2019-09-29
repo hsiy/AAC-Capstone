@@ -6,6 +6,7 @@
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for year {{rpt.year}}
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-rpt' pk=rpt.pk %}">Delete Report</a>
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-summary' report=rpt.pk %}">SLO Summary</a>
     </li>
 {% endfor %}
 </ul>
