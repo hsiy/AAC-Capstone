@@ -10,18 +10,22 @@ from django.contrib.auth.models import User
 from django.conf import settings 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
-class HomePage(TemplateView):
+class HomePage(ListView):
     template_name = "makeReports/home.html"
-    def get_context_data(self, **kwargs):
-        context=super(HomePage,self).get_context_data(**kwargs)
-        context['user']=self.request.user
-        return context
-class FacultyHome(ListView):
-    template_name = "makeReports/facultyHome.html"
     model = Report
     def get_queryset(self):
         objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
         return objs
+    def get_context_data(self, **kwargs):
+        context=super(HomePage,self).get_context_data(**kwargs)
+        context['user']=self.request.user
+        return context
+#class FacultyHome(ListView):
+#    template_name = "makeReports/facultyHome.html"
+#    model = Report
+#    def get_queryset(self):
+#        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
+#        return objs
 class FacultyReportList(LoginRequiredMixin,ListView):
     template_name = "makeReports/reportList.html"
     model = Report

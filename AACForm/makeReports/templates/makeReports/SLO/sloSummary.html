@@ -4,6 +4,9 @@
 <h3>SLO Summary</h3>
 <table class="table">
     <tbody>
+            <tr>
+                <td>Goal</td><td>Bloom's Taxonomy</td><td>{% if slo_list.0.report.degreeProgram.level == "GR" %}Graduate Goals{% endif %}</td><td>Options</td>
+            </tr>
             {% for slo in slo_list %}
             <tr>
                 <td>
@@ -24,8 +27,11 @@
                 <td>
                     {% if slo.firstInstance %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+
                     {% else %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
                     {% endif %}
                 </td>
             </tr>

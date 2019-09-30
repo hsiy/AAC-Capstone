@@ -26,25 +26,36 @@ class SLOSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         return context
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
 class AddNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/addSLO.html"
     form_class = CreateNewSLO
+    def get_form_kwargs(self):
+        kwargs = super(AddNewSLO,self).get_form_kwargs()
+        r = Report.objects.get(pk=self.kwargs['report'])
+        if r.degreeProgram.level == "GR":
+            kwargs['grad'] = True
+        else:
+            kwargs['grad'] = False
+        return kwargs
     def get_success_url(self):
         r = Report.objects.get(pk=self.kwargs['report'])
         return reverse_lazy('makeReports:slo-summary', args=[r.pk])
     def form_valid(self, form):
-        gGoals = form.cleaned_data["gradGoals"]
+        try:
+            gGoals = form.cleaned_data["gradGoals"]
+        except:
+            gGoals = []
         rpt = Report.objects.get(pk=self.kwargs['report'])
         sloObj = SLO.objects.create(blooms=form.cleaned_data['blooms'])
-        sloObj.gradGoals.set(form.cleaned_data['gradGoals'])
+        sloObj.gradGoals.set(gGoals)
         sloRpt = SLOInReport.objects.create(date=datetime.now(), goalText =form.cleaned_data['text'], slo=sloObj, firstInstance= True, changedFromPrior=False, report=rpt)
         sloObj.save()
         sloRpt.save()
         return super(AddNewSLO, self).form_valid(form)
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
 class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/importSLO.html"
     form_class = ImportSLOForm
@@ -72,7 +83,7 @@ class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
 class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
@@ -92,7 +103,7 @@ class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(EditImportedSLO, self).form_valid(form)
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
 class EditNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/editNewSLO.html"
     form_class = EditNewSLOForm
@@ -117,7 +128,7 @@ class EditNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(EditNewSLO,self).form_valid(form)
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
 class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/stakeholdersSLO.html"
     form_class = Single2000Textbox
@@ -151,7 +162,7 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.departmentself.request.user.profile.department)
 class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/importStakeholderComm.html"
     form_class = ImportStakeholderForm
@@ -169,7 +180,7 @@ class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         oldSTS = form.cleaned_data["stk"]
         try:
             sts = SLOsToStakeholder.objects.filter(report=rpt).first()
-            if oldSTS.report is rpt:
+            if oldSTS.report == rpt:
                 pass
             elif sts:
                 sts.text = form.cleaned_data['stk'].text
@@ -188,7 +199,7 @@ class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
 class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/sloComment.html"
     form_class = Single2000Textbox
@@ -207,4 +218,24 @@ class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return initial
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
-        return (report.degreeProgram.department is self.request.user.profile.department)
+        return (report.degreeProgram.department == self.request.user.profile.department)
+class DeleteImportedSLO(DeleteView):
+    model = SLOInReport
+    template_name = "makeReports/SLO/deleteSLO.html"
+    def get_success_url(self):
+        r = Report.objects.get(pk=self.kwargs['report'])
+        #to be changed to assessment page!
+        return reverse_lazy('makeReports:slo-summary', args=[r.pk])
+class DeleteNewSLO(DeleteView):
+    model = SLOInReport
+    template_name = "makeReports/SLO/deleteSLO.html"
+    def get_success_url(self):
+        r = Report.objects.get(pk=self.kwargs['report'])
+        #to be changed to assessment page!
+        return reverse_lazy('makeReports:slo-summary', args=[r.pk])
+    def form_valid(self,form):
+        SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
+        slo = SLOIR.slo
+        slo.delete()
+        slo.save()
+        return super(DeleteNewSLO,self).form_valid(form)

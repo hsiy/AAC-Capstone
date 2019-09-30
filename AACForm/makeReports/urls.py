@@ -17,6 +17,8 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/slo/stakeholders/$', views.StakeholderEntry.as_view(), name='slo-stakeholders'),
     re_path(r'^report/(?P<report>\d+)/slo/stakeholders/import/$', views.ImportStakeholderEntry.as_view(), name='slo-stk-import'),
     re_path(r'^report/(?P<report>\d+)/slo/comment/$', views.Section1Comment.as_view(),name='slo-comment'),
+    re_path(r'^report/(?P<report>\d+)/slo/delete/new/(?P<pk>\d+)/$', views.DeleteNewSLO.as_view(), name='delete-new-slo'),
+    re_path(r'^report/(?P<report>\d+)/slo/delete/impt/(?P<pk>\d+)/$', views.DeleteImportedSLO.as_view(), name='delete-impt-slo'),    
     #AAC Admin URLS
     re_path(r'^aac/home/$', views.AdminHome.as_view(), name='admin-home'),
     re_path(r'^aac/college/create/$',views.CreateCollege.as_view(), name="add-college"),
