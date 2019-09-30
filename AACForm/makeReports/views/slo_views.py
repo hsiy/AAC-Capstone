@@ -92,7 +92,7 @@ class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
+        return super(EditImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         initial = super(EditImportedSLO, self).get_initial()
         initial['text'] = self.sloInRpt.goalText
@@ -117,7 +117,7 @@ class EditNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
+        return super(EditNewSLO,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         initial = super(EditNewSLO, self).get_initial()
         initial['text'] = self.sloInRpt.goalText
@@ -142,7 +142,7 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sts = SLOsToStakeholder.objects.filter(report=self.report).first()
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
+        return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-comment', args=[self.report.pk])
     def get_initial(self):
@@ -171,7 +171,7 @@ class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = ImportStakeholderForm
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
+        return super(ImportStakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-stakeholders', args=[self.report.pk])
     def get_form_kwargs(self):
@@ -207,7 +207,7 @@ class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
+        return super(Section1Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         #to be changed to assessment page!
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
@@ -226,13 +226,16 @@ class DeleteImportedSLO(DeleteView):
     template_name = "makeReports/SLO/deleteSLO.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
+        return super(DeleteImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         #to be changed to assessment page!
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class DeleteNewSLO(DeleteView):
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(DeleteNewSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         #to be changed to assessment page!
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
