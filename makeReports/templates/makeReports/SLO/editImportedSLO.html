@@ -2,6 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Edit SLO</h3>
+Warning: This SLO's data will continued to be tracked with the data of prior versions of this imported SLO.
+If you do not want this, delete this SLO and create a new one without importing.
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
