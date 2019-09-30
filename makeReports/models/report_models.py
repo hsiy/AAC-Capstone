@@ -124,10 +124,16 @@ class Rubric(models.Model):
     fullFile = models.FileField()
 class GradedRubric(models.Model):
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
+    section1Comment = models.CharField(max_length=2000,blank=True,null=True)
+    section2Comment = models.CharField(max_length=2000,blank=True,null=True)
+    section3Comment = models.CharField(max_length=2000,blank=True,null=True)
+    section4Comment = models.CharField(max_length=2000,blank=True,null=True)
+    generalComment = models.CharField(max_length=2000,blank=True,null=True)
 class RubricItem(models.Model):
     text = models.CharField(max_length=1000)
-    section = models.PositiveIntegerField()
+    section = models.PositiveIntegerField(choices=SECTIONS)
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField()
 class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
