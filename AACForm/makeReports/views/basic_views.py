@@ -14,7 +14,10 @@ class HomePage(ListView):
     template_name = "makeReports/home.html"
     model = Report
     def get_queryset(self):
-        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
+        try:
+            objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
+        except:
+            objs = None
         return objs
     def get_context_data(self, **kwargs):
         context=super(HomePage,self).get_context_data(**kwargs)
