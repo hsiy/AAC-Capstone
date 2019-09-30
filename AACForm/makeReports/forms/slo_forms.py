@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
-from .choices import *
+from makeReports.choices import *
 """ class AddMovieForm(ModelForm):
     class Meta:
         model=Movie
