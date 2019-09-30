@@ -20,80 +20,113 @@ def generateRubricItems(rIs,form,r):
         except:
             newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(i)])
         i+=1
-class Section1Grading(FormView):
+def getInitialRubric(rIs, r, initial):
+    i=0
+    for ri in rIs:
+        try:
+            GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
+            initial["rI"+str(i)]=GRI.grade
+        except:
+            pass
+        i+=1
+    return initial
+class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
     template_name = ""
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=1).order_by("order","pk")
+        return super(Section1Grading,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
         kwargs= super(Section1Grading,self).get_form_kwargs()
-        r = Report.objects.get(pk=self.kwargs['report'])
-        kwargs['rubricItems'] = RubricItem.objects.filter(rubricVersion=r.rubric.rubricVersion,section=1, order_by="order")
-        self.kwargs['rubricItems'] = kwargs['rubricItems']
+        kwargs['rubricItems'] = self.rubricItems
         return kwargs
     def form_valid(self,form):
-        r = Report.objects.get(pk=self.kwargs['report'])
-        rIs = self.kwargs['rubricItems']
-        generateRubricItems(rIs,form,r)
-        r.rubric.section1Comment = form.cleaned_data['section_comment']
-        r.rubric.save()
+        generateRubricItems(self.rubricItems,form,self.report)
+        self.report.rubric.section1Comment = form.cleaned_data['section_comment']
+        self.report.rubric.save()
         return super(Section1Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         context['section'] = 1
         return context
-class Section2Grading(FormView):
+    def get_initial(self):
+        initial = super(Section1Grading,self).get_initial()
+        initial = getInitialRubric(self.rubricItems,self.report,initial)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class Section2Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
     template_name = ""
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=2).order_by("order","pk")
+        return super(Section2Grading,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
-        kwargs= super(Section1Grading,self).get_form_kwargs()
-        r = Report.objects.get(pk=self.kwargs['report'])
-        kwargs['rubricItems'] = RubricItem.objects.filter(rubricVersion=r.rubric.rubricVersion,section=2)
+        kwargs= super(Section2Grading,self).get_form_kwargs()
+        kwargs['rubricItems'] = self.rubricItems
         return kwargs
     def form_valid(self,form):
-        r = Report.objects.get(pk=self.kwargs['report'])
-        rIs = self.kwargs['rubricItems']
-        generateRubricItems(rIs,form,r)
-        r.rubric.section2Comment = form.cleaned_data['section_comment']
-        r.rubric.save()
+        generateRubricItems(self.rubricItems,form,self.report)
+        self.report.rubric.section2Comment = form.cleaned_data['section_comment']
+        self.report.rubric.save()
         return super(Section2Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section2Grading,self).get_context_data(**kwargs)
         context['section'] = 2
         return context
-class Section3Grading(FormView):
+    def get_initial(self):
+        initial = super(Section2Grading,self).get_initial()
+        initial = getInitialRubric(self.rubricItems,self.report,initial)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class Section3Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
     template_name = ""
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=3).order_by("order","pk")
+        return super(Section3Grading,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
-        kwargs= super(Section1Grading,self).get_form_kwargs()
-        r = Report.objects.get(pk=self.kwargs['report'])
-        kwargs['rubricItems'] = RubricItem.objects.filter(rubricVersion=r.rubric.rubricVersion,section=3)
+        kwargs= super(Section3Grading,self).get_form_kwargs()
+        kwargs['rubricItems'] = self.rubricItems
         return kwargs
     def form_valid(self,form):
-        r = Report.objects.get(pk=self.kwargs['report'])
-        rIs = self.kwargs['rubricItems']
-        generateRubricItems(rIs,form,r)
-        r.rubric.section3Comment = form.cleaned_data['section_comment']
-        r.rubric.save()
+        generateRubricItems(self.rubricItems,form,self.report)
+        self.report.rubric.section3Comment = form.cleaned_data['section_comment']
+        self.report.rubric.save()
         return super(Section3Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section3Grading,self).get_context_data(**kwargs)
         context['section'] = 3
         return context
-class Section4Grading(FormView):
+    def get_initial(self):
+        initial = super(Section3Grading,self).get_initial()
+        initial = getInitialRubric(self.rubricItems,self.report,initial)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
     template_name = ""
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=4).order_by("order","pk")
+        return super(Section4Grading,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
-        kwargs= super(Section1Grading,self).get_form_kwargs()
-        r = Report.objects.get(pk=self.kwargs['report'])
-        kwargs['rubricItems'] = RubricItem.objects.filter(rubricVersion=r.rubric.rubricVersion,section=4)
+        kwargs= super(Section4Grading,self).get_form_kwargs()
+        kwargs['rubricItems'] = self.rubricItems
         return kwargs
     def form_valid(self,form):
-        r = Report.objects.get(pk=self.kwargs['report'])
-        rIs = self.kwargs['rubricItems']
-        generateRubricItems(rIs,form,r)
-        r.rubric.section4Comment = form.cleaned_data['section_comment']
-        r.rubric.save()
-        return super(Section4Grading,self).form_valid(form)
+        generateRubricItems(self.rubricItems,form,self.report)
+        self.report.rubric.section4Comment = form.cleaned_data['section_comment']
+        self.report.rubric.save()
+        return super(Section1Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
-        context = super(Section4Grading,self).get_context_data(**kwargs)
+        context = super(Section1Grading,self).get_context_data(**kwargs)
         context['section'] = 4
         return context
+    def get_initial(self):
+        initial = super(Section4Grading,self).get_initial()
+        initial = getInitialRubric(self.rubricItems,self.report,initial)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
