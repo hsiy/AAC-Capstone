@@ -165,7 +165,7 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         context['rpt']=self.report
         return context
     def test_func(self):
-        return (self.report.degreeProgram.departmentself.request.user.profile.department)
+        return (self.report.degreeProgram.department==self.request.user.profile.department)
 class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/SLO/importStakeholderComm.html"
     form_class = ImportStakeholderForm
@@ -197,7 +197,7 @@ class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_context_data(self, **kwargs):
         context = super(ImportStakeholderEntry, self).get_context_data(**kwargs)
         context['currentDPpk'] = self.report.degreeProgram.pk
-        context['degPro_list'] = DegreeProgram.objects.filter(department=r.degreeProgram.department)
+        context['degPro_list'] = DegreeProgram.objects.filter(department=self.report.degreeProgram.department)
         context['rpt']=self.kwargs['report']
         return context
     def test_func(self):

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Section I. Student Learning Outcomes</h3>
+<table class="table">
+    <tbody>
+            <tr>
+                <td>Goal</td><td>Bloom's Taxonomy</td><td>{% if slo_list.0.report.degreeProgram.level == "GR" %}Graduate Goals{% endif %}</td>
+            </tr>
+            {% for slo in slo_list %}
+            <tr>
+                <td>
+                    {{slo.goalText}}
+                </td>
+                <td>
+                    {{slo.slo.get_blooms_display}}
+                </td>
+                <td>
+                    {% for gG in slo.slo.gradGoals.all %}
+                        {% if forloop.last %}
+                            {{gG.text}}
+                        {% else %}
+                            {{gG.text}},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
++{% endblock %}

@@ -14,11 +14,12 @@ from django.views.generic.edit import FormMixin
 def generateRubricItems(rIs,form,r):
     i=0
     for ri in rIs:
-        try:
-            GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
-            GRI.grade=form.cleaned_data["rI"+str(i)]
-        except:
-            newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(i)])
+        if form.cleaned_data["rI"+str(i)]:
+            try:
+                GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
+                GRI.grade=form.cleaned_data["rI"+str(i)]
+            except:
+                newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(i)])
         i+=1
 def getInitialRubric(rIs, r, initial):
     i=0
@@ -49,6 +50,7 @@ class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         context['section'] = 1
+        context['report'] = self.report
         return context
     def get_initial(self):
         initial = super(Section1Grading,self).get_initial()
@@ -74,6 +76,7 @@ class Section2Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_context_data(self, **kwargs):
         context = super(Section2Grading,self).get_context_data(**kwargs)
         context['section'] = 2
+        context['report'] = self.report
         return context
     def get_initial(self):
         initial = super(Section2Grading,self).get_initial()
@@ -99,6 +102,7 @@ class Section3Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_context_data(self, **kwargs):
         context = super(Section3Grading,self).get_context_data(**kwargs)
         context['section'] = 3
+        context['report'] = self.report
         return context
     def get_initial(self):
         initial = super(Section3Grading,self).get_initial()
@@ -124,6 +128,7 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         context['section'] = 4
+        context['report'] = self.report
         return context
     def get_initial(self):
         initial = super(Section4Grading,self).get_initial()
