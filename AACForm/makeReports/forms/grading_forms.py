@@ -12,5 +12,6 @@ class SectionRubricForm(forms.Form):
         super(SectionRubricForm, self).__init__(*args, **kwargs)
         i = 0
         for rI in rubricItems:
-            self.fields['rI'+str(i)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text)
+            self.fields['rI'+str(i)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
+            #required=False so allow partial completion of the form
             i+=1
