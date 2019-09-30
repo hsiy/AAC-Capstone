@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Report List</h3>
+<!--search to be implemented-->
+<ul class="list-group">
+{% for rpt in object_list %}
+    <li class = "list-group-item">{{rpt.degreeProgram}} report for year {{rpt.year}}
+        <!--to be replaced with an output view-->
+            <a type="button" class="btn btn-primary" href="#">View</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

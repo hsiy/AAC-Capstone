@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Import SLO</h3>
-<h5>Search For SLOs</h5>
-<form action="{% url 'makeReports:import-slo' report=rpt %}" type="get">
+<h3>Import Stakeholder Communication</h3>
+<h5>Search From Past Reports</h5>
+<form action="{% url 'makeReports:slo-stk-import' report=rpt %}" type="get">
         <!--<input id="name" type="text" name="name"></div>-->
         <div><label>Year</label> 
             <input id="year" name="year" type="number" required>
@@ -17,15 +17,15 @@
              </select>
         </div>
         {% buttons %}
-        <button type="submit" class="btn btn-primary">Search for SLOs</button>
+        <button type="submit" class="btn btn-primary">Search</button>
         {% endbuttons %}
 </form>
-<h5>Select SLOs to Import</h5>
+<h5>Select Stakeholder to Import</h5>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Add SLOs</button>
+        <button type="submit" class="btn btn-primary">Import</button>
     {% endbuttons %}
 </form>
 {% endblock %}
