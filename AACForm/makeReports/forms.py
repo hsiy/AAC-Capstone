@@ -58,3 +58,23 @@ class CreateDepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
         fields = ['name', 'college']
+class ImportStakeholderForm(forms.Form):
+    stk = forms.ModelChoiceField(queryset=None)
+    def __init__(self, *args, **kwargs):
+        stkChoices = kwargs.pop('stkChoices',None)
+        super(ImportStakeholderForm, self).__init__(*args, **kwargs)
+        self.fields['stk'].queryset = stkChoices
+class MakeNewAccount(UserCreationForm):
+    isaac = forms.BooleanField(required=False, label="Account for AAC member?")
+    department = forms.ModelChoiceField(queryset=Department.objects, label="Department", required=False)
+    class Meta:
+        model = User
+        fields = ['email','username','password1','password2','isaac','first_name','last_name']
+    def save(self, commit=True):
+        user = super(MakeNewAccount, self).save(commit=True)
+        profile = user.profile
+        profile.aac = self.cleaned_data['isaac']
+        profile.department=self.cleaned_data['department']
+        user.save()
+        profile.save()
+        return user, profile

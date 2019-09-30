@@ -56,7 +56,7 @@ class GradGoal(models.Model):
         return self.text
 class SLOsToStakeholder(models.Model):
     text = models.CharField(max_length=2000)
-    report = models.ManyToManyField(Report)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.text
 class Assessment(models.Model):
@@ -135,7 +135,13 @@ class GradedRubricItem(models.Model):
 #to be added: classes for messaging system
 class Profile(models.Model):
     #first name, last name and email are included in the built-in User class. Access them through the user field
-    aac = models.BooleanField()
+    aac = models.BooleanField(null=True)
     #False = faculty member/dept account
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+@receiver(post_save,sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    #this updates profile when user is updated
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()

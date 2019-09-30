@@ -2,6 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Stakeholder Communication</h3>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stk-import' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import</a>
+
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
@@ -9,4 +11,5 @@
         <button type="submit" class="btn btn-primary">Save</button>
     {% endbuttons %}
 </form>
+
 {% endblock %}

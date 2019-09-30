@@ -23,15 +23,16 @@
                 </td>
                 <td>
                     {% if slo.firstInstance %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rptPK sloIR=slo.pk %}">Edit SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
                     {% else %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rptPK sloIR=slo.pk %}">Edit SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
                     {% endif %}
                 </td>
             </tr>
             {% endfor %}
     </tbody>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rptPK %}">Add SLO</a>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rptPK %}">Import SLO</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import SLO</a>
 </table>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Next</a>
 {% endblock %}
