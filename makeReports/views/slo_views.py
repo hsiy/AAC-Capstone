@@ -98,8 +98,12 @@ class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def form_valid(self,form):
         r = Report.objects.get(pk=self.kwargs['report'])
         sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
-        newSLOInRpt = SLOInReport.objects.create(report=r,date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
-        newSLOInRpt.save()
+        sloInRpt.date=datetime.now()
+        sloInRpt.goalText=form.cleaned_data['text']
+        sloInRpt.changedFromPrior = True
+        sloInRpt.save()
+        #newSLOInRpt = SLOInReport.objects.create(report=r,date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
+        #newSLOInRpt.save()
         return super(EditImportedSLO, self).form_valid(form)
     def test_func(self):
         report = Report.objects.get(pk=self.kwargs['report'])
