@@ -3,3 +3,5 @@
 env/
 .vscode/
 .vscode/*
+AACForm/AACForm/__pycache__/*
+AACForm/makeReports/migrations/__pycache__/*
