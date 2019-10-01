@@ -135,6 +135,9 @@ class RubricItem(models.Model):
     section = models.PositiveIntegerField(choices=SECTIONS)
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
+    DMEtext = models.CharField(max_length=1000, default="", blank=True)
+    MEtext = models.CharField(max_length=1000, default="", blank=True)
+    EEtext = models.CharField(max_length=1000, default="", blank=True)
 class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
