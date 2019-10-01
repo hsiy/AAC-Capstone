@@ -145,6 +145,3 @@ class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(MakeAccount,self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-
-
-

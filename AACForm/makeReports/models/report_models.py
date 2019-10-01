@@ -134,13 +134,13 @@ class RubricItem(models.Model):
     text = models.CharField(max_length=1000)
     section = models.PositiveIntegerField(choices=SECTIONS)
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
-    order = models.PositiveIntegerField()
+    order = models.PositiveIntegerField(null=True, blank=True)
     DMEtext = models.CharField(max_length=1000, default="", blank=True)
     MEtext = models.CharField(max_length=1000, default="", blank=True)
     EEtext = models.CharField(max_length=1000, default="", blank=True)
 class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
-    item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
+    item = models.ForeignKey(RubricItem, on_delete=models.PROTECT)
     grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
 #to be added: classes for messaging system
 class Profile(models.Model):
