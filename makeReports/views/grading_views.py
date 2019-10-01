@@ -135,3 +135,70 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial = getInitialRubric(self.rubricItems,self.report,initial)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
+    template_name = ""
+    success_url = ""
+    model=Rubric
+    fields = ['fullFile']
+    def form_valid(self,form):
+        form.instance.date = datetime.now()
+        return super(AddRubric,self).form_valid(form)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
+    template_name = ""
+    form_class = RubricItemFormset
+    success_url = ""
+    def form_valid(self,form):
+        rVersion = Rubric.objects.get(pk=self.kwargs['rubric'])
+        for f in form:
+            ri = RubricItem.object.create(text=f.cleaned_data['text'], \
+                 section=f.cleaned_data['section'], rubricVersion=rVersion, \
+                      DMEtext=f.cleaned_data['DMEtext'], MEtext=f.cleaned_data['MEtext'], \
+                          EEtext=f.cleaned_data['EEtext'])
+            try:
+                ri.order=f.cleaned_data['order']
+            except:
+                pass
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
+    model = Rubric
+    template_name = ""
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = RubricItem
+    fields = ['text','section','order','DMEtext','MEtext','EEtext']
+    template_name = ""
+    success_url = ""
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class UpdateRubricFile(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
+    model = Rubric
+    fields = ['fullFile']
+    template_name = ""
+    success_url = ""
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class DeleteRubricItem(LoginRequiredMixin,UserPassesTestMixin):
+    #error will result if they try to delete a ri that already has a grade somewhere
+    model = RubricItem
+    template_name = ""
+    success_url = ""
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
+    #duplicate -> edit/delete/add intended workflow instead of some kind of import
+    form_class = DuplicateRubric
+    success_url = ""
+    template_name = ""
+    def form_valid(self,form):
+        rubToDup = form.cleaned_data['rubToDup']
+        RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
+        newRub = Rubric.object.create(date=datetime.now(), fullFile=rubToDup.fullFile)
+        for ri in RIs:
+            newRi = RubricItem.object.create(text=ri.text, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
+        return super(DuplicateRubric,)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")

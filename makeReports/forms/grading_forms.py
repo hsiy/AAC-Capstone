@@ -15,3 +15,21 @@ class SectionRubricForm(forms.Form):
             self.fields['rI'+str(i)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
             #required=False so allow partial completion of the form
             i+=1
+class RubricItemForm(forms.ModelForm):
+    class Meta:
+        model = RubricItem
+        fields = ['text','section','order','DMEtext','MEtext','EEtext']
+        labels = {
+            'text':'Category text',
+            'section':'Section number',
+            'order':'Order position of item (lower numbers will be displayed first) (optional)',
+            'DMEtext':'Did not meet expectations text',
+            'MEtext':"Met expectations with concerns text",
+            'EEtext':'Met expectations text'
+        }
+RubricItemFormset = forms.formset_factory(
+    RubricItemForm,
+    extra=2
+)
+class DuplicateRubric(forms.Form):
+    rubToDup = forms.ModelChoiceField(queryset=Rubric.objects, widget=forms.HiddenInput())
