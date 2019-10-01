@@ -16,9 +16,13 @@ class CreateNewAssessment(forms.Form):
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
     threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
-    
+
 class ImportAssessment(forms.Form):
     asessessment = forms.ModelMultipleChoiceField(queryset=None, to_field_name='assessment__title')
+    def __init__(self, *args, **kwargs):
+        assessChoices = kwargs.pop('assessChoices',None)
+        super(ImportAssessment, self).__init__(*args, **kwargs)
+        self.fields['assessment'].queryset = assessChoices
 
 class EditNewAssessment(forms.Form):
     title = forms.CharField(widget= forms.Textarea, max_length=300)
@@ -32,4 +36,12 @@ class EditNewAssessment(forms.Form):
     threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
 
-#class EditImportedAssessment(forms.Form):
+class EditImportedAssessment(forms.Form):
+    description = forms.CharField(widget=forms.Textarea, max_length=1000, label="Description: ")
+    finalTerm = forms.ChoiceField(choices = ((True, "In final term"), (False, "In final year")))
+    where = forms.CharField(widget= forms.Textarea, max_length=200)
+    allStudents = forms.ChoiceField(choices = ((True, "All Students"), (False,"Sample of Students")))
+    sampleDescription = forms.CharField(widget= forms.Textarea, max_length=200)
+    frequency = forms.CharField(widget=forms.Textarea, max_length=100)
+    threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
+    target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
