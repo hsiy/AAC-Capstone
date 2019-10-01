@@ -70,15 +70,18 @@ class Assessment(models.Model):
         return self.title
 class AssessmentVersion(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    slo = models.ForeignKey(SLOInReport, on_delete=models.CASCADE)
+    firstInstance = models.BooleanField()
+    changedFromPrior = models.BooleanField()
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
     date = models.DateField()
     description = models.CharField(max_length=1000)
     finalTerm = models.BooleanField()
     #false = final year
-    where = models.CharField(max_length=500)
+    where = models.CharField(max_length=200)
     allStudents = models.BooleanField()
     #false = sample of students
-    sampleDescription = models.CharField(max_length=500)
+    sampleDescription = models.CharField(max_length=200)
     frequency = models.CharField(max_length=100)
     #the below are percentage points
     threshold = models.PositiveIntegerField()
