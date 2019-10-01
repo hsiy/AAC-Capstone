@@ -79,7 +79,7 @@ class EditNewAssessment(FormView):
         assessIR.frequency = form.cleaned_data['frequency']
         assessIR.threshold = form.cleaned_data['threshold']
         assessIR.target = form.cleaned_data['target']
-class supplementUpload(FormView):
+#class supplementUpload(FormView):
     
 class Section2Comment(FormView):
     template_name = ""
