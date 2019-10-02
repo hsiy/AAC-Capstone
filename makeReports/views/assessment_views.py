@@ -153,26 +153,26 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.assessVers.target = form.cleaned_data['target']
         self.assessVers.save()
         self.assessVers.assessment.save()
-        return super(EditNewSLO,self).form_valid(form)
+        return super(EditNewAssessment,self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class supplementUpload(LoginRequiredMixin,UserPassesTestMixin,FormView):
-
+    template_name = ""
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/assessment/assessmentComment.html"
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(Section1Comment,self).dispatch(request,*args,**kwargs)
+        return super(Section2Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         #to be changed to assessment page!
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
         self.report.section1Comment = form.cleaned_data['text']
         self.report.save()
-        return super(Section1Comment,self).form_valid(form)
+        return super(Section2Comment,self).form_valid(form)
     def get_initial(self):
-        initial = super(Section1Comment,self).get_initial()
+        initial = super(Section2Comment,self).get_initial()
         initial['text']="No comment."
         return initial
     def test_func(self):
