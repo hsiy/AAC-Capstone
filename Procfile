@@ -1,1 +1,0 @@
-web: gunicorn AACForm.AACForm.wsgi --log-file -
