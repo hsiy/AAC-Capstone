@@ -148,6 +148,40 @@ class DeleteReport(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 class ReportList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = Report
     template_name = "makeReports/AACAdmin/reportList.html"
+    def get_queryset(self):
+        qs = Report.objects.filter(year=int(datetime.now().year)).order_by('submitted','-rubric__complete')
+        return qs
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class ReportListSearched(LoginRequiredMixin,UserPassesTestMixin,ListView):
+    model = Report
+    template_name = "makeReports/AACAdmin/reportList.html"
+    def get_queryset(self):
+        year = self.request.GET['year']
+        submitted = self.request.GET['submitted']
+        x=self.request.GET
+        graded = self.request.GET['graded']
+        dP = self.request.GET['dP']
+        dept = self.request.GET['dept']
+        college = self.request.GET['col']
+        objs = Report.objects.order_by('submitted','-rubric__complete')
+        if year!="":
+            objs=objs.filter(year=year)
+        if submitted == "S":
+            objs=objs.filter(submitted=True)
+        elif submitted == "nS":
+            objs=objs.filter(submitted=False)
+        if graded=="S":
+            objs=objs.filter(rubric__complete=True)
+        elif graded=="nS":
+            objs=objs.filter(rubric__complete=False)
+        if dP!="":
+            objs=objs.filter(degreeProgram__name__icontains=dP)
+        if dept!="":
+            objs.objs.filter(degreeProgram__department__name__icontains=dept)
+        if college!="":
+            objs.objs.filter(degreeProgram__department__college__name__icontains=college)
+        return objs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
