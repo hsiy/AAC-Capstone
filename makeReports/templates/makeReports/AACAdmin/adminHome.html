@@ -2,7 +2,6 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Administration Home</h3>
-Buttons!
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-college' %}">Create College</a>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:college-list'  %}">All Colleges</a>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-dept'  %}">Create Department</a>
@@ -11,6 +10,8 @@ Buttons!
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
 
 <h5>Generate This Year's Reports:</h5>
+Note, if a report for a degree program this year already exists, this will not assign anotther or change the assignment for that degree program.
+Use create manual report or update report instead if needed.
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}

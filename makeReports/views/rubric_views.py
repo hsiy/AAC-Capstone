@@ -22,7 +22,7 @@ class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     template_name = "makeReports/Rubric/addRubric.html"
     success_url = reverse_lazy('makeReports:rubric-list')
     model=Rubric
-    fields = ['fullFile']
+    fields = ['name','fullFile']
     def form_valid(self,form):
         form.instance.date = datetime.now()
         return super(AddRubric,self).form_valid(form)
@@ -67,7 +67,7 @@ class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
         return getattr(self.request.user.profile, "aac")
 class UpdateRubricFile(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Rubric
-    fields = ['fullFile']
+    fields = ['name','fullFile']
     template_name = ""
     success_url = ""
     def test_func(self):
