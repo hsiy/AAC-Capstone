@@ -132,4 +132,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 #GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= "D:\\School Work\\Senior\\Capstone\\Project\\My Project-08fe48f6125f.json"
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.get_env('GOOGLE_DRIVE_PRIVATE')
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.getenv('GOOGLE_DRIVE_PRIVATE')
