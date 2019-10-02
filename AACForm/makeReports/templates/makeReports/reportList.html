@@ -2,7 +2,39 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
-<!--search to be implemented-->
+<form action="{% url 'makeReports:search-reports-dept' %}" type="get">
+        <h3>Search:</h3>
+        You can use as many or few fields as desired<br>
+        <div class="form-group"><label for="year">Year:</label><input id="year" type="text" class="form-control" name="year"></div>
+        <div class="form-group"><label for="submitted">Submitted: </label> <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="submitted" id="s1" value="S">
+                <label class="form-check-label" for="s1">Only submitted</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="submitted" id="s2" value="nS" checked="checked" >
+                <label class="form-check-label" for="s2">Only not submitted</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="submitted" id="s3" value="both">
+                <label class="form-check-label" for="s3">All</label>
+              </div>
+        </div>
+        <div class="form-group"><label for="graded">Graded: </label> <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="graded" id="g1" value="S">
+                <label class="form-check-label" for="g1">Only graded</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="graded" id="g2" value="nS" checked="checked" >
+                <label class="form-check-label" for="g2">Only not graded</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="graded" id="g3" value="both">
+                <label class="form-check-label" for="g3">All</label>
+              </div>
+        </div>
+        <div class="form-group"><label for="dP">Degree program:</label><input id="dP" type="text" class="form-control" name="dP"></div>
+        <button id="sub" type="submit" class="btn btn-primary" style="margin-top:1em">Search</button><br>
+    </form>
 <ul class="list-group">
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for year {{rpt.year}}
