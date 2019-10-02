@@ -10,11 +10,9 @@ class SectionRubricForm(forms.Form):
     def __init__(self, *args, **kwargs):
         rubricItems = kwargs.pop('rubricItems')
         super(SectionRubricForm, self).__init__(*args, **kwargs)
-        i = 0
         for rI in rubricItems:
-            self.fields['rI'+str(i)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
+            self.fields['rI'+str(rI.pk)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
             #required=False so allow partial completion of the form
-            i+=1
 class RubricItemForm(forms.ModelForm):
     class Meta:
         model = RubricItem
@@ -27,9 +25,5 @@ class RubricItemForm(forms.ModelForm):
             'MEtext':"Met expectations with concerns text",
             'EEtext':'Met expectations text'
         }
-RubricItemFormset = forms.formset_factory(
-    RubricItemForm,
-    extra=2
-)
 class DuplicateRubric(forms.Form):
     rubToDup = forms.ModelChoiceField(queryset=Rubric.objects, widget=forms.HiddenInput())

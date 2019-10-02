@@ -37,4 +37,12 @@ urlpatterns = [
     re_path(r'^aac/report/delete/(?P<pk>\d+)/$', views.DeleteReport.as_view(), name='delete-rpt'),
     re_path(r'^aac/report/list/$', views.ReportList.as_view(), name='report-list'),
     re_path(r'^aac/account/create/$', views.MakeAccount.as_view(), name='make-account'),
+    #Grading urls
+    re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
+    #Rubric urls
+    re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
+    re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/addRI/$', views.AddRubricItems.as_view(), name='add-RI')
+
+
 ]
