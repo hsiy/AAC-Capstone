@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'AACForm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd2l572kbfjiffo',                      
         'USER': 'bwsqrclshcgdfz',
         'PASSWORD': '7b786042eba0c72cac3f2e91ad94728ea16a6e172b21aa727bb81778768e5c67',
@@ -131,4 +131,5 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= "D:\\School Work\\Senior\\Capstone\\Project\\My Project-08fe48f6125f.json"
+#GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= "D:\\School Work\\Senior\\Capstone\\Project\\My Project-08fe48f6125f.json"
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.get_env('GOOGLE_DRIVE_PRIVATE')
