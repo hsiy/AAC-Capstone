@@ -11,29 +11,33 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
+from django.template.defaulttags import register
 def generateRubricItems(rIs,form,r):
-    i=0
     for ri in rIs:
-        if form.cleaned_data["rI"+str(i)]:
+        if form.cleaned_data["rI"+str(ri.pk)]:
             try:
                 GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
-                GRI.grade=form.cleaned_data["rI"+str(i)]
+                GRI.grade=form.cleaned_data["rI"+str(ri.pk)]
             except:
-                newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(i)])
-        i+=1
+                newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
 def getInitialRubric(rIs, r, initial):
-    i=0
     for ri in rIs:
         try:
             GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
-            initial["rI"+str(i)]=GRI.grade
+            initial["rI"+str(ri.pk)]=GRI.grade
         except:
             pass
-        i+=1
     return initial
+@register.simple_tag
+def get_item(dictionary, key1, key2):
+    s = dictionary.get(key1)
+    if s:
+        return s[key2]
+    else:
+        return ""
 class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
-    template_name = ""
+    template_name = "makeReports/Grading/grading_section.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=1).order_by("order","pk")
@@ -51,6 +55,10 @@ class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         context['section'] = 1
         context['report'] = self.report
+        extraHelp = dict()
+        for rI in self.rubricItems:
+            extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
+        context['extraHelp']=extraHelp
         return context
     def get_initial(self):
         initial = super(Section1Grading,self).get_initial()
@@ -133,72 +141,5 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_initial(self):
         initial = super(Section4Grading,self).get_initial()
         initial = getInitialRubric(self.rubricItems,self.report,initial)
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
-    template_name = ""
-    success_url = ""
-    model=Rubric
-    fields = ['fullFile']
-    def form_valid(self,form):
-        form.instance.date = datetime.now()
-        return super(AddRubric,self).form_valid(form)
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
-    template_name = ""
-    form_class = RubricItemFormset
-    success_url = ""
-    def form_valid(self,form):
-        rVersion = Rubric.objects.get(pk=self.kwargs['rubric'])
-        for f in form:
-            ri = RubricItem.object.create(text=f.cleaned_data['text'], \
-                 section=f.cleaned_data['section'], rubricVersion=rVersion, \
-                      DMEtext=f.cleaned_data['DMEtext'], MEtext=f.cleaned_data['MEtext'], \
-                          EEtext=f.cleaned_data['EEtext'])
-            try:
-                ri.order=f.cleaned_data['order']
-            except:
-                pass
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
-    model = Rubric
-    template_name = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
-    model = RubricItem
-    fields = ['text','section','order','DMEtext','MEtext','EEtext']
-    template_name = ""
-    success_url = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class UpdateRubricFile(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
-    model = Rubric
-    fields = ['fullFile']
-    template_name = ""
-    success_url = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DeleteRubricItem(LoginRequiredMixin,UserPassesTestMixin):
-    #error will result if they try to delete a ri that already has a grade somewhere
-    model = RubricItem
-    template_name = ""
-    success_url = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
-    #duplicate -> edit/delete/add intended workflow instead of some kind of import
-    form_class = DuplicateRubric
-    success_url = ""
-    template_name = ""
-    def form_valid(self,form):
-        rubToDup = form.cleaned_data['rubToDup']
-        RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
-        newRub = Rubric.object.create(date=datetime.now(), fullFile=rubToDup.fullFile)
-        for ri in RIs:
-            newRi = RubricItem.object.create(text=ri.text, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
-        return super(DuplicateRubric,)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
