@@ -1,5 +1,6 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 *.cpython-36.pyc
+*.cpython-37.pyc
 env/
 .vscode/
 .vscode/*
