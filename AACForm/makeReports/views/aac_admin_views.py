@@ -15,13 +15,27 @@ from django.views.generic.edit import FormMixin
 
 class AdminHome(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/AACAdmin/adminHome.html"
-    form_class = JustHitButton
-    success_url = reverse_lazy('makeReports:admin-home')
+    form_class = GenerateReports
+    success_url = reverse_lazy('makeReports:gen-rpt-suc')
     def form_valid(self, form):
         #generate this years reports
+        thisYear = datetime.now().year
+        dPs = DegreeProgram.objects.all()
+        for dP in dPs:
+            if dP.cycle and dP.cycle > 0:
+                if (thisYear - dP.startingYear) % (dP.cycle) == 0:
+                    #if a report for the degree program/year already
+                    # exists, this won't create a new one
+                    try:
+                        Report.objects.get(year=thisYear, degreeProgram=dP)
+                    except:
+                        gR = GradedRubric.objects.create(rubricVersion = form.cleaned_data['rubric'])
+                        Report.objects.create(year=thisYear, degreeProgram=dP,rubric=gR, submitted = False)
         return super(AdminHome, self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class GenerateReportSuccess(TemplateView):
+    template_name = "makeReports/AACAdmin/genRptSuc.html"
 class CreateCollege(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     model = College
     template_name = "makeReports/AACAdmin/addCollege.html"

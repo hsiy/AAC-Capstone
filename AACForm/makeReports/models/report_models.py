@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
+from datetime import datetime
 gd_storage = GoogleDriveStorage()
 class Report(models.Model):
     year = models.PositiveIntegerField()
@@ -30,8 +31,8 @@ class DegreeProgram(models.Model):
     name = models.CharField(max_length=100)
     level = models.CharField(max_length=75, choices= LEVELS)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    cycle = models.IntegerField(blank=True)
-    startingYear = models.PositiveIntegerField(blank=True)
+    cycle = models.IntegerField(blank=True, null=True)
+    startingYear = models.PositiveIntegerField(blank=True, null=True)
     #not all degree programs are on a clear cycle
     def __str__(self):
         return self.name
@@ -127,6 +128,9 @@ class DecisionsActions(models.Model):
 class Rubric(models.Model):
     date = models.DateField()
     fullFile = models.FileField(upload_to='rubrics', storage=gd_storage)
+    name = models.CharField(max_length = 150, default="Rubric "+str(datetime.now()))
+    def __str__(self):
+        return self.name
 class GradedRubric(models.Model):
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     section1Comment = models.CharField(max_length=2000,blank=True,null=True)
