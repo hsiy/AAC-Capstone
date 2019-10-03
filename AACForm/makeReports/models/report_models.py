@@ -87,7 +87,7 @@ class AssessmentVersion(models.Model):
     sampleDescription = models.CharField(max_length=200)
     frequency = models.CharField(max_length=100)
     #the below are percentage points
-    threshold = models.PositiveIntegerField()
+    threshold = models.CharField(max_length=500)
     target = models.PositiveIntegerField()
     def __str__(self):
         return self.text
