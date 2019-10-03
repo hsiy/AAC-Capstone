@@ -101,15 +101,16 @@ class AssessmentSupplement(models.Model):
 class Subassessment(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
+    proficient = models.PositiveIntegerField()
 class AssessmentData(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE)
     dataBegin = models.DateField()
     dataEnd = models.DateField()
     numberStudents = models.PositiveIntegerField()
     overallProficient = models.PositiveIntegerField(blank=True)
-class SubassessmentData(models.Model):
-    subassessment = models.ForeignKey(Subassessment,on_delete=models.CASCADE)
-    proficient = models.PositiveIntegerField()
+#class SubassessmentData(models.Model):
+#    subassessment = models.ForeignKey(Subassessment,on_delete=models.CASCADE)
+#    proficient = models.PositiveIntegerField()
 class DataAdditionalInformation(models.Model):
     comment = models.CharField(max_length=3000, blank=True)
 class DataAddInfoSupplement(models.Model):
