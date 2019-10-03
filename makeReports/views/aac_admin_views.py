@@ -15,13 +15,27 @@ from django.views.generic.edit import FormMixin
 
 class AdminHome(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/AACAdmin/adminHome.html"
-    form_class = JustHitButton
-    success_url = reverse_lazy('makeReports:admin-home')
+    form_class = GenerateReports
+    success_url = reverse_lazy('makeReports:gen-rpt-suc')
     def form_valid(self, form):
         #generate this years reports
+        thisYear = datetime.now().year
+        dPs = DegreeProgram.objects.all()
+        for dP in dPs:
+            if dP.cycle and dP.cycle > 0:
+                if (thisYear - dP.startingYear) % (dP.cycle) == 0:
+                    #if a report for the degree program/year already
+                    # exists, this won't create a new one
+                    try:
+                        Report.objects.get(year=thisYear, degreeProgram=dP)
+                    except:
+                        gR = GradedRubric.objects.create(rubricVersion = form.cleaned_data['rubric'])
+                        Report.objects.create(year=thisYear, degreeProgram=dP,rubric=gR, submitted = False)
         return super(AdminHome, self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class GenerateReportSuccess(TemplateView):
+    template_name = "makeReports/AACAdmin/genRptSuc.html"
 class CreateCollege(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     model = College
     template_name = "makeReports/AACAdmin/addCollege.html"
@@ -134,6 +148,40 @@ class DeleteReport(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 class ReportList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = Report
     template_name = "makeReports/AACAdmin/reportList.html"
+    def get_queryset(self):
+        qs = Report.objects.filter(year=int(datetime.now().year)).order_by('submitted','-rubric__complete')
+        return qs
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class ReportListSearched(LoginRequiredMixin,UserPassesTestMixin,ListView):
+    model = Report
+    template_name = "makeReports/AACAdmin/reportList.html"
+    def get_queryset(self):
+        year = self.request.GET['year']
+        submitted = self.request.GET['submitted']
+        x=self.request.GET
+        graded = self.request.GET['graded']
+        dP = self.request.GET['dP']
+        dept = self.request.GET['dept']
+        college = self.request.GET['col']
+        objs = Report.objects.order_by('submitted','-rubric__complete')
+        if year!="":
+            objs=objs.filter(year=year)
+        if submitted == "S":
+            objs=objs.filter(submitted=True)
+        elif submitted == "nS":
+            objs=objs.filter(submitted=False)
+        if graded=="S":
+            objs=objs.filter(rubric__complete=True)
+        elif graded=="nS":
+            objs=objs.filter(rubric__complete=False)
+        if dP!="":
+            objs=objs.filter(degreeProgram__name__icontains=dP)
+        if dept!="":
+            objs.objs.filter(degreeProgram__department__name__icontains=dept)
+        if college!="":
+            objs.objs.filter(degreeProgram__department__college__name__icontains=college)
+        return objs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
