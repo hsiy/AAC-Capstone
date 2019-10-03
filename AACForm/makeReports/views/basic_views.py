@@ -35,3 +35,25 @@ class FacultyReportList(LoginRequiredMixin,ListView):
     def get_queryset(self):
         objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department)
         return objs
+class ReportListSearchedDept(LoginRequiredMixin,ListView):
+    model = Report
+    template_name = "makeReports/reportList.html"
+    def get_queryset(self):
+        year = self.request.GET['year']
+        submitted = self.request.GET['submitted']
+        graded = self.request.GET['graded']
+        dP = self.request.GET['dP']
+        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department).order_by('submitted','-rubric__complete')
+        if year!="":
+            objs=objs.filter(year=year)
+        if submitted == "S":
+            objs=objs.filter(submitted=True)
+        elif submitted == "nS":
+            objs=objs.filter(submitted=False)
+        if graded=="S":
+            objs=objs.filter(rubric__complete=True)
+        elif graded=="nS":
+            objs=objs.filter(rubric__complete=False)
+        if dP!="":
+            objs=objs.filter(degreeProgram__name__icontains=dP)
+        return objs

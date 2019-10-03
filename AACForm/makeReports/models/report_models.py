@@ -3,6 +3,9 @@ from makeReports.choices import *
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from gdstorage.storage import GoogleDriveStorage
+from datetime import datetime
+gd_storage = GoogleDriveStorage()
 class Report(models.Model):
     year = models.PositiveIntegerField()
     author = models.CharField(max_length=100, blank=True)
@@ -28,8 +31,8 @@ class DegreeProgram(models.Model):
     name = models.CharField(max_length=100)
     level = models.CharField(max_length=75, choices= LEVELS)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    cycle = models.IntegerField(blank=True)
-    startingYear = models.PositiveIntegerField(blank=True)
+    cycle = models.IntegerField(blank=True, null=True)
+    startingYear = models.PositiveIntegerField(blank=True, null=True)
     #not all degree programs are on a clear cycle
     def __str__(self):
         return self.name
@@ -88,7 +91,7 @@ class AssessmentVersion(models.Model):
     target = models.PositiveIntegerField()
 class AssessmentSupplement(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE)
-    supplement = models.FileField()
+    supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     #will require more work for upload to work right
 class Subassessment(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
@@ -105,7 +108,7 @@ class SubassessmentData(models.Model):
 class DataAdditionalInformation(models.Model):
     comment = models.CharField(max_length=3000, blank=True)
 class DataAddInfoSupplement(models.Model):
-    supplement = models.FileField()
+    supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
     addInfo = models.ForeignKey(DataAdditionalInformation, on_delete=models.CASCADE)
 class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
@@ -124,7 +127,10 @@ class DecisionsActions(models.Model):
     actionTimeline = models.CharField(max_length=3000)
 class Rubric(models.Model):
     date = models.DateField()
-    fullFile = models.FileField()
+    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage)
+    name = models.CharField(max_length = 150, default="Rubric "+str(datetime.now()))
+    def __str__(self):
+        return self.name
 class GradedRubric(models.Model):
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     section1Comment = models.CharField(max_length=2000,blank=True,null=True)

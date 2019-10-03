@@ -8,6 +8,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.HomePage.as_view(), name="home-page"),
     re_path(r'^report/list/$', views.FacultyReportList.as_view(), name='rpt-list-dept'),
+    re_path(r'^report/list/search/$', views.ReportListSearchedDept.as_view(), name='search-reports-dept'),
     #SLO Urls
     re_path(r'^report/(?P<report>\d+)/slo/summary/$', views.SLOSummary.as_view(), name='slo-summary'),
     re_path(r'^report/(?P<report>\d+)/slo/add/$', views.AddNewSLO.as_view(), name='add-slo'),
@@ -36,5 +37,15 @@ urlpatterns = [
     re_path(r'^aac/department/(?P<dept>\d+)/report/create/$',views.CreateReport.as_view(),name='add-rpt'),
     re_path(r'^aac/report/delete/(?P<pk>\d+)/$', views.DeleteReport.as_view(), name='delete-rpt'),
     re_path(r'^aac/report/list/$', views.ReportList.as_view(), name='report-list'),
-    re_path(r'^aac/account/create/$', views.MakeAccount.as_view(), name='make-account')
+    re_path(r'^aac/report/list/searched/$', views.ReportListSearched.as_view(), name='search-reports'),
+    re_path(r'^aac/account/create/$', views.MakeAccount.as_view(), name='make-account'),
+    re_path(r'^aac/report/success/$', views.GenerateReportSuccess.as_view(), name='gen-rpt-suc'),
+    #Grading urls
+    re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
+    #Rubric urls
+    re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
+    re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/addRI/$', views.AddRubricItems.as_view(), name='add-RI')
+
+
 ]

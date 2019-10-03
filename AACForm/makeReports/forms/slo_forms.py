@@ -64,8 +64,8 @@ class CreateDPByDept(forms.ModelForm):
             'cycle': "Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)",
             'startingYear': "The first year report is assigned for cycle (leave blank if no cycle)"
         }
-class JustHitButton(forms.Form):
-    nothing = forms.CharField( required=False, initial="nothing")
+class GenerateReports(forms.Form):
+    rubric = forms.ModelChoiceField(queryset=Rubric.objects.order_by('-date'))
 class CreateDepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
