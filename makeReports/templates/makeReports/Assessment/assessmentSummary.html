@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Assessment Summary</h3>
+<table class="table">
+    <tbody>
+            <tr>
+                <td>SLO</td><td>Title of Measure</td><td>Description of How Measure Aligns to SLO</td><td>Domain</td><td>Type</td><td>Point in Program Assessment is Administered</td><td>Where does the assessment occur</td><td>Population Measured</td><td>Frequency of Data Collection</td><td>Proficiency Threshold</td><td>Program Proficiency Target</td><td>Options</td>
+            </tr>
+            {% for assessment in assessment_list %}
+            <tr>
+                <td>
+                    {{assessment.slo.goalText}}
+                </td>
+                <td>
+                    {{assessment.title}}
+                </td>
+                <td>
+                    {{assessment.description}}
+                </td>
+                <td>
+                    {% if assessment.assessment.domainExamination %}
+                            {{assessment.assessment.domainExamination}}
+                        {% elif assessment.assessment.domainPerformance %}
+                            {{assessment.assessment.domainPerformance}}
+                    {% else %}
+                            {{assessment.assessment.domainProduct}}
+                    {% endif %}
+                </td>
+                <td>
+                    {{assessment.assessment.directMeasure}}
+                </td>
+                <td>
+                    {% if assessment.finalTerm %}
+                            In Final Term of Program
+                    {% else %}
+                            In Final Year of Program
+                    {% endif %}
+                </td>
+                <td>
+                    {{assessment.where}}
+                </td>
+                <td>
+                    {% if assessment.allStudents %}
+                            All Students
+                    {% else %}
+                            {{assessment.sampleDescription}}
+                    {% endif %}
+                </td>
+                <td>
+                    {{assessment.frequency}}
+                </td>
+                <td>
+                    {{assessment.threshold}}
+                </td>
+                <td>
+                    {{assessment.target}}
+                </td>
+                <td>
+                    {% if assessment.firstInstance %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+
+                    {% else %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import SLO</a>
+</table>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Next</a>
+{% endblock %}
