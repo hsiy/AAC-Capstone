@@ -31,11 +31,24 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         return assessment_qs
 
     def get_context_data(self, **kwargs):
+        report = self.report
         context = super(DataCollectionSummary, self).get_context_data()
-        context['rpt'] = self.report
+        context['rpt'] = report
 
         # TODO: generate dictionary such that subassessments are associated with assessmentdata
-        
+        assessment_data_dict = dict()
+        assessments = AssessmentVersion.objects.filter(report=report)
+        '''
+        {
+            assessmentversion_pk0:{
+                assessent_text: "text", AssessmentVersion.Assessment.title
+                slo_text: "text", SLOInReport.goalText
+                data_collection_range: "text",  to be implemented
+                num_students_assessed: int, AssessmentData.numberStudents
+                
+            }
+        }
+        '''
 
         return context
 
