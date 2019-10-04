@@ -14,7 +14,7 @@ from django.views.generic.edit import FormMixin
 
 class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = AssessmentData
-    template_name = None
+    template_name = 'makeReports/DataCollection/dataCollectionSummary.html'
     context_object_name = "data_collection_dict"
 
     def dispatch(self, request, *args, **kwargs):
@@ -36,21 +36,35 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         context['rpt'] = report
 
         # TODO: generate dictionary such that subassessments are associated with assessmentdata
-        assessment_data_dict = dict()
+        assessment_data_dict = {'assessments':[]}
         assessments = AssessmentVersion.objects.filter(report=report)
-        '''
-        {
-            assessmentversion_pk0:{
-                assessent_text: "text", AssessmentVersion.Assessment.title
-                slo_text: "text", SLOInReport.goalText
-                data_collection_range: "text",  to be implemented
-                num_students_assessed: int, AssessmentData.numberStudents
-                
-            }
-        }
-        '''
 
+        for assessment in asessments:
+            temp_dict = dict()
+
+            assessment_obj = Assessment.objects.get(pk=assessment.assessment)
+            temp_dict['assessment_text'] = assessment_obj.title
+
+            slo_obj = SLOInReport.objects.get(pk=assessment.slo)
+            temp_dict['slo_text'] = slo_obj.goalText
+
+            assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
+            temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
+            temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
+
+            subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
+            temp_dict['subassessments'] = []
+            for subassessment in subassessments:
+                sub_dict = {subassessment.title : subassessment.proficient}
+                temp_dict['subassessments'].append(sub_dict)
+
+            assessment_data_dict['assessments'].append(temp_dict)
+
+        context['assessment_data_dict'] = assessment_data_dict
         return context
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
 
 class CreateDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
     pass
