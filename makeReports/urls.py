@@ -62,6 +62,8 @@ urlpatterns = [
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/review/$', views.RubricReview.as_view(), name='rub-review'),
+    re_path(r'^aac/report/(?P<pk>\d+)/grading/return/$', views.ReturnReport.as_view(), name='ret-rept'),
+    re_path(r'report/(?P<report>\d+)/feedback/$', views.Feedback.as_view(), name='rpt-feedback'),
     #Rubric urls
     re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
     re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),

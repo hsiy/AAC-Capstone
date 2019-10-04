@@ -44,14 +44,6 @@
                   <tr><td><b>Section 4: </b>{{gRub.section4Comment}}</td></tr>
                   <tr><td><b>Overall: </b>{{gRub.generalComment}}</td></tr>
                 </table>
-                <form method="post" class="form" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  {% bootstrap_form form %}
-                  {% buttons %}
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  {% endbuttons %}
-                </form>
-            
         </div>
     </div>
 </div>

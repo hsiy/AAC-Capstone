@@ -5,7 +5,7 @@
 <h3>Reports To-Do</h3>
 <ul class="list-group">
 {% for r in object_list %}
-    <li class = "list-group-item">{{r.year}} Report for {{r.degreeProgram.name}} 
+    <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-summary' report=r.pk %}">Start</a>
     </li>
 {% empty %}
