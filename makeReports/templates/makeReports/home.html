@@ -11,14 +11,26 @@
     <h3>Department Reports To-Do</h3>
     <ul class="list-group">
     {% for r in object_list %}
-        <li class = "list-group-item">{{r.year}} Report for {{r.degreeProgram.name}} 
-                <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-summary' report=r.pk %}">Start</a>
+        <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
+                {% if r.returned %} (this report has been returned by the AAC for modification) <a type="button" class="btn btn-danger" href="{% url 'makeReports:slo-summary' report=r.pk %}">Modify</a> 
+                <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
+                {% else %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-summary' report=r.pk %}">Start</a>
+                {% endif %}
         </li>
     {% empty %}
         Your department does not have any outstanding reports.
     {% endfor %}
     </ul>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-list-dept' %}">All Reports</a>
+    <h3>Department Reports Graded</h3>
+    {% for r in gReps %}
+    <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-summary' report=r.pk %}">View</a>
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
+    </li>
+    {% empty %}
+        Your department does not have any graded reports from this year.
+    {% endfor %}
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-list-dept' %}">Your Archived Reports</a>
     {% endif %}
     <a type="button" class="btn btn-primary" href="accounts/logout/">Logout</a>
 {% else %}

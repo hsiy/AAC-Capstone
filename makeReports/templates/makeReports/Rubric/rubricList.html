@@ -5,7 +5,7 @@
 <!--search to be implemented-->
 <ul class="list-group">
 {% for rb in object_list %}
-    <li class = "list-group-item">Rubric from year {{rb.date.year}}
+    <li class = "list-group-item">Rubric {{rb.name}} from year {{rb.date.year}}
         <!--to be replaced with an output view-->
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-RI' rubric=rb.pk %}">Add Rubric Items</a>
     </li>
