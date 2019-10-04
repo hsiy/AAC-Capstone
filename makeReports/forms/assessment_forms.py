@@ -47,7 +47,7 @@ class EditImportedAssessment(forms.Form):
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
 
 class UploadSupplement(forms.Form):
-    supplement = 
+    pass
 
 class ImportSupplements(forms.Form):
     sup = forms.ModelChoiceField(queryset=None, label="Supplement Upload")

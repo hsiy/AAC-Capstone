@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Archive College</h3>
-Uncheck the box to archive the college. The college will no longer appear most places. 
-If necessary, the college may be restored.
+<h3>Report Initial Information</h3>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Archive College</button>
+        <button type="submit" class="btn btn-primary">Continue</button>
     {% endbuttons %}
 </form>
 {% endblock %}

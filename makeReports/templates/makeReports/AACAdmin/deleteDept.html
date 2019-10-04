@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Delete Department</h3>
-Warning: This will delete all data associated with this department
+<h3>Archive Department</h3>
+Uncheck the box to archive the department. The department will no longer appear most places. 
+If necessary, the department may be restored.
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Are you sure you want to delete "{{ object.name }}"? This will result in permanent data loss.</p>
+    {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Delete</button>
+        <button type="submit" class="btn btn-primary">Archive Department</button>
     {% endbuttons %}
 </form>
 {% endblock %}

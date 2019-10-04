@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Archived College List</h3>
+<ul class="list-group">
+{% for college in object_list %}
+    <li class = "list-group-item">{{college.name}}
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:recover-college' pk=college.pk %}">Recover College</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
