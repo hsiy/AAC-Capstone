@@ -10,6 +10,7 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
+                {% if user and user.profile %}
                 {% if user.profile.aac %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'makeReports:admin-home' %}">Administration Home <span class="sr-only">(current)</span></a>
@@ -18,9 +19,15 @@
                       <a class="nav-link" href="{% url 'makeReports:dept-list' %}">Departments & Degree Programs <span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item active">
-                      <a class="nav-link" href="{% url 'makeReports:report-list' %}">Reports <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="{% url 'makeReports:report-list' %}">AAC Reports <span class="sr-only">(current)</span></a>
                   </li>
                   {% endif %}
+                  {% if user.profile.department %}
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'makeReports:rpt-list-dept' %}">Your Reports <span class="sr-only">(current)</span></a>
+                  </li>
+                  {% endif %}
+                {% endif %}
             </div>
           </nav>
 </nav>
