@@ -7,7 +7,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
 from django.contrib.auth.models import User
-from django.conf import settings 
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
@@ -34,12 +34,10 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         report = self.report
         context = super(DataCollectionSummary, self).get_context_data()
         context['rpt'] = report
-
-        # TODO: generate dictionary such that subassessments are associated with assessmentdata
         assessment_data_dict = {'assessments':[]}
         assessments = AssessmentVersion.objects.filter(report=report)
 
-        for assessment in asessments:
+        for assessment in assessments:
             temp_dict = dict()
 
             assessment_obj = Assessment.objects.get(pk=assessment.assessment)
@@ -54,32 +52,39 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
 
             subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
             temp_dict['subassessments'] = []
+
             for subassessment in subassessments:
                 sub_dict = {subassessment.title : subassessment.proficient}
                 temp_dict['subassessments'].append(sub_dict)
 
             assessment_data_dict['assessments'].append(temp_dict)
-
+            
         context['assessment_data_dict'] = assessment_data_dict
         return context
 
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 
+
 class CreateDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
     pass
+
 
 class EditDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
     pass
 
+
 class DeleteDataCollectionRow(DeleteView):
     pass
+
 
 class CreateSubassessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     pass
 
+
 class EditSubassessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     pass
+
 
 class DeleteSubassessment(DeleteView):
     pass
