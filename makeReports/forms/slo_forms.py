@@ -78,7 +78,7 @@ class ImportStakeholderForm(forms.Form):
         self.fields['stk'].queryset = stkChoices
 class MakeNewAccount(UserCreationForm):
     isaac = forms.BooleanField(required=False, label="Account for AAC member?")
-    department = forms.ModelChoiceField(queryset=Department.objects, label="Department", required=False)
+    department = forms.ModelChoiceField(queryset=Department.active_objects, label="Department", required=False)
     class Meta:
         model = User
         fields = ['email','username','password1','password2','isaac','first_name','last_name']
