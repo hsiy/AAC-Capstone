@@ -2,10 +2,11 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>College List</h3>
+Looking for a deleted college?  <a type="button" class="btn btn-primary" href="{% url 'makeReports:arc-colleges' %}">Archived Colleges</a>
 <ul class="list-group">
 {% for college in object_list %}
     <li class = "list-group-item">{{college.name}}
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-college' pk=college.pk %}">Delete College</a>
+            <a type="button" class="btn btn-danger" href="{% url 'makeReports:delete-college' pk=college.pk %}">Archive College</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-college' pk=college.pk %}">Update College</a>
 
     </li>

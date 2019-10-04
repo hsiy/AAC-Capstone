@@ -5,26 +5,38 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
 from datetime import datetime
+import os
 gd_storage = GoogleDriveStorage()
+class NonArchivedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(active=True)
 class Report(models.Model):
     year = models.PositiveIntegerField()
     author = models.CharField(max_length=100, blank=True)
     degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE)
-    beginData = models.DateField(blank=True, null=True)
-    endData = models.DateField(blank=True, null=True)
+    date_range_of_reported_data = models.CharField(max_length=500,blank=True, null=True)
     rubric = models.OneToOneField('GradedRubric', on_delete=models.SET_NULL, null=True)
     section1Comment = models.CharField(max_length=2000, blank=True, null=True)
     section2Comment = models.CharField(max_length=2000, blank=True, null=True)
     section3Comment = models.CharField(max_length=2000, blank=True, null=True)
     section4Comment = models.CharField(max_length=2000, blank=True, null=True)
     submitted = models.BooleanField()
+    returned = models.BooleanField(default=False)
 class College(models.Model):
     name = models.CharField(max_length=100)
+    active = models.BooleanField(default=True)
+    
+    objects = models.Manager()
+    active_objects = NonArchivedManager()
     def __str__(self):
         return self.name
 class Department(models.Model):
     name = models.CharField(max_length=100)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
+    
+    objects = models.Manager()
+    active_objects = NonArchivedManager()    
     def __str__(self):
         return self.name
 class DegreeProgram(models.Model):
@@ -34,16 +46,15 @@ class DegreeProgram(models.Model):
     cycle = models.IntegerField(blank=True, null=True)
     startingYear = models.PositiveIntegerField(blank=True, null=True)
     #not all degree programs are on a clear cycle
+    active = models.BooleanField(default=True)
+    
+    objects = models.Manager()
+    active_objects = NonArchivedManager()
     def __str__(self):
         return self.name
 class SLO(models.Model):
     blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
     gradGoals = models.ManyToManyField('GradGoal')
-#class SLOText(models.Model):
-#    date = models.DateField()
-#    goalText = models.CharField(max_length=600)
-#    slo = models.ForeignKey(SLO, on_delete=models.CASCADE)
-    #reports = models.ManyToManyField(Report)
 class SLOInReport(models.Model):
     date = models.DateField()
     goalText = models.CharField(max_length=600)
@@ -96,8 +107,7 @@ class AssessmentSupplement(models.Model):
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.text
-    #will require more work for upload to work right
+        return os.path.basename(self.supplement.name)
 class Subassessment(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -134,7 +144,7 @@ class DecisionsActions(models.Model):
 class Rubric(models.Model):
     date = models.DateField()
     fullFile = models.FileField(upload_to='rubrics', storage=gd_storage)
-    name = models.CharField(max_length = 150, default="Rubric "+str(datetime.now()))
+    name = models.CharField(max_length = 150, default="Rubric")
     def __str__(self):
         return self.name
 class GradedRubric(models.Model):
@@ -157,6 +167,11 @@ class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.PROTECT)
     grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
+class ReportSupplement(models.Model):
+    supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
+    report = models.ForeignKey('Report', on_delete=models.CASCADE)
+    def __str__(self):
+        return os.path.basename(self.supplement.name)
 #to be added: classes for messaging system
 class Profile(models.Model):
     #first name, last name and email are included in the built-in User class. Access them through the user field

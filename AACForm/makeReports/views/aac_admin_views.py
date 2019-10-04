@@ -50,15 +50,26 @@ class UpdateCollege(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     success_url = reverse_lazy('makeReports:admin-home')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class DeleteCollege(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteCollege(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = College
+    fields = ['active']
     template_name = "makeReports/AACAdmin/deleteCollege.html"
+    success_url = reverse_lazy('makeReports:admin-home')
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class RecoverCollege(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = College
+    fields = ['active']
+    template_name = "makeReports/AACAdmin/recoverCollege.html"
     success_url = reverse_lazy('makeReports:admin-home')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class CollegeList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = College
     template_name = "makeReports/AACAdmin/collegeList.html"
+    def get_queryset(self):
+        objs = College.active_objects.all()
+        return objs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class CreateDepartment(LoginRequiredMixin,UserPassesTestMixin,CreateView):
@@ -73,7 +84,7 @@ class DepartmentList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = Department
     template_name = "makeReports/AACAdmin/deptList.html"
     def get_queryset(self):
-        objs = Department.objects.order_by('college__name')
+        objs = Department.active_objects.order_by('college__name')
         return objs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
@@ -84,9 +95,17 @@ class UpdateDepartment(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     success_url = reverse_lazy('makeReports:admin-home')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class DeleteDepartment(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteDepartment(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Department
+    fields = ['active']
     template_name = "makeReports/AACAdmin/deleteDept.html"
+    success_url = reverse_lazy('makeReports:admin-home')
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class RecoverDepartment(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = Department
+    fields = ['active']
+    template_name = "makeReports/AACAdmin/recoverDept.html"
     success_url = reverse_lazy('makeReports:admin-home')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
@@ -107,21 +126,32 @@ class UpdateDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     success_url = reverse_lazy('makeReports:admin-home')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class DeleteDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = DegreeProgram
+    fields = ['active']
     template_name = "makeReports/AACAdmin/deleteDP.html"
+    success_url = reverse_lazy('makeReports:admin-home')
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class RecoverDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = DegreeProgram
+    fields = ['active']
+    template_name = "makeReports/AACAdmin/recoverDP.html"
     success_url = reverse_lazy('makeReports:admin-home')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DegreeProgramList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = DegreeProgram
     template_name = "makeReports/AACAdmin/dpList.html"
+    def dispatch(self, *args, **kwargs):
+        self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
+        return super(DegreeProgramList, self).dispatch(args,kwargs)
     def get_queryset(self):
-        objs = DegreeProgram.objects.filter(department=Department.objects.get(pk=int(self.kwargs['dept'])))
+        objs = DegreeProgram.active_objects.filter(department=self.dept)
         return objs
     def get_context_data(self, **kwargs):
         context = super(DegreeProgramList, self).get_context_data(**kwargs)
-        context['dept'] = Department.objects.get(pk=int(self.kwargs['dept']))
+        context['dept'] = self.dept
         return context
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
@@ -149,7 +179,7 @@ class ReportList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = Report
     template_name = "makeReports/AACAdmin/reportList.html"
     def get_queryset(self):
-        qs = Report.objects.filter(year=int(datetime.now().year)).order_by('submitted','-rubric__complete')
+        qs = Report.objects.filter(year=int(datetime.now().year), degreeProgram__active=True).order_by('submitted','-rubric__complete')
         return qs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
@@ -164,7 +194,7 @@ class ReportListSearched(LoginRequiredMixin,UserPassesTestMixin,ListView):
         dP = self.request.GET['dP']
         dept = self.request.GET['dept']
         college = self.request.GET['col']
-        objs = Report.objects.order_by('submitted','-rubric__complete')
+        objs = Report.objects.filter(degreeProgram__active=True).order_by('submitted','-rubric__complete')
         if year!="":
             objs=objs.filter(year=year)
         if submitted == "S":
@@ -178,12 +208,40 @@ class ReportListSearched(LoginRequiredMixin,UserPassesTestMixin,ListView):
         if dP!="":
             objs=objs.filter(degreeProgram__name__icontains=dP)
         if dept!="":
-            objs.objs.filter(degreeProgram__department__name__icontains=dept)
+            objs=objs.filter(degreeProgram__department__name__icontains=dept)
         if college!="":
-            objs.objs.filter(degreeProgram__department__college__name__icontains=college)
+            objs=objs.filter(degreeProgram__department__college__name__icontains=college)
         return objs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class ArchivedColleges(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    model = College
+    template_name = "makeReports/AACAdmin/archivedColleges.html"
+    def get_queryset(self):
+        return College.objects.filter(active=False)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class ArchivedDepartments(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    model = Department
+    template_name = "makeReports/AACAdmin/archivedDepartments.html"
+    def get_queryset(self):
+        return Department.objects.filter(active=False)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class ArchivedDegreePrograms(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    model = DegreeProgram
+    template_name = "makeReports/AACAdmin/archivedDPs.html"
+    def dispatch(self, *args, **kwargs):
+        self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
+        return super(ArchivedDegreePrograms, self).dispatch(args,kwargs)
+    def get_queryset(self):
+        return DegreeProgram.objects.filter(active=False, department=self.dept)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+    def get_context_data(self, **kwargs):
+        context = super(ArchivedDegreePrograms, self).get_context_data(**kwargs)
+        context['dept'] = self.dept
+        return context
 class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/AACAdmin/create_account.html"
     form_class = MakeNewAccount
@@ -193,3 +251,66 @@ class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(MakeAccount,self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    form = UpdateUserForm
+    success_url = reverse_lazy('makeReports:admin-home')
+    template_name = "makeReports/AACAdmin/modify_account.html"
+    def dispatch(self, *args,**kwargs):
+        self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
+        return super(ModifyAccount,self).get_initial()
+    def get_initial(self):
+        initial = super(ModifyAccount,self).get_initial()
+        initial['aac'] = self.userToChange.aac
+        initial['department'] = self.userToChange.department
+        initial['first_name'] = self.userToChange.user.first_name
+        initial['last_name'] = self.userToChange.user.last_name
+        initial['email'] = self.userToChange.user.email
+        return initial
+    def form_valid(self,form):
+        self.userToChange.aac = form.cleaned_data['aac']
+        self.userToChange.department = form.cleaned_data['department']
+        self.userToChange.user.first_name = form.cleaned_data['first_name']
+        self.userToChange.user.last_name = form.cleaned_data['last_name']
+        self.userToChange.user.email = form.cleaned_data['email']
+        self.userToChange.save()
+        self.userToChange.user.save()
+        return super(ModifyAccount,self).form_valid(form)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class InactivateUser(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
+    model = User
+    success_url = reverse_lazy('makeReports:admin-home')
+    template_name = "makeReports/AACAdmin/inactivate_account.html"
+    fields = ['is_active']
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class AccountList(LoginRequiredMixin, UserPassesTestMixin,ListView):
+    model = Profile
+    template_name = 'makeReports/AACAdmin/account_list.html'
+    def get_queryset(self):
+        return Profile.objects.filter(user__is_active=True)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class UserModifyAccount(LoginRequiredMixin,FormView):
+    form = UserUpdateUserForm
+    success_url = reverse_lazy('makeReports:home')
+    template_name = "makeReports/AACAdmin/modify_account.html"
+    def dispatch(self, *args,**kwargs):
+        self.userToChange = self.request.user
+        return super(UserModifyAccount,self).get_initial()
+    def get_initial(self):
+        initial = super(UserModifyAccount,self).get_initial()
+        initial['first_name'] = self.userToChange.user.first_name
+        initial['last_name'] = self.userToChange.user.last_name
+        initial['email'] = self.userToChange.user.email
+        return initial
+    def form_valid(self,form):
+        self.userToChange.user.first_name = form.cleaned_data['first_name']
+        self.userToChange.user.last_name = form.cleaned_data['last_name']
+        self.userToChange.user.email = form.cleaned_data['email']
+        self.userToChange.save()
+        self.userToChange.user.save()
+        return super(UserModifyAccount,self).form_valid(form)
+
+
+

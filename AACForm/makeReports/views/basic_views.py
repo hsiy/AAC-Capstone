@@ -15,25 +15,20 @@ class HomePage(ListView):
     model = Report
     def get_queryset(self):
         try:
-            objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
+            objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False, degreeProgram__active=True)
         except:
             objs = None
         return objs
     def get_context_data(self, **kwargs):
         context=super(HomePage,self).get_context_data(**kwargs)
         context['user']=self.request.user
+        context['gReps'] = Report.objects.filter(degreeProgram__department=self.request.user.profile.department,rubric__complete=True, year=int(datetime.now().year))
         return context
-#class FacultyHome(ListView):
-#    template_name = "makeReports/facultyHome.html"
-#    model = Report
-#    def get_queryset(self):
-#        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
-#        return objs
 class FacultyReportList(LoginRequiredMixin,ListView):
     template_name = "makeReports/reportList.html"
     model = Report
     def get_queryset(self):
-        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department)
+        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, degreeProgram__active=True)
         return objs
 class ReportListSearchedDept(LoginRequiredMixin,ListView):
     model = Report
@@ -43,7 +38,7 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         submitted = self.request.GET['submitted']
         graded = self.request.GET['graded']
         dP = self.request.GET['dP']
-        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department).order_by('submitted','-rubric__complete')
+        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, degreeProgram__active=True).order_by('submitted','-rubric__complete')
         if year!="":
             objs=objs.filter(year=year)
         if submitted == "S":

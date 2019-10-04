@@ -16,6 +16,10 @@ class CreateNewAssessment(forms.Form):
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
     threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
+    def __init__(self,*args,**kwargs):
+            sloQS = kwargs.pop('sloQS',None)
+            super(CreateNewAssessment,self).__init__(*args,**kwargs)
+            self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
 
 class ImportAssessment(forms.Form):
     asessessment = forms.ModelMultipleChoiceField(queryset=None, to_field_name='assessment__title')
@@ -35,6 +39,10 @@ class EditNewAssessment(forms.Form):
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
     threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
+    def __init__(self,*args,**kwargs):
+            sloQS = kwargs.pop('sloQS',None)
+            super(CreateNewAssessment,self).__init__(*args,**kwargs)
+            self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
 
 class EditImportedAssessment(forms.Form):
     description = forms.CharField(widget=forms.Textarea, max_length=1000, label="Description: ")
@@ -45,9 +53,10 @@ class EditImportedAssessment(forms.Form):
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
     threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
-
-class UploadSupplement(forms.Form):
-    supplement = 
+    def __init__(self,*args,**kwargs):
+            sloQS = kwargs.pop('sloQS',None)
+            super(CreateNewAssessment,self).__init__(*args,**kwargs)
+            self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
 
 class ImportSupplements(forms.Form):
     sup = forms.ModelChoiceField(queryset=None, label="Supplement Upload")

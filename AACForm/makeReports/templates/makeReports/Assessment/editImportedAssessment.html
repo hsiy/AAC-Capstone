@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Edit Assessment</h3>
+Warning: This Assessment's data will continued to be tracked with the data of prior versions of this imported Assessment.
+If you do not want this, delete this Assessment and create a new one without importing.
+<form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Submit Changes</button>
+    {% endbuttons %}
+</form>
+{% endblock %}

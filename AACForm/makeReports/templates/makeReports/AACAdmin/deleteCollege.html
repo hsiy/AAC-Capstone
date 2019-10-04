@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Delete College</h3>
-Warning: This will remove all data associated with this college
+<h3>Archive College</h3>
+Uncheck the box to archive the college. The college will no longer appear most places. 
+If necessary, the college may be restored.
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Are you sure you want to delete "{{ object.name }}"? This will result in permanent data loss.</p>
+    {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Delete College</button>
+        <button type="submit" class="btn btn-primary">Archive College</button>
     {% endbuttons %}
 </form>
 {% endblock %}
