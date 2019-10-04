@@ -251,3 +251,19 @@ class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(MakeAccount,self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = Profile
+    success_url = reverse_lazy('makeReports:admin-home')
+    template_name = "makeReports/AACAdmin/modify_account.html"
+    fields = ['aac','department']
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class InactivateUser(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
+    model = User
+    success_url = reverse_lazy('makeReports:admin-home')
+    template_name = "makeReports/AACAdmin/inactivate_account.html"
+    fields = ['is_active']
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+
+

@@ -204,10 +204,11 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class DeleteSupplement(LoginRequiredMixin,UserPassesTestMisin,DeleteView):
+class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = AssessmentSupplement
     template_name = "makeReports/Assessment/deleteSupplement.html"
-    
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
     form_class = Single2000Textbox
