@@ -251,11 +251,30 @@ class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(MakeAccount,self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
-    model = Profile
+class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    form = UpdateUserForm
     success_url = reverse_lazy('makeReports:admin-home')
     template_name = "makeReports/AACAdmin/modify_account.html"
-    fields = ['aac','department']
+    def dispatch(self, *args,**kwargs):
+        self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
+        return super(ModifyAccount,self).get_initial()
+    def get_initial(self):
+        initial = super(ModifyAccount,self).get_initial()
+        initial['aac'] = self.userToChange.aac
+        initial['department'] = self.userToChange.department
+        initial['first_name'] = self.userToChange.user.first_name
+        initial['last_name'] = self.userToChange.user.last_name
+        initial['email'] = self.userToChange.user.email
+        return initial
+    def form_valid(self,form):
+        self.userToChange.aac = form.cleaned_data['aac']
+        self.userToChange.department = form.cleaned_data['department']
+        self.userToChange.user.first_name = form.cleaned_data['first_name']
+        self.userToChange.user.last_name = form.cleaned_data['last_name']
+        self.userToChange.user.email = form.cleaned_data['email']
+        self.userToChange.save()
+        self.userToChange.user.save()
+        return super(ModifyAccount,self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class InactivateUser(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
@@ -265,5 +284,33 @@ class InactivateUser(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
     fields = ['is_active']
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class AccountList(LoginRequiredMixin, UserPassesTestMixin,ListView):
+    model = Profile
+    template_name = 'makeReports/AACAdmin/account_list.html'
+    def get_queryset(self):
+        return Profile.objects.filter(user__is_active=True)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class UserModifyAccount(LoginRequiredMixin,FormView):
+    form = UserUpdateUserForm
+    success_url = reverse_lazy('makeReports:home')
+    template_name = "makeReports/AACAdmin/modify_account.html"
+    def dispatch(self, *args,**kwargs):
+        self.userToChange = self.request.user
+        return super(UserModifyAccount,self).get_initial()
+    def get_initial(self):
+        initial = super(UserModifyAccount,self).get_initial()
+        initial['first_name'] = self.userToChange.user.first_name
+        initial['last_name'] = self.userToChange.user.last_name
+        initial['email'] = self.userToChange.user.email
+        return initial
+    def form_valid(self,form):
+        self.userToChange.user.first_name = form.cleaned_data['first_name']
+        self.userToChange.user.last_name = form.cleaned_data['last_name']
+        self.userToChange.user.email = form.cleaned_data['email']
+        self.userToChange.save()
+        self.userToChange.user.save()
+        return super(UserModifyAccount,self).form_valid(form)
+
 
 
