@@ -28,3 +28,9 @@ class RubricItemForm(forms.ModelForm):
         }
 class DuplicateRubric(forms.Form):
     rubToDup = forms.ModelChoiceField(queryset=Rubric.objects, widget=forms.HiddenInput())
+class SubmitGrade(forms.Form):
+    hidden = forms.CharField(max_length=5,widget=forms.HiddenInput(), required=False)
+    def clean(self):
+      cleaned_data = super().clean()
+      if not self.kwargs['valid']:
+          raise forms.ValidationError("Not all rubric items have been graded.")
