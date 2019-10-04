@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Import Assessment Supplement</h3>
+<h5>Search From Past Reports</h5>
+<form action="{% url 'makeReports:assessment-stk-import' report=rpt %}" type="get">
+        <!--<input id="name" type="text" name="name"></div>-->
+        <div><label>Year</label> 
+            <input id="year" name="year" type="number" required>
+        </div>
+        <div> 
+            <label>Degree Program: </label>
+             <select id = "dp" name="dp" required>
+                {% for degPro in degPro_list %}
+                    <option value = "{{degPro.pk}}" {% if degPro.pk is currentDPpk %}selected{% endif %}>{{degPro.name}}</option>
+               {% endfor %}
+             </select>
+        </div>
+        {% buttons %}
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% endbuttons %}
+</form>
+<h5>Select Supplement to Import</h5>
+<form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Import</button>
+    {% endbuttons %}
+</form>
+{% endblock %}
