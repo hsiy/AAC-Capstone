@@ -107,7 +107,7 @@ class AssessmentSupplement(models.Model):
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return os.path.basename(supplement.name)
+        return os.path.basename(self.supplement.name)
 class Subassessment(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -170,7 +170,7 @@ class ReportSupplement(models.Model):
     supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
     report = models.ForeignKey('Report', on_delete=models.CASCADE)
     def __str__(self):
-        return os.path.basename(supplement.name)
+        return os.path.basename(self.supplement.name)
 #to be added: classes for messaging system
 class Profile(models.Model):
     #first name, last name and email are included in the built-in User class. Access them through the user field
