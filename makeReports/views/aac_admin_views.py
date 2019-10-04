@@ -178,9 +178,9 @@ class ReportListSearched(LoginRequiredMixin,UserPassesTestMixin,ListView):
         if dP!="":
             objs=objs.filter(degreeProgram__name__icontains=dP)
         if dept!="":
-            objs.objs.filter(degreeProgram__department__name__icontains=dept)
+            objs=objs.filter(degreeProgram__department__name__icontains=dept)
         if college!="":
-            objs.objs.filter(degreeProgram__department__college__name__icontains=college)
+            objs=objs.filter(degreeProgram__department__college__name__icontains=college)
         return objs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
