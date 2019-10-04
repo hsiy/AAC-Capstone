@@ -107,8 +107,7 @@ class AssessmentSupplement(models.Model):
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.text
-    #will require more work for upload to work right
+        return os.path.basename(supplement.name)
 class Subassessment(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
