@@ -157,6 +157,10 @@ class RubricReview(LoginRequiredMixin,UserPassesTestMixin, ListView, FormMixin):
         kwargs=super(RubricReview,self).dispatch(request,*args,**kwargs)
         #valid iff there's a graded rubric item for every rubric item
         kwargs['valid'] = (self.GRIs.count == RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion).count())
+    def form_valid(self,form):
+        self.report.rubric.complete = True
+        self.report.rubric.save()
+        return super(RubricReview,self).form_valid(form)
     def get_queryset(self):
         return self.GRIs
     def get_context_data(self, **kwargs):
