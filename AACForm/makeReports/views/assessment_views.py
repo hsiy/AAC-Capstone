@@ -14,7 +14,7 @@ from django.views.generic.edit import FormMixin
 
 class AssessmentSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = AssessmentVersion
-    template_name = "makeReports/assessmentSummary.html"
+    template_name = "makeReports/Assessment/assessmentSummary.html"
     context_object_name = "assessment_list"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
@@ -37,6 +37,7 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(AddNewAssessment,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
         kwargs = super(AddNewAssessment,self).get_form_kwargs()
+        kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report)
         return kwargs
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
@@ -73,12 +74,13 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         r = self.report
         context['currentDPpk'] = Report.objects.get(pk=self.kwargs['report']).degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=r.degreeProgram.department)
+        context['slo_list'] = SLOInReport.objects.filter(report=r).union(SLOInReport.objects.filter(report__degreeProgram__department=r.degreeProgram.department).exclude(report=r),all=True)
         context['rpt']=self.kwargs['report']
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    template_name = "makeReports/editImportedAssessment.html"
+    template_name = "makeReports/Assessment/editImportedAssessment.html"
     form_class = EditImportedAssessment
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
@@ -156,29 +158,19 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(EditNewAssessment,self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    template_name = "makeReports/assessment/supplementUpload"
-    form_class = UploadSupplement
+class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,CreateView):
+    template_name = "makeReports/Assessment/supplementUpload"
+    model = AssessmentSupplement
+    fields = ['supplement']
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        self.sts = AssessmentSupplement.objects.filter(report=self.report).first()
+        self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(SupplementUpload,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-comment', args=[self.report.pk])
-    def get_initial(self):
-        initial = super(SupplementUpload,self).get_initial()
-        try:
-            #if sts:
-            initial['supplement']=self.sts.supplement
-        except:
-            pass
-        return initial
     def form_valid(self,form):
-        try:
-            self.sts.supplement = form.cleaned_data['supplement']
-            sts.save()
-        except:
-            sTs = AssessmentSupplement.objects.create(supplement=form.cleaned_data['supplement'], report=self.report)
+        form.instance.assessmentVersion = AssessmentVersion.objects.get(pk=self.assessVers)
+        form.instance.uploaded_at = datetime.now()
         return super(SupplementUpload,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(SupplementUpload, self).get_context_data(**kwargs)
@@ -187,10 +179,11 @@ class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def test_func(self):
         return (self.report.degreeProgram.department==self.request.user.profile.department)
 class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    template_name = "makeReports/SLO/importSupplement.html"
+    template_name = "makeReports/Assessment/importSupplement.html"
     form_class = ImportSupplements
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(ImportSupplement,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-supplement', args=[self.report.pk])
@@ -201,18 +194,7 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
          kwargs['supChoices'] = AssessmentSupplement.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
          return kwargs
     def form_valid(self,form):
-        oldSTS = form.cleaned_data["sup"]
-        try:
-            sts = AssessmentSupplement.objects.filter(report=self.report).first()
-            if oldSTS.report == self.report:
-                pass
-            elif sts:
-                sts.supplement = form.cleaned_data['sup'].supplement
-                sts.save()
-            else:
-                sTsNew = AssessmentSupplement.objects.create(supplement=form.cleaned_data['sup'].supplement, report=self.report)
-        except:
-            sTs = AssessmentSupplement.objects.create(supplment=form.cleaned_data['sup'].supplement, report=self.report)
+        AssessmentSupplement.objects.create(supplement=form.cleaned_data['sup'],uploaded_at=datetime.now(), assessmentVersion=self.assessVers)
         return super(ImportSupplement,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(ImportSupplement, self).get_context_data(**kwargs)
@@ -222,8 +204,12 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+class DeleteSupplement(LoginRequiredMixin,UserPassesTestMisin,DeleteView):
+    model = AssessmentSupplement
+    template_name = "makeReports/Assessment/deleteSupplement.html"
+    
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    template_name = "makeReports/assessment/assessmentComment.html"
+    template_name = "makeReports/Assessment/assessmentComment.html"
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
@@ -243,7 +229,7 @@ class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class DeleteImportedAssessment(DeleteView):
     model = AssessmentVersion
-    template_name = "makeReports/assessment/deleteAssessment.html"
+    template_name = "makeReports/Assessment/deleteAssessment.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DeleteImportedAssessment,self).dispatch(request,*args,**kwargs)
@@ -252,7 +238,7 @@ class DeleteImportedAssessment(DeleteView):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
 class DeleteNewAssessment(DeleteView):
     model = AssessmentVersion
-    template_name = "makeReports/assessment/deleteAssessment.html"
+    template_name = "makeReports/Assessment/deleteAssessment.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DeleteNewAssessment,self).dispatch(request,*args,**kwargs)
