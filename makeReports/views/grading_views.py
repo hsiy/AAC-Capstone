@@ -19,7 +19,9 @@ def generateRubricItems(rIs,form,r):
                 GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
                 GRI.grade=form.cleaned_data["rI"+str(ri.pk)]
             except:
-                newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
+                gr = form.cleaned_data["rI"+str(ri.pk)]
+                if gr and (gr is not ""):
+                    newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
 def getInitialRubric(rIs, r, initial):
     for ri in rIs:
         try:
@@ -143,3 +145,22 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial = getInitialRubric(self.rubricItems,self.report,initial)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class RubricReview(LoginRequiredMixin,UserPassesTestMixin, ListView, FormMixin):
+    model = GradedRubricItem
+    template_name = "makeReports/Rubric/rubric_review.html"
+    form_class = SubmitGrade
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.GRIs = GradedRubricItem.objects.filter(report=self.report)
+        return super(RubricReview,self).dispatch(request,*args,**kwargs)
+    def get_form_kwargs(self):
+        kwargs=super(RubricReview,self).dispatch(request,*args,**kwargs)
+        #valid iff there's a graded rubric item for every rubric item
+        kwargs['valid'] = (self.GRIs.count == RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion).count())
+    def get_queryset(self):
+        return self.GRIs
+    def get_context_data(self, **kwargs):
+        context = super(Section1Grading,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        context['gRub'] = self.report.rubric
+        return context
