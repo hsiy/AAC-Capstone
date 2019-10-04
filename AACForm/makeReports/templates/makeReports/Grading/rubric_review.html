@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Grading Section {{section}}</h3>
+<h5>{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <!--showreport column-->
+            here is where the report will be shown
+        </div>
+        <div class="col">
+            <!--grading column-->
+            Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            <h5>Section {{section}} Rubric</h5>
+                <table>
+                  {% for GRI in obj_list %}
+                    <tr>
+                      <td>
+                        {{GRI.item.text}}: {{GRI.grade}}
+                      </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#col{{GRI.pk}}" aria-expanded="false" aria-controls="col{{GRI.pk}}">
+                                        More Details
+                        </button>
+                        <div class="collapse" id="col{{GRI.pk}}">
+                                <div class="card card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{GRI.item.DMEtext}}</li>
+                                            <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{GRI.item.MEtext}}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext}}</li>
+                                        </ul>
+                                </div>
+                        </div>
+                    </td>
+                    </tr>
+                  {% endfor %}
+                  <tr><td><h5>Comments</h5></td></tr>
+                  <tr><td><b>Section 1: </b>{{gRub.section1Comment}}</td></tr>
+                  <tr><td><b>Section 2: </b>{{gRub.section2Comment}}</td></tr>
+                  <tr><td><b>Section 3: </b>{{gRub.section3Comment}}</td></tr>
+                  <tr><td><b>Section 4: </b>{{gRub.section4Comment}}</td></tr>
+                  <tr><td><b>Overall: </b>{{gRub.generalComment}}</td></tr>
+                </table>
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% endbuttons %}
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
