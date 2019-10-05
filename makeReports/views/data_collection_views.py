@@ -39,23 +39,34 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
 
         for assessment in assessments:
             temp_dict = dict()
+            try:
+                assessment_obj = Assessment.objects.get(pk=assessment.assessment.pk)
+                temp_dict['assessment_text'] = assessment_obj.title
+            except:
+                temp_dict['assessment_text'] = None
 
-            assessment_obj = Assessment.objects.get(pk=assessment.assessment)
-            temp_dict['assessment_text'] = assessment_obj.title
+            try:
+                slo_obj = SLOInReport.objects.get(pk=assessment.slo.pk)
+                temp_dict['slo_text'] = slo_obj.goalText
+            except:
+                temp_dict['slo_text'] = None
 
-            slo_obj = SLOInReport.objects.get(pk=assessment.slo)
-            temp_dict['slo_text'] = slo_obj.goalText
+            try:
+                assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
+                temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
+                temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
+            except:
+                temp_dict['num_students_assessed'] = None
+                temp_dict['overall_proficient'] = None
 
-            assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
-            temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
-            temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
-
-            subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
-            temp_dict['subassessments'] = []
-
-            for subassessment in subassessments:
-                sub_dict = {subassessment.title : subassessment.proficient}
-                temp_dict['subassessments'].append(sub_dict)
+            try:
+                subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
+                temp_dict['subassessments'] = []
+                for subassessment in subassessments:
+                    sub_dict = {subassessment.title : subassessment.proficient}
+                    temp_dict['subassessments'].append(sub_dict)
+            except:
+                temp_dict['subassessments'] = []
 
             assessment_data_dict['assessments'].append(temp_dict)
             
