@@ -101,7 +101,7 @@ class AssessmentVersion(models.Model):
     threshold = models.PositiveIntegerField() # Should be text field, change later
     target = models.PositiveIntegerField()
     def __str__(self):
-        return self.text
+        return self.description
 class AssessmentSupplement(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE)
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
