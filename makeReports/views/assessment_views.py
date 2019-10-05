@@ -207,6 +207,7 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
 class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = AssessmentSupplement
     template_name = "makeReports/Assessment/deleteSupplement.html"
+<<<<<<< HEAD
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
 
@@ -214,6 +215,10 @@ class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-supplement', args=[self.report.pk])
     
+=======
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+>>>>>>> 4ea4dd3586c67055e7cd584ec75e84743f7b15c3
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
     form_class = Single2000Textbox

@@ -147,7 +147,7 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return getattr(self.request.user.profile, "aac")
 class RubricReview(LoginRequiredMixin,UserPassesTestMixin, ListView, FormMixin):
     model = GradedRubricItem
-    template_name = "makeReports/Rubric/rubric_review.html"
+    template_name = "makeReports/Grading/rubric_review.html"
     form_class = SubmitGrade
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
@@ -163,8 +163,44 @@ class RubricReview(LoginRequiredMixin,UserPassesTestMixin, ListView, FormMixin):
         return super(RubricReview,self).form_valid(form)
     def get_queryset(self):
         return self.GRIs
+    def get_success_url(self):
+        return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         context['report'] = self.report
         context['gRub'] = self.report.rubric
         return context
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class ReturnReport(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = Report
+    fields = ['returned']
+    template_name = 'makeReports/Grading/returnReport.html'
+    success_url = reverse_lazy('makeReports:admin-home')
+    def form_valid(self,form):
+        if form.cleaned_data['returned']:
+            self.object.submitted = False
+            self.object.rubric.complete = False
+        return super(ReturnReport,self).form_valid(form)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class Feedback(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    model = GradedRubricItem
+    template_name = "makeReports/Grading/feedback.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.GRIs = GradedRubricItem.objects.filter(report=self.report)
+        return super(RubricReview,self).dispatch(request,*args,**kwargs)
+    def get_queryset(self):
+        return self.GRIs
+    def get_success_url(self):
+        return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
+    def get_context_data(self, **kwargs):
+        context = super(Section1Grading,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        context['gRub'] = self.report.rubric
+        return context
+    def test_func(self):
+        rightDept = (self.report.degreeProgram.department == self.request.user.profile.department)
+        feedbackToGive = self.report.rubric.complete or (self.report.returned and (not self.report.submitted))
+        return rightDept and feedbackToGive

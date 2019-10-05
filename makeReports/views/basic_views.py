@@ -22,13 +22,8 @@ class HomePage(ListView):
     def get_context_data(self, **kwargs):
         context=super(HomePage,self).get_context_data(**kwargs)
         context['user']=self.request.user
+        context['gReps'] = Report.objects.filter(degreeProgram__department=self.request.user.profile.department,rubric__complete=True, year=int(datetime.now().year))
         return context
-#class FacultyHome(ListView):
-#    template_name = "makeReports/facultyHome.html"
-#    model = Report
-#    def get_queryset(self):
-#        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, submitted=False)
-#        return objs
 class FacultyReportList(LoginRequiredMixin,ListView):
     template_name = "makeReports/reportList.html"
     model = Report
