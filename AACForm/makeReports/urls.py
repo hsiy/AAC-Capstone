@@ -25,9 +25,9 @@ urlpatterns = [
     #Assesssment URLs
     re_path(r'^report/(?P<report>\d+)/assessment/summary/$', views.AssessmentSummary.as_view(), name='assessment-summary'),
     re_path(r'^report/(?P<report>\d+)/assessment/add/$', views.AddNewAssessment.as_view(), name='add-assessment'),  
-    re_path(r'^report/(?P<report>\d+)/assessment/import/$', views.ImportAssessment.as_view(), name='import-assessment'), 
-    re_path(r'^report/(?P<report>\d+)/assessment/edit/new/(?P<assessIR>\d+)/$', views.EditNewAssessment.as_view(), name='edit-new-assessment'),
-    re_path(r'^report/(?P<report>\d+)/assessment/edit/impt/(?P<assessIR>\d+)/$', views.EditImportedAssessment.as_view(), name='edit-impt-assessment'),
+    re_path(r'^report/(?P<report>\d+)/assessment/import/$', views.ImportAssessment_.as_view(), name='import-assessment'), 
+    re_path(r'^report/(?P<report>\d+)/assessment/edit/new/(?P<assessIR>\d+)/$', views.EditNewAssessment_.as_view(), name='edit-new-assessment'),
+    re_path(r'^report/(?P<report>\d+)/assessment/edit/impt/(?P<assessIR>\d+)/$', views.EditImportedAssessment_.as_view(), name='edit-impt-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/(?P<assessIR>\d+)/$', views.SupplementUpload.as_view(), name='assessment-supplement'),
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/import/(?P<assessIR>\d+)/$', views.ImportSupplement.as_view(), name='assessment-supplement-import'),
     re_path(r'^report/(?P<report>\d+)/assessment/comment/$', views.Section2Comment.as_view(),name='assessment-comment'),
