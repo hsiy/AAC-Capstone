@@ -5,7 +5,7 @@
 <table class="table">
     <tbody>
             <tr>
-                <td>SLO</td><td>Title of Measure</td><td>Description of How Measure Aligns to SLO</td><td>Domain</td><td>Type</td><td>Point in Program Assessment is Administered</td><td>Where does the assessment occur</td><td>Population Measured</td><td>Frequency of Data Collection</td><td>Proficiency Threshold</td><td>Program Proficiency Target</td><td>Options</td>
+                <td>SLO</td><td>Title of Measure</td><td>Description of How Measure Aligns to SLO</td><td>Domain</td><td>Type</td><td>Point in Program Assessment is Administered</td><td>Where does the assessment occur</td><td>Population Measured</td><td>Frequency of Data Collection</td><td>Proficiency Threshold</td><td>Program Proficiency Target</td><td>Supplement</td><td>Options</td>
             </tr>
             {% for assessment in assessment_list %}
             <tr>
@@ -57,6 +57,15 @@
                     {{assessment.target}}
                 </td>
                 <td>
+                    {% for sup in assessment.supplements.all %}
+                        {% if forloop.last %}
+                            {{sup.supplement}}
+                        {% else %}
+                            {{sup.supplement}},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
                     {% if assessment.firstInstance %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-assessment' report=rpt.pk sloIR=slo.pk %}">Edit Assessment</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-assessment' report=rpt.pk pk=slo.pk %}">Delete Assessment</a>
@@ -65,6 +74,9 @@
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
                     {% endif %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk %}">Delete Supplement</a>
                 </td>
             </tr>
             {% endfor %}
