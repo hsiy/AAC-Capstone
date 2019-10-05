@@ -159,7 +159,7 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,CreateView):
-    template_name = "makeReports/Assessment/supplementUpload"
+    template_name = "makeReports/Assessment/supplementUpload.html"
     model = AssessmentSupplement
     fields = ['supplement']
     def dispatch(self,request,*args,**kwargs):
@@ -204,9 +204,15 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class DeleteSupplement(LoginRequiredMixin,UserPassesTestMisin,DeleteView):
+class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = AssessmentSupplement
     template_name = "makeReports/Assessment/deleteSupplement.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+
+        return super(DeleteSupplement,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:assessment-supplement', args=[self.report.pk])
     
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
