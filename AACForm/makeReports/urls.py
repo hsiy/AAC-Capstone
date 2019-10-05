@@ -56,6 +56,8 @@ urlpatterns = [
     re_path(r'^aac/report/list/$', views.ReportList.as_view(), name='report-list'),
     re_path(r'^aac/report/list/searched/$', views.ReportListSearched.as_view(), name='search-reports'),
     re_path(r'^aac/account/create/$', views.MakeAccount.as_view(), name='make-account'),
+    re_path(r'^aac/account/(?P<pk>\d+)/modify/$', views.ModifyAccount.as_view(), name='modify-account'),
+    re_path(r'^aac/account/(?P<pk>\d+)/inactivate/$', views.InactivateUser.as_view(), name='inactivate-account'),
     re_path(r'^aac/report/success/$', views.GenerateReportSuccess.as_view(), name='gen-rpt-suc'),
     re_path(r'^aac/department/archived/list/$', views.ArchivedDepartments.as_view(), name='arc-depts'),
     re_path(r'^aac/college/archived/list/$', views.ArchivedColleges.as_view(), name='arc-colleges'),
@@ -63,6 +65,8 @@ urlpatterns = [
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/review/$', views.RubricReview.as_view(), name='rub-review'),
+    re_path(r'^aac/report/(?P<pk>\d+)/grading/return/$', views.ReturnReport.as_view(), name='ret-rept'),
+    re_path(r'report/(?P<report>\d+)/feedback/$', views.Feedback.as_view(), name='rpt-feedback'),
     #Rubric urls
     re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
     re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),

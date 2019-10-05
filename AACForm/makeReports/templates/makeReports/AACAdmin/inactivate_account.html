@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Inactivate Account</h3>
+Uncheck active checkmark to inactivate the account
+<form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Update</button>
+    {% endbuttons %}
+</form>
+{% endblock %}
