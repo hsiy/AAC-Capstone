@@ -68,7 +68,7 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
                 subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
                 temp_dict['subassessments'] = []
                 for subassessment in subassessments:
-                    sub_dict = (subassessment.title, subassessment.proficient)
+                    sub_dict = (subassessment.title, subassessment.proficient, subassessment.pk)
                     temp_dict['subassessments'].append(sub_dict)
 
                 temp_dict['subassessments_len'] = len(temp_dict['subassessments'])
@@ -111,7 +111,6 @@ class EditDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
 
     def dispatch(self, request, *args, **kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         self.dataCollection = AssessmentData.objects.get(pk=self.kwargs['dataCollection'])
         return super(EditDataCollectionRow,self).dispatch(request,*args,**kwargs)
 
@@ -148,13 +147,61 @@ class DeleteDataCollectionRow(DeleteView):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
 
-class CreateSubassessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    pass
+class CreateSubassessmentRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    form_class = AddSubassessment
+    template_name = "makeReports/DataCollection/createSubassessment.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        return super(CreateSubassessmentRow,self).dispatch(request,*args,**kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+    def form_valid(self, form):
+        subassessmentDataObj = Subassessment.objects.create(assessmentVersion=self.assessment, title=form.cleaned_data['title'], proficient=form.cleaned_data['proficient'])
+        subassessmentDataObj.save()
+        return super(CreateSubassessmentRow, self).form_valid(form)
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+
+class EditSubassessmentRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/DataCollection/editSubassessment.html"
+    form_class = EditSubassessment
+
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.subassessment = Subassessment.objects.get(pk=self.kwargs['pk'])
+        return super(EditSubassessmentRow,self).dispatch(request,*args,**kwargs)
+
+    def get_initial(self):
+        initial = super(EditSubassessmentRow, self).get_initial()
+        initial['title'] = self.subassessment.title
+        initial['proficient'] = self.subassessment.proficient
+        return initial
+
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+    def form_valid(self, form):
+        self.subassessment.title = form.cleaned_data['title']
+        self.subassessment.proficient = form.cleaned_data['proficient']
+        self.subassessment.save()
+        return super(EditSubassessmentRow, self).form_valid(form)
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
 
 
-class EditSubassessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    pass
+class DeleteSubassessmentRow(DeleteView):
+    model = Subassessment
+    template_name = "makeReports/DataCollection/deleteSubassessment.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=kwargs['report'])
+        return super(DeleteSubassessmentRow,self).dispatch(request, *args, **kwargs)
 
-class DeleteSubassessment(DeleteView):
-    pass
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
