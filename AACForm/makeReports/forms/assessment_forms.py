@@ -7,7 +7,8 @@ from django.utils import timezone
 from makeReports.choices import *
 class CreateNewAssessment(forms.Form):
     title = forms.CharField(widget= forms.Textarea, max_length=300)
-    domain = forms.MultipleChoiceField(choices = DOMAIN_CHOICES)
+    domain = forms.MultipleChoiceField(choices = (("Pe", "Performance"), ("Pr","Product"), ("Ex","Examination") ), widget=forms.CheckboxSelectMultiple)
+    directMeasure = forms.ChoiceField(choices = ((True, "Direct Measure"), (False,"Indirect Measure")))
     description = forms.CharField(widget=forms.Textarea, max_length=1000)
     finalTerm = forms.ChoiceField(choices = ((True, "In final term"), (False, "In final year")))
     where = forms.CharField(widget= forms.Textarea, max_length=200)
@@ -30,7 +31,8 @@ class ImportAssessment(forms.Form):
 
 class EditNewAssessment(forms.Form):
     title = forms.CharField(widget= forms.Textarea, max_length=300)
-    domain = forms.MultipleChoiceField(choices = DOMAIN_CHOICES)
+    domain = forms.MultipleChoiceField(choices = (("Pe", "Performance"), ("Pr","Product"), ("Ex","Examination") ), widget=forms.CheckboxSelectMultiple)
+    directMeasure = forms.ChoiceField(choices = ((True, "Direct Measure"), (False,"Indirect Measure")))
     description = forms.CharField(widget=forms.Textarea, max_length=1000)
     finalTerm = forms.ChoiceField(choices = ((True, "In final term"), (False, "In final year")))
     where = forms.CharField(widget= forms.Textarea, max_length=200)

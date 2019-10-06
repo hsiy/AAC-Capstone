@@ -17,6 +17,3 @@ RUBRIC_GRADES_CHOICES = (("DNM","Does Not Meet/Did Not Include"),
 LEVELS = (("UG", "Undergraduate"),("GR", "Graduate"))
 SECTIONS = ((1,"I. Student Learning Outcomes"),(2,"II. Assessment Methods"),
 (3,"III. Data Collection and Analysis"),(4,"IV. Decisions and Actions"))
-DOMAIN_CHOICES = (("E", "Examination"),
-("P","Product"),
-("F","Performance"))

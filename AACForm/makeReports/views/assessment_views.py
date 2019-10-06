@@ -43,8 +43,16 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
         rpt = self.report
-        assessObj = Assessment.objects.create(title=form.cleaned_data['title'], domainExamination=form.cleaned_data['domainExamination'], domainProduct=form.cleaned_data['domainProduct'], domainPerformance=form.cleaned_data['domainPerformance'])
+        assessObj = Assessment.objects.create(title=form.cleaned_data['title'], domainExamination=False, domainProduct=False, domainPerformance=False, directMeasure =form.cleaned_data['directMeasure'])
         assessRpt = AssessmentVersion.objects.create(date=datetime.now(), assessment=assessObj, description=form.cleaned_data['description'], finalTerm=form.cleaned_data['finalTerm'], where=form.cleaned_data['where'], allStudents=form.cleaned_data['allStudents'], sampleDescription=form.cleaned_data['sampleDescription'], frequency=form.cleaned_data['frequency'], threshold=form.cleaned_data['threshold'], target=form.cleaned_data['target'] ,firstInstance= True)
+        dom = form.cleaned_data[domain]
+        if ("Pe" in dom):
+            assessObj.domainPerformance = True
+        if ("Pr" in dom):
+            assessObj.domainProduct = True
+        if ("Ex" in dom):
+            assessObj.domainExamination = True
+        assessObj.save()
         assessRpt.report.add(rpt)
         assessRpt.save()
         return super(AddNewAssessment, self).form_valid(form)
@@ -122,9 +130,9 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_initial(self):
         initial = super(EditNewAssessment, self).get_initial()
         initial['title'] = self.assessVers.assessment.title
-        initial['domainExamination'] = self.assessVers.assessment.domainExamination
-        initial['domainProduct'] = self.assessVers.assessment.domainProduct
         initial['domainPerformance'] = self.assessVers.assessment.domainPerformance
+        initial['domainProduct'] = self.assessVers.assessment.domainProduct
+        initial['domainExamination'] = self.assessVers.assessment.domainExamination
         initial['directMeasure'] = self.assessVers.assessment.directMeasure
         initial['description'] = self.assessVers.description
         initial['finalTerm'] = self.assessVers.finalTerm
@@ -142,9 +150,7 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.assessVers.description = form.cleaned_data['description']
         self.assessVers.date = datetime.now()
         self.assessVers.assessment.title = form.cleaned_data['title']
-        self.assessVers.assessment.domainExamination = form.cleaned_data['domainExamination']
-        self.assessVers.assessment.domainPerformance = form.cleaned_data['domainPerformance']
-        self.assessVers.assessment.domainProduct = form.cleaned_data['domainProduct']
+        self.assessVers.assessment.domain = form.cleaned_data['domain']
         self.assessVers.assessment.directMeasure = form.cleaned_data['directMeasure']
         self.assessVers.finalTerm = form.cleaned_data['finalTerm']
         self.assessVers.where = form.cleaned_data['where']
@@ -207,7 +213,6 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
 class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = AssessmentSupplement
     template_name = "makeReports/Assessment/deleteSupplement.html"
-<<<<<<< HEAD
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
 
@@ -215,10 +220,6 @@ class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-supplement', args=[self.report.pk])
     
-=======
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
->>>>>>> 4ea4dd3586c67055e7cd584ec75e84743f7b15c3
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
     form_class = Single2000Textbox
