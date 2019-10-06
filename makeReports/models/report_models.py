@@ -114,8 +114,6 @@ class Subassessment(models.Model):
     proficient = models.PositiveIntegerField()
 class AssessmentData(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE)
-    dataBegin = models.DateField()
-    dataEnd = models.DateField()
     dataRange = models.CharField(max_length=500)
     numberStudents = models.PositiveIntegerField()
     overallProficient = models.PositiveIntegerField(blank=True)
