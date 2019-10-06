@@ -2,4 +2,43 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Data Collection and Analysis Summary</h3>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Measure</td>
+            <td>Data Collection Date Range</td>
+            <td>Number of Students Assessed</td>
+            <td>Number of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+            <td>Options</td>
+        </tr>
+        {% for assessment in assessment_data_dict.assessments %}
+        <tr>
+            <td>{{assessment.slo_text}} : {{assessment.assessment_text}}</td>
+            <td>{{assessment.data_range}}</td>
+            <td>{{assessment.num_students_assessed}}</td>
+            <td>
+                {% if assessment.subassessments_len > 0 %}
+                    {% for subassessment in assessment.subassessments %}
+                        {% if forloop.last %}
+                            {{subassessment.0}} {{subassessment.1}}
+                        {% else %}
+                            {{subassessment.0}} {{subassessment.1}} <br>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {{assessment.overall_proficient}}%
+                {% endif %}
+            </td>
+            <td>
+                {% if assessment.data_range == None %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection' report=rpt.pk assessment=assessment.assessment_id %}"> Add Assessment Data</a>
+                {% else %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-data-collection' report=rpt.pk assessment=assessment.assessment_id dataCollection=assessment.assessment_data_id%}"> Edit Assessment Data</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-data-collection' report=rpt.pk assessment=assessment.assessment_id pk=assessment.assessment_data_id %}">Delete Data</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
