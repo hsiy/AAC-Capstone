@@ -9,7 +9,8 @@
             <td>Data Collection Date Range</td>
             <td>Number of Students Assessed</td>
             <td>Number of Students Who Met/<br>Exceeded Threshold Proficiency</td>
-            <td>Options</td>
+            <td>Subassessment Options</td>
+            <td>Overall Options</td>
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
         <tr>
@@ -20,9 +21,9 @@
                 {% if assessment.subassessments_len > 0 %}
                     {% for subassessment in assessment.subassessments %}
                         {% if forloop.last %}
-                            {{subassessment.0}} {{subassessment.1}}
+                            {{subassessment.0}}: {{subassessment.1}}%
                         {% else %}
-                            {{subassessment.0}} {{subassessment.1}} <br>
+                            {{subassessment.0}}: {{subassessment.1}}% <br>
                         {% endif %}
                     {% endfor %}
                 {% else %}
@@ -30,11 +31,27 @@
                 {% endif %}
             </td>
             <td>
+                {% if assessment.subassessments_len > 0 %}
+                    {% for subassessment in assessment.subassessments %}
+                        {% if forloop.last %}
+                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}"> ✎</a>
+                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a>
+                        {% else %}
+                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}"> ✎</a>
+                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a> <br>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    (No Subassessments)
+                {% endif %}
+            </td>
+            <td>
                 {% if assessment.data_range == None %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection' report=rpt.pk assessment=assessment.assessment_id %}"> Add Assessment Data</a>
                 {% else %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-data-collection' report=rpt.pk assessment=assessment.assessment_id dataCollection=assessment.assessment_data_id%}"> Edit Assessment Data</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-data-collection' report=rpt.pk assessment=assessment.assessment_id pk=assessment.assessment_data_id %}">Delete Data</a>
+                    <a type="button" title="Add subassessment" class="btn btn-primary" href="{% url 'makeReports:add-subassessment' report=rpt.pk assessment=assessment.assessment_id%}"> 📝</a>
+                    <a type="button" title="Edit data for measure" class="btn btn-primary" href="{% url 'makeReports:edit-data-collection' report=rpt.pk dataCollection=assessment.assessment_data_id%}"> ✎</a>
+                    <a type="button" title="Delete data for measure" class="btn btn-primary" href="{% url 'makeReports:delete-data-collection' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a>
                 {% endif %}
             </td>
         </tr>

@@ -74,6 +74,9 @@ urlpatterns = [
     #Data Collection URLS
     re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/$', views.CreateDataCollectionRow.as_view(), name='add-data-collection'),
-    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/edit/(?P<dataCollection>\d+)/$', views.EditDataCollectionRow.as_view(), name='edit-data-collection'),
-    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection')
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/edit/(?P<dataCollection>\d+)/$', views.EditDataCollectionRow.as_view(), name='edit-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/addsub/$', views.CreateSubassessmentRow.as_view(), name='add-subassessment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/editsub/(?P<pk>\d+)/$', views.EditSubassessmentRow.as_view(), name='edit-subassessment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/deletesub/(?P<pk>\d+)/$', views.DeleteSubassessmentRow.as_view(), name='delete-subassessment')
 ]
