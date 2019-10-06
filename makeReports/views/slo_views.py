@@ -210,7 +210,7 @@ class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(Section1Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         #to be changed to assessment page!
-        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
         self.report.section1Comment = form.cleaned_data['text']
         self.report.save()

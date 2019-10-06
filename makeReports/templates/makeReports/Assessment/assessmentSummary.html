@@ -19,12 +19,14 @@
                     {{assessment.description}}
                 </td>
                 <td>
-                    {% if assessment.assessment.domainExamination %}
-                            {{assessment.assessment.domainExamination}}
-                        {% elif assessment.assessment.domainPerformance %}
-                            {{assessment.assessment.domainPerformance}}
-                    {% else %}
-                            {{assessment.assessment.domainProduct}}
+                    {% if assessment.domainProduct %}
+                        Product 
+                    {% endif %}
+                    {% if assessment.domainPerformance %}
+                        Performance  
+                    {% endif %}
+                    {% if assessment.domainExamination %}
+                        Examination
                     {% endif %}
                 </td>
                 <td>
@@ -74,7 +76,7 @@
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
                     {% endif %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk %}">Delete Supplement</a>
                 </td>
@@ -84,5 +86,5 @@
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import Assessment</a>
 </table>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement' report=rpt.pk %}">Next</a>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Next</a>
 {% endblock %}
