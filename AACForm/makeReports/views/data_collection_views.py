@@ -140,6 +140,10 @@ class DeleteDataCollectionRow(DeleteView):
     model = AssessmentData
     template_name = "makeReports/DataCollection/deleteDataCollection.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=kwargs['report'])
+        return super(DeleteDataCollectionRow,self).dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
