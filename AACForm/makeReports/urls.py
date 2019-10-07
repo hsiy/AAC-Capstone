@@ -26,10 +26,17 @@ urlpatterns = [
     #Assesssment URLs
     re_path(r'^report/(?P<report>\d+)/assessment/summary/$', views.AssessmentSummary.as_view(), name='assessment-summary'),
     re_path(r'^report/(?P<report>\d+)/assessment/add/$', views.AddNewAssessment.as_view(), name='add-assessment'),  
+<<<<<<< HEAD
     re_path(r'^report/(?P<report>\d+)/assessment/import/$', views.ImportAssessment.as_view(), name='import-assessment'), 
     re_path(r'^report/(?P<report>\d+)/assessment/edit/new/(?P<assessIR>\d+)/$', views.EditNewAssessment.as_view(), name='edit-new-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/edit/impt/(?P<assessIR>\d+)/$', views.EditImportedAssessment.as_view(), name='edit-impt-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/upload/(?P<assessIR>\d+)/$', views.SupplementUpload.as_view(), name='assessment-supplement-upload'),
+=======
+    re_path(r'^report/(?P<report>\d+)/assessment/import/$', views.ImportAssessment_.as_view(), name='import-assessment'), 
+    re_path(r'^report/(?P<report>\d+)/assessment/edit/new/(?P<assessIR>\d+)/$', views.EditNewAssessment_.as_view(), name='edit-new-assessment'),
+    re_path(r'^report/(?P<report>\d+)/assessment/edit/impt/(?P<assessIR>\d+)/$', views.EditImportedAssessment_.as_view(), name='edit-impt-assessment'),
+    re_path(r'^report/(?P<report>\d+)/assessment/supplements/(?P<assessIR>\d+)/$', views.SupplementUpload.as_view(), name='assessment-supplement'),
+>>>>>>> dreambranch
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/import/(?P<assessIR>\d+)/$', views.ImportSupplement.as_view(), name='assessment-supplement-import'),
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/delete/(?P<assessIR>\d+)/(?P<pk>\d+)/$', views.DeleteSupplement.as_view(), name='delete-supplement'),
     re_path(r'^report/(?P<report>\d+)/assessment/comment/$', views.Section2Comment.as_view(),name='assessment-comment'),
@@ -71,7 +78,24 @@ urlpatterns = [
     #Rubric urls
     re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
     re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),
-    re_path(r'^aac/rubric/(?P<rubric>\d+)/addRI/$', views.AddRubricItems.as_view(), name='add-RI')
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/addRI/$', views.AddRubricItems.as_view(), name='add-RI'),
 
+    #Data Collection URLS
+    re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/$', views.CreateDataCollectionRow.as_view(), name='add-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/edit/(?P<dataCollection>\d+)/$', views.EditDataCollectionRow.as_view(), name='edit-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/addsub/$', views.CreateSubassessmentRow.as_view(), name='add-subassessment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/editsub/(?P<pk>\d+)/$', views.EditSubassessmentRow.as_view(), name='edit-subassessment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/deletesub/(?P<pk>\d+)/$', views.DeleteSubassessmentRow.as_view(), name='delete-subassessment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/$', views.NewSLOStatus.as_view(), name='add-slo-status'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/(?P<statuspk>\d+)/$', views.EditSLOStatus.as_view(), name='edit-slo-status'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/$', views.NewResultCommunication.as_view(), name='add-result-communication'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/(?P<resultpk>\d+)/$', views.EditResultCommunication.as_view(), name='edit-result-communication'),
+
+    #Decisions and Actions URLs
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<decactpk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
 
 ]

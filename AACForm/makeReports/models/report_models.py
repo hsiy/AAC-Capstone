@@ -98,11 +98,15 @@ class AssessmentVersion(models.Model):
     sampleDescription = models.CharField(max_length=200)
     frequency = models.CharField(max_length=100)
     #the below are percentage points
-    threshold = models.PositiveIntegerField()
+    threshold = models.PositiveIntegerField() # Should be text field, change later
     target = models.PositiveIntegerField()
     supplements = models.ManyToManyField('AssessmentSupplement')
     def __str__(self):
+<<<<<<< HEAD
         return self.assessment.title
+=======
+        return self.description
+>>>>>>> dreambranch
 class AssessmentSupplement(models.Model):
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -111,20 +115,16 @@ class AssessmentSupplement(models.Model):
 class Subassessment(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
+    proficient = models.PositiveIntegerField()
 class AssessmentData(models.Model):
     assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE)
-    dataBegin = models.DateField()
-    dataEnd = models.DateField()
+    dataRange = models.CharField(max_length=500)
     numberStudents = models.PositiveIntegerField()
     overallProficient = models.PositiveIntegerField(blank=True)
-class SubassessmentData(models.Model):
-    subassessment = models.ForeignKey(Subassessment,on_delete=models.CASCADE)
-    proficient = models.PositiveIntegerField()
 class DataAdditionalInformation(models.Model):
+    report = models.ForeignKey(Report, on_delete=models.CASCADE)
     comment = models.CharField(max_length=3000, blank=True)
-class DataAddInfoSupplement(models.Model):
     supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
-    addInfo = models.ForeignKey(DataAdditionalInformation, on_delete=models.CASCADE)
 class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)
