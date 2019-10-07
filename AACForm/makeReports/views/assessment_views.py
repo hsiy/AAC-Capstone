@@ -88,6 +88,7 @@ class ImportAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+
 class EditImportedAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/editImportedAssessment.html"
     form_class = EditImportedAssessment
