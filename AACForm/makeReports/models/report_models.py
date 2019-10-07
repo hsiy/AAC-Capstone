@@ -117,15 +117,10 @@ class AssessmentData(models.Model):
     dataRange = models.CharField(max_length=500)
     numberStudents = models.PositiveIntegerField()
     overallProficient = models.PositiveIntegerField(blank=True)
-#class SubassessmentData(models.Model):
-#    subassessment = models.ForeignKey(Subassessment,on_delete=models.CASCADE)
-#    proficient = models.PositiveIntegerField()
 class DataAdditionalInformation(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     comment = models.CharField(max_length=3000, blank=True)
-class DataAddInfoSupplement(models.Model):
     supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
-    addInfo = models.ForeignKey(DataAdditionalInformation, on_delete=models.CASCADE)
 class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)

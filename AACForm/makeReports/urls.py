@@ -78,5 +78,11 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/addsub/$', views.CreateSubassessmentRow.as_view(), name='add-subassessment'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/editsub/(?P<pk>\d+)/$', views.EditSubassessmentRow.as_view(), name='edit-subassessment'),
-    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/deletesub/(?P<pk>\d+)/$', views.DeleteSubassessmentRow.as_view(), name='delete-subassessment')
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/deletesub/(?P<pk>\d+)/$', views.DeleteSubassessmentRow.as_view(), name='delete-subassessment'),
+
+    re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/$', views.NewSLOStatus.as_view(), name='add-slo-status'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/(?P<statuspk>\d+)/$', views.EditSLOStatus.as_view(), name='edit-slo-status'),
+
+    re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/$', views.NewResultCommunication.as_view(), name='add-result-communication'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/(?P<resultpk>\d+)/$', views.EditResultCommunication.as_view(), name='edit-result-communication'),
 ]

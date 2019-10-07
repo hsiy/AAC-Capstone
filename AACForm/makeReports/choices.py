@@ -20,3 +20,4 @@ SECTIONS = ((1,"I. Student Learning Outcomes"),(2,"II. Assessment Methods"),
 DOMAIN_CHOICES = (("E", "Examination"),
 ("P","Product"),
 ("F","Performance"))
+SLO_STATUS_CHOICES = (("Met", "Met"), ("Partially Met", "Partially Met"), ("Not Met", "Not Met"), ("Unknown", "Unknown"))

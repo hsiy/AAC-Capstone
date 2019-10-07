@@ -8,7 +8,7 @@
             <td>Measure</td>
             <td>Data Collection Date Range</td>
             <td>Number of Students Assessed</td>
-            <td>Number of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+            <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
             <td>Subassessment Options</td>
             <td>Overall Options</td>
         </tr>
@@ -56,6 +56,60 @@
             </td>
         </tr>
         {% endfor %}
+    </tbody>
+</table>
+<table class="table">
+    <tbody>
+        <thead>
+            <h3>SLO Status</h3>
+        </thead>
+        <tr>
+            <td>SLO</td>
+            <td>Status</td>
+            <td>Options</td>
+        </tr>
+        {% for slo_status in assessment_data_dict.slo_statuses %}
+            <tr>
+                <td>
+                    {{ slo_status.slo_pk }}
+                </td>
+                <td>{{ slo_status.slo_text }}</td>
+                {% if slo_status.slo_status_pk == None %}
+                    <td>(Status Not Reported)</td>
+                    <td>
+                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:add-slo-status' report=rpt.pk slopk=slo_status.slo_pk %}">✎</a>
+                    </td>
+                {% else %}
+                    <td>{{ slo_status.slo_status }}</td>
+                    <td>
+                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:edit-slo-status' report=rpt.pk slopk=slo_status.slo_pk statuspk=slo_status.slo_status_pk %}">✎</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class='table'>
+    <thead>
+        <h3>Describe how results are communicated within the program</h3>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Text</td> <td>Actions</td>
+        </tr>
+        <tr>
+            {% if assessment_data_dict.result_communication_id == None %}
+                <td>Describe how results are communicated within the program. Address each SLO.</td>
+                <td>
+                    <a type="button" title="Add Result Communication" class="btn btn-primary" href="{% url 'makeReports:add-result-communication' report=rpt.pk %}">✎</a>
+                </td>
+            {% else %}
+                <td>{{ assessment_data_dict.result_communication_text }}</td>
+                <td>
+                    <a type="button" title="Edit Result Communication" class="btn btn-primary" href="{% url 'makeReports:edit-result-communication' report=rpt.pk resultpk=assessment_data_dict.result_communication_id %}">✎</a>
+                </td>
+            {% endif %}
+        </tr>
     </tbody>
 </table>
 {% endblock %}
