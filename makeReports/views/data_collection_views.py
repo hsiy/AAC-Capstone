@@ -34,7 +34,7 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         report = self.report
         context = super(DataCollectionSummary, self).get_context_data()
         context['rpt'] = report
-        assessment_data_dict = {'assessments':[]}
+        assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
         assessments = AssessmentVersion.objects.filter(report=report)
 
         for assessment in assessments:
@@ -77,7 +77,25 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
                 temp_dict['subassessments_len'] = 0
 
             assessment_data_dict['assessments'].append(temp_dict)
+
+        SLOs = SLOInReport.objects.filter(report=self.report)
+        for sloir in SLOs:
+            temp_dict = dict()
+            temp_dict['slo_text'] = sloir.goalText
+            temp_dict['slo_pk'] = sloir.slo.pk
+            try:
+                slo_status_obj = SLOStatus.objects.get(SLO=sloir.slo)
+                temp_dict['slo_status'] = slo_status_obj.status
+                temp_dict['slo_status_pk'] = slo_status_obj.pk
+            except:
+                temp_dict['slo_status'] = None
+                temp_dict['slo_status_pk'] = None
+
+            assessment_data_dict['slo_statuses'].append(temp_dict)
             
+        result_communicate_obj = ResultCommunicate.objects.get(report=report)
+        assessment_data_dict['result_communication_id'] = result_communicate_obj.pk
+        assessment_data_dict['result_communication_text'] = result_communicate_obj.text
         context['assessment_data_dict'] = assessment_data_dict
         return context
 
@@ -205,3 +223,99 @@ class DeleteSubassessmentRow(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+class NewSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/DataCollection/SLOStatus.html"
+    form_class = SLOStatusForm
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
+        self.slo_ir = SLOInReport.objects.get(slo=self.slo)
+        return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+    def form_valid(self, form):
+        slo_status_obj = SLOStatus.objects.create(report = self.report, status = form.cleaned_data['status'], SLO = self.slo)
+        return super(NewSLOStatus, self).form_valid(form)
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+
+
+class EditSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/Datacollection/SLOStatus.html"
+    form_class = SLOStatusForm
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
+        self.slo_ir = SLOInReport.objects.get(slo=self.slo)
+        self.slo_status = SLOStatus.objects.get(pk=self.kwargs['statuspk'])
+        return super(EditSLOStatus,self).dispatch(request,*args,**kwargs)
+
+    def get_initial(self):
+        initial = super(EditSLOStatus, self).get_initial()
+        initial['status'] = self.slo_status.status
+        return initial
+
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+    def form_valid(self, form):
+        self.slo_status.report = self.report
+        self.slo_status.SLO = self.slo
+        self.slo_status.status = form.cleaned_data['status']
+        self.slo_status.save()
+        return super(EditSLOStatus, self).form_valid(form)
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+
+
+class NewResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/DataCollection/ResultCommunication.html"
+    form_class = ResultCommunicationForm
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(NewResultCommunication,self).dispatch(request,*args,**kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+    def form_valid(self, form):
+        result_communication = ResultCommunicate.objects.create(report = self.report, text = form.cleaned_data['text'])
+        return super(NewResultCommunication, self).form_valid(form)
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+
+
+class EditResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/DataCollection/ResultCommunication.html"
+    form_class = ResultCommunicationForm
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.result_communication = ResultCommunicate.objects.get(pk=self.kwargs['resultpk'])
+        return super(EditResultCommunication,self).dispatch(request,*args,**kwargs)
+
+    def get_initial(self):
+        initial = super(EditSLOStatus, self).get_initial()
+        initial['text'] = self.slo_status.status
+        return initial
+
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
+    def form_valid(self, form):
+        self.result_communication.report = self.report
+        self.result_communication.text = form.cleaned_data['text']
+        self.result_communication.save()
+        return super(EditResultCommunication, self).form_valid(form)
+
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)

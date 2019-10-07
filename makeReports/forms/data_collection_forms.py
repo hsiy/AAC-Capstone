@@ -23,3 +23,9 @@ class AddSubassessment(forms.Form):
 class EditSubassessment(forms.Form):
     title = forms.CharField(widget=forms.TextInput, max_length=500, label="Subassessment Title")
     proficient = forms.IntegerField(widget= forms.NumberInput, label="Subassessment Percentage of Students Met/\nExceeded Threshold Proficiency")
+
+class SLOStatusForm(forms.Form):
+    status = forms.ChoiceField(choices=SLO_STATUS_CHOICES, label="SLO Status: ")
+
+class ResultCommunicationForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea, max_length=3000, label="Describe how results are communicated within the program. Address each SLO.")
