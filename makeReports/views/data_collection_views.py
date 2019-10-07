@@ -239,6 +239,7 @@ class NewSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
 
     def form_valid(self, form):
         slo_status_obj = SLOStatus.objects.create(report = self.report, status = form.cleaned_data['status'], SLO = self.slo)
+        slo_status_obj.save()
         return super(NewSLOStatus, self).form_valid(form)
 
     def test_func(self):
@@ -288,6 +289,7 @@ class NewResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
 
     def form_valid(self, form):
         result_communication = ResultCommunicate.objects.create(report = self.report, text = form.cleaned_data['text'])
+        result_communication.save()
         return super(NewResultCommunication, self).form_valid(form)
 
     def test_func(self):
