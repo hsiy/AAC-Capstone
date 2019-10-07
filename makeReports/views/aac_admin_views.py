@@ -313,4 +313,3 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
         return super(UserModifyAccount,self).form_valid(form)
 
 
-

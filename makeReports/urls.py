@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.HomePage.as_view(), name="home-page"),
     re_path(r'^report/list/$', views.FacultyReportList.as_view(), name='rpt-list-dept'),
     re_path(r'^report/list/search/$', views.ReportListSearchedDept.as_view(), name='search-reports-dept'),
+    re_path(r'^report/(?P<pk>\d+)/view/$', views.DisplayReport.as_view(),name='view-rpt'),
     #Extra Report Entry URLs
     re_path(r'^report/(?P<report>\d+)/initial/$', views.ReportFirstPage.as_view(),name='rpt-first-page'),
     #SLO Urls

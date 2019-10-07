@@ -52,3 +52,17 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         if dP!="":
             objs=objs.filter(degreeProgram__name__icontains=dP)
         return objs
+class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
+    template_name = "makeReports/DisplayReport/report.html"
+    def dispatch(self,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['pk'])
+        return super(DisplayReport,self).dispatch(*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(DisplayReport,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        context['slo_list'] = SLOInReport.objects.filter(report=self.report)
+        context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report)
+        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
+        return context
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac") or (self.report.degreeProgram.department == self.request.user.profile.department)
