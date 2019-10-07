@@ -11,7 +11,7 @@
             <table class="table">
                 <tbody>
                         <tr>
-                            <td>Goal</td><td>Bloom's Taxonomy</td><td>{% if slo_list.0.report.degreeProgram.level == "GR" %}Graduate Goals{% endif %}</td><td>Options</td>
+                            <td>Goal</td><td>Bloom's Taxonomy</td><td>{% if object_list.0.report.degreeProgram.level == "GR" %}Graduate Goals{% endif %}</td>
                         </tr>
                         {% for slo in object_list %}
                         <tr>
