@@ -103,6 +103,8 @@ class AssessmentVersion(models.Model):
     supplements = models.ManyToManyField('AssessmentSupplement')
     def __str__(self):
         return self.assessment.title
+
+
 class AssessmentSupplement(models.Model):
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
