@@ -57,9 +57,9 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(AddNewAssessment, self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class ImportAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/importAssessment.html"
-    form_class = ImportAssessment
+    form_class = ImportAssessmentForm
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(ImportAssessment,self).dispatch(request,*args,**kwargs)
@@ -88,9 +88,9 @@ class ImportAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class EditImportedAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/editImportedAssessment.html"
-    form_class = EditImportedAssessment
+    form_class = EditImportedAssessmentForm
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
@@ -133,9 +133,9 @@ class EditImportedAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(EditImportedAssessment, self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class EditNewAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/editNewAssessment.html"
-    form_class = EditNewAssessment
+    form_class = EditNewAssessmentForm
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
@@ -206,7 +206,7 @@ class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         return (self.report.degreeProgram.department==self.request.user.profile.department)
 class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/importSupplement.html"
-    form_class = ImportSupplements
+    form_class = ImportSupplementsForm
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])

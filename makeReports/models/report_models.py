@@ -102,11 +102,7 @@ class AssessmentVersion(models.Model):
     target = models.PositiveIntegerField()
     supplements = models.ManyToManyField('AssessmentSupplement')
     def __str__(self):
-<<<<<<< HEAD
         return self.assessment.title
-=======
-        return self.description
->>>>>>> dreambranch
 class AssessmentSupplement(models.Model):
     supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
     uploaded_at = models.DateTimeField(auto_now_add=True)
