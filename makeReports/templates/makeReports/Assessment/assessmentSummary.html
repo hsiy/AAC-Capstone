@@ -13,24 +13,28 @@
                     {{assessment.slo.goalText}}
                 </td>
                 <td>
-                    {{assessment.title}}
+                    {{assessment.assessment.title}}
                 </td>
                 <td>
                     {{assessment.description}}
                 </td>
                 <td>
-                    {% if assessment.domainProduct %}
+                    {% if assessment.assessment.domainProduct %}
                         Product 
                     {% endif %}
-                    {% if assessment.domainPerformance %}
+                    {% if assessment.assessment.domainPerformance %}
                         Performance  
                     {% endif %}
-                    {% if assessment.domainExamination %}
+                    {% if assessment.assessment.domainExamination %}
                         Examination
                     {% endif %}
                 </td>
                 <td>
-                    {{assessment.assessment.directMeasure}}
+                    {% if assessment.assessment.directMeasure %}
+                        Direct Measure
+                    {% else %}
+                        Indirect Measure
+                    {% endif %}
                 </td>
                 <td>
                     {% if assessment.finalTerm %}
@@ -69,8 +73,8 @@
                 </td>
                 <td>
                     {% if assessment.firstInstance %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-assessment' report=rpt.pk sloIR=slo.pk %}">Edit Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-assessment' report=rpt.pk pk=slo.pk %}">Delete Assessment</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
 
                     {% else %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>

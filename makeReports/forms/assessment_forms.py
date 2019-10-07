@@ -43,7 +43,7 @@ class EditNewAssessment(forms.Form):
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
     def __init__(self,*args,**kwargs):
             sloQS = kwargs.pop('sloQS',None)
-            super(CreateNewAssessment,self).__init__(*args,**kwargs)
+            super(EditNewAssessment,self).__init__(*args,**kwargs)
             self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
 
 class EditImportedAssessment(forms.Form):
