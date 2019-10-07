@@ -31,7 +31,7 @@ class FinalReportSupplements(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = ""
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(ReportFinalComments,self).dispatch(request,*args,**kwargs)
+        return super(FinalReportSupplements,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         return ReportSupplement.objects.filter(report=self.report)
     def get_success_url(self):
@@ -46,7 +46,7 @@ class AddEndSupplements(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     fields = ['supplement']
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(ReportFinalComments,self).dispatch(request,*args,**kwargs)
+        return super(AddEndSupplements,self).dispatch(request,*args,**kwargs)
     def form_valid(self,form):
         form.instance.report = self.report
         return super(AddEndSupplements,self).form_valid(form)
