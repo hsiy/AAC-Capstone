@@ -23,11 +23,14 @@ class CreateNewAssessment(forms.Form):
             self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
 
 class ImportAssessment(forms.Form):
-    asessessment = forms.ModelMultipleChoiceField(queryset=None, to_field_name='assessment__title')
+    assessment = forms.ModelMultipleChoiceField(queryset=None)
+    slo = forms.ModelChoiceField(queryset=None)
     def __init__(self, *args, **kwargs):
         assessChoices = kwargs.pop('assessChoices',None)
+        sloChoices = kwargs.pop('slos',None)
         super(ImportAssessment, self).__init__(*args, **kwargs)
         self.fields['assessment'].queryset = assessChoices
+        self.fields['slo'].queryset = sloChoices
 
 class EditNewAssessment(forms.Form):
     title = forms.CharField(widget= forms.Textarea, max_length=300)
@@ -57,7 +60,7 @@ class EditImportedAssessment(forms.Form):
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
     def __init__(self,*args,**kwargs):
             sloQS = kwargs.pop('sloQS',None)
-            super(CreateNewAssessment,self).__init__(*args,**kwargs)
+            super(EditImportedAssessment,self).__init__(*args,**kwargs)
             self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
 
 class ImportSupplements(forms.Form):

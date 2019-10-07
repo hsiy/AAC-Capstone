@@ -65,7 +65,7 @@
                 <td>
                     {% for sup in assessment.supplements.all %}
                         {% if forloop.last %}
-                            {{sup.supplement}}
+                            {{sup.supplement}} <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk pk=sup.pk%}">Delete Supplement</a>
                         {% else %}
                             {{sup.supplement}},
                         {% endif %}
@@ -82,7 +82,6 @@
                     {% endif %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk %}">Delete Supplement</a>
                 </td>
             </tr>
             {% endfor %}
