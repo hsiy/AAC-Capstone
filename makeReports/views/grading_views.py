@@ -37,13 +37,18 @@ def get_item(dictionary, key1, key2):
         return s[key2]
     else:
         return ""
-class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,ListView,FormMixin):
     form_class = SectionRubricForm
-    template_name = "makeReports/Grading/grading_section.html"
+    template_name = "makeReports/Grading/grading_section1.html"
+    model = SLOInReport
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=1).order_by("order","pk")
         return super(Section1Grading,self).dispatch(request,*args,**kwargs)
+    def get_queryset(self):
+        report = self.report
+        objs = SLOInReport.objects.filter(report=report)
+        return objs
     def get_form_kwargs(self):
         kwargs= super(Section1Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -57,6 +62,7 @@ class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         context['section'] = 1
         context['report'] = self.report
+        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
         extraHelp = dict()
         for rI in self.rubricItems:
             extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
@@ -154,7 +160,7 @@ class RubricReview(LoginRequiredMixin,UserPassesTestMixin, ListView, FormMixin):
         self.GRIs = GradedRubricItem.objects.filter(report=self.report)
         return super(RubricReview,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
-        kwargs=super(RubricReview,self).dispatch(request,*args,**kwargs)
+        kwargs=super(RubricReview,self).get_form_kwargs()
         #valid iff there's a graded rubric item for every rubric item
         kwargs['valid'] = (self.GRIs.count == RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion).count())
     def form_valid(self,form):
