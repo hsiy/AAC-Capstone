@@ -66,15 +66,17 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def get_form_kwargs(self):
-         kwargs = super(ImportAssessment,self).get_form_kwargs()
-         yearIn = self.request.GET['year']
-         dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
-         kwargs['assessChoices'] = AssessmentVersion.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
-         return kwargs
+        kwargs = super(ImportAssessment,self).get_form_kwargs()
+        yearIn = self.request.GET['year']
+        dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
+        kwargs['assessChoices'] = AssessmentVersion.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
+        kwargs['slos'] = SLOInReport.objects.filter(report=self.report)
+        return kwargs
     def form_valid(self,form):
-        rpt = Report.objects.get(pk=self.request.GET['report'])
+        rpt = self.report
+        slo = form.cleaned_data['slo']
         for assessVers in form.cleaned_data['assessment']:
-            AssessmentVersion.objects.create(date=datetime.now(), description=assessVers.description ,assessment=assessVers.assessment, firstInstance=False, report=rpt, changedFromPrior=False, finalTerm=assessVers.finalTerm, where=assessVers.where, allStudents=assessVers.allStudents, sampleDescription=assessVers.sampleDescription, frequency=assessVers.frequency, threshold=assessVers.threshold, target=assessVers.target)
+            AssessmentVersion.objects.create(slo=slo,date=datetime.now(), description=assessVers.description ,assessment=assessVers.assessment, firstInstance=False, report=rpt, changedFromPrior=False, finalTerm=assessVers.finalTerm, where=assessVers.where, allStudents=assessVers.allStudents, sampleDescription=assessVers.sampleDescription, frequency=assessVers.frequency, threshold=assessVers.threshold, target=assessVers.target)
         return super(ImportAssessment,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(ImportAssessment, self).get_context_data(**kwargs)
@@ -105,6 +107,10 @@ class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial['target'] = self.assessVers.target
         initial['slo'] = self.assessVers.slo
         return initial
+    def get_form_kwargs(self):
+        kwargs = super(EditImportedAssessment,self).get_form_kwargs()
+        kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report)
+        return kwargs
     def get_success_url(self):
         r = Report.objects.get(pk=self.kwargs['report'])
         return reverse_lazy('makeReports:assessment-summary', args=[r.pk])
@@ -151,6 +157,10 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial['target'] = self.assessVers.target
         initial['slo'] = self.assessVers.slo
         return initial
+    def get_form_kwargs(self):
+        kwargs = super(EditNewAssessment,self).get_form_kwargs()
+        kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report)
+        return kwargs
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -181,9 +191,11 @@ class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(SupplementUpload,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
+        self.assessVers.supplements.add(self.object)
+        self.assessVers.save()
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self,form):
-        form.instance.assessmentVersion = AssessmentVersion.objects.get(pk=self.assessVers)
+        form.instance.assessmentVersion = self.assessVers
         form.instance.uploaded_at = datetime.now()
         return super(SupplementUpload,self).form_valid(form)
     def get_context_data(self, **kwargs):
@@ -208,7 +220,8 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
          kwargs['supChoices'] = AssessmentSupplement.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
          return kwargs
     def form_valid(self,form):
-        AssessmentSupplement.objects.create(supplement=form.cleaned_data['sup'],uploaded_at=datetime.now(), assessmentVersion=self.assessVers)
+        self.assessVers.supplements.add(form.cleaned_data['sup'])
+        self.assessVers.save()
         return super(ImportSupplement,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(ImportSupplement, self).get_context_data(**kwargs)
@@ -223,11 +236,11 @@ class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     template_name = "makeReports/Assessment/deleteSupplement.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-
         return super(DeleteSupplement,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
-    
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
     form_class = Single2000Textbox
