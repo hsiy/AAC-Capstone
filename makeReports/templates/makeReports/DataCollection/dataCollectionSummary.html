@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Data Collection and Analysis Summary</h3>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Measure</td>
+            <td>Data Collection Date Range</td>
+            <td>Number of Students Assessed</td>
+            <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+            <td>Subassessment Options</td>
+            <td>Overall Options</td>
+        </tr>
+        {% for assessment in assessment_data_dict.assessments %}
+        <tr>
+            <td>{{assessment.slo_text}} : {{assessment.assessment_text}}</td>
+            <td>{{assessment.data_range}}</td>
+            <td>{{assessment.num_students_assessed}}</td>
+            <td>
+                {% if assessment.subassessments_len > 0 %}
+                    {% for subassessment in assessment.subassessments %}
+                        {% if forloop.last %}
+                            {{subassessment.0}}: {{subassessment.1}}%
+                        {% else %}
+                            {{subassessment.0}}: {{subassessment.1}}% <br>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {{assessment.overall_proficient}}%
+                {% endif %}
+            </td>
+            <td>
+                {% if assessment.subassessments_len > 0 %}
+                    {% for subassessment in assessment.subassessments %}
+                        {% if forloop.last %}
+                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}"> ✎</a>
+                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a>
+                        {% else %}
+                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}"> ✎</a>
+                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a> <br>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    (No Subassessments)
+                {% endif %}
+            </td>
+            <td>
+                {% if assessment.data_range == None %}
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection' report=rpt.pk assessment=assessment.assessment_id %}"> Add Assessment Data</a>
+                {% else %}
+                    <a type="button" title="Add subassessment" class="btn btn-primary" href="{% url 'makeReports:add-subassessment' report=rpt.pk assessment=assessment.assessment_id%}"> 📝</a>
+                    <a type="button" title="Edit data for measure" class="btn btn-primary" href="{% url 'makeReports:edit-data-collection' report=rpt.pk dataCollection=assessment.assessment_data_id%}"> ✎</a>
+                    <a type="button" title="Delete data for measure" class="btn btn-primary" href="{% url 'makeReports:delete-data-collection' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class="table">
+    <tbody>
+        <thead>
+            <h3>SLO Status</h3>
+        </thead>
+        <tr>
+            <td>SLO</td>
+            <td>Status</td>
+            <td>Options</td>
+        </tr>
+        {% for slo_status in assessment_data_dict.slo_statuses %}
+            <tr>
+                <td>
+                    {{ slo_status.slo_pk }}
+                </td>
+                <td>{{ slo_status.slo_text }}</td>
+                {% if slo_status.slo_status_pk == None %}
+                    <td>(Status Not Reported)</td>
+                    <td>
+                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:add-slo-status' report=rpt.pk slopk=slo_status.slo_pk %}">✎</a>
+                    </td>
+                {% else %}
+                    <td>{{ slo_status.slo_status }}</td>
+                    <td>
+                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:edit-slo-status' report=rpt.pk slopk=slo_status.slo_pk statuspk=slo_status.slo_status_pk %}">✎</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class='table'>
+    <thead>
+        <h3>Describe how results are communicated within the program</h3>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Text</td> <td>Actions</td>
+        </tr>
+        <tr>
+            {% if assessment_data_dict.result_communication_id == None %}
+                <td>Describe how results are communicated within the program. Address each SLO.</td>
+                <td>
+                    <a type="button" title="Add Result Communication" class="btn btn-primary" href="{% url 'makeReports:add-result-communication' report=rpt.pk %}">✎</a>
+                </td>
+            {% else %}
+                <td>{{ assessment_data_dict.result_communication_text }}</td>
+                <td>
+                    <a type="button" title="Edit Result Communication" class="btn btn-primary" href="{% url 'makeReports:edit-result-communication' report=rpt.pk resultpk=assessment_data_dict.result_communication_id %}">✎</a>
+                </td>
+            {% endif %}
+        </tr>
+    </tbody>
+</table>
+<a type="button" title="Continue to part 4" class="btn btn-primary" href="{% url 'makeReports:decisions-actions-summary' report=rpt.pk %}">Continue to Decisions and Actions</a>
+{% endblock %}
