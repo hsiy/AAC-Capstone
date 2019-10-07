@@ -57,7 +57,7 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(AddNewAssessment, self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class ImportAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/importAssessment.html"
     form_class = ImportAssessment
     def dispatch(self,request,*args,**kwargs):
@@ -88,7 +88,7 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class EditImportedAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/editImportedAssessment.html"
     form_class = EditImportedAssessment
     def dispatch(self,request,*args,**kwargs):
@@ -133,7 +133,7 @@ class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(EditImportedAssessment, self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class EditNewAssessment_(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/editNewAssessment.html"
     form_class = EditNewAssessment
     def dispatch(self,request,*args,**kwargs):

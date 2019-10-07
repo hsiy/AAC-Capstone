@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Decisions and Actions</h3>
+<table class='table'>
+    <tbody>
+        <tr>
+            <td>SLO</td>
+            <td>Descriptions</td>
+            <td>Actions</td>
+        </tr>
+        {% for SLO_decisions in decisions_actions_list %}
+            <tr>
+                <td>{{ SLO_decisions.slo_text }}</td>
+                {% if SLO_decisions.decisions_obj == None %}
+                    <td>(No Information)</td>
+                    <td>
+                        <a type="button" title="Add" class="btn btn-primary" href="{% url 'makeReports:add-decisions-actions' report=rpt.pk slopk=SLO_decisions.slo_pk %}">Add</a>
+                    </td>
+                {% else %}
+                    <td>
+                        <table class='table'>
+                            <tr> 
+                                <td> Decision Process: </td>
+                                <td> {{ SLO_decisions.decisions_obj.decisionProcess }} </td>
+                            </tr>
+                            <tr> 
+                                <td> Decision Makers: </td>
+                                <td> {{ SLO_decisions.decisions_obj.decisionMakers }} </td>
+                            </tr>
+                            <tr> 
+                                <td> Decision Timeline: </td>
+                                <td> {{ SLO_decisions.decisions_obj.decisionTimeline }} </td>
+                            </tr>
+                            <tr> 
+                                <td> Data Used: </td>  
+                                <td> {{ SLO_decisions.decisions_obj.dataUsed }} </td>
+                            </tr>
+                            <tr> 
+                                <td> Action Timeline </td>
+                                <td> {{ SLO_decisions.decisions_obj.actionTimeline }} </td> 
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <a type="button" title="Edit" class="btn btn-primary" href="{% url 'makeReports:edit-decisions-actions' report=rpt.pk slopk=SLO_decisions.slo_pk decactpk=SLO_decisions.decisions_obj.pk %}">Edit</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
