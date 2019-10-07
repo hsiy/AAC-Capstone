@@ -304,7 +304,7 @@ class EditResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(EditResultCommunication,self).dispatch(request,*args,**kwargs)
 
     def get_initial(self):
-        initial = super(EditSLOStatus, self).get_initial()
+        initial = super(EditResultCommunication, self).get_initial()
         initial['text'] = self.slo_status.status
         return initial
 
