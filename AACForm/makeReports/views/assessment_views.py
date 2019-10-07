@@ -44,8 +44,8 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def form_valid(self, form):
         rpt = self.report
         assessObj = Assessment.objects.create(title=form.cleaned_data['title'], domainExamination=False, domainProduct=False, domainPerformance=False, directMeasure =form.cleaned_data['directMeasure'])
-        assessRpt = AssessmentVersion.objects.create(date=datetime.now(), assessment=assessObj, description=form.cleaned_data['description'], finalTerm=form.cleaned_data['finalTerm'], where=form.cleaned_data['where'], allStudents=form.cleaned_data['allStudents'], sampleDescription=form.cleaned_data['sampleDescription'], frequency=form.cleaned_data['frequency'], threshold=form.cleaned_data['threshold'], target=form.cleaned_data['target'] ,firstInstance= True)
-        dom = form.cleaned_data[domain]
+        assessRpt = AssessmentVersion.objects.create(date=datetime.now(), assessment=assessObj, description=form.cleaned_data['description'], finalTerm=form.cleaned_data['finalTerm'], where=form.cleaned_data['where'], allStudents=form.cleaned_data['allStudents'], sampleDescription=form.cleaned_data['sampleDescription'], frequency=form.cleaned_data['frequency'], threshold=form.cleaned_data['threshold'], target=form.cleaned_data['target'] ,slo=form.cleaned_data['slo'] ,firstInstance= True, report=rpt, changedFromPrior=False)
+        dom = form.cleaned_data['domain']
         if ("Pe" in dom):
             assessObj.domainPerformance = True
         if ("Pr" in dom):
@@ -53,7 +53,6 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         if ("Ex" in dom):
             assessObj.domainExamination = True
         assessObj.save()
-        assessRpt.report.add(rpt)
         assessRpt.save()
         return super(AddNewAssessment, self).form_valid(form)
     def test_func(self):
@@ -113,10 +112,18 @@ class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         #assessVers = AssessmentVersion.objects.get(pk=self.request.GET['assessIR'])
         #newAssessVers = AssessmentVersion.objects.create(date=datetime.now(), description=form.cleaned_data['description'], assessment=assessVers.assessment, changedFromPrior=False, firstInstance=False, finalTerm=form.cleaned_data['finalTerm'], where=form.cleaned_data['where'], allStudents=form.cleaned_data['allStudents'], sampleDescription=form.cleaned_data['sampleDescription'], frequency=form.cleaned_data['frequency'], threshold=form.cleaned_data['threshold'], target=form.cleaned_data['target'])
         r = self.report
-        self.sloInRpt.date=datetime.now()
-        self.sloInRpt.goalText=form.cleaned_data['text']
-        self.sloInRpt.changedFromPrior = True
-        self.sloInRpt.save()
+        self.assessVers.description = form.cleaned_data['description']
+        self.assessVers.date = datetime.now()
+        self.assessVers.finalTerm = form.cleaned_data['finalTerm']
+        self.assessVers.where = form.cleaned_data['where']
+        self.assessVers.allStudents = form.cleaned_data['allStudents']
+        self.assessVers.sampleDescription = form.cleaned_data['sampleDescription']
+        self.assessVers.frequency = form.cleaned_data['frequency']
+        self.assessVers.threshold = form.cleaned_data['threshold']
+        self.assessVers.target = form.cleaned_data['target']
+        self.assessVers.slo = form.cleaned_data['slo']
+        self.assessVers.save()
+        self.assessVers.assessment.save()
         return super(EditImportedAssessment, self).form_valid(form)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -145,7 +152,7 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial['slo'] = self.assessVers.slo
         return initial
     def get_success_url(self):
-        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
         self.assessVers.description = form.cleaned_data['description']
         self.assessVers.date = datetime.now()
@@ -159,6 +166,7 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.assessVers.frequency = form.cleaned_data['frequency']
         self.assessVers.threshold = form.cleaned_data['threshold']
         self.assessVers.target = form.cleaned_data['target']
+        self.assessVers.slo = form.cleaned_data['slo']
         self.assessVers.save()
         self.assessVers.assessment.save()
         return super(EditNewAssessment,self).form_valid(form)
@@ -173,7 +181,7 @@ class SupplementUpload(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(SupplementUpload,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        return reverse_lazy('makeReports:assessment-comment', args=[self.report.pk])
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self,form):
         form.instance.assessmentVersion = AssessmentVersion.objects.get(pk=self.assessVers)
         form.instance.uploaded_at = datetime.now()
@@ -192,7 +200,7 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(ImportSupplement,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        return reverse_lazy('makeReports:assessment-supplement', args=[self.report.pk])
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def get_form_kwargs(self):
          kwargs = super(ImportSupplement,self).get_form_kwargs()
          yearIn = self.request.GET['year']
@@ -218,7 +226,7 @@ class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 
         return super(DeleteSupplement,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        return reverse_lazy('makeReports:assessment-supplement', args=[self.report.pk])
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     
 class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
@@ -256,7 +264,7 @@ class DeleteNewAssessment(DeleteView):
         return super(DeleteNewAssessment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         #to be changed to subassessment page!
-        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self,form):
         ASSESSIR = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
         assessment = ASSESSIR.assessment
