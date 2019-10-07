@@ -231,9 +231,9 @@ class ArchivedDepartments(LoginRequiredMixin,UserPassesTestMixin, ListView):
 class ArchivedDegreePrograms(LoginRequiredMixin,UserPassesTestMixin, ListView):
     model = DegreeProgram
     template_name = "makeReports/AACAdmin/archivedDPs.html"
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request,*args, **kwargs):
         self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
-        return super(ArchivedDegreePrograms, self).dispatch(args,kwargs)
+        return super(ArchivedDegreePrograms, self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         return DegreeProgram.objects.filter(active=False, department=self.dept)
     def test_func(self):

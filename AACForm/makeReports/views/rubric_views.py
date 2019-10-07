@@ -31,9 +31,9 @@ class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
 class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
     template_name = "makeReports/Rubric/addRI.html"
     form_class = RubricItemForm
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request,*args, **kwargs):
         self.rubric = Rubric.objects.get(pk=self.kwargs['rubric'])
-        return super(AddRubricItems, self).dispatch(*args,**kwargs)
+        return super(AddRubricItems, self).dispatch(request,*args,**kwargs)
     def form_valid(self,form):
         ri = RubricItem.objects.create(text=form.cleaned_data['text'], \
                 section=form.cleaned_data['section'], rubricVersion=self.rubric, \

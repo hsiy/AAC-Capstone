@@ -14,11 +14,14 @@ from django.views.generic.edit import FormMixin
 from django.template.defaulttags import register
 def generateRubricItems(rIs,form,r):
     for ri in rIs:
+        print("loop-de-loop")
         if form.cleaned_data["rI"+str(ri.pk)]:
+            print("in-here")
             try:
                 GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
                 GRI.grade=form.cleaned_data["rI"+str(ri.pk)]
             except:
+                print("making new things")
                 gr = form.cleaned_data["rI"+str(ri.pk)]
                 if gr and (gr is not ""):
                     newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
@@ -37,18 +40,19 @@ def get_item(dictionary, key1, key2):
         return s[key2]
     else:
         return ""
-class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,ListView,FormMixin):
+class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
     template_name = "makeReports/Grading/grading_section1.html"
-    model = SLOInReport
+    #model = SLOInReport
+    success_url = reverse_lazy("makeReports:admin-home")
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=1).order_by("order","pk")
         return super(Section1Grading,self).dispatch(request,*args,**kwargs)
-    def get_queryset(self):
-        report = self.report
-        objs = SLOInReport.objects.filter(report=report)
-        return objs
+    #def get_queryset(self):
+    #    report = self.report
+    #    objs = SLOInReport.objects.filter(report=report)
+    #    return objs
     def get_form_kwargs(self):
         kwargs= super(Section1Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -60,6 +64,7 @@ class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,ListView,FormMixin)
         return super(Section1Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
+        context['object_list'] = SLOInReport.objects.filter(report=self.report)
         context['section'] = 1
         context['report'] = self.report
         context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
@@ -151,30 +156,32 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial = getInitialRubric(self.rubricItems,self.report,initial)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class RubricReview(LoginRequiredMixin,UserPassesTestMixin, ListView, FormMixin):
-    model = GradedRubricItem
+class RubricReview(LoginRequiredMixin,UserPassesTestMixin, FormView):
+    #model = GradedRubricItem
     template_name = "makeReports/Grading/rubric_review.html"
     form_class = SubmitGrade
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        self.GRIs = GradedRubricItem.objects.filter(report=self.report)
+        self.GRIs = GradedRubricItem.objects.filter(rubric__report=self.report)
         return super(RubricReview,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
         kwargs=super(RubricReview,self).get_form_kwargs()
         #valid iff there's a graded rubric item for every rubric item
         kwargs['valid'] = (self.GRIs.count == RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion).count())
+        return kwargs
     def form_valid(self,form):
         self.report.rubric.complete = True
         self.report.rubric.save()
         return super(RubricReview,self).form_valid(form)
-    def get_queryset(self):
-        return self.GRIs
+    #def get_queryset(self):
+    #    return self.GRIs
     def get_success_url(self):
         return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
-    def get_context_data(self, **kwargs):
-        context = super(Section1Grading,self).get_context_data(**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(RubricReview,self).get_context_data(**kwargs)
         context['report'] = self.report
         context['gRub'] = self.report.rubric
+        context['object_list'] = self.GRIs
         return context
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
@@ -196,13 +203,13 @@ class Feedback(LoginRequiredMixin,UserPassesTestMixin, ListView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.GRIs = GradedRubricItem.objects.filter(report=self.report)
-        return super(RubricReview,self).dispatch(request,*args,**kwargs)
+        return super(Feedback,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         return self.GRIs
     def get_success_url(self):
         return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
     def get_context_data(self, **kwargs):
-        context = super(Section1Grading,self).get_context_data(**kwargs)
+        context = super(Feedback,self).get_context_data(**kwargs)
         context['report'] = self.report
         context['gRub'] = self.report.rubric
         return context
