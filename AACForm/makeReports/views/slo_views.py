@@ -141,7 +141,7 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        self.sts = SLOsToStakeholder.objects.filter(report=self.report).first()
+        self.sts = SLOsToStakeholder.objects.filter(report=self.report).last()
         return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-comment', args=[self.report.pk])
@@ -156,8 +156,8 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def form_valid(self,form):
         try:
             self.sts.text = form.cleaned_data['text']
-            sts.save()
-        except:
+            self.sts.save()
+        except Exception as e:
             sTs = SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report=self.report)
         return super(StakeholderEntry,self).form_valid(form)
     def get_context_data(self, **kwargs):

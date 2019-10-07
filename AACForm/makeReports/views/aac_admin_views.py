@@ -193,7 +193,7 @@ class ReportListSearched(LoginRequiredMixin,UserPassesTestMixin,ListView):
         graded = self.request.GET['graded']
         dP = self.request.GET['dP']
         dept = self.request.GET['dept']
-        college = self.request.GET['col']
+        college = self.request.GET['college']
         objs = Report.objects.filter(degreeProgram__active=True).order_by('submitted','-rubric__complete')
         if year!="":
             objs=objs.filter(year=year)

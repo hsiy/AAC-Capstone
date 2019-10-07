@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Grading Section {{section}}</h3>
+<h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <!--showreport column-->
+            <h3>SLO Summary</h3>
+            <table class="table">
+                <tbody>
+                        <tr>
+                            <td>Goal</td><td>Bloom's Taxonomy</td><td>{% if slo_list.0.report.degreeProgram.level == "GR" %}Graduate Goals{% endif %}</td><td>Options</td>
+                        </tr>
+                        {% for slo in object_list %}
+                        <tr>
+                            <td>
+                                {{slo.goalText}}
+                            </td>
+                            <td>
+                                {{slo.slo.get_blooms_display}}
+                            </td>
+                            <td>
+                                {% for gG in slo.slo.gradGoals.all %}
+                                    {% if forloop.last %}
+                                        {{gG.text}}
+                                    {% else %}
+                                        {{gG.text}},
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+            <h4>Communication to Stakeholders</h4>
+            {{stk.text}}
+            <h4>Additional Comments</h4>
+            {{report.section1Comment}}
+        </div>
+        <div class="col">
+            <!--grading column-->
+            Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            <h5>Section {{section}} Rubric</h5>
+            <form method="post" novalidate>
+                {% csrf_token %}
+              
+                {% if form.non_field_errors %}
+                  <ul>
+                    {% for error in form.non_field_errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              
+                {% for hidden_field in form.hidden_fields %}
+                  {% if hidden_field.errors %}
+                    <ul>
+                      {% for error in hidden_field.errors %}
+                        <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                  {{ hidden_field }}
+                {% endfor %}
+                <table>
+                  {% for field in form.visible_fields %}
+                    <tr>
+                      <td>
+                        {% bootstrap_field field %}
+                      </td>
+                    </tr>
+                    {% if not field.name == "section_comment" %}
+                    <tr>
+                        <td>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#col{{field.name}}" aria-expanded="false" aria-controls="col{{field.name}}">
+                                        More Details
+                        </button>
+                        <div class="collapse" id="col{{field.name}}">
+                                <div class="card card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item"><b>Did Not Meet Expecations: </b>{% get_item extraHelp field.name 0 %}</li>
+                                            <li class="list-group-item"><b>Met Expecations with Concerns: </b>{% get_item extraHelp field.name 1 %}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{% get_item extraHelp field.name 2 %}</li>
+                                        </ul>
+                                </div>
+                        </div>
+                    </td>
+                    </tr>
+                    {% endif %}
+                  {% endfor %}
+                </table>
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% endbuttons %}
+              </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
