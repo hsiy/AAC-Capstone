@@ -14,10 +14,10 @@
             Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
             <h5>Section {{section}} Rubric</h5>
                 <table>
-                  {% for GRI in obj_list %}
+                  {% for GRI in object_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text}}: {{GRI.grade}}
+                        {{GRI.item.text}}: {{GRI.get_grade_display}}
                       </td>
                     </tr>
                     <tr>

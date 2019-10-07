@@ -54,9 +54,9 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         return objs
 class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
     template_name = "makeReports/DisplayReport/report.html"
-    def dispatch(self,*args,**kwargs):
+    def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['pk'])
-        return super(DisplayReport,self).dispatch(*args,**kwargs)
+        return super(DisplayReport,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         context = super(DisplayReport,self).get_context_data(**kwargs)
         context['report'] = self.report
