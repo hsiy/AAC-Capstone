@@ -150,6 +150,8 @@ class GradedRubric(models.Model):
     section4Comment = models.CharField(max_length=2000,blank=True,null=True)
     generalComment = models.CharField(max_length=2000,blank=True,null=True)
     complete = models.BooleanField(default=False)
+    def __str__(self):
+        return self.rubricVersion.name
 class RubricItem(models.Model):
     text = models.CharField(max_length=1000)
     section = models.PositiveIntegerField(choices=SECTIONS)
