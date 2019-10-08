@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.conf import settings 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
+from makeReports.views.helperFunctions.section_context import *
 class HomePage(ListView):
     template_name = "makeReports/home.html"
     model = Report
@@ -60,9 +61,10 @@ class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DisplayReport,self).get_context_data(**kwargs)
         context['report'] = self.report
-        context['slo_list'] = SLOInReport.objects.filter(report=self.report)
-        context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report)
-        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
         return context
     def test_func(self):
         return getattr(self.request.user.profile, "aac") or (self.report.degreeProgram.department == self.request.user.profile.department)

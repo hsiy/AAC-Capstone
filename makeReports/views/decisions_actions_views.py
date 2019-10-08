@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
 from django.views.generic.base import ContextMixin
+from makeReports.views.helperFunctions.section_context import *
 
 class DecisionsActionsSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = DecisionsActions
@@ -25,26 +26,8 @@ class DecisionsActionsSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     def get_context_data(self, **kwargs):
         report = self.report
         context = super(DecisionsActionsSummary, self).get_context_data()
-        
         context['rpt'] = report
-        SLOs_ir = SLOInReport.objects.filter(report=report)
-        context_list = []
-
-        for slo_ir in SLOs_ir:
-            temp_dict = dict()
-            slo_obj = slo_ir.slo
-            temp_dict['slo_pk'] = slo_obj.pk
-            temp_dict['slo_text'] = slo_ir.goalText
-            try:
-                decisions_obj = DecisionsActions.objects.get(SLO=slo_obj, report=report)
-                temp_dict['decisions_obj'] = decisions_obj
-            except:
-                temp_dict['decisions_obj'] = None
-
-            context_list.append(temp_dict)
-                
-        context['decisions_actions_list'] = context_list
-        return context
+        return section4Context(self,context)
 
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -109,5 +92,23 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.decision_action.save()
         return super(EditDecisionAction, self).form_valid(form)
 
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+class Section4Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/DataCollection/comment.html"
+    form_class = Single2000Textbox
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(Section4Comment,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-report', args=[self.report.pk])
+    def form_valid(self, form):
+        self.report.section4Comment = form.cleaned_data['text']
+        self.report.save()
+        return super(Section4Comment,self).form_valid(form)
+    def get_initial(self):
+        initial = super(Section4Comment,self).get_initial()
+        initial['text']="No comment."
+        return initial
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)

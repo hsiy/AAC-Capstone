@@ -65,6 +65,9 @@ urlpatterns = [
     re_path(r'^aac/department/(?P<dept>)/dp/archived/list/$', views.ArchivedDegreePrograms.as_view(), name='arc-dps'),
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
+    re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),
+    re_path(r'^aac/report/(?P<report>\d+)/grading/section3/$', views.Section3Grading.as_view(), name='grade-sec3'),
+    re_path(r'^aac/report/(?P<report>\d+)/grading/section4/$', views.Section4Grading.as_view(), name='grade-sec4'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/review/$', views.RubricReview.as_view(), name='rub-review'),
     re_path(r'^aac/report/(?P<pk>\d+)/grading/return/$', views.ReturnReport.as_view(), name='ret-rept'),
     re_path(r'report/(?P<report>\d+)/feedback/$', views.Feedback.as_view(), name='rpt-feedback'),
@@ -85,10 +88,11 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/(?P<statuspk>\d+)/$', views.EditSLOStatus.as_view(), name='edit-slo-status'),
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/$', views.NewResultCommunication.as_view(), name='add-result-communication'),
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/(?P<resultpk>\d+)/$', views.EditResultCommunication.as_view(), name='edit-result-communication'),
-
+    re_path(r'^report/(?P<report>\d+)/datacollection/comment/$',views.Section3Comment.as_view(),name='data-comment'),
     #Decisions and Actions URLs
     re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<decactpk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/comment/$',views.Section4Comment.as_view(),name='d-a-comment'),
 
 ]

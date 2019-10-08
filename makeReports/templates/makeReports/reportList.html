@@ -39,7 +39,7 @@
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for {{rpt.year|add:"-1"}}-{{rpt.year}} academic year
         <!--to be replaced with an output view-->
-            <a type="button" class="btn btn-primary" href="#">View</a>
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
     </li>
 {% endfor %}
 </ul>
