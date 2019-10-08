@@ -24,7 +24,7 @@
     <h3>Department Reports Graded</h3>
     {% for r in gReps %}
     <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-summary' report=r.pk %}">View</a>
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' report=r.pk %}">View</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
     </li>
     {% empty %}
