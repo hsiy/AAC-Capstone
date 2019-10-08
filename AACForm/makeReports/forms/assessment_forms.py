@@ -6,21 +6,21 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from makeReports.choices import *
 class CreateNewAssessment(forms.Form):
-    title = forms.CharField(widget= forms.Textarea, max_length=300)
+    title = forms.CharField(max_length=300)
     domain = forms.MultipleChoiceField(choices = (("Pe", "Performance"), ("Pr","Product"), ("Ex","Examination") ), widget=forms.CheckboxSelectMultiple)
-    directMeasure = forms.ChoiceField(choices = ((True, "Direct Measure"), (False,"Indirect Measure")))
+    directMeasure = forms.ChoiceField(label="Direct measure",choices = ((True, "Direct Measure"), (False,"Indirect Measure")))
     description = forms.CharField(widget=forms.Textarea, max_length=1000)
-    finalTerm = forms.ChoiceField(choices = ((True, "In final term"), (False, "In final year")))
-    where = forms.CharField(widget= forms.Textarea, max_length=200)
-    allStudents = forms.ChoiceField(choices = ((True, "All Students"), (False,"Sample of Students")))
-    sampleDescription = forms.CharField(widget= forms.Textarea, max_length=200)
+    finalTerm = forms.ChoiceField(label="When assessment takes place",choices = ((True, "In final term"), (False, "In final year")))
+    where = forms.CharField(label="Where does assessment take place",max_length=200)
+    allStudents = forms.ChoiceField(label="Are all students assessed?",choices = ((True, "All Students"), (False,"Sample of Students")))
+    sampleDescription = forms.CharField(label="What students are sampled",widget= forms.Textarea, max_length=200)
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
-    threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
+    threshold = forms.CharField(max_length=500,label="Proficiency Threshold")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
     def __init__(self,*args,**kwargs):
             sloQS = kwargs.pop('sloQS',None)
             super(CreateNewAssessment,self).__init__(*args,**kwargs)
-            self.fields['slo'] = forms.ModelChoiceField(queryset=sloQS)
+            self.fields['slo'] = forms.ModelChoiceField(label="SLO",queryset=sloQS)
 
 class ImportAssessmentForm(forms.Form):
     assessment = forms.ModelMultipleChoiceField(queryset=None)
@@ -42,7 +42,7 @@ class EditNewAssessmentForm(forms.Form):
     allStudents = forms.ChoiceField(choices = ((True, "All Students"), (False,"Sample of Students")))
     sampleDescription = forms.CharField(widget= forms.Textarea, max_length=200)
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
-    threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
+    threshold = forms.CharField(max_length=500,label="Proficiency Threshold")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
     def __init__(self,*args,**kwargs):
             sloQS = kwargs.pop('sloQS',None)
@@ -56,7 +56,7 @@ class EditImportedAssessmentForm(forms.Form):
     allStudents = forms.ChoiceField(choices = ((True, "All Students"), (False,"Sample of Students")))
     sampleDescription = forms.CharField(widget= forms.Textarea, max_length=200)
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
-    threshold = forms.IntegerField(min_value=0,label="Proficiency Threshold: % of students that meet or exceed expectations")
+    threshold = forms.CharField(max_length=500,label="Proficiency Threshold")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
     def __init__(self,*args,**kwargs):
             sloQS = kwargs.pop('sloQS',None)

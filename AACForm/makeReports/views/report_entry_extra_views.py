@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
+from makeReports.views.helperFunctions.section_context import *
 
 class ReportFirstPage(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
     model = Report
@@ -20,7 +21,7 @@ class ReportFirstPage(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
         'author':'Person preparing the report'
     }
     def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        self.report = Report.objects.get(pk=self.kwargs['pk'])
         return super(ReportFirstPage,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
@@ -28,10 +29,14 @@ class ReportFirstPage(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class FinalReportSupplements(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = ReportSupplement
-    template_name = ""
+    template_name = "makeReports/ReportEntryExtras/supplementList.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(FinalReportSupplements,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(FinalReportSupplements,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        return context
     def get_queryset(self):
         return ReportSupplement.objects.filter(report=self.report)
     def get_success_url(self):
@@ -42,17 +47,65 @@ class FinalReportSupplements(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class AddEndSupplements(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ReportSupplement
-    template_name = ""
+    template_name = "makeReports/ReportEntryExtras/addSupplement.html"
     fields = ['supplement']
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(AddEndSupplements,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(AddEndSupplements,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        return context
     def form_valid(self,form):
         form.instance.report = self.report
         return super(AddEndSupplements,self).form_valid(form)
     def get_success_url(self):
-        #return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
-        #to be replaced with FinalReportSupplement thing
-        return ""
+        return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+class DeleteEndSupplements(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = ReportSupplement
+    template_name = "makeReports/ReportEntryExtras/deleteSupplement.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(DeleteEndSupplements,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+class SubmitReport(LoginRequiredMixin, UserPassesTestMixin, FormView):
+    form_class = SubmitReportForm
+    template_name = "makeReports/ReportEntryExtras/submit.html"
+    success_url = reverse_lazy('makeReports:sub-suc')
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(SubmitReport,self).dispatch(request,*args,**kwargs)
+    def get_form_kwargs(self):
+        kwargs=super(SubmitReport,self).get_form_kwargs()
+        slos = SLOInReport.objects.filter(report=self.report)
+        valid = True
+        valid = valid and (slos.count()>0)
+        for slo in slos:
+            valid = valid and (AssessmentVersion.objects.filter(slo=slo).count()>0)
+            valid = valid and (DecisionsActions.objects.filter(report=self.report, SLO=slo.slo).count()>0)
+        assesses = AssessmentVersion.objects.filter(report=self.report)
+        for a in assesses:
+            valid = valid and (AssessmentData.objects.filter(assessmentVersion=a).count()>0)
+        kwargs['valid'] = valid
+        return kwargs
+    def get_context_data(self, **kwargs):
+        context = super(SubmitReport,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
+        return context
+    def form_valid(self,form):
+        self.report.submitted = True
+        self.report.save()
+        return super(SubmitReport,self).form_valid(form)
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+class SuccessSubmit(TemplateView):
+    template_name = "makeReports/ReportEntryExtras/success.html"

@@ -95,13 +95,13 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class Section4Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    template_name = "makeReports/DataCollection/comment.html"
+    template_name = "makeReports/DecisionsActions/comment.html"
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(Section4Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        return reverse_lazy('makeReports:view-report', args=[self.report.pk])
+        return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
     def form_valid(self, form):
         self.report.section4Comment = form.cleaned_data['text']
         self.report.save()

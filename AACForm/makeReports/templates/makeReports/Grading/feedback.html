@@ -5,9 +5,12 @@
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">
     <div class="row">
-        <div class="col-7">
+        <div class="col-8">
             <!--showreport column-->
-            here is where the report will be shown
+            {% include 'makeReports/DisplayReport/slos.html' %}
+            {% include 'makeReports/DisplayReport/assessments.html' %}
+            {% include 'makeReports/DisplayReport/dataCollection.html' %}
+            {% include 'makeReports/DisplayReport/dAndAs.html' %}
         </div>
         <div class="col">
             <!--grading column-->

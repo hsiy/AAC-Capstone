@@ -2,6 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
 <h2>Report</h2>
+<p>Author: {{report.author}} </p>
+<p>Reported Data Date Range: {{report.date_range_of_reported_data}}</p>
 {% include 'makeReports/DisplayReport/slos.html' %}
 {% include 'makeReports/DisplayReport/assessments.html' %}
 {% include 'makeReports/DisplayReport/dataCollection.html' %}

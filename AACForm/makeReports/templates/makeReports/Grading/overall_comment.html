@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Delete Assessment</h3>
+<h3>Comments on the Report as a whole</h3>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
+    {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Delete Assessment</button>
+        <button type="submit" class="btn btn-primary">Next</button>
     {% endbuttons %}
 </form>
 {% endblock %}

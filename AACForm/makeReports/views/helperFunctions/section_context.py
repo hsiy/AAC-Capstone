@@ -84,9 +84,12 @@ def section3Context(self,context):
 
         assessment_data_dict['slo_statuses'].append(temp_dict)
         
-    result_communicate_obj = ResultCommunicate.objects.get(report=self.report)
-    assessment_data_dict['result_communication_id'] = result_communicate_obj.pk
-    assessment_data_dict['result_communication_text'] = result_communicate_obj.text
+    try:
+        result_communicate_obj = ResultCommunicate.objects.get(report=self.report)
+        assessment_data_dict['result_communication_id'] = result_communicate_obj.pk
+        assessment_data_dict['result_communication_text'] = result_communicate_obj.text
+    except:
+        pass
     context['assessment_data_dict'] = assessment_data_dict
     return context
 def section4Context(self,context):

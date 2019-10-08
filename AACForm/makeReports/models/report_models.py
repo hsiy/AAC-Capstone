@@ -98,7 +98,7 @@ class AssessmentVersion(models.Model):
     sampleDescription = models.CharField(max_length=200)
     frequency = models.CharField(max_length=100)
     #the below are percentage points
-    threshold = models.PositiveIntegerField() # Should be text field, change later
+    threshold = models.CharField(max_length=500) # Should be text field, change later
     target = models.PositiveIntegerField()
     supplements = models.ManyToManyField('AssessmentSupplement')
     def __str__(self):
