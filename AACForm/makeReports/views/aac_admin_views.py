@@ -143,9 +143,9 @@ class RecoverDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
 class DegreeProgramList(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = DegreeProgram
     template_name = "makeReports/AACAdmin/dpList.html"
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
-        return super(DegreeProgramList, self).dispatch(args,kwargs)
+        return super(DegreeProgramList, self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         objs = DegreeProgram.active_objects.filter(department=self.dept)
         return objs
@@ -255,9 +255,9 @@ class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form = UpdateUserForm
     success_url = reverse_lazy('makeReports:admin-home')
     template_name = "makeReports/AACAdmin/modify_account.html"
-    def dispatch(self, *args,**kwargs):
+    def dispatch(self,request, *args,**kwargs):
         self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
-        return super(ModifyAccount,self).get_initial()
+        return super(ModifyAccount,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         initial = super(ModifyAccount,self).get_initial()
         initial['aac'] = self.userToChange.aac
@@ -295,9 +295,9 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
     form = UserUpdateUserForm
     success_url = reverse_lazy('makeReports:home')
     template_name = "makeReports/AACAdmin/modify_account.html"
-    def dispatch(self, *args,**kwargs):
+    def dispatch(self, request,*args,**kwargs):
         self.userToChange = self.request.user
-        return super(UserModifyAccount,self).get_initial()
+        return super(UserModifyAccount,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         initial = super(UserModifyAccount,self).get_initial()
         initial['first_name'] = self.userToChange.user.first_name
