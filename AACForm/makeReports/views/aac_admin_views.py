@@ -40,28 +40,28 @@ class CreateCollege(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     model = College
     template_name = "makeReports/AACAdmin/addCollege.html"
     fields = ['name']
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:college-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class UpdateCollege(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = College
     template_name = "makeReports/AACAdmin/updateCollege.html"
     fields = ['name']
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:college-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DeleteCollege(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = College
     fields = ['active']
     template_name = "makeReports/AACAdmin/deleteCollege.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:college-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class RecoverCollege(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = College
     fields = ['active']
     template_name = "makeReports/AACAdmin/recoverCollege.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:college-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class CollegeList(LoginRequiredMixin,UserPassesTestMixin,ListView):
@@ -77,7 +77,7 @@ class CreateDepartment(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     #fields = ['name', 'college']
     form_class = CreateDepartmentForm
     template_name = "makeReports/AACAdmin/addDepartment.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:dept-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DepartmentList(LoginRequiredMixin,UserPassesTestMixin,ListView):
@@ -92,28 +92,29 @@ class UpdateDepartment(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Department
     fields = ['name', 'college']
     template_name = "makeReports/AACAdmin/updateDepartment.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:dept-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DeleteDepartment(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Department
     fields = ['active']
     template_name = "makeReports/AACAdmin/deleteDept.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:dept-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class RecoverDepartment(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Department
     fields = ['active']
     template_name = "makeReports/AACAdmin/recoverDept.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:dept-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class CreateDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     model = DegreeProgram
     fields=['name','level','cycle','startingYear']
     template_name = "makeReports/AACAdmin/addDP.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    def get_success_url(self):
+        return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
     def form_valid(self, form):
         form.instance.department = Department.objects.get(pk=int(self.kwargs['dept']))
         return super(CreateDegreeProgram, self).form_valid(form)
@@ -123,21 +124,24 @@ class UpdateDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = DegreeProgram
     form_class = CreateDPByDept
     template_name = "makeReports/AACAdmin/updateDP.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    def get_success_url(self):
+        return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DeleteDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = DegreeProgram
     fields = ['active']
     template_name = "makeReports/AACAdmin/deleteDP.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    def get_success_url(self):
+        return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class RecoverDegreeProgram(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = DegreeProgram
     fields = ['active']
     template_name = "makeReports/AACAdmin/recoverDP.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    def get_success_url(self):
+        return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DegreeProgramList(LoginRequiredMixin,UserPassesTestMixin,ListView):
