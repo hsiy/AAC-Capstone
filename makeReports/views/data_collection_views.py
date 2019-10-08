@@ -169,7 +169,7 @@ class NewSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-        self.slo_ir = SLOInReport.objects.get(slo=self.slo)
+        self.slo_ir = SLOInReport.objects.get(slo=self.slo, report=self.report)
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
 
     def get_success_url(self):
@@ -191,7 +191,7 @@ class EditSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-        self.slo_ir = SLOInReport.objects.get(slo=self.slo)
+        self.slo_ir = SLOInReport.objects.get(slo=self.slo,report=self.report)
         self.slo_status = SLOStatus.objects.get(pk=self.kwargs['statuspk'])
         return super(EditSLOStatus,self).dispatch(request,*args,**kwargs)
 
