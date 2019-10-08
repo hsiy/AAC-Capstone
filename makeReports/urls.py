@@ -67,7 +67,7 @@ urlpatterns = [
     re_path(r'^aac/report/success/$', views.GenerateReportSuccess.as_view(), name='gen-rpt-suc'),
     re_path(r'^aac/department/archived/list/$', views.ArchivedDepartments.as_view(), name='arc-depts'),
     re_path(r'^aac/college/archived/list/$', views.ArchivedColleges.as_view(), name='arc-colleges'),
-    re_path(r'^aac/department/(?P<dept>)/dp/archived/list/$', views.ArchivedDegreePrograms.as_view(), name='arc-dps'),
+    re_path(r'^aac/department/(?P<dept>\d+)/dp/archived/list/$', views.ArchivedDegreePrograms.as_view(), name='arc-dps'),
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),
