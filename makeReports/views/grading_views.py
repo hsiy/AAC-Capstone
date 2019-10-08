@@ -240,6 +240,7 @@ class Feedback(LoginRequiredMixin,UserPassesTestMixin, ListView):
         context = super(Feedback,self).get_context_data(**kwargs)
         context['report'] = self.report
         context['gRub'] = self.report.rubric
+        context['obj_list'] = self.GRIs
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
