@@ -159,13 +159,18 @@ class CreateReport(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     model = Report
     form_class = CreateReportByDept
     template_name = "makeReports/AACAdmin/manualReportCreate.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    #success_url = reverse_lazy('makeReports:admin-home')
     def get_form_kwargs(self):
         kwargs = super(CreateReport, self).get_form_kwargs()
         kwargs['dept'] = self.kwargs['dept']
         return kwargs
+    def get_success_url(self):
+        self.object.rubric = self.GR
+        self.object.save()
+        return reverse_lazy('makeReports:admin-home')
     def form_valid(self, form):
         form.instance.submitted = False
+        self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
         return super(CreateReport, self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
