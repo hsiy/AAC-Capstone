@@ -47,7 +47,7 @@ class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
         return super(AddRubricItems,self).form_valid(form)
     def get_context_data(self):
         context = super(AddRubricItems,self).get_context_data()
-        context['numRIs'] = RubricItem.objects.filter(rubricVersion=self.rubric).count
+        context['numRIs'] = RubricItem.objects.filter(rubricVersion=self.rubric).count()
         return context
     def get_success_url(self):
         return reverse_lazy('makeReports:add-RI', args=[self.kwargs['rubric']])
