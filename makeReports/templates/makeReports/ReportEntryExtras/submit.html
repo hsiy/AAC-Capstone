@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Submit Report</h3>
+<div class="container">
+        <div class="row">
+            <div class="col-9">
+                <!--showreport column-->
+                {% include 'makeReports/DisplayReport/slos.html' %}
+                {% include 'makeReports/DisplayReport/assessments.html' %}
+                {% include 'makeReports/DisplayReport/dataCollection.html' %}
+                {% include 'makeReports/DisplayReport/dAndAs.html' %}
+            </div>
+            <div class="col">
+                <form method="post" class="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">Submit Report to AAC</button>
+                    {% endbuttons %}
+                </form>
+            </div>
+        </div>
+</div>
+{% endblock %}

@@ -38,8 +38,8 @@
 <ul class="list-group">
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for {{rpt.year|add:"-1"}}-{{rpt.year}} academic year
-        <!--to be replaced with an output view-->
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
+            {% if rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>{% endif %}
     </li>
 {% endfor %}
 </ul>

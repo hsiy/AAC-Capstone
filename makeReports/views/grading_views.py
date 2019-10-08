@@ -138,7 +138,7 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=4).order_by("order","pk")
         return super(Section4Grading,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        return reverse_lazy("makeReports:rub-review", args=[self.report.pk])
+        return reverse_lazy("makeReports:grade-comment", args=[self.report.pk])
     def get_form_kwargs(self):
         kwargs= super(Section4Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -157,6 +157,27 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_initial(self):
         initial = super(Section4Grading,self).get_initial()
         initial = getInitialRubric(self.rubricItems,self.report,initial)
+        return initial
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class OverallComment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    form_class = Single2000Textbox
+    template_name = "makeReports/Grading/overall_comment.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(OverallComment,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy("makeReports:rub-review", args=[self.report.pk])
+    def form_valid(self, form):
+        self.report.rubric.generalComment = form.cleaned_data['text']
+        self.report.rubric.save()
+        return super(OverallComment,self).form_valid(form)
+    def get_initial(self):
+        initial = super(OverallComment,self).get_initial()
+        try:
+            initial['text'] = self.report.rubric.generalComment
+        except:
+            pass
         return initial
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
@@ -219,8 +240,12 @@ class Feedback(LoginRequiredMixin,UserPassesTestMixin, ListView):
         context = super(Feedback,self).get_context_data(**kwargs)
         context['report'] = self.report
         context['gRub'] = self.report.rubric
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
         return context
     def test_func(self):
         rightDept = (self.report.degreeProgram.department == self.request.user.profile.department)
         feedbackToGive = self.report.rubric.complete or (self.report.returned and (not self.report.submitted))
-        return rightDept and feedbackToGive
+        return getattr(self.request.user.profile, "aac") or (rightDept and feedbackToGive)

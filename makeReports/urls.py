@@ -11,7 +11,12 @@ urlpatterns = [
     re_path(r'^report/list/search/$', views.ReportListSearchedDept.as_view(), name='search-reports-dept'),
     re_path(r'^report/(?P<pk>\d+)/view/$', views.DisplayReport.as_view(),name='view-rpt'),
     #Extra Report Entry URLs
-    re_path(r'^report/(?P<report>\d+)/initial/$', views.ReportFirstPage.as_view(),name='rpt-first-page'),
+    re_path(r'^report/(?P<pk>\d+)/initial/$', views.ReportFirstPage.as_view(),name='rpt-first-page'),
+    re_path(r'^report/(?P<report>\d+)/supplements/list/$', views.FinalReportSupplements.as_view(),name='rpt-sup-list'),
+    re_path(r'^report/(?P<report>\d+)/supplement/add/$', views.AddEndSupplements.as_view(),name='add-rpt-sup'),
+    re_path(r'^report/(?P<report>\d+)/supplement/(?P<pk>\d+)/delete/$', views.DeleteEndSupplements.as_view(),name='delete-rpt-sup'),
+    re_path(r'^report/(?P<report>\d+)/submit/$', views.SubmitReport.as_view(),name='submit-report'),
+    re_path(r'^report/submit/success/$', views.SuccessSubmit.as_view(),name='sub-suc'),
     #SLO Urls
     re_path(r'^report/(?P<report>\d+)/slo/summary/$', views.SLOSummary.as_view(), name='slo-summary'),
     re_path(r'^report/(?P<report>\d+)/slo/add/$', views.AddNewSLO.as_view(), name='add-slo'),
@@ -68,6 +73,7 @@ urlpatterns = [
     re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section3/$', views.Section3Grading.as_view(), name='grade-sec3'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section4/$', views.Section4Grading.as_view(), name='grade-sec4'),
+    re_path(r'^aac/report/(?P<report>\d+)/grading/comment/$', views.OverallComment.as_view(), name='grade-comment'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/review/$', views.RubricReview.as_view(), name='rub-review'),
     re_path(r'^aac/report/(?P<pk>\d+)/grading/return/$', views.ReturnReport.as_view(), name='ret-rept'),
     re_path(r'report/(?P<report>\d+)/feedback/$', views.Feedback.as_view(), name='rpt-feedback'),
