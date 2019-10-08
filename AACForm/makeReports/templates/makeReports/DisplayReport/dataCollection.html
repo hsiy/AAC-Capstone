@@ -1,0 +1,73 @@
+<!--things needed in context: assessment_data_dict,report-->
+<h3>Data Collection and Analysis Summary</h3>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Measure</td>
+            <td>Data Collection Date Range</td>
+            <td>Number of Students Assessed</td>
+            <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+        </tr>
+        {% for assessment in assessment_data_dict.assessments %}
+        <tr>
+            <td>{{assessment.slo_text}} : {{assessment.assessment_text}}</td>
+            <td>{{assessment.data_range}}</td>
+            <td>{{assessment.num_students_assessed}}</td>
+            <td>
+                {% if assessment.subassessments_len > 0 %}
+                    {% for subassessment in assessment.subassessments %}
+                        {% if forloop.last %}
+                            {{subassessment.0}}: {{subassessment.1}}%
+                        {% else %}
+                            {{subassessment.0}}: {{subassessment.1}}% <br>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {{assessment.overall_proficient}}%
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table class="table">
+    <tbody>
+        <thead>
+            <h3>SLO Status</h3>
+        </thead>
+        <tr>
+            <td>SLO</td>
+            <td>Status</td>
+        </tr>
+        {% for slo_status in assessment_data_dict.slo_statuses %}
+            <tr>
+                <td>{{ slo_status.slo_text }}</td>
+                {% if slo_status.slo_status_pk == None %}
+                    <td>(Status Not Reported)</td>
+                {% else %}
+                    <td>{{ slo_status.slo_status }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class='table'>
+    <thead>
+        <h3>Describe how results are communicated within the program</h3>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Text</td>
+        </tr>
+        <tr>
+            {% if assessment_data_dict.result_communication_id == None %}
+                <td>Describe how results are communicated within the program. Address each SLO.</td>
+            {% else %}
+                <td>{{ assessment_data_dict.result_communication_text }}</td>
+            {% endif %}
+        </tr>
+    </tbody>
+</table>
+<h3>Comment</h3>
+{{report.section3Comment}}

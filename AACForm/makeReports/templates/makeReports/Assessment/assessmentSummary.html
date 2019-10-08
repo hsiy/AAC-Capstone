@@ -65,9 +65,9 @@
                 <td>
                     {% for sup in assessment.supplements.all %}
                         {% if forloop.last %}
-                            {{sup.supplement}} <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk pk=sup.pk%}">Delete Supplement</a>
+                            <a href="{{sup.supplement.url}}">{{sup.supplement}}</a> <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk pk=sup.pk%}">Delete Supplement</a>
                         {% else %}
-                            {{sup.supplement}},
+                            <a href="{{sup.supplement.url}}">{{sup.supplement}}</a>, <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-supplement' report=rpt.pk assessIR=assessment.pk pk=sup.pk%}">Delete Supplement</a>
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -89,5 +89,5 @@
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import Assessment</a>
 </table>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:data-summary' report=rpt.pk %}">Next</a>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-comment' report=rpt.pk %}">Next</a>
 {% endblock %}

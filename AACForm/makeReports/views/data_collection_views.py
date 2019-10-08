@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
+from makeReports.views.helperFunctions.section_context import *
 
 class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = AssessmentData
@@ -34,70 +35,7 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         report = self.report
         context = super(DataCollectionSummary, self).get_context_data()
         context['rpt'] = report
-        assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
-        assessments = AssessmentVersion.objects.filter(report=report)
-
-        for assessment in assessments:
-            temp_dict = dict()
-            temp_dict['assessment_id'] = assessment.pk
-            try:
-                assessment_obj = Assessment.objects.get(pk=assessment.assessment.pk)
-                temp_dict['assessment_text'] = assessment_obj.title
-            except:
-                temp_dict['assessment_text'] = None
-
-            try:
-                slo_obj = SLOInReport.objects.get(pk=assessment.slo.pk)
-                temp_dict['slo_text'] = slo_obj.goalText
-            except:
-                temp_dict['slo_text'] = None
-
-            try:
-                assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
-                temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
-                temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
-                temp_dict['data_range'] = assessment_data_obj.dataRange
-                temp_dict['assessment_data_id'] = assessment_data_obj.pk
-            except:
-                temp_dict['num_students_assessed'] = None
-                temp_dict['overall_proficient'] = None
-                temp_dict['data_range'] = None
-                temp_dict['assessment_data_id'] = None
-
-            try:
-                subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
-                temp_dict['subassessments'] = []
-                for subassessment in subassessments:
-                    sub_dict = (subassessment.title, subassessment.proficient, subassessment.pk)
-                    temp_dict['subassessments'].append(sub_dict)
-
-                temp_dict['subassessments_len'] = len(temp_dict['subassessments'])
-            except:
-                temp_dict['subassessments'] = []
-                temp_dict['subassessments_len'] = 0
-
-            assessment_data_dict['assessments'].append(temp_dict)
-
-        SLOs = SLOInReport.objects.filter(report=self.report)
-        for sloir in SLOs:
-            temp_dict = dict()
-            temp_dict['slo_text'] = sloir.goalText
-            temp_dict['slo_pk'] = sloir.slo.pk
-            try:
-                slo_status_obj = SLOStatus.objects.get(SLO=sloir.slo)
-                temp_dict['slo_status'] = slo_status_obj.status
-                temp_dict['slo_status_pk'] = slo_status_obj.pk
-            except:
-                temp_dict['slo_status'] = None
-                temp_dict['slo_status_pk'] = None
-
-            assessment_data_dict['slo_statuses'].append(temp_dict)
-            
-        result_communicate_obj = ResultCommunicate.objects.get(report=report)
-        assessment_data_dict['result_communication_id'] = result_communicate_obj.pk
-        assessment_data_dict['result_communication_text'] = result_communicate_obj.text
-        context['assessment_data_dict'] = assessment_data_dict
-        return context
+        return section3Context(self,context)
 
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -319,5 +257,23 @@ class EditResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.result_communication.save()
         return super(EditResultCommunication, self).form_valid(form)
 
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+class Section3Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+    template_name = "makeReports/DataCollection/comment.html"
+    form_class = Single2000Textbox
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(Section3Comment,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
+    def form_valid(self, form):
+        self.report.section3Comment = form.cleaned_data['text']
+        self.report.save()
+        return super(Section3Comment,self).form_valid(form)
+    def get_initial(self):
+        initial = super(Section3Comment,self).get_initial()
+        initial['text']="No comment."
+        return initial
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)

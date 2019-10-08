@@ -1,0 +1,82 @@
+<!--things needed in context: assessment_list, report-->
+<h3>Assessment Summary</h3>
+<table class="table-responsive table-bordered">
+    <tbody>
+            <tr>
+                <td class = "p-4">SLO</td><td class="p-4">Title of Measure</td><td class="p-4">Description of How Measure Aligns to SLO</td>
+                <td class="p-4">Domain</td><td class="p-4">Type</td>
+                <td class="p-4">Point in Program Assessment is Administered</td>
+                <td class="p-4">Where does the assessment occur</td><td class="p-4">Population Measured</td>
+                <td class="p-4">Frequency of Data Collection</td><td class="p-4">Proficiency Threshold</td>
+                <td class="p-4">Program Proficiency Target</td><td class="p-4">Supplement</td>
+            </tr>
+            {% for assessment in assessment_list %}
+            <tr>
+                <td>
+                    {{assessment.slo.goalText}}
+                </td>
+                <td>
+                    {{assessment.assessment.title}}
+                </td>
+                <td>
+                    {{assessment.description}}
+                </td>
+                <td>
+                    {% if assessment.assessment.domainProduct %}
+                        Product 
+                    {% endif %}
+                    {% if assessment.assessment.domainPerformance %}
+                        Performance  
+                    {% endif %}
+                    {% if assessment.assessment.domainExamination %}
+                        Examination
+                    {% endif %}
+                </td>
+                <td>
+                    {% if assessment.assessment.directMeasure %}
+                        Direct Measure
+                    {% else %}
+                        Indirect Measure
+                    {% endif %}
+                </td>
+                <td>
+                    {% if assessment.finalTerm %}
+                            In Final Term of Program
+                    {% else %}
+                            In Final Year of Program
+                    {% endif %}
+                </td>
+                <td>
+                    {{assessment.where}}
+                </td>
+                <td>
+                    {% if assessment.allStudents %}
+                            All Students
+                    {% else %}
+                            {{assessment.sampleDescription}}
+                    {% endif %}
+                </td>
+                <td>
+                    {{assessment.frequency}}
+                </td>
+                <td>
+                    {{assessment.threshold}}
+                </td>
+                <td>
+                    {{assessment.target}}
+                </td>
+                <td>
+                    {% for sup in assessment.supplements.all %}
+                        {% if forloop.last %}
+                            <a href="{{sup.supplement.url}}">{{sup.supplement}}</a>
+                        {% else %}
+                            <a href="{{sup.supplement.url}}">{{sup.supplement}}</a>,
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+<h3>Comment</h3>
+{{report.section2Comment}}

@@ -12,23 +12,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
 from django.template.defaulttags import register
+from makeReports.views.helperFunctions.section_context import *
 def generateRubricItems(rIs,form,r):
     for ri in rIs:
-        print("loop-de-loop")
         if form.cleaned_data["rI"+str(ri.pk)]:
-            print("in-here")
             try:
                 GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
                 GRI.grade=form.cleaned_data["rI"+str(ri.pk)]
             except:
-                print("making new things")
                 gr = form.cleaned_data["rI"+str(ri.pk)]
                 if gr and (gr is not ""):
                     newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
 def getInitialRubric(rIs, r, initial):
     for ri in rIs:
         try:
-            GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
+            GRI = GradedRubricItem.objects.filter(rubric=r.rubric, item=ri).last()
             initial["rI"+str(ri.pk)]=GRI.grade
         except:
             pass
@@ -49,10 +47,8 @@ class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=1).order_by("order","pk")
         return super(Section1Grading,self).dispatch(request,*args,**kwargs)
-    #def get_queryset(self):
-    #    report = self.report
-    #    objs = SLOInReport.objects.filter(report=report)
-    #    return objs
+    def get_success_url(self):
+        return reverse_lazy("makeReports:grade-sec2", args=[self.report.pk])
     def get_form_kwargs(self):
         kwargs= super(Section1Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -64,27 +60,25 @@ class Section1Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(Section1Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
-        context['object_list'] = SLOInReport.objects.filter(report=self.report)
+        context = rubricItemsHelper(self,context)
         context['section'] = 1
         context['report'] = self.report
-        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
-        extraHelp = dict()
-        for rI in self.rubricItems:
-            extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
-        context['extraHelp']=extraHelp
-        return context
+        return section1Context(self,context)
     def get_initial(self):
         initial = super(Section1Grading,self).get_initial()
         initial = getInitialRubric(self.rubricItems,self.report,initial)
+        return initial
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class Section2Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
-    template_name = ""
+    template_name = "makeReports/Grading/grading_section2.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=2).order_by("order","pk")
         return super(Section2Grading,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy("makeReports:grade-sec3", args=[self.report.pk])
     def get_form_kwargs(self):
         kwargs= super(Section2Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -96,21 +90,25 @@ class Section2Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(Section2Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section2Grading,self).get_context_data(**kwargs)
+        context = rubricItemsHelper(self,context)
         context['section'] = 2
         context['report'] = self.report
-        return context
+        return section2Context(self,context)
     def get_initial(self):
         initial = super(Section2Grading,self).get_initial()
         initial = getInitialRubric(self.rubricItems,self.report,initial)
+        return initial
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class Section3Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
-    template_name = ""
+    template_name = "makeReports/Grading/grading_section3.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=3).order_by("order","pk")
         return super(Section3Grading,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy("makeReports:grade-sec4", args=[self.report.pk])
     def get_form_kwargs(self):
         kwargs= super(Section3Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -122,21 +120,25 @@ class Section3Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(Section3Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(Section3Grading,self).get_context_data(**kwargs)
+        context = rubricItemsHelper(self,context)
         context['section'] = 3
         context['report'] = self.report
-        return context
+        return section3Context(self,context)
     def get_initial(self):
         initial = super(Section3Grading,self).get_initial()
         initial = getInitialRubric(self.rubricItems,self.report,initial)
+        return initial
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
     form_class = SectionRubricForm
-    template_name = ""
+    template_name = "makeReports/Grading/grading_section4.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=4).order_by("order","pk")
         return super(Section4Grading,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy("makeReports:rub-review", args=[self.report.pk])
     def get_form_kwargs(self):
         kwargs= super(Section4Grading,self).get_form_kwargs()
         kwargs['rubricItems'] = self.rubricItems
@@ -145,19 +147,20 @@ class Section4Grading(LoginRequiredMixin,UserPassesTestMixin,FormView):
         generateRubricItems(self.rubricItems,form,self.report)
         self.report.rubric.section4Comment = form.cleaned_data['section_comment']
         self.report.rubric.save()
-        return super(Section1Grading,self).form_valid(form)
+        return super(Section4Grading,self).form_valid(form)
     def get_context_data(self, **kwargs):
-        context = super(Section1Grading,self).get_context_data(**kwargs)
+        context = super(Section4Grading,self).get_context_data(**kwargs)
+        context = rubricItemsHelper(self,context)
         context['section'] = 4
         context['report'] = self.report
-        return context
+        return section4Context(self,context)
     def get_initial(self):
         initial = super(Section4Grading,self).get_initial()
         initial = getInitialRubric(self.rubricItems,self.report,initial)
+        return initial
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class RubricReview(LoginRequiredMixin,UserPassesTestMixin, FormView):
-    #model = GradedRubricItem
     template_name = "makeReports/Grading/rubric_review.html"
     form_class = SubmitGrade
     def dispatch(self,request,*args,**kwargs):
@@ -182,6 +185,10 @@ class RubricReview(LoginRequiredMixin,UserPassesTestMixin, FormView):
         context['report'] = self.report
         context['gRub'] = self.report.rubric
         context['object_list'] = self.GRIs
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
         return context
     def test_func(self):
         return getattr(self.request.user.profile, "aac")

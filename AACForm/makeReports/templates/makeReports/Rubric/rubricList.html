@@ -3,6 +3,7 @@
 {% block content %}
 <h3>Rubric List</h3>
 <!--search to be implemented-->
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:add-rubric'  %}">New Rubric</a>
 <ul class="list-group">
 {% for rb in object_list %}
     <li class = "list-group-item">Rubric {{rb.name}} from year {{rb.date.year}}

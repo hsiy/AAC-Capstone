@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
+from makeReports.views.helperFunctions.section_context import *
 
 class AssessmentSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = AssessmentVersion
@@ -26,7 +27,7 @@ class AssessmentSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(AssessmentSummary, self).get_context_data()
         context['rpt'] = self.report
-        return context
+        return section2Context(self,context)
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
@@ -248,10 +249,9 @@ class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(Section2Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        #to be changed to assessment page!
-        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
-        self.report.section1Comment = form.cleaned_data['text']
+        self.report.section2Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section2Comment,self).form_valid(form)
     def get_initial(self):

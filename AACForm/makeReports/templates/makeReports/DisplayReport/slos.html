@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% load bootstrap4 %}
-{% block content %}
+<!--things needed in context: slo_list, stk (stakeholder stuff), report-->
 <h3>Section I. Student Learning Outcomes</h3>
 <table class="table">
     <tbody>
@@ -28,4 +26,7 @@
             {% endfor %}
     </tbody>
 </table>
-{% endblock %}
+<h3>Stakeholder Communication</h3>
+{{stk}}
+<h3>Comment</h3>
+{{report.section1Comment}}
