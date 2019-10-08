@@ -230,7 +230,7 @@ class Feedback(LoginRequiredMixin,UserPassesTestMixin, ListView):
     template_name = "makeReports/Grading/feedback.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        self.GRIs = GradedRubricItem.objects.filter(report=self.report)
+        self.GRIs = GradedRubricItem.objects.filter(rubric__report=self.report)
         return super(Feedback,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         return self.GRIs

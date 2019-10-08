@@ -42,7 +42,7 @@
     <li class = "list-group-item">{{rpt.degreeProgram}} report for academic year {{rpt.year|add:"-1"}}-{{rpt.year}}
         <!--to be replaced with an output view-->
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
-            {% if rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Your Feedback</a>{% endif %}
+            {% if rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Your Feedback</a>{% endif %}
             {% if rpt.submitted and not rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
     </li>
 {% endfor %}
