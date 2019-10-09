@@ -2,48 +2,19 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
-<form action="{% url 'makeReports:search-reports' %}" type="get">
+<form action="{% url 'makeReports:search-account-list' %}" type="get">
         <h3>Search:</h3>
-        You can use as many or few fields as desired<br>
-        <div class="form-group"><label for="year">Ending Year of Academic Year (e.g. 2019 for 2018-2019 academic year):</label><input id="year" type="text" class="form-control" name="year"></div>
-        <div class="form-group"><label for="submitted">Submitted: </label> <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="submitted" id="s1" value="S" checked="checked">
-                <label class="form-check-label" for="s1">Only submitted</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="submitted" id="s2" value="nS">
-                <label class="form-check-label" for="s2">Only not submitted</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="submitted" id="s3" value="both">
-                <label class="form-check-label" for="s3">All</label>
-              </div>
-        </div>
-        <div class="form-group"><label for="graded">Graded: </label> <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="graded" id="g1" value="S">
-                <label class="form-check-label" for="g1">Only graded</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="graded" id="g2" value="nS" checked="checked">
-                <label class="form-check-label" for="g2">Only not graded</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="graded" id="g3" value="both">
-                <label class="form-check-label" for="g3">All</label>
-              </div>
-        </div>
-        <div class="form-group"><label for="college">College:</label><input id="college" type="text" class="form-control" name="college"></div>
-        <div class="form-group"><label for="dept">Department:</label><input id="dept" type="text" class="form-control" name="dept"></div>
-        <div class="form-group"><label for="dP">Degree program:</label><input id="dP" type="text" class="form-control" name="dP"></div>
+        <div class="form-group"><label for="f">First name:</label><input id="f" type="text" class="form-control" name="f"></div>
+        <div class="form-group"><label for="l">Last name:</label><input id="l" type="text" class="form-control" name="l"></div>
+        <div class="form-group"><label for="e">Email:</label><input id="e" type="text" class="form-control" name="e"></div>
         <button id="sub" type="submit" class="btn btn-primary" style="margin-top:1em">Search</button><br>
     </form>
 <ul class="list-group">
-{% for rpt in object_list %}
-    <li class = "list-group-item">{{rpt.degreeProgram}} report for academic year {{rpt.year|add:"-1"}}-{{rpt.year}}
-        <!--to be replaced with an output view-->
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
-            {% if rpt.submitted and not rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
-    </li>
+{% for prof in object_list %}
+    <li class = "list-group-item">{{prof.user.first_name}} {{prof.user.last_name}}, {{prof.user.email}}
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:aac-modify-account' pk=prof.pk %}">Modify</a>
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:inactivate-account' pk=prof.user.pk %}">Deactivate</a>
+      </li>
 {% endfor %}
 </ul>
 {% endblock %}

@@ -7,8 +7,8 @@ from django.utils import timezone
 from makeReports.choices import *
 
 class UpdateUserForm(forms.Form):
-    aac = forms.BooleanField()
-    department = forms.ModelChoiceField(queryset=Department.active_objects)
+    aac = forms.BooleanField(label="AAC member",required=False)
+    department = forms.ModelChoiceField(queryset=Department.active_objects, required=False)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=150)
     email = forms.CharField(max_length=30)

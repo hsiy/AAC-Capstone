@@ -71,3 +71,25 @@ class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
         return context
     def test_func(self):
         return getattr(self.request.user.profile, "aac") or (self.report.degreeProgram.department == self.request.user.profile.department)
+class UserModifyAccount(FormView):
+    form_class = UserUpdateUserForm
+    success_url = reverse_lazy('makeReports:home-page')
+    template_name = "makeReports/AACAdmin/modify_account.html"
+    def dispatch(self, request,*args,**kwargs):
+        self.userToChange = self.request.user
+        return super(UserModifyAccount,self).dispatch(request,*args,**kwargs)
+    def get_initial(self):
+        initial = super(UserModifyAccount,self).get_initial()
+        try:
+            initial['first_name'] = self.userToChange.first_name
+            initial['last_name'] = self.userToChange.last_name
+            initial['email'] = self.userToChange.email
+        except:
+            pass
+        return initial
+    def form_valid(self,form):
+        self.userToChange.first_name = form.cleaned_data['first_name']
+        self.userToChange.last_name = form.cleaned_data['last_name']
+        self.userToChange.email = form.cleaned_data['email']
+        self.userToChange.save()
+        return super(UserModifyAccount,self).form_valid(form)

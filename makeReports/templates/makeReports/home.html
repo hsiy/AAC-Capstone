@@ -35,6 +35,7 @@
     </div>
     {% endif %}
     <a type="button" class="btn btn-primary" href="accounts/logout/">Logout</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:modify-acct' %}">Edit Account</a>
     
 {% else %}
 <a type="button" class="btn btn-primary" href="accounts/login/">Login</a>

@@ -26,9 +26,7 @@ class AdminHome(LoginRequiredMixin,UserPassesTestMixin,FormView):
                 if (thisYear - dP.startingYear) % (dP.cycle) == 0:
                     #if a report for the degree program/year already
                     # exists, this won't create a new one
-                    try:
-                        Report.objects.get(year=thisYear, degreeProgram=dP)
-                    except:
+                    if Report.objects.filter(year=thisYear, degreeProgram=dP).count() == 0:
                         gR = GradedRubric.objects.create(rubricVersion = form.cleaned_data['rubric'])
                         Report.objects.create(year=thisYear, degreeProgram=dP,rubric=gR, submitted = False)
         return super(AdminHome, self).form_valid(form)
@@ -261,8 +259,8 @@ class MakeAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
-    form = UpdateUserForm
-    success_url = reverse_lazy('makeReports:admin-home')
+    form_class = UpdateUserForm
+    success_url = reverse_lazy('makeReports:account-list')
     template_name = "makeReports/AACAdmin/modify_account.html"
     def dispatch(self,request, *args,**kwargs):
         self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
@@ -288,7 +286,7 @@ class ModifyAccount(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return getattr(self.request.user.profile, "aac")
 class InactivateUser(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
     model = User
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:account-list')
     template_name = "makeReports/AACAdmin/inactivate_account.html"
     fields = ['is_active']
     def test_func(self):
@@ -300,25 +298,20 @@ class AccountList(LoginRequiredMixin, UserPassesTestMixin,ListView):
         return Profile.objects.filter(user__is_active=True)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class UserModifyAccount(LoginRequiredMixin,FormView):
-    form = UserUpdateUserForm
-    success_url = reverse_lazy('makeReports:home')
-    template_name = "makeReports/AACAdmin/modify_account.html"
-    def dispatch(self, request,*args,**kwargs):
-        self.userToChange = self.request.user
-        return super(UserModifyAccount,self).dispatch(request,*args,**kwargs)
-    def get_initial(self):
-        initial = super(UserModifyAccount,self).get_initial()
-        initial['first_name'] = self.userToChange.user.first_name
-        initial['last_name'] = self.userToChange.user.last_name
-        initial['email'] = self.userToChange.user.email
-        return initial
-    def form_valid(self,form):
-        self.userToChange.user.first_name = form.cleaned_data['first_name']
-        self.userToChange.user.last_name = form.cleaned_data['last_name']
-        self.userToChange.user.email = form.cleaned_data['email']
-        self.userToChange.save()
-        self.userToChange.user.save()
-        return super(UserModifyAccount,self).form_valid(form)
+class SearchAccountList(LoginRequiredMixin, UserPassesTestMixin,ListView):
+    model = Profile
+    template_name = 'makeReports/AACAdmin/account_list.html'
+    def get_queryset(self):
+        profs = Profile.objects.filter(user__is_active=True)
+        if self.request.GET['f']!="":
+            profs = profs.filter(user__first_name__icontains=self.request.GET['f'])
+        if self.request.GET['l']!="":
+            profs = profs.filter(user__last_name__icontains=self.request.GET['l'])
+        if self.request.GET['e']!="":
+            profs = profs.filter(user__email__icontains=self.request.GET['e'])
+        return profs
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+
 
 
