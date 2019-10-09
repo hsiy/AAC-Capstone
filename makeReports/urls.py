@@ -60,6 +60,7 @@ urlpatterns = [
     re_path(r'^aac/department/(?P<dept>\d+)/dp/(?P<pk>\d+)/recover/$', views.RecoverDegreeProgram.as_view(), name='recover-dp'),
     re_path(r'^aac/department/(?P<dept>\d+)/report/create/$',views.CreateReport.as_view(),name='add-rpt'),
     re_path(r'^aac/report/delete/(?P<pk>\d+)/$', views.DeleteReport.as_view(), name='delete-rpt'),
+    re_path(r'^aac/report/submit/(?P<pk>\d+)/$', views.ManualReportSubmit.as_view(), name='manual-submit-rpt'),
     re_path(r'^aac/report/list/$', views.ReportList.as_view(), name='report-list'),
     re_path(r'^aac/report/list/searched/$', views.ReportListSearched.as_view(), name='search-reports'),
     re_path(r'^aac/account/create/$', views.MakeAccount.as_view(), name='make-account'),
@@ -91,7 +92,6 @@ urlpatterns = [
     re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/edit/$', views.UpdateRubricItem.as_view(), name='update-RI'),
     re_path(r'^aac/rubric/(?P<rubric>\d+)/duplicate/$', views.DuplicateRubric.as_view(), name='dup-rub'),
     re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/delete/$', views.DeleteRubricItem.as_view(), name='delete-RI'),
-
     #Data Collection URLS
     re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/$', views.CreateDataCollectionRow.as_view(), name='add-data-collection'),

@@ -87,7 +87,7 @@
             {% endfor %}
     </tbody>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import Assessment</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>
 </table>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-comment' report=rpt.pk %}">Next</a>
 {% endblock %}

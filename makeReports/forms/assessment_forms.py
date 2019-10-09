@@ -24,7 +24,7 @@ class CreateNewAssessment(forms.Form):
 
 class ImportAssessmentForm(forms.Form):
     assessment = forms.ModelMultipleChoiceField(queryset=None)
-    slo = forms.ModelChoiceField(queryset=None)
+    slo = forms.ModelChoiceField(label="SLO",queryset=None)
     def __init__(self, *args, **kwargs):
         assessChoices = kwargs.pop('assessChoices',None)
         sloChoices = kwargs.pop('slos',None)

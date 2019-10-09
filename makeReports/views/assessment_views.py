@@ -69,8 +69,21 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_form_kwargs(self):
         kwargs = super(ImportAssessment,self).get_form_kwargs()
         yearIn = self.request.GET['year']
-        dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
-        kwargs['assessChoices'] = AssessmentVersion.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
+        dP = self.request.GET['dp']
+        aCs = AssessmentVersion.objects
+        if yearIn!="":
+            aCs=aCs.filter(report__year=yearIn)
+        if dP!="":
+            try:
+                aCs=aCs.filter(report__degreeProgram=DegreeProgram.objects.get(pk=dP))
+            except:
+                pass
+        if self.request.GET['slo']!="" and self.request.GET['slo']!="-1":
+            aCs=aCs.filter(slo=SLOInReport.objects.get(pk=self.request.GET['slo']))
+        aCsInRpt = AssessmentVersion.objects.filter(report=self.report)
+        for a in aCsInRpt:
+            aCs=aCs.exclude(assessment=a.assessment)
+        kwargs['assessChoices'] = aCs
         kwargs['slos'] = SLOInReport.objects.filter(report=self.report)
         return kwargs
     def form_valid(self,form):
