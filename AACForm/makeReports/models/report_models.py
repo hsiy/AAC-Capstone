@@ -121,8 +121,10 @@ class AssessmentData(models.Model):
     overallProficient = models.PositiveIntegerField(blank=True)
 class DataAdditionalInformation(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=3000, blank=True)
+    comment = models.CharField(max_length=3000, blank=True, default="")
     supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
+    def __str__(self):
+        return os.path.basename(self.supplement.name)
 class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)

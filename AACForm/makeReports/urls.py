@@ -105,6 +105,9 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/$', views.NewResultCommunication.as_view(), name='add-result-communication'),
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/(?P<resultpk>\d+)/$', views.EditResultCommunication.as_view(), name='edit-result-communication'),
     re_path(r'^report/(?P<report>\d+)/datacollection/comment/$',views.Section3Comment.as_view(),name='data-comment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/supplement/create/$',views.DataAssessmentAddInfo.as_view(),name='add-data-sup'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/supplement/(?P<pk>\d+)/edit/$',views.DataAssessmentUpdateInfo.as_view(),name='update-data-sup'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/supplement/(?P<pk>\d+)/delete/$',views.DataAssessmentDeleteInfo.as_view(),name='delete-data-sup'),
     #Decisions and Actions URLs
     re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),

@@ -277,3 +277,38 @@ class Section3Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return initial
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+class DataAssessmentAddInfo(LoginRequiredMixin,UserPassesTestMixin,CreateView):
+    model = DataAdditionalInformation
+    fields = ['comment','supplement']
+    template_name = "makeReports/DataCollection/addInfo.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(DataAssessmentAddInfo,self).dispatch(request,*args,**kwargs)
+    def form_valid(self,form):
+        form.instance.report=self.report
+        return super(DataAssessmentAddInfo,self).form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+class DataAssessmentDeleteInfo(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = DataAdditionalInformation
+    template_name = "makeReports/DataCollection/deleteInfo.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(DataAssessmentDeleteInfo,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)
+class DataAssessmentUpdateInfo(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = DataAdditionalInformation
+    template_name = "makeReports/DataCollection/updateInfo.html"
+    fields = ['comment']
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(DataAssessmentUpdateInfo,self).dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+    def test_func(self):
+        return (self.report.degreeProgram.department == self.request.user.profile.department)

@@ -91,6 +91,7 @@ def section3Context(self,context):
     except:
         pass
     context['assessment_data_dict'] = assessment_data_dict
+    context['supplement_list'] = DataAdditionalInformation.objects.filter(report=self.report)
     return context
 def section4Context(self,context):
     SLOs_ir = SLOInReport.objects.filter(report=self.report)

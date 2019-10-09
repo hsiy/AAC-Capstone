@@ -58,6 +58,29 @@
         {% endfor %}
     </tbody>
 </table>
+<h5>Supplements</h5>
+<a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:add-data-sup' report=rpt.pk %}">Add Supplement</a>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Supplement</td><td>Comment</td><td>Options</td>
+        </tr>
+        {% for sup in supplement_list %}
+        <tr>
+            <td>
+                <a href="{{sup.supplement.url}}">{{sup}}</a>
+            </td>
+            <td>
+                {{sup.comment}}
+            </td>
+            <td>
+                    <a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:update-data-sup' pk=sup.pk report=rpt.pk %}">Edit Comment</a>
+                    <a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:delete-data-sup' pk=sup.pk report=rpt.pk %}">Delete Supplement</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <table class="table">
     <tbody>
         <thead>
