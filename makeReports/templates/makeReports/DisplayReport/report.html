@@ -1,11 +1,66 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h2>Report</h2>
-<p>Author: {{report.author}} </p>
-<p>Reported Data Date Range: {{report.date_range_of_reported_data}}</p>
-{% include 'makeReports/DisplayReport/slos.html' %}
-{% include 'makeReports/DisplayReport/assessments.html' %}
-{% include 'makeReports/DisplayReport/dataCollection.html' %}
-{% include 'makeReports/DisplayReport/dAndAs.html' %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col">
+            <h2 style="text-align: center;">Report</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col" style="text-align: center;">
+            <b >{{report.year|add:"-1"}}-{{report.year}}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <b>College: {{report.degreeProgram.department.college.name}}</b>
+        </div>
+        <div class="col">
+            <b>Department: {{report.degreeProgram.department.name}}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <b>Program: {{report.degreeProgram.name}}</b>
+        </div>
+        <div class="col">
+            <b>Degree Level: {{report.degreeProgram.get_level_display}}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <b>Academic Year of Report: {{report.year|add:"-1"}}-{{report.year}}</b>
+        </div>
+        <div class="col">
+            <b>Date Range of Reported Data: {{report.date_range_of_reported_data}}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <b>Person Preparing the Report: {{report.author}}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            {% include 'makeReports/DisplayReport/slos.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% include 'makeReports/DisplayReport/assessments.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% include 'makeReports/DisplayReport/dataCollection.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% include 'makeReports/DisplayReport/dAndAs.html' %}
+        </div>
+    </div>
+</div>
 {% endblock %}
