@@ -5,22 +5,6 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
 from makeReports.choices import *
-""" class AddMovieForm(ModelForm):
-    class Meta:
-        model=Movie
-        fields=['movietitle','movieruntime','movierating','moviereleasedate','moviegenre','moviedescription','poster']
-        labels={
-            'movietitle':'Title',
-            'movieruntime':"Runtime (minutes)",
-            'movierating':'MPAA Rating',
-            'moviereleasedate':"Release date",
-            'moviegenre':"Genre",
-            'moviedescription':"Description"
-        }
-        yearNow = datetime.now().year
-        yearsT = (str(yearNow), str(yearNow+1),str(yearNow+2))+(tuple(map(str, range(1900,yearNow))))
-        widgets = {'moviereleasedate':forms.SelectDateWidget(years=yearsT)
- """
 class CreateNewSLO(forms.Form):
     text = forms.CharField(widget= forms.Textarea, max_length=600, label="SLO: ") 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ")
@@ -65,29 +49,9 @@ class CreateDPByDept(forms.ModelForm):
             'cycle': "Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)",
             'startingYear': "The first year report is assigned for cycle (leave blank if no cycle)"
         }
-class GenerateReports(forms.Form):
-    rubric = forms.ModelChoiceField(queryset=Rubric.objects.order_by('-date'))
-class CreateDepartmentForm(forms.ModelForm):
-    class Meta:
-        model = Department
-        fields = ['name', 'college']
 class ImportStakeholderForm(forms.Form):
     stk = forms.ModelChoiceField(queryset=None, label="Stakeholder Communication Methods")
     def __init__(self, *args, **kwargs):
         stkChoices = kwargs.pop('stkChoices',None)
         super(ImportStakeholderForm, self).__init__(*args, **kwargs)
         self.fields['stk'].queryset = stkChoices
-class MakeNewAccount(UserCreationForm):
-    isaac = forms.BooleanField(required=False, label="Account for AAC member?")
-    department = forms.ModelChoiceField(queryset=Department.active_objects, label="Department", required=False)
-    class Meta:
-        model = User
-        fields = ['email','username','password1','password2','isaac','first_name','last_name']
-    def save(self, commit=True):
-        user = super(MakeNewAccount, self).save(commit=True)
-        profile = user.profile
-        profile.aac = self.cleaned_data['isaac']
-        profile.department=self.cleaned_data['department']
-        user.save()
-        profile.save()
-        return user, profile
