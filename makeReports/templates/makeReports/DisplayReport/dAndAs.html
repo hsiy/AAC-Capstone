@@ -1,5 +1,5 @@
 <!--things needed in context: decision_actions_list,report-->
-<h3>Decisions and Actions</h3>
+<h3>IV. Decisions and Actions</h3>
 <table class='table'>
     <tbody>
         {% for SLO_decisions in decisions_actions_list %}
@@ -13,23 +13,23 @@
                     <td>
                         <table class='table'>
                             <tr> 
-                                <td> Decision Process: </td>
+                                <td> <b>Decision Process:</b> </td>
                                 <td> {{ SLO_decisions.decisions_obj.decisionProcess }} </td>
                             </tr>
                             <tr> 
-                                <td> Decision Makers: </td>
+                                <td> <b>Decision Makers: </b></td>
                                 <td> {{ SLO_decisions.decisions_obj.decisionMakers }} </td>
                             </tr>
                             <tr> 
-                                <td> Decision Timeline: </td>
+                                <td> <b>Decision Timeline: </b></td>
                                 <td> {{ SLO_decisions.decisions_obj.decisionTimeline }} </td>
                             </tr>
                             <tr> 
-                                <td> Data Used: </td>  
+                                <td> <b>Data Used: </b></td>  
                                 <td> {{ SLO_decisions.decisions_obj.dataUsed }} </td>
                             </tr>
                             <tr> 
-                                <td> Action Timeline </td>
+                                <td><b> Action Timeline</b> </td>
                                 <td> {{ SLO_decisions.decisions_obj.actionTimeline }} </td> 
                             </tr>
                         </table>

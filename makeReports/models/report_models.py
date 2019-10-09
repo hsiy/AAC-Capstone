@@ -137,11 +137,11 @@ class ResultCommunicate(models.Model):
 class DecisionsActions(models.Model):
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    decisionProcess = models.CharField(max_length=3000)
-    decisionMakers = models.CharField(max_length=3000)
-    decisionTimeline = models.CharField(max_length=3000)
-    dataUsed = models.CharField(max_length=3000)
-    actionTimeline = models.CharField(max_length=3000)
+    decisionProcess = models.CharField(max_length=3000, blank=True, default="")
+    decisionMakers = models.CharField(max_length=3000, blank=True, default="")
+    decisionTimeline = models.CharField(max_length=3000, blank=True, default="")
+    dataUsed = models.CharField(max_length=3000, blank=True, default="")
+    actionTimeline = models.CharField(max_length=3000, blank=True, default="")
 class Rubric(models.Model):
     date = models.DateField()
     fullFile = models.FileField(upload_to='rubrics', storage=gd_storage)

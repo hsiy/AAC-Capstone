@@ -1,5 +1,5 @@
 <!--things needed in context: assessment_data_dict,report-->
-<h3>Data Collection and Analysis Summary</h3>
+<h3>III. Data Collection and Analysis</h3>
 <table class="table">
     <tbody>
         <tr>
@@ -70,22 +70,8 @@
         {% endfor %}
     </tbody>
 </table>
-<table class='table'>
-    <thead>
-        Describe how results are communicated within the program
-    </thead>
-    <tbody>
-        <tr>
-            <td>Text</td>
-        </tr>
-        <tr>
-            {% if assessment_data_dict.result_communication_id == None %}
-                <td>Describe how results are communicated within the program. Address each SLO.</td>
-            {% else %}
-                <td>{{ assessment_data_dict.result_communication_text }}</td>
-            {% endif %}
-        </tr>
-    </tbody>
-</table>
+<h5>Description of how results are communicated within the program</h5>
+<p>{{ assessment_data_dict.result_communication_text }}</p>
+
 <h5>Comment</h5>
 {{report.section3Comment}}
