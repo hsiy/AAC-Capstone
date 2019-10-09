@@ -312,6 +312,12 @@ class SearchAccountList(LoginRequiredMixin, UserPassesTestMixin,ListView):
         return profs
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-
+class ManualReportSubmit(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
+    model = Report
+    fields = ['submitted']
+    template_name = 'makeReports/AACAdmin/manualSubmit.html'
+    success_url = reverse_lazy('makeReports:report-list')
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
 
 

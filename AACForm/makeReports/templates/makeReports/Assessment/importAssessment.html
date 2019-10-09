@@ -6,11 +6,12 @@
 <form action="{% url 'makeReports:import-assessment' report=rpt %}" type="get">
         <!--<input id="name" type="text" name="name"></div>-->
         <div><label>Year: </label> 
-            <input id="year" name="year" type="number" required>
+            <input id="year" name="year" type="number">
         </div>
         <div> 
             <label>Degree Program: </label>
              <select id = "dp" name="dp" required>
+                 <option value = "">Any</option>
                 {% for degPro in degPro_list %}
                     <option value = "{{degPro.pk}}" {% if degPro.pk == currentDPpk %}selected{% endif %}>{{degPro.name}}</option>
                {% endfor %}
@@ -19,6 +20,7 @@
         <div>
             <label>SLO: </label>
             <select id = "slo" name="slo" required>
+                <option value = "-1">Any</option>
                 {% for slo in slo_list %}
                     <option value = "{{slo.pk}}">{{slo.goalText}}</option>
                 {% endfor %}

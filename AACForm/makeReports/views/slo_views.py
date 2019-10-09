@@ -70,7 +70,11 @@ class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
          kwargs = super(ImportSLO,self).get_form_kwargs()
          yearIn = self.request.GET['year']
          dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
-         kwargs['sloChoices'] = SLOInReport.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
+         sloChoices = SLOInReport.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
+         slosInReport = SLOInReport.objects.filter(report=self.report)
+         for slo in slosInReport:
+             sloChoices = sloChoices.exclude(slo=slo.slo)
+         kwargs['sloChoices'] = sloChoices
          return kwargs
     def form_valid(self,form):
         rpt = self.report
