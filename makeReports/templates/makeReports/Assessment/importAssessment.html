@@ -11,7 +11,7 @@
         <div> 
             <label>Degree Program: </label>
              <select id = "dp" name="dp" required>
-                 <option value = "">Any</option>
+                 <option value = "-1">Any</option>
                 {% for degPro in degPro_list %}
                     <option value = "{{degPro.pk}}" {% if degPro.pk == currentDPpk %}selected{% endif %}>{{degPro.name}}</option>
                {% endfor %}

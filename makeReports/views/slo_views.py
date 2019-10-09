@@ -241,7 +241,6 @@ class DeleteImportedSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         return super(DeleteImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         oldNum = self.oldNum
-        print("od"+str(oldNum))
         num = self.report.numberOfSLOs
         slos = SLOInReport.objects.filter(report=self.report)
         for slo in slos:

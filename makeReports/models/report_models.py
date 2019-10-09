@@ -64,6 +64,7 @@ class SLOInReport(models.Model):
     changedFromPrior = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     number = models.PositiveIntegerField(default=1)
+    numberOfAssess = models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.goalText
 class GradGoal(models.Model):
@@ -87,6 +88,7 @@ class Assessment(models.Model):
 class AssessmentVersion(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     slo = models.ForeignKey(SLOInReport, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField(default=0)
     firstInstance = models.BooleanField()
     changedFromPrior = models.BooleanField()
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
