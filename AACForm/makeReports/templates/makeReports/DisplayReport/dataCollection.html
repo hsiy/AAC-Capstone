@@ -9,28 +9,46 @@
             <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
-        <tr>
-            <td>{{assessment.slo_text}} : {{assessment.assessment_text}}</td>
+        <tr {% if not assessment.slo_obj.number|divisibleby:2 %} bgcolor="E0E0E0" {% endif %}>
+            <td><b>SLO {{assessment.slo_obj.number}} -
+                Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b></td>
             <td>{{assessment.data_range}}</td>
             <td>{{assessment.num_students_assessed}}</td>
             <td>
                 {% if assessment.subassessments_len > 0 %}
                     {% for subassessment in assessment.subassessments %}
                         {% if forloop.last %}
-                            {{subassessment.0}}: {{subassessment.1}}%
+                            {{subassessment.0}}: <b>{{subassessment.1}}%</b>
                         {% else %}
-                            {{subassessment.0}}: {{subassessment.1}}% <br>
+                            {{subassessment.0}}: <b>{{subassessment.1}}%</b> <br>
                         {% endif %}
                     {% endfor %}
                 {% else %}
-                    {{assessment.overall_proficient}}%
+                    <b>{{assessment.overall_proficient}}%</b>
                 {% endif %}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
+<h5>Supplements</h5>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Supplement</td><td>Comment</td>
+        </tr>
+        {% for sup in supplement_list %}
+        <tr>
+            <td>
+                <a href="{{sup.supplement.url}}">{{sup}}</a>
+            </td>
+            <td>
+                {{sup.comment}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <table class="table">
     <tbody>
         <thead>

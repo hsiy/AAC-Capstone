@@ -27,21 +27,25 @@ def section2Context(self,context):
     return context
 def section3Context(self,context):
     assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
-    assessments = AssessmentVersion.objects.filter(report=self.report)
+    assessments = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     for assessment in assessments:
         temp_dict = dict()
         temp_dict['assessment_id'] = assessment.pk
         try:
             assessment_obj = Assessment.objects.get(pk=assessment.assessment.pk)
             temp_dict['assessment_text'] = assessment_obj.title
+            temp_dict['assessment_obj'] = assessment
         except:
             temp_dict['assessment_text'] = None
+            temp_dict['assessment_obj'] = None
 
         try:
             slo_obj = SLOInReport.objects.get(pk=assessment.slo.pk)
             temp_dict['slo_text'] = slo_obj.goalText
+            temp_dict['slo_obj'] = slo_obj
         except:
             temp_dict['slo_text'] = None
+            temp_dict['slo_obj'] = None
 
         try:
             assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
@@ -99,6 +103,7 @@ def section4Context(self,context):
     for slo_ir in SLOs_ir:
         temp_dict = dict()
         slo_obj = slo_ir.slo
+        temp_dict['slo_obj'] = slo_ir
         temp_dict['slo_pk'] = slo_obj.pk
         temp_dict['slo_text'] = slo_ir.goalText
         try:

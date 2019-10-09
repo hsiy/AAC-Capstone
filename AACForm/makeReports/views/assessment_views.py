@@ -22,7 +22,7 @@ class AssessmentSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         return super(AssessmentSummary,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         report = self.report
-        objs = AssessmentVersion.objects.filter(report=report).order_by("slo__number")
+        objs = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")
         return objs
     def get_context_data(self, **kwargs):
         context = super(AssessmentSummary, self).get_context_data()
@@ -44,8 +44,10 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
         rpt = self.report
+        form.cleaned_data['slo'].numberOfAssess += 1
+        form.cleaned_data['slo'].save()
         assessObj = Assessment.objects.create(title=form.cleaned_data['title'], domainExamination=False, domainProduct=False, domainPerformance=False, directMeasure =form.cleaned_data['directMeasure'])
-        assessRpt = AssessmentVersion.objects.create(date=datetime.now(), assessment=assessObj, description=form.cleaned_data['description'], finalTerm=form.cleaned_data['finalTerm'], where=form.cleaned_data['where'], allStudents=form.cleaned_data['allStudents'], sampleDescription=form.cleaned_data['sampleDescription'], frequency=form.cleaned_data['frequency'], threshold=form.cleaned_data['threshold'], target=form.cleaned_data['target'] ,slo=form.cleaned_data['slo'] ,firstInstance= True, report=rpt, changedFromPrior=False)
+        assessRpt = AssessmentVersion.objects.create(date=datetime.now(), number=form.cleaned_data['slo'].numberOfAssess, assessment=assessObj, description=form.cleaned_data['description'], finalTerm=form.cleaned_data['finalTerm'], where=form.cleaned_data['where'], allStudents=form.cleaned_data['allStudents'], sampleDescription=form.cleaned_data['sampleDescription'], frequency=form.cleaned_data['frequency'], threshold=form.cleaned_data['threshold'], target=form.cleaned_data['target'] ,slo=form.cleaned_data['slo'] ,firstInstance= True, report=rpt, changedFromPrior=False)
         dom = form.cleaned_data['domain']
         if ("Pe" in dom):
             assessObj.domainPerformance = True
@@ -73,7 +75,7 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         aCs = AssessmentVersion.objects
         if yearIn!="":
             aCs=aCs.filter(report__year=yearIn)
-        if dP!="":
+        if dP!="" and dP!="-1":
             try:
                 aCs=aCs.filter(report__degreeProgram=DegreeProgram.objects.get(pk=dP))
             except:
@@ -89,8 +91,12 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def form_valid(self,form):
         rpt = self.report
         slo = form.cleaned_data['slo']
+        num = slo.numberOfAssess
         for assessVers in form.cleaned_data['assessment']:
-            AssessmentVersion.objects.create(slo=slo,date=datetime.now(), description=assessVers.description ,assessment=assessVers.assessment, firstInstance=False, report=rpt, changedFromPrior=False, finalTerm=assessVers.finalTerm, where=assessVers.where, allStudents=assessVers.allStudents, sampleDescription=assessVers.sampleDescription, frequency=assessVers.frequency, threshold=assessVers.threshold, target=assessVers.target)
+            num += 1
+            AssessmentVersion.objects.create(slo=slo,number=num,date=datetime.now(), description=assessVers.description ,assessment=assessVers.assessment, firstInstance=False, report=rpt, changedFromPrior=False, finalTerm=assessVers.finalTerm, where=assessVers.where, allStudents=assessVers.allStudents, sampleDescription=assessVers.sampleDescription, frequency=assessVers.frequency, threshold=assessVers.threshold, target=assessVers.target)
+        slo.numberOfAssess = num
+        slo.save()
         return super(ImportAssessment,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(ImportAssessment, self).get_context_data(**kwargs)
@@ -278,23 +284,42 @@ class DeleteImportedAssessment(DeleteView):
     template_name = "makeReports/Assessment/deleteAssessment.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
+        a = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
+        self.oldNum = a.number
+        self.slo = a.slo
         return super(DeleteImportedAssessment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        #to be changed to subassessment page!
+        oldNum = self.oldNum
+        num = self.slo.numberOfAssess
+        assess = AssesmentVersion.objects.filter(report=self.report)
+        for a in assess:
+            if a.number > oldNum:
+                a.number -= 1
+                a.save()
+        self.slo.numberOfAssess -= 1
+        self.slo.save()
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
 class DeleteNewAssessment(DeleteView):
     model = AssessmentVersion
     template_name = "makeReports/Assessment/deleteAssessment.html"
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
+        a = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
+        self.oldNum = a.number
+        self.slo = a.slo
         return super(DeleteNewAssessment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        #to be changed to subassessment page!
-        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
-    def form_valid(self,form):
         ASSESSIR = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
         assessment = ASSESSIR.assessment
         assessment.delete()
         assessment.save()
-        return super(DeleteNewAssessment,self).form_valid(form)
-
+        oldNum = self.oldNum
+        num = self.slo.numberOfAssess
+        assess = AssesmentVersion.objects.filter(report=self.report)
+        for a in assess:
+            if a.number > oldNum:
+                a.number -= 1
+                a.save()
+        self.slo.numberOfAssess -= 1
+        self.slo.save()        
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])

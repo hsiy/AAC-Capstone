@@ -2,7 +2,6 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Assessment Summary</h3>
-<h3>Assessment Summary</h3>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>
 <table class="table-responsive">

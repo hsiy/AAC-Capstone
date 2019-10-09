@@ -2,13 +2,9 @@
 <h3>Decisions and Actions</h3>
 <table class='table'>
     <tbody>
-        <tr>
-            <td>SLO</td>
-            <td>Descriptions</td>
-        </tr>
         {% for SLO_decisions in decisions_actions_list %}
             <tr>
-                <td>{{ SLO_decisions.slo_text }}</td>
+                <td><b>SLO {{ SLO_decisions.slo_obj.number }}</b></td>
                 {% if SLO_decisions.decisions_obj == None %}
                     <td>(No Information)</td>
                     <td>
