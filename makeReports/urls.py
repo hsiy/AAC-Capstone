@@ -79,8 +79,15 @@ urlpatterns = [
     re_path(r'report/(?P<report>\d+)/feedback/$', views.Feedback.as_view(), name='rpt-feedback'),
     #Rubric urls
     re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
+    re_path(r'^aac/rubric/list/searched/$', views.SearchRubricList.as_view(),name="search-rubric-list"),
     re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),
     re_path(r'^aac/rubric/(?P<rubric>\d+)/addRI/$', views.AddRubricItems.as_view(), name='add-RI'),
+    re_path(r'^aac/rubric/(?P<pk>\d+)/view/$', views.ViewRubric.as_view(), name='view-rubric'),
+    re_path(r'^aac/rubric/(?P<pk>\d+)/update/$', views.UpdateRubricFile.as_view(), name='update-rubric'),
+    re_path(r'^aac/rubric/(?P<pk>\d+)/delete/$', views.DeleteRubric.as_view(), name='delete-rubric'),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/edit/$', views.UpdateRubricItem.as_view(), name='update-RI'),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/duplicate/$', views.DuplicateRubric.as_view(), name='dup-rub'),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/delete/$', views.DeleteRubricItem.as_view(), name='delete-RI'),
 
     #Data Collection URLS
     re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Grading Section {{section}}</h3>
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">
     <div class="row">
@@ -15,12 +14,11 @@
         <div class="col">
             <!--grading column-->
             Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
-            <h5>Section {{section}} Rubric</h5>
                 <table>
                   {% for GRI in obj_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text}}: {{GRI.get_grade_display}}
+                        {{GRI.item.text}}: <b>{{GRI.get_grade_display}}</b>
                       </td>
                     </tr>
                     <tr>

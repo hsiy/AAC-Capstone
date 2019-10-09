@@ -18,6 +18,19 @@ class RubricList(LoginRequiredMixin,UserPassesTestMixin,ListView):
         return Rubric.objects.order_by("-date")
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
+class SearchRubricList(LoginRequiredMixin,UserPassesTestMixin,ListView):
+    model = Rubric
+    template_name = "makeReports/Rubric/rubricList.html"
+    def get_queryset(self):
+        rubs = Rubric.objects
+        day = self.request.GET['date']
+        if self.request.GET['name']!="":
+            rubs=rubs.filter(name__icontains=self.request.GET['name'])
+        if day!="":
+            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
+        return rubs.order_by("-date")
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
 class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     template_name = "makeReports/Rubric/addRubric.html"
     success_url = reverse_lazy('makeReports:rubric-list')
@@ -45,8 +58,8 @@ class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
         except:
             pass
         return super(AddRubricItems,self).form_valid(form)
-    def get_context_data(self):
-        context = super(AddRubricItems,self).get_context_data()
+    def get_context_data(self, **kwargs):
+        context = super(AddRubricItems,self).get_context_data(**kwargs)
         context['numRIs'] = RubricItem.objects.filter(rubricVersion=self.rubric).count()
         return context
     def get_success_url(self):
@@ -55,41 +68,55 @@ class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
         return getattr(self.request.user.profile, "aac")
 class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
     model = Rubric
-    template_name = ""
+    template_name = "makeReports/Rubric/rubricDetail.html"
+    def get_context_data(self,**kwargs):
+        context = super(ViewRubric,self).get_context_data(**kwargs)
+        context['rIs'] = RubricItem.objects.filter(rubricVersion=self.object).order_by("section","order","pk")
+        context['obj'] = self.object
+        return context
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = RubricItem
     fields = ['text','section','order','DMEtext','MEtext','EEtext']
-    template_name = ""
-    success_url = ""
+    template_name = "makeReports/Rubric/updateRubricItem.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class UpdateRubricFile(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Rubric
     fields = ['name','fullFile']
-    template_name = ""
-    success_url = ""
+    template_name = "makeReports/Rubric/updateRubric.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
-class DeleteRubricItem(LoginRequiredMixin,UserPassesTestMixin):
-    #error will result if they try to delete a ri that already has a grade somewhere
+class DeleteRubricItem(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = RubricItem
-    template_name = ""
-    success_url = ""
+    template_name = "makeReports/Rubric/deleteRubricItem.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
 class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
     #duplicate -> edit/delete/add intended workflow instead of some kind of import
-    form_class = DuplicateRubric
-    success_url = ""
-    template_name = ""
+    form_class = DuplicateRubricForm
+    success_url = reverse_lazy('makeReports:rubric-list')
+    template_name = "makeReports/Rubric/duplicateRubric.html"
     def form_valid(self,form):
-        rubToDup = form.cleaned_data['rubToDup']
+        rubToDup = Rubric.objects.get(pk=self.kwargs['rubric'])
         RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
-        newRub = Rubric.object.create(date=datetime.now(), fullFile=rubToDup.fullFile)
+        newRub = Rubric.objects.create(date=datetime.now(), fullFile=rubToDup.fullFile, name=form.cleaned_data['new_name'])
         for ri in RIs:
-            newRi = RubricItem.object.create(text=ri.text, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
-        return super(DuplicateRubric,)
+            newRi = RubricItem.objects.create(text=ri.text, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
+        return super(DuplicateRubric,self).form_valid(form)
+    def test_func(self):
+        return getattr(self.request.user.profile, "aac")
+class DeleteRubric(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model = Rubric
+    template_name = "makeReports/Rubric/deleteRubric.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:rubric-list')
     def test_func(self):
         return getattr(self.request.user.profile, "aac")

@@ -26,8 +26,9 @@ class RubricItemForm(forms.ModelForm):
             'MEtext':"Met expectations with concerns text",
             'EEtext':'Met expectations text'
         }
-class DuplicateRubric(forms.Form):
-    rubToDup = forms.ModelChoiceField(queryset=Rubric.objects, widget=forms.HiddenInput())
+class DuplicateRubricForm(forms.Form):
+    #rubToDup = forms.ModelChoiceField(label="Rubric to duplicate",queryset=Rubric.objects,widget=forms.HiddenInput(),required=False)
+    new_name = forms.CharField(max_length=1000)
 class SubmitGrade(forms.Form):
     hidden = forms.CharField(max_length=5,widget=forms.HiddenInput(), required=False)
     def __init__(self, *args, **kwargs):

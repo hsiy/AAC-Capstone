@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h5>Rubric {{object.name}}</h5>
+File: <a href="{{object.fullFile.url}}">Download</a>
+<table>
+    {% for RI in rIs %}
+    <tr>
+        <td>
+        {{RI.text}}
+        </td>
+        <td>
+                <a class="btn btn-primary" href="{% url 'makeReports:update-RI' rubric=object.pk pk=RI.pk %}">Edit Item</a>
+                <a class="btn btn-primary" href="{% url 'makeReports:delete-RI' rubric=object.pk pk=RI.pk %}">Delete Item</a>
+            </td>
+    </tr>
+    <tr>
+        <td>
+
+        <div class="card card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{RI.DMEtext}}</li>
+                    <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{RI.MEtext}}</li>
+                    <li class="list-group-item"><b>Met Expectations Established: </b>{{RI.EEtext}}</li>
+                </ul>
+        </div>
+    </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -160,9 +160,11 @@ class RubricItem(models.Model):
     DMEtext = models.CharField(max_length=1000, default="", blank=True)
     MEtext = models.CharField(max_length=1000, default="", blank=True)
     EEtext = models.CharField(max_length=1000, default="", blank=True)
+    def __str__(self):
+        return self.text
 class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
-    item = models.ForeignKey(RubricItem, on_delete=models.PROTECT)
+    item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
     grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
 class ReportSupplement(models.Model):
     supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
