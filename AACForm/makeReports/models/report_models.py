@@ -137,6 +137,7 @@ class ResultCommunicate(models.Model):
 class DecisionsActions(models.Model):
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    text = models.CharField(max_length=3000, blank=True, default="")
     decisionProcess = models.CharField(max_length=3000, blank=True, default="")
     decisionMakers = models.CharField(max_length=3000, blank=True, default="")
     decisionTimeline = models.CharField(max_length=3000, blank=True, default="")

@@ -2,6 +2,10 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Result Communication</h3>
+<p>Briefly describe specific decisions and actions related to each SLO.
+Include who (e.g., program faculty, a faculty committee, etc.) made the decision, 
+when the decision was made (e.g., faculty retreat, faculty meeting, etc.), what data informed the decision, 
+and a timeline for actions taken or to be taken. Add rows as needed to accommodate additional SLOs.</p>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
