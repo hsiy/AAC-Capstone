@@ -60,7 +60,7 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     def dispatch(self, request, *args, **kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-        return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
+        return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_form(self):
         form = super(EditDecisionAction,self).get_form()
         form.fields['text'].widget=forms.Textarea()
