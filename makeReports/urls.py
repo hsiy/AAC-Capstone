@@ -111,7 +111,7 @@ urlpatterns = [
     #Decisions and Actions URLs
     re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),
-    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<decactpk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<pk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/comment/$',views.Section4Comment.as_view(),name='d-a-comment'),
 
 ]

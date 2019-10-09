@@ -11,28 +11,7 @@
                     </td>
                 {% else %}
                     <td>
-                        <table class='table'>
-                            <tr> 
-                                <td> <b>Decision Process:</b> </td>
-                                <td> {{ SLO_decisions.decisions_obj.decisionProcess }} </td>
-                            </tr>
-                            <tr> 
-                                <td> <b>Decision Makers: </b></td>
-                                <td> {{ SLO_decisions.decisions_obj.decisionMakers }} </td>
-                            </tr>
-                            <tr> 
-                                <td> <b>Decision Timeline: </b></td>
-                                <td> {{ SLO_decisions.decisions_obj.decisionTimeline }} </td>
-                            </tr>
-                            <tr> 
-                                <td> <b>Data Used: </b></td>  
-                                <td> {{ SLO_decisions.decisions_obj.dataUsed }} </td>
-                            </tr>
-                            <tr> 
-                                <td><b> Action Timeline</b> </td>
-                                <td> {{ SLO_decisions.decisions_obj.actionTimeline }} </td> 
-                            </tr>
-                        </table>
+                        {{SLO_decisions.decisions_obj.text}}
                     </td>
                     <td>
                     </td>
