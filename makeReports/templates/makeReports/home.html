@@ -11,7 +11,7 @@
     <h3>Department Reports To-Do</h3>
     <ul class="list-group">
     {% for r in object_list %}
-        <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
+        <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} ({{r.degreeProgram.level}})
                 {% if r.returned %} (this report has been returned by the AAC for modification) <a type="button" class="btn btn-danger" href="{% url 'makeReports:slo-summary' report=r.pk %}">Modify</a> 
                 <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
                 {% else %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-first-page' pk=r.pk %}">Start</a>
@@ -23,7 +23,7 @@
     </ul>
     <h3>Department Reports Graded</h3>
     {% for r in gReps %}
-    <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
+    <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}}  ({{r.degreeProgram.level}})
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=r.pk %}">View</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
     </li>

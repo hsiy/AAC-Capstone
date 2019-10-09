@@ -22,6 +22,7 @@ class Report(models.Model):
     section4Comment = models.CharField(max_length=2000, blank=True, null=True)
     submitted = models.BooleanField()
     returned = models.BooleanField(default=False)
+    numberOfSLOs = models.PositiveIntegerField(default=0)
 class College(models.Model):
     name = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
@@ -62,6 +63,7 @@ class SLOInReport(models.Model):
     firstInstance = models.BooleanField()
     changedFromPrior = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField(default=1)
     def __str__(self):
         return self.goalText
 class GradGoal(models.Model):
@@ -95,7 +97,7 @@ class AssessmentVersion(models.Model):
     where = models.CharField(max_length=200)
     allStudents = models.BooleanField()
     #false = sample of students
-    sampleDescription = models.CharField(max_length=200)
+    sampleDescription = models.CharField(max_length=200,blank=True,null=True)
     frequency = models.CharField(max_length=100)
     #the below are percentage points
     threshold = models.CharField(max_length=500) # Should be text field, change later

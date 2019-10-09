@@ -13,7 +13,7 @@ class CreateNewAssessment(forms.Form):
     finalTerm = forms.ChoiceField(label="When assessment takes place",choices = ((True, "In final term"), (False, "In final year")))
     where = forms.CharField(label="Where does assessment take place",max_length=200)
     allStudents = forms.ChoiceField(label="Are all students assessed?",choices = ((True, "All Students"), (False,"Sample of Students")))
-    sampleDescription = forms.CharField(label="What students are sampled",widget= forms.Textarea, max_length=200)
+    sampleDescription = forms.CharField(label="What students are sampled",widget= forms.Textarea, max_length=200, required=False)
     frequency = forms.CharField(widget=forms.Textarea, max_length=100)
     threshold = forms.CharField(max_length=500,label="Proficiency Threshold")
     target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")

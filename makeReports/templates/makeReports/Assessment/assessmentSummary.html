@@ -2,21 +2,34 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Assessment Summary</h3>
-<table class="table">
+<h3>Assessment Summary</h3>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>
+<table class="table-responsive">
     <tbody>
             <tr>
-                <td>SLO</td><td>Title of Measure</td><td>Description of How Measure Aligns to SLO</td><td>Domain</td><td>Type</td><td>Point in Program Assessment is Administered</td><td>Where does the assessment occur</td><td>Population Measured</td><td>Frequency of Data Collection</td><td>Proficiency Threshold</td><td>Program Proficiency Target</td><td>Supplement</td><td>Options</td>
-            </tr>
+                <td>
             {% for assessment in assessment_list %}
+            <table class="table-responsive table-bordered">
+            <tbody>
+            <tr>
+                <td bgcolor="B0B0B0" colspan="2">
+                    <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText}}</i>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <b>1. Title of Measure: </b><i>{{assessment.assessment.title}}</i>
+                </td>
+            <tr>
+                <td colspan="2">
+                    <b>2. Description of How the Measure Aligns to the SLO </b>
+                    <p>{{assessment.description}}</p>
+                </td>
+            </tr>
             <tr>
                 <td>
-                    {{assessment.slo.goalText}}
-                </td>
-                <td>
-                    {{assessment.assessment.title}}
-                </td>
-                <td>
-                    {{assessment.description}}
+                    <b>3. Domain</b>
                 </td>
                 <td>
                     {% if assessment.assessment.domainProduct %}
@@ -29,6 +42,11 @@
                         Examination
                     {% endif %}
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>4. Type</b>
+                </td>
                 <td>
                     {% if assessment.assessment.directMeasure %}
                         Direct Measure
@@ -36,32 +54,54 @@
                         Indirect Measure
                     {% endif %}
                 </td>
+            <tr>
+                <td>
+                    <b><p>5. Point in Program </p>
+                        Assessment is Administered</b>
+                </td>
                 <td>
                     {% if assessment.finalTerm %}
                             In Final Term of Program
                     {% else %}
                             In Final Year of Program
                     {% endif %}
+                    <p>Where does the assessment occur: <i>{{assessment.where}}</i></p>
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    {{assessment.where}}
+                    <b>6. Population Measured</b>
                 </td>
                 <td>
                     {% if assessment.allStudents %}
                             All Students
                     {% else %}
-                            {{assessment.sampleDescription}}
+                            <p>Sample of Students</p>
+                            <p><i>{{assessment.sampleDescription}}</i></p>
                     {% endif %}
                 </td>
+            <tr>
+                <td><b>7. Frequency of Data Collection</b></td>
                 <td>
                     {{assessment.frequency}}
                 </td>
+            <tr>
                 <td>
-                    {{assessment.threshold}}
+                    <b>8. Proficiency Threshold</b>
                 </td>
                 <td>
-                    {{assessment.target}}
+                    <i>{{assessment.threshold}}</i>
                 </td>
+            <tr>
+                <td>
+                    <b>9. Program Proficiency Target</b>
+                </td>
+                <td>
+                    <i>{{assessment.target}}</i>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Supplements</b></td>
                 <td>
                     {% for sup in assessment.supplements.all %}
                         {% if forloop.last %}
@@ -71,23 +111,27 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td>
-                    {% if assessment.firstInstance %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
-
-                    {% else %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
-                    {% endif %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
+            </tr>
+            <tr>
+                <td><b>Options</b></td>
+                <td>{% if assessment.firstInstance %}
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
+    
+                        {% else %}
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
+                        {% endif %}
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
                 </td>
             </tr>
+        </tbody>
+        </table>
             {% endfor %}
+    </td>
+    </tr>
     </tbody>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>
 </table>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-comment' report=rpt.pk %}">Next</a>
 {% endblock %}
