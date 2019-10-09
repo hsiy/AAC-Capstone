@@ -22,7 +22,7 @@ class AssessmentSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
         return super(AssessmentSummary,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         report = self.report
-        objs = AssessmentVersion.objects.filter(report=report)
+        objs = AssessmentVersion.objects.filter(report=report).order_by("slo__number")
         return objs
     def get_context_data(self, **kwargs):
         context = super(AssessmentSummary, self).get_context_data()
