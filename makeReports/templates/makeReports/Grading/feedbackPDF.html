@@ -27,7 +27,7 @@
     {% for r in GRIs1 %}
     <tr class="justify-content-center">
         <td>
-            {{r.item.text}}
+            {{r.item.text|safe}}
         </td>
         <td style="width:7%">
             {{r.item.abbreviation}}
@@ -51,7 +51,7 @@
     {% for r in GRIs2 %}
     <tr>
         <td>
-            {{r.item.text}}
+            {{r.item.text|safe}}
         </td>
         <td>
             {{r.item.abbreviation}}
@@ -75,7 +75,7 @@
         {% for r in GRIs3 %}
         <tr>
             <td>
-                {{r.item.text}}
+                {{r.item.text|safe}}
             </td>
             <td>
                 {{r.item.abbreviation}}
@@ -99,7 +99,7 @@
     {% for r in GRIs4 %}
     <tr>
         <td>
-            {{r.item.text}}
+            {{r.item.text|safe}}
         </td>
         <td>
             {{r.item.abbreviation}}
@@ -120,22 +120,22 @@
     </tr>
     <tr>
         <td colspan="5">
-            <b>Student Learning Outcomes (SLOs): </b> {{rubric.section1Comment}}
+            <b>Student Learning Outcomes (SLOs): </b> {{rubric.section1Comment|safe}}
         </td>
     </tr>
     <tr>
         <td colspan="5">
-            <b>Measures: </b>{{rubric.section2Comment}}
+            <b>Measures: </b>{{rubric.section2Comment|safe}}
         </td>
     </tr>
     <tr>
         <td colspan="5">
-            <b>Results Reported / Data Collection and Analysis: </b> {{rubric.section3Comment}}
+            <b>Results Reported / Data Collection and Analysis: </b> {{rubric.section3Comment|safe}}
         </td>
     </tr>
     <tr>
         <td colspan="5">
-            <b>Decisions and Actions: </b>{{rubric.section4Comment}}
+            <b>Decisions and Actions: </b>{{rubric.section4Comment|safe}}
         </td>
     </tr>
 

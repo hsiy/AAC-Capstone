@@ -19,7 +19,7 @@
                   {% for GRI in object_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text}}: {{GRI.get_grade_display}}
+                        {{GRI.item.text|safe}}: {{GRI.get_grade_display}}
                       </td>
                     </tr>
                     <tr>
@@ -30,9 +30,9 @@
                         <div class="collapse" id="col{{GRI.pk}}">
                                 <div class="card card-body">
                                         <ul class="list-group">
-                                            <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{GRI.item.DMEtext}}</li>
-                                            <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{GRI.item.MEtext}}</li>
-                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext}}</li>
+                                            <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{GRI.item.DMEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{GRI.item.MEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext|safe}}</li>
                                         </ul>
                                 </div>
                         </div>
@@ -40,11 +40,11 @@
                     </tr>
                   {% endfor %}
                   <tr><td><h5>Comments</h5></td></tr>
-                  <tr><td><b>Section 1: </b>{{gRub.section1Comment}}</td></tr>
-                  <tr><td><b>Section 2: </b>{{gRub.section2Comment}}</td></tr>
-                  <tr><td><b>Section 3: </b>{{gRub.section3Comment}}</td></tr>
-                  <tr><td><b>Section 4: </b>{{gRub.section4Comment}}</td></tr>
-                  <tr><td><b>Overall: </b>{{gRub.generalComment}}</td></tr>
+                  <tr><td><b>Section 1: </b>{{gRub.section1Comment|safe}}</td></tr>
+                  <tr><td><b>Section 2: </b>{{gRub.section2Comment|safe}}</td></tr>
+                  <tr><td><b>Section 3: </b>{{gRub.section3Comment|safe}}</td></tr>
+                  <tr><td><b>Section 4: </b>{{gRub.section4Comment|safe}}</td></tr>
+                  <tr><td><b>Overall: </b>{{gRub.generalComment|safe}}</td></tr>
                 </table>
                 <form method="post" class="form" enctype="multipart/form-data">
                   {% csrf_token %}

@@ -11,7 +11,7 @@
                     <td>(No Information)</td>
                 {% else %}
                     <td>
-                        {{SLO_decisions.decisions_obj.text}}
+                        {{SLO_decisions.decisions_obj.text|safe}}
                     </td>
                 {% endif %}
             </tr>
@@ -20,4 +20,4 @@
 </table>
 </div>
 <div class="subsection">B. Comment</div>
-{{report.section4Comment}}
+{{report.section4Comment|safe}}

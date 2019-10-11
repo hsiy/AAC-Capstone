@@ -14,6 +14,8 @@ from django.views.generic.edit import FormMixin
 from django.views.generic.base import ContextMixin
 from makeReports.views.helperFunctions.section_context import *
 from django import forms
+from django_summernote.widgets import SummernoteWidget
+
 
 class DecisionsActionsSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = DecisionsActions
@@ -43,7 +45,7 @@ class AddDecisionAction(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_form(self):
         form = super(AddDecisionAction,self).get_form()
-        form.fields['text'].widget=forms.Textarea()
+        form.fields['text'].widget=SummernoteWidget()
         return form
     def form_valid(self,form):
         form.instance.SLO = self.slo
@@ -63,7 +65,7 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_form(self):
         form = super(EditDecisionAction,self).get_form()
-        form.fields['text'].widget=forms.Textarea()
+        form.fields['text'].widget=SummernoteWidget()
         return form
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])

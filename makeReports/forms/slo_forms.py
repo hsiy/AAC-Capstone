@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
 from makeReports.choices import *
+from django_summernote.widgets import SummernoteWidget
+
 class CreateNewSLO(forms.Form):
-    text = forms.CharField(widget= forms.Textarea, max_length=600, label="SLO: ") 
+    text = forms.CharField(widget= SummernoteWidget(), max_length=600, label="SLO: ") 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ")
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
     def __init__(self,*args,**kwargs):
@@ -22,13 +24,18 @@ class ImportSLOForm(forms.Form):
         super(ImportSLOForm, self).__init__(*args, **kwargs)
         self.fields['slo'].queryset = sloChoices
 class EditNewSLOForm(forms.Form):
-    text = forms.CharField(widget= forms.Textarea, max_length=600, label="SLO: ")
+    text = forms.CharField(widget= SummernoteWidget(), max_length=600, label="SLO: ")
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level: ")
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
+    def __init__(self,*args,**kwargs):
+        grad = kwargs.pop('grad',None)
+        super(CreateNewSLO,self).__init__(*args,**kwargs)
+        if not grad:
+            del self.fields['gradGoals']
 class EditImportedSLOForm(forms.Form):
-    text = forms.CharField(widget= forms.Textarea, max_length=600, label="SLO: ")
+    text = forms.CharField(widget= SummernoteWidget(), max_length=600, label="SLO: ")
 class Single2000Textbox(forms.Form):
-    text = forms.CharField(max_length=2000, widget=forms.Textarea)
+    text = forms.CharField(max_length=2000, widget=SummernoteWidget())
 class CreateReportByDept(forms.ModelForm):
     class Meta:
         model = Report
