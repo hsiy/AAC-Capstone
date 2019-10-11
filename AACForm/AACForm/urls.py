@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.conf import settings
+from django.conf.urls.static import static
 import makeReports
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^', include('makeReports.urls'))
+    re_path(r'^', include('makeReports.urls')),
+    path('summernote/', include('django_summernote.urls'))
 ]
+if settings.DEBUG:
+     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

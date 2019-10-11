@@ -19,7 +19,7 @@
                     </td>
                 {% else %}
                     <td>
-                        {{SLO_decisions.decisions_obj.text}}
+                        {{SLO_decisions.decisions_obj.text|safe}}
                     </td>
                     <td>
                         <a type="button" title="Edit" class="btn btn-primary" href="{% url 'makeReports:edit-decisions-actions' report=rpt.pk slopk=SLO_decisions.slo_pk pk=SLO_decisions.decisions_obj.pk %}">Edit</a>

@@ -5,15 +5,16 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
 from makeReports.choices import *
+from django_summernote.widgets import SummernoteWidget
+
 class SectionRubricForm(forms.Form):
-    #section_comment = forms.CharField(max_length=2000, required=False, widget=forms.Textarea)
     def __init__(self, *args, **kwargs):
         rubricItems = kwargs.pop('rubricItems')
         super(SectionRubricForm, self).__init__(*args, **kwargs)
         for rI in rubricItems:
             self.fields['rI'+str(rI.pk)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
             #required=False so allow partial completion of the 
-        self.fields['section_comment']=forms.CharField(max_length=2000, required=False, widget=forms.Textarea)
+        self.fields['section_comment']=forms.CharField(max_length=2000, required=False, widget=SummernoteWidget())
 class RubricItemForm(forms.ModelForm):
     class Meta:
         model = RubricItem
@@ -26,6 +27,12 @@ class RubricItemForm(forms.ModelForm):
             'DMEtext':'Did not meet expectations text',
             'MEtext':"Met expectations with concerns text",
             'EEtext':'Met expectations text'
+        }
+        widgets ={
+            'text': SummernoteWidget(),
+            'DMEtext':SummernoteWidget(),
+            'MEtext':SummernoteWidget(),
+            'EEtext':SummernoteWidget()
         }
 class DuplicateRubricForm(forms.Form):
     #rubToDup = forms.ModelChoiceField(label="Rubric to duplicate",queryset=Rubric.objects,widget=forms.HiddenInput(),required=False)

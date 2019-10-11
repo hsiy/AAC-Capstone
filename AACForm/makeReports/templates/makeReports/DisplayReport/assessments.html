@@ -7,7 +7,7 @@
             <table class="table-responsive table-bordered" style="border:0px;">
             <tr>
                 <td style="background-color:#C0C0C0;" colspan="2">
-                    <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText}}</i>
+                    <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText|safe}}</i>
                 </td>
             </tr>
             <tr>
@@ -17,7 +17,7 @@
             <tr>
                 <td colspan="2">
                     <b>2. Description of How the Measure Aligns to the SLO </b>
-                    <p>{{assessment.description}}</p>
+                    <p>{{assessment.description|safe}}</p>
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                     {% else %}
                             In Final Year of Program
                     {% endif %}
-                    <p>Where does the assessment occur: <i>{{assessment.where}}</i></p>
+                    <p>Where does the assessment occur: <i>{{assessment.where|safe}}</i></p>
                 </td>
             </tr>
             <tr>
@@ -70,13 +70,13 @@
                             All Students
                     {% else %}
                             <p>Sample of Students</p>
-                            <p><i>{{assessment.sampleDescription}}</i></p>
+                            <p><i>{{assessment.sampleDescription|safe}}</i></p>
                     {% endif %}
                 </td>
             <tr>
                 <td><b>7. Frequency of Data Collection</b></td>
                 <td>
-                    {{assessment.frequency}}
+                    {{assessment.frequency|safe}}
                 </td>
             <tr>
                 <td>
@@ -116,7 +116,7 @@
 </div>
 <div class="row">
     <div class="col">
-            {{report.section2Comment}}  
+            {{report.section2Comment|safe}}  
     </div>
 </div>
 </div>

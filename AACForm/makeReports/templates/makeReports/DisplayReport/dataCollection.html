@@ -43,7 +43,7 @@
                 <a href="{{sup.supplement.url}}">{{sup}}</a>
             </td>
             <td>
-                {{sup.comment}}
+                {{sup.comment|safe}}
             </td>
         </tr>
         {% endfor %}
@@ -74,4 +74,4 @@
 <p>{{ assessment_data_dict.result_communication_text }}</p>
 
 <h5>Comment</h5>
-{{report.section3Comment}}
+{{report.section3Comment|safe}}
