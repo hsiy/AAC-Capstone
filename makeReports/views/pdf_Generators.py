@@ -38,3 +38,25 @@ class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMi
         dept= (self.report.degreeProgram.department == self.request.user.profile.department)
         aac = getattr(self.request.user.profile, "aac")
         return dept or aac
+class ReportPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
+    template_name = "makeReports/DisplayReport/pdf.html"
+    pdf_stylesheets =[
+        #settings.STATIC_ROOT + '\\css\\bootstrap-print-color.css',
+        #settings.BASE_DIR + 'css/main.css',
+    ]
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(ReportPDFGen,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(ReportPDFGen,self).get_context_data(**kwargs)
+        context['rubric'] = self.report.rubric
+        context['report'] = self.report
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
+        return context
+    def test_func(self):
+        dept= (self.report.degreeProgram.department == self.request.user.profile.department)
+        aac = getattr(self.request.user.profile, "aac")
+        return dept or aac

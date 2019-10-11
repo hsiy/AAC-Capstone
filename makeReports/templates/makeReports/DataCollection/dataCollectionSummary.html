@@ -93,7 +93,7 @@
         </tr>
         {% for slo_status in assessment_data_dict.slo_statuses %}
             <tr>
-                <td>{{ slo_status.slo_text }}</td>
+                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text }}</td>
                 {% if slo_status.slo_status_pk == None %}
                     <td>(Status Not Reported)</td>
                     <td>
