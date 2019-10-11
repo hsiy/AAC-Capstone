@@ -48,7 +48,6 @@ class DegreeProgram(models.Model):
     startingYear = models.PositiveIntegerField(blank=True, null=True)
     #not all degree programs are on a clear cycle
     active = models.BooleanField(default=True)
-    
     objects = models.Manager()
     active_objects = NonArchivedManager()
     def __str__(self):
@@ -163,6 +162,7 @@ class RubricItem(models.Model):
     section = models.PositiveIntegerField(choices=SECTIONS)
     rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(null=True, blank=True)
+    abbreviation = models.CharField(max_length=20, default="", blank=True)
     DMEtext = models.CharField(max_length=1000, default="", blank=True)
     MEtext = models.CharField(max_length=1000, default="", blank=True)
     EEtext = models.CharField(max_length=1000, default="", blank=True)

@@ -113,5 +113,6 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<decactpk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/comment/$',views.Section4Comment.as_view(),name='d-a-comment'),
-
+    #PDF Generator
+    re_path(r'^pdf/report/(?P<report>\d+)/rubric/graded/$',views.GradedRubricPDFGen.as_view(), name='graded-rub-pdf'),
 ]
