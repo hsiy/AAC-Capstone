@@ -4,15 +4,14 @@
 <h3>Assessment Summary</h3>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>
-<table class="table-responsive">
-    <tbody>
-            <tr>
-                <td>
+<div class="container">
             {% for assessment in assessment_list %}
+            <div class="row">
+                    <div class="col">
             <table class="table-responsive table-bordered">
             <tbody>
             <tr>
-                <td bgcolor="C0C0C0" colspan="2">
+                <td style="background-color:#C0C0C0;" colspan="2">
                     <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText}}</i>
                 </td>
             </tr>
@@ -127,10 +126,13 @@
             </tr>
         </tbody>
         </table>
+        </div>
+        </div>
             {% endfor %}
-    </td>
-    </tr>
-    </tbody>
-</table>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-comment' report=rpt.pk %}">Next</a>
+            <div class="row">
+                    <div class="col">
+                            <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-comment' report=rpt.pk %}">Next</a>
+        </div>
+        </div>
+</div>
 {% endblock %}

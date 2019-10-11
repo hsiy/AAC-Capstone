@@ -76,6 +76,7 @@ def section3Context(self,context):
     SLOs = SLOInReport.objects.filter(report=self.report)
     for sloir in SLOs:
         temp_dict = dict()
+        temp_dict['slo_obj'] = sloir
         temp_dict['slo_text'] = sloir.goalText
         temp_dict['slo_pk'] = sloir.slo.pk
         try:

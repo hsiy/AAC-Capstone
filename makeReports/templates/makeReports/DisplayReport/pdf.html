@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                {% block scripts %}{% endblock %}
+                <title>Academic Assessment Reports</title>
+                {# Load the tag library #}
+                {# Load CSS and JavaScript #}
+                <style type="text/css">
+                    *{
+                        font-family:Calibri,'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+                        font-size: 11pt;
+                    }
+                    div.bT tr{
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        padding: 3pt;
+                    }
+                    div.bT td{
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        padding: 3pt;
+                    }
+                    div.bT table{
+                        border-collapse: collapse;
+                    }
+                    .subsection {
+                        margin: 15px 0px 10px 0px;
+                    }
+                    h3{
+                        font-size:14pt;
+                        margin: 15px 0px 10px 0px;
+                    }
+                </style>
+            </head>
+    <body>
+    <table>
+            {% include 'makeReports/DisplayReport/PDFsub/headings.html' %}
+            <tr>
+                <td colspan="2">
+                        {% include 'makeReports/DisplayReport/PDFsub/slos.html' %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                        {% include 'makeReports/DisplayReport/PDFsub/assessment.html' %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% include 'makeReports/DisplayReport/PDFsub/dataCollection.html' %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% include 'makeReports/DisplayReport/dAndAs.html' %}
+                </td>
+            </tr>
+        </table>
+</body>
+</html>
