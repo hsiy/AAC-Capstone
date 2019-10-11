@@ -17,9 +17,10 @@ class SectionRubricForm(forms.Form):
 class RubricItemForm(forms.ModelForm):
     class Meta:
         model = RubricItem
-        fields = ['text','section','order','DMEtext','MEtext','EEtext']
+        fields = ['text','abbreviation','section','order','DMEtext','MEtext','EEtext']
         labels = {
             'text':'Category text',
+            'abbreviation':'Abbreviation (optional)',
             'section':'Section number',
             'order':'Order position of item (lower numbers will be displayed first) (optional)',
             'DMEtext':'Did not meet expectations text',

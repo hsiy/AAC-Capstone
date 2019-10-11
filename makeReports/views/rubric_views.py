@@ -78,7 +78,7 @@ class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
         return getattr(self.request.user.profile, "aac")
 class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = RubricItem
-    fields = ['text','section','order','DMEtext','MEtext','EEtext']
+    fields = ['text','abbreviation','section','order','DMEtext','MEtext','EEtext']
     template_name = "makeReports/Rubric/updateRubricItem.html"
     def get_success_url(self):
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
@@ -109,7 +109,7 @@ class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
         RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
         newRub = Rubric.objects.create(date=datetime.now(), fullFile=rubToDup.fullFile, name=form.cleaned_data['new_name'])
         for ri in RIs:
-            newRi = RubricItem.objects.create(text=ri.text, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
+            newRi = RubricItem.objects.create(text=ri.text, abbreviation=ri.abbreviation, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
         return super(DuplicateRubric,self).form_valid(form)
     def test_func(self):
         return getattr(self.request.user.profile, "aac")
