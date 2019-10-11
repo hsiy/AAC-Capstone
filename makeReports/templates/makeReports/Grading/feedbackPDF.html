@@ -8,17 +8,16 @@
                 {% load bootstrap4 %}
             
                 {# Load CSS and JavaScript #}
-                <link rel="stylesheet" type="text/css" media="print" href="{% static "css\bootstrap-print-color.css" %}">
-                {% bootstrap_javascript jquery='full' %}
                 {% block styles %}{% endblock %}
             </head>
     <body>
-<table class="table">
+<div class="padd bT">
+<table class="table" style="border: 1px solid black;">
     <thead>
         <th scope="col" colspan="2">Category</th>
-        <th scope="col" class="table-danger" style="width:15%">Red<br>(Does not meet/<br>Did not include)</th>
-        <th scope="col" class="table-warning" style="width:15%">Yellow<br>(Meets with Concerns)</th>
-        <th scope="col" class="table-success" style="width:15%">Green<br>(Meets)</th>
+        <th scope="col" class="table-danger" style="width:17%;text-align:center;">Red<br>(Does not meet/<br>Did not include)</th>
+        <th scope="col" class="table-warning" style="width:17%;text-align:center;">Yellow<br>(Meets with Concerns)</th>
+        <th scope="col" class="table-success" style="width:17%;text-align:center">Green<br>(Meets)</th>
     </thead>
     <tr class="table-secondary" style="background-color:E0E0E0;">
         <td colspan="5">
@@ -30,7 +29,7 @@
         <td>
             {{r.item.text}}
         </td>
-        <td>
+        <td style="width:7%">
             {{r.item.abbreviation}}
         </td>
         <td class="table-danger" style="text-align: center;">
@@ -116,8 +115,8 @@
         </td>
     </tr>
     {% endfor %}
-    <tr>
-        <td colspan="5" class="table-secondary"><b>General Comments</b></td>
+    <tr class='table-secondary'>
+        <td colspan="5" ><b>General Comments</b></td>
     </tr>
     <tr>
         <td colspan="5">
@@ -142,5 +141,6 @@
 
 
 </table>
+</div>
 </body>
 </html>
