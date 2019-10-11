@@ -1,22 +1,13 @@
 <!--things needed in context: assessment_list, report-->
 <h3>II. Assessment Methods</h3>
-<table class="table-responsive">
-    <tbody>
-           <!-- <tr>
-                <td class = "p-4">SLO</td><td class="p-4">Title of Measure</td><td class="p-4">Description of How Measure Aligns to SLO</td>
-                <td class="p-4">Domain</td><td class="p-4">Type</td>
-                <td class="p-4">Point in Program Assessment is Administered</td>
-                <td class="p-4">Where does the assessment occur</td><td class="p-4">Population Measured</td>
-                <td class="p-4">Frequency of Data Collection</td><td class="p-4">Proficiency Threshold</td>
-                <td class="p-4">Program Proficiency Target</td><td class="p-4">Supplement</td>
-            </tr>-->
-            <tr>
-                <td>
+<div class="container float-left">
             {% for assessment in assessment_list %}
+            <div class="row">
+                    <div class="col">
             <table class="table-responsive table-bordered">
             <tbody>
             <tr>
-                <td bgcolor="C0C0C0" colspan="2">
+                <td style="background-color:#C0C0C0;" colspan="2">
                     <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText}}</i>
                 </td>
             </tr>
@@ -117,10 +108,17 @@
             </tr>
         </tbody>
         </table>
+    </div>
+    </div>
             {% endfor %}
-    </td>
-    </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col">
 <h5>Comment</h5>
-{{report.section2Comment}}
+</div>
+</div>
+<div class="row">
+    <div class="col">
+            {{report.section2Comment}}  
+    </div>
+</div>
+</div>

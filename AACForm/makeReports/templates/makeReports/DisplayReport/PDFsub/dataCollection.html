@@ -1,12 +1,14 @@
 <!--things needed in context: assessment_data_dict,report-->
 <h3>III. Data Collection and Analysis</h3>
+<div class="bT">
+    <div class="subsection">A. Results Table</div>
 <table class="table">
     <tbody>
         <tr>
-            <td>Measure</td>
-            <td>Data Collection Date Range</td>
-            <td>Number of Students Assessed</td>
-            <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+            <td style="width:30%"><b>Measure</b></td>
+            <td><b>Data Collection Date Range</b></td>
+            <td><b>Number of Students Assessed</b></td>
+            <td style="width: 37%;"><b>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</b></td>
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
         <tr {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:#E0E0E0;" {% endif %}>
@@ -31,28 +33,12 @@
         {% endfor %}
     </tbody>
 </table>
-<h5>Supplements</h5>
-<table class="table">
-    <tbody>
-        <tr>
-            <td>Supplement</td><td>Comment</td>
-        </tr>
-        {% for sup in supplement_list %}
-        <tr>
-            <td>
-                <a href="{{sup.supplement.url}}">{{sup}}</a>
-            </td>
-            <td>
-                {{sup.comment}}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+</div>
+<div class="bT">
 <table class="table">
     <tbody>
         <thead>
-            <h3>SLO Status</h3>
+            <div class="subsection">B. SLO Status Table</div>
         </thead>
         <tr>
             <td>SLO</td>
@@ -70,8 +56,9 @@
         {% endfor %}
     </tbody>
 </table>
-<h5>Description of how results are communicated within the program</h5>
+</div>
+<div class="subsection">C. Description of how results are communicated within the program</div>
 <p>{{ assessment_data_dict.result_communication_text }}</p>
 
-<h5>Comment</h5>
+<div class="subsection">D. Comment</div>
 {{report.section3Comment}}

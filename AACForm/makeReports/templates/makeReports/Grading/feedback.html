@@ -3,6 +3,11 @@
 {% block content %}
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">
+    <div class = "row">
+      <div class="col">
+          <a class="btn btn-primary" type="button" href="{% url 'makeReports:graded-rub-pdf' report=report.pk %}">PDF of Feedback </a>
+      </div>
+    </div>
     <div class="row">
         <div class="col-8">
             <!--showreport column-->
