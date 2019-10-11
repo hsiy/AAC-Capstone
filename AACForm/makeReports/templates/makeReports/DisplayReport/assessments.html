@@ -4,8 +4,7 @@
             {% for assessment in assessment_list %}
             <div class="row">
                     <div class="col">
-            <table class="table-responsive table-bordered">
-            <tbody>
+            <table class="table-responsive table-bordered" style="border:0px;">
             <tr>
                 <td style="background-color:#C0C0C0;" colspan="2">
                     <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText}}</i>
@@ -106,7 +105,6 @@
                     {% endfor %}
                 </td>
             </tr>
-        </tbody>
         </table>
     </div>
     </div>

@@ -3,6 +3,12 @@
 {% block content %}
 
 <div class="container-fluid">
+    <div class="row">
+        <div class="col">
+                <a type="button" class="btn btn-primary" href="{% url 'makeReports:report-pdf' report=report.pk %}">Report PDF (with supplements)</a>
+                <a type="button" class="btn btn-primary" href="{% url 'makeReports:report-pdf-no-sups' report=report.pk %}">Report PDF (without supplements)</a>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col">
             <h2 style="text-align: center;">Report</h2>
@@ -60,6 +66,18 @@
     <div class="row">
         <div class="col">
             {% include 'makeReports/DisplayReport/dAndAs.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4>Report Supplements</h4>
+            <table>
+                {% for sup in reportSups %}
+                <tr><td>
+                    <a href="{{sup.supplement.url}}">{{sup}}</a>
+                </td></tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 </div>

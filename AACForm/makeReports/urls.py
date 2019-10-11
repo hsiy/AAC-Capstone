@@ -115,5 +115,6 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/decisionsactions/comment/$',views.Section4Comment.as_view(),name='d-a-comment'),
     #PDF Generators
     re_path(r'^pdf/report/(?P<report>\d+)/rubric/graded/$',views.GradedRubricPDFGen.as_view(), name='graded-rub-pdf'),
-    re_path(r'^pdf/report/(?P<report>\d+)/$', views.ReportPDFGen.as_view(), name='report-pdf'),
+    re_path(r'^pdf/report/(?P<report>\d+)/nosups/$', views.ReportPDFGen.as_view(), name='report-pdf-no-sups'),
+    re_path(r'^pdf/report/(?P<report>\d+)/sups/$', views.reportPDF,name='report-pdf'),
 ]

@@ -64,6 +64,7 @@ class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DisplayReport,self).get_context_data(**kwargs)
         context['report'] = self.report
+        context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
