@@ -127,5 +127,6 @@ urlpatterns = [
     re_path(r'^pdf/report/(?P<report>\d+)/rubric/graded/$',views.GradedRubricPDFGen.as_view(), name='graded-rub-pdf'),
     re_path(r'^pdf/report/(?P<report>\d+)/nosups/$', views.ReportPDFGen.as_view(), name='report-pdf-no-sups'),
     re_path(r'^pdf/report/(?P<report>\d+)/sups/$', views.reportPDF,name='report-pdf'),
+    re_path(r'^pdf/report/(?P<report>\d+)/sups/view/$', views.PDFViewer.as_view(),name='trying-to-fix'),
     re_path(r'^pdf/rubric/(?P<rubric>\d+)/auto/$', views.UngradedRubric,name='rubric-auto-pdf'),
 ]

@@ -186,3 +186,17 @@ def UngradedRubric(request, rubric):
     http_response = FileResponse(rubric.fullFile.open(),content_type="application/pdf")
     rubric.save()
     return http_response
+class PDFViewer(TemplateView):
+    template_name = "makeReports/DisplayReport/pdf.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(PDFViewer,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(PDFViewer,self).get_context_data(**kwargs)
+        context['rubric'] = self.report.rubric
+        context['report'] = self.report
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
+        return context
