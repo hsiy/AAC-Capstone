@@ -144,7 +144,7 @@ class DecisionsActions(models.Model):
     actionTimeline = models.CharField(max_length=3000, blank=True, default="")
 class Rubric(models.Model):
     date = models.DateField()
-    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage)
+    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage, null=True,blank=True)
     name = models.CharField(max_length = 150, default="Rubric")
     def __str__(self):
         return self.name
