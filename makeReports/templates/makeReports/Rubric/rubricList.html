@@ -15,6 +15,7 @@
     <li class = "list-group-item">Rubric {{rb.name}} from year {{rb.date.year}}
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-RI' rubric=rb.pk %}">Add Rubric Items</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rubric' pk=rb.pk %}">View Rubric</a>
+            <a class="btn btn-primary" type="button" href="{% url 'makeReports:rubric-auto-pdf' rubric=rb.pk %}">Auto-generate and Set Rubric PDF </a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-rubric' pk=rb.pk %}">Update Name or Rubric File</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:dup-rub' rubric=rb.pk %}">Duplicate Rubric</a>
             <a type="button" class="btn btn-danger" href="{% url 'makeReports:delete-rubric' pk=rb.pk %}">Delete Rubric</a>

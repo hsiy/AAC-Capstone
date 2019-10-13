@@ -13,12 +13,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
 from django.template.defaulttags import register
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse, StreamingHttpResponse
 from makeReports.views.helperFunctions.section_context import *
 from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from types import SimpleNamespace
 from weasyprint import HTML, CSS
+from django.core.files import File
 import tempfile
 import os, io, requests
 class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
@@ -26,6 +27,7 @@ class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMi
     pdf_stylesheets =[
         # Change this to suit your css path
         settings.STATIC_ROOT + '\\css\\report.css',
+        settings.STATIC_ROOT + '\\css\\landscape.css',
         #settings.STATIC_ROOT + '\\css\\bootstrap-print-color.css',
         #settings.BASE_DIR + 'css/main.css',
     ]
@@ -116,5 +118,19 @@ def reportPDF(request, report):
     http_response = HttpResponse(content_type="application/pdf")
     merged.write(http_response)
     return http_response
-
-
+def UngradedRubric(request, rubric):
+    rubric = get_object_or_404(Rubric, pk=rubric)
+    template = get_template("makeReports/Grading/rubricPDF.html")
+    context = dict()
+    context['rubric'] = rubric
+    context['RIs1'] = RubricItem.objects.filter(rubricVersion=rubric, section=1)
+    context['RIs2'] = RubricItem.objects.filter(rubricVersion=rubric, section=2)
+    context['RIs3'] = RubricItem.objects.filter(rubricVersion=rubric, section=3)
+    context['RIs4'] = RubricItem.objects.filter(rubricVersion=rubric, section=4)
+    rend = template.render(context).encode(encoding="ISO-8859-1")
+    html = HTML(string=rend)
+    f = tempfile.TemporaryFile()
+    pdf = html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(settings.STATIC_ROOT+'/css/report.css'),CSS(settings.STATIC_ROOT+'/css/landscape.css')])
+    http_response = FileResponse(rubric.fullFile.open(),content_type="application/pdf")
+    rubric.save()
+    return http_response
