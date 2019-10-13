@@ -24,6 +24,7 @@ import tempfile
 import os, io, requests
 from django.contrib.auth.decorators import login_required, user_passes_test
 from functools import wraps
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
@@ -141,9 +142,9 @@ def reportPDF(request, report):
     f1and2 = tempfile.TemporaryFile()
     f3 = tempfile.TemporaryFile()
     f4 = tempfile.TemporaryFile()
-    pdf1and2 = html1and2.write_pdf(target=f1and2,stylesheets=[CSS(settings.STATIC_ROOT+'/css/report.css')])
-    pdf3 = html3.write_pdf(target=f3,stylesheets=[CSS(settings.STATIC_ROOT+'/css/report.css')])
-    pdf4 = html4.write_pdf(target=f4,stylesheets=[CSS(settings.STATIC_ROOT+'/css/report.css')]) 
+    pdf1and2 = html1and2.write_pdf(target=f1and2,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
+    pdf3 = html3.write_pdf(target=f3,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
+    pdf4 = html4.write_pdf(target=f4,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))]) 
     merged = PdfFileMerger()
     merged.append(f1and2)
     for sup in assessSups:
@@ -180,7 +181,7 @@ def UngradedRubric(request, rubric):
     rend = template.render(context).encode(encoding="ISO-8859-1")
     html = HTML(string=rend)
     f = tempfile.TemporaryFile()
-    pdf = html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(settings.STATIC_ROOT+'/css/report.css'),CSS(settings.STATIC_ROOT+'/css/landscape.css')])
+    pdf = html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(staticfiles_storage.path('/css/report.css')),CSS(staticfiles_storage.path('/css/landscape.css'))])
     http_response = FileResponse(rubric.fullFile.open(),content_type="application/pdf")
     rubric.save()
     return http_response
