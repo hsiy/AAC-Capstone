@@ -22,6 +22,14 @@ from weasyprint import HTML, CSS
 from django.core.files import File
 import tempfile
 import os, io, requests
+from django.contrib.auth.decorators import login_required, user_passes_test
+def test_func_x(self):
+    dept= (self.report.degreeProgram.department == self.request.user.profile.department)
+    aac = getattr(self.request.user.profile, "aac")
+    return dept or aac
+def test_func_a(self):
+    aac = getattr(self.request.user.profile, "aac")
+    return aac
 class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
@@ -68,6 +76,8 @@ class ReportPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
         dept= (self.report.degreeProgram.department == self.request.user.profile.department)
         aac = getattr(self.request.user.profile, "aac")
         return dept or aac
+@login_required
+@user_passes_test(test_func_x)
 def reportPDF(request, report):
     report = get_object_or_404(Report, pk=report)
     sec1and2 = get_template('makeReports/DisplayReport/PDFsub/pdf1and2.html')
@@ -118,6 +128,8 @@ def reportPDF(request, report):
     http_response = HttpResponse(content_type="application/pdf")
     merged.write(http_response)
     return http_response
+@login_required
+@user_passes_test(test_func_a)
 def UngradedRubric(request, rubric):
     rubric = get_object_or_404(Rubric, pk=rubric)
     template = get_template("makeReports/Grading/rubricPDF.html")
