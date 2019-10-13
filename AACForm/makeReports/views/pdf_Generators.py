@@ -33,6 +33,7 @@ from django.shortcuts import resolve_url
 from django.utils import six
 from django.utils.decorators import available_attrs
 from django.utils.six.moves.urllib.parse import urlparse
+import urllib
 def test_func_x(self,*args,**kwargs):
     report = Report.objects.get(pk=kwargs['report'])
     dept= (report.degreeProgram.department == self.profile.department)
@@ -148,22 +149,34 @@ def reportPDF(request, report):
     merged = PdfFileMerger()
     merged.append(f1and2)
     for sup in assessSups:
-        rep = requests.get(sup.supplement.url)
-        with io.BytesIO(rep.content) as open_pdf_file:
-            read_pdf = PdfFileReader(open_pdf_file)
-            merged.append(read_pdf)
+        remoteFile = urllib.request.urlopen(sup.supplement.url).read()
+        memFile = io.BytesIO(remoteFile)
+        read_pdf = PdfFileReader(memFile)
+        merged.append(read_pdf)
+        # rep = requests.get(sup.supplement.url)
+        # with io.BytesIO(rep.content) as open_pdf_file:
+        #     read_pdf = PdfFileReader(open_pdf_file)
+        #     merged.append(read_pdf)
     merged.append(f3)
     for sup in dataSups:
-        rep = requests.get(sup.supplement.url)
-        with io.BytesIO(rep.content) as open_pdf_file:
-            read_pdf = PdfFileReader(open_pdf_file)
-            merged.append(read_pdf)
+        remoteFile = urllib.request.urlopen(sup.supplement.url).read()
+        memFile = io.BytesIO(remoteFile)
+        read_pdf = PdfFileReader(memFile)
+        merged.append(read_pdf)
+        # rep = requests.get(sup.supplement.url)
+        # with io.BytesIO(rep.content) as open_pdf_file:
+        #     read_pdf = PdfFileReader(open_pdf_file)
+        #     merged.append(read_pdf)
     merged.append(f4)
     for sup in repSups:
-        rep = requests.get(sup.supplement.url)
-        with io.BytesIO(rep.content) as open_pdf_file:
-            read_pdf = PdfFileReader(open_pdf_file)
-            merged.append(read_pdf)
+        remoteFile = urllib.request.urlopen(sup.supplement.url).read()
+        memFile = io.BytesIO(remoteFile)
+        read_pdf = PdfFileReader(memFile)
+        merged.append(read_pdf)
+        # rep = requests.get(sup.supplement.url)
+        # with io.BytesIO(rep.content) as open_pdf_file:
+        #     read_pdf = PdfFileReader(open_pdf_file)
+        #     merged.append(read_pdf)
     http_response = HttpResponse(content_type="application/pdf")
     merged.write(http_response)
     return http_response
