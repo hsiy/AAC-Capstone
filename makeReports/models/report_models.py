@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
 from datetime import datetime
+from django.core.validators import FileExtensionValidator
 import os
 gd_storage = GoogleDriveStorage()
 class NonArchivedManager(models.Manager):
@@ -107,7 +108,7 @@ class AssessmentVersion(models.Model):
     def __str__(self):
         return self.assessment.title
 class AssessmentSupplement(models.Model):
-    supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage)
+    supplement = models.FileField(upload_to='asssements/supplements', storage=gd_storage, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
     uploaded_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return os.path.basename(self.supplement.name)
@@ -123,7 +124,7 @@ class AssessmentData(models.Model):
 class DataAdditionalInformation(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     comment = models.CharField(max_length=3000, blank=True, default="")
-    supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
+    supplement = models.FileField(upload_to='data/supplements', storage=gd_storage, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
     def __str__(self):
         return os.path.basename(self.supplement.name)
 class SLOStatus(models.Model):
@@ -144,7 +145,7 @@ class DecisionsActions(models.Model):
     actionTimeline = models.CharField(max_length=3000, blank=True, default="")
 class Rubric(models.Model):
     date = models.DateField()
-    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage, null=True,blank=True)
+    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage, null=True,blank=True, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
     name = models.CharField(max_length = 150, default="Rubric")
     def __str__(self):
         return self.name
@@ -174,7 +175,7 @@ class GradedRubricItem(models.Model):
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
     grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
 class ReportSupplement(models.Model):
-    supplement = models.FileField(upload_to='data/supplements', storage=gd_storage)
+    supplement = models.FileField(upload_to='data/supplements', storage=gd_storage,validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
     report = models.ForeignKey('Report', on_delete=models.CASCADE)
     def __str__(self):
         return os.path.basename(self.supplement.name)

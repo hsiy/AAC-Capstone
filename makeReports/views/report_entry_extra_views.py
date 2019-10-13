@@ -91,6 +91,12 @@ class SubmitReport(LoginRequiredMixin, UserPassesTestMixin, FormView):
         assesses = AssessmentVersion.objects.filter(report=self.report)
         for a in assesses:
             valid = valid and (AssessmentData.objects.filter(assessmentVersion=a).count()>0)
+        if not self.report.author or self.report.author=="":
+            valid = False
+        if not self.report.date_range or self.report.date_range_of_reported_data=="":
+            valid = False
+        if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+            valid == False
         kwargs['valid'] = valid
         return kwargs
     def get_context_data(self, **kwargs):
