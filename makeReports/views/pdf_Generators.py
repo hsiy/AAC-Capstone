@@ -33,7 +33,6 @@ from django.shortcuts import resolve_url
 from django.utils import six
 from django.utils.decorators import available_attrs
 from django.utils.six.moves.urllib.parse import urlparse
-import urllib
 from pathlib import Path
 def test_func_x(self,*args,**kwargs):
     report = Report.objects.get(pk=kwargs['report'])
@@ -150,41 +149,23 @@ def reportPDF(request, report):
     merged = PdfFileMerger()
     merged.append(f1and2)
     for sup in assessSups:
-        remoteFile = urllib.request.urlopen(sup.supplement.url).read()
-        memFile = io.BytesIO(remoteFile)
-        read_pdf = PdfFileReader(memFile)
-        merged.append(read_pdf)
-        # rep = requests.get(sup.supplement.url)
-        # with io.BytesIO(rep.content) as open_pdf_file:
-        #     read_pdf = PdfFileReader(open_pdf_file)
-        #     merged.append(read_pdf)
-    merged.append(f3)
-    for sup in dataSups:
-        #remoteFile = urllib.request.urlopen(sup.supplement.url).read()
-        #memFile = io.BytesIO(remoteFile)
-        #read_pdf = PdfFileReader(memFile)
-        #merged.append(read_pdf)
-        rep = requests.get(sup.supplement.url)
-        with io.BytesIO(sup.supplement.open()) as open_pdf_file:
-            read_pdf = PdfFileReader(open_pdf_file)
-            merged.append(read_pdf)
-    merged.append(f4)
-    for sup in repSups:
-        #remoteFile = urllib.request.urlopen(sup.supplement.url).read()
-        #remoteFile = urllib.request.URLopener().retrieve(sup.supplement.url,str(sup.supplement))
-        #memFile = io.BytesIO(sup.supplement)
-
-        #read_pdf = PdfFileReader(gd_storage.open(sup.supplement))
-        #merged.append(read_pdf)
         rep = requests.get(sup.supplement.url)
         f7 = tempfile.TemporaryFile()
         f7.write(rep.content)
         merged.append(PdfFileReader(f7))
-        #with io.BytesIO(x) as open_pdf_file:
-        #    read_pdf = PdfFileReader(open_pdf_file)
-        #    merged.append(read_pdf)
+    merged.append(f3)
+    for sup in dataSups:
+        rep = requests.get(sup.supplement.url)
+        f7 = tempfile.TemporaryFile()
+        f7.write(rep.content)
+        merged.append(PdfFileReader(f7))
+    merged.append(f4)
+    for sup in repSups:
+        rep = requests.get(sup.supplement.url)
+        f7 = tempfile.TemporaryFile()
+        f7.write(rep.content)
+        merged.append(PdfFileReader(f7))
     http_response = HttpResponse(content_type="application/pdf")
-    #writer.write(http_response)
     merged.write(http_response)
     return http_response
 @login_required
