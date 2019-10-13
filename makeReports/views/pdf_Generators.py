@@ -73,8 +73,8 @@ class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMi
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
         # Change this to suit your css path
-        settings.STATIC_ROOT + '\\css\\report.css',
-        settings.STATIC_ROOT + '\\css\\landscape.css',
+        staticfiles_storage.path('css/report.css'),
+        staticfiles_storage.path('css/landscape.css'),
         #settings.STATIC_ROOT + '\\css\\bootstrap-print-color.css',
         #settings.BASE_DIR + 'css/main.css',
     ]
@@ -96,7 +96,7 @@ class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMi
 class ReportPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = "makeReports/DisplayReport/pdf.html"
     pdf_stylesheets =[
-        settings.STATIC_ROOT + '\\css\\report.css',
+        staticfiles_storage.path('css/report.css'),
         #settings.BASE_DIR + 'css/main.css',
     ]
     def dispatch(self,request,*args,**kwargs):
@@ -181,7 +181,7 @@ def UngradedRubric(request, rubric):
     rend = template.render(context).encode(encoding="ISO-8859-1")
     html = HTML(string=rend)
     f = tempfile.TemporaryFile()
-    pdf = html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(staticfiles_storage.path('/css/report.css')),CSS(staticfiles_storage.path('/css/landscape.css'))])
+    pdf = html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(staticfiles_storage.path('css/report.css')),CSS(staticfiles_storage.path('css/landscape.css'))])
     http_response = FileResponse(rubric.fullFile.open(),content_type="application/pdf")
     rubric.save()
     return http_response
