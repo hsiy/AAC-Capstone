@@ -23,13 +23,51 @@ from django.core.files import File
 import tempfile
 import os, io, requests
 from django.contrib.auth.decorators import login_required, user_passes_test
-def test_func_x(self):
-    dept= (self.report.degreeProgram.department == self.request.user.profile.department)
-    aac = getattr(self.request.user.profile, "aac")
+from functools import wraps
+
+from django.conf import settings
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import resolve_url
+from django.utils import six
+from django.utils.decorators import available_attrs
+from django.utils.six.moves.urllib.parse import urlparse
+def test_func_x(self,*args,**kwargs):
+    report = Report.objects.get(pk=kwargs['report'])
+    dept= (report.degreeProgram.department == self.profile.department)
+    aac = getattr(self.profile, "aac")
     return dept or aac
 def test_func_a(self):
-    aac = getattr(self.request.user.profile, "aac")
+    aac = getattr(self.profile, "aac")
     return aac
+def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
+    """
+    Decorator for views that checks that the user passes the given test,
+    redirecting to the log-in page if necessary. The test should be a callable
+    that takes the user object and returns True if the user passes.
+    """
+
+    def decorator(view_func):
+        @wraps(view_func, assigned=available_attrs(view_func))
+        def _wrapped_view(request, *args, **kwargs):
+            # the following line is the only change with respect to
+            # user_passes_test:
+            if test_func(request.user, *args, **kwargs):
+                return view_func(request, *args, **kwargs)
+            path = request.build_absolute_uri()
+            resolved_login_url = resolve_url(login_url or settings.LOGIN_URL)
+            # If the login url is the same scheme and net location then just
+            # use the path as the "next" url.
+            login_scheme, login_netloc = urlparse(resolved_login_url)[:2]
+            current_scheme, current_netloc = urlparse(path)[:2]
+            if ((not login_scheme or login_scheme == current_scheme) and
+                    (not login_netloc or login_netloc == current_netloc)):
+                path = request.get_full_path()
+            from django.contrib.auth.views import redirect_to_login
+            return redirect_to_login(
+                path, resolved_login_url, redirect_field_name)
+        return _wrapped_view
+    return decorator
 class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
@@ -77,7 +115,7 @@ class ReportPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
         aac = getattr(self.request.user.profile, "aac")
         return dept or aac
 @login_required
-@user_passes_test(test_func_x)
+@my_user_passes_test(test_func_x)
 def reportPDF(request, report):
     report = get_object_or_404(Report, pk=report)
     sec1and2 = get_template('makeReports/DisplayReport/PDFsub/pdf1and2.html')

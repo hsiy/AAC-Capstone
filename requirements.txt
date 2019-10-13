@@ -42,3 +42,4 @@ uritemplate==3.0.0
 urllib3==1.25.6
 WeasyPrint==50
 webencodings==0.5.1
+whitenoise==4.1.4
