@@ -72,6 +72,15 @@ urlpatterns = [
     re_path(r'^aac/department/archived/list/$', views.ArchivedDepartments.as_view(), name='arc-depts'),
     re_path(r'^aac/college/archived/list/$', views.ArchivedColleges.as_view(), name='arc-colleges'),
     re_path(r'^aac/department/(?P<dept>\d+)/dp/archived/list/$', views.ArchivedDegreePrograms.as_view(), name='arc-dps'),
+    re_path(r'^aac/gg/list/$', views.ListActiveGradGoals.as_view(),name='gg-list'),
+    re_path(r'^aac/gg/list/inactive/$', views.ListInactiveGradGoals.as_view(),name='old-gg-list'),
+    re_path(r'^aac/gg/(?P<pk>\d+)/update/$', views.UpdateGradGoal.as_view(),name='update-gg'),
+    re_path(r'^aac/gg/add/$', views.MakeGradGoal.as_view(),name='add-gg'),
+    re_path(r'^aac/ann/list/$', views.ListAnnouncements.as_view(),name='announ-list'),
+    re_path(r'^aac/ann/add/$', views.MakeAnnouncement.as_view(),name='add-announ'),
+    re_path(r'^aac/ann/(?P<pk>\d+)/delete/$', views.DeleteAnnouncement.as_view(),name='delete-announ'),
+    re_path(r'^aac/ann/(?P<pk>\d+)/modify/$', views.ModifyAnnouncement.as_view(),name='edit-announ'),
+
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),

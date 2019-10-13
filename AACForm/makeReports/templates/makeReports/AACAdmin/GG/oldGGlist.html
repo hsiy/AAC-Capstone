@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Archived Graduate Goal List</h3>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:gg-list' %}">See Active Graduate Goals</a>
+{% for gg in object_list %}
+    <li class = "list-group-item">{{gg.text}}
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-gg' pk=gg.pk %}">Modify or Un-archive</a>
+      </li>
+{% endfor %}
+</ul>
+{% endblock %}

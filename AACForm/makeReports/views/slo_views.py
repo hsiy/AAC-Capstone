@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
+from django_summernote.widgets import SummernoteWidget
 
 class SLOSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = SLOInReport

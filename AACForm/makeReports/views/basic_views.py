@@ -25,6 +25,7 @@ class HomePage(ListView):
         try:
             context['user']=self.request.user
             context['gReps'] = Report.objects.filter(degreeProgram__department=self.request.user.profile.department,rubric__complete=True, year=int(datetime.now().year))
+            context['announ'] = Announcement.objects.filter(expiration__gte=datetime.now()).order_by("-creation")
         except:
             pass
         return context
