@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
 from datetime import datetime
 from django.core.validators import FileExtensionValidator
+from django.utils.safestring import mark_safe
 import os
 gd_storage = GoogleDriveStorage()
 class NonArchivedManager(models.Manager):
@@ -66,11 +67,15 @@ class SLOInReport(models.Model):
     number = models.PositiveIntegerField(default=1)
     numberOfAssess = models.PositiveIntegerField(default=0)
     def __str__(self):
-        return self.goalText
+        return mark_safe(self.goalText)
 class GradGoal(models.Model):
-    text = models.CharField(max_length=300, choices=GRAD_GOAL_CHOICES)
+    text = models.CharField(max_length=300)
+    active = models.BooleanField(default=True)
+
+    objects = models.Manager()
+    active_objects = NonArchivedManager()
     def __str__(self):
-        return self.text
+        return mark_safe(self.text)
 class SLOsToStakeholder(models.Model):
     text = models.CharField(max_length=2000)
     report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True)
@@ -169,7 +174,7 @@ class RubricItem(models.Model):
     MEtext = models.CharField(max_length=1000, default="", blank=True)
     EEtext = models.CharField(max_length=1000, default="", blank=True)
     def __str__(self):
-        return self.text
+        return mark_safe(self.text)
 class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
@@ -179,7 +184,12 @@ class ReportSupplement(models.Model):
     report = models.ForeignKey('Report', on_delete=models.CASCADE)
     def __str__(self):
         return os.path.basename(self.supplement.name)
-#to be added: classes for messaging system
+class Announcement(models.Model):
+    text = models.CharField(max_length=2000,blank=True)
+    expiration = models.DateField()
+    creation = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return mark_safe(self.text)
 class Profile(models.Model):
     #first name, last name and email are included in the built-in User class. Access them through the user field
     aac = models.BooleanField(null=True)

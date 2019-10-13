@@ -11,6 +11,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
+            model_name='decisionsactions',
+            name='text',
+            field=models.CharField(blank=True, default='', max_length=3000),
+        ),
+        migrations.AddField(
             model_name='rubricitem',
             name='abbreviation',
             field=models.CharField(blank=True, default='', max_length=20),

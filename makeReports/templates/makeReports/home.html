@@ -3,6 +3,9 @@
 {% block content %}
 <h3>Welcome!</h3>
 {% if user.profile %}
+    <div class="container">
+      <div class="row">
+        <div class="col-9">
     {% if user.profile.aac %}
     Continue to AAC Administration: <a type="button" class="btn btn-primary" href="{% url 'makeReports:admin-home'%}">Administration Home</a>
 
@@ -36,9 +39,21 @@
     {% endif %}
     <a type="button" class="btn btn-primary" href="accounts/logout/">Logout</a>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:modify-acct' %}">Edit Account</a>
-    
+    </div>
+    <div class="col-3">
+        <h5>Announcements</h5>
+        <table class="table">
+            {% for a in announ %}
+            <tr>
+                <td>{{a.text|safe}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+    </div>
 {% else %}
 <a type="button" class="btn btn-primary" href="accounts/login/">Login</a>
 {% endif %}
+
 
 {% endblock %}
