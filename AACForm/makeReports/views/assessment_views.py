@@ -36,6 +36,10 @@ class AddNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(AddNewAssessment,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(AddNewAssessment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_form_kwargs(self):
         kwargs = super(AddNewAssessment,self).get_form_kwargs()
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report)
@@ -101,10 +105,10 @@ class ImportAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_context_data(self, **kwargs):
         context = super(ImportAssessment, self).get_context_data(**kwargs)
         r = self.report
-        context['currentDPpk'] = Report.objects.get(pk=self.kwargs['report']).degreeProgram.pk
+        context['currentDPpk'] = r.degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=r.degreeProgram.department)
         context['slo_list'] = SLOInReport.objects.filter(report=r).union(SLOInReport.objects.filter(report__degreeProgram__department=r.degreeProgram.department).exclude(report=r),all=True)
-        context['rpt']=self.kwargs['report']
+        context['rpt']= r
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -247,7 +251,7 @@ class ImportSupplement(LoginRequiredMixin,UserPassesTestMixin,FormView):
         context = super(ImportSupplement, self).get_context_data(**kwargs)
         context['currentDPpk'] = self.report.degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=self.report.degreeProgram.department)
-        context['rpt']=self.kwargs['report']
+        context['rpt'] = self.report
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -257,6 +261,10 @@ class DeleteSupplement(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DeleteSupplement,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(DeleteSupplement,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def test_func(self):
@@ -273,6 +281,10 @@ class Section2Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report.section2Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section2Comment,self).form_valid(form)
+    def get_context_data(self,**kwargs):
+        context = super(Section2Comment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_initial(self):
         initial = super(Section2Comment,self).get_initial()
         initial['text']="No comment."
@@ -288,10 +300,14 @@ class DeleteImportedAssessment(DeleteView):
         self.oldNum = a.number
         self.slo = a.slo
         return super(DeleteImportedAssessment,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(DeleteImportedAssessment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         oldNum = self.oldNum
         num = self.slo.numberOfAssess
-        assess = AssesmentVersion.objects.filter(report=self.report)
+        assess = AssessmentVersion.objects.filter(report=self.report)
         for a in assess:
             if a.number > oldNum:
                 a.number -= 1
@@ -315,7 +331,7 @@ class DeleteNewAssessment(DeleteView):
         assessment.save()
         oldNum = self.oldNum
         num = self.slo.numberOfAssess
-        assess = AssesmentVersion.objects.filter(report=self.report)
+        assess = AssessmentVersion.objects.filter(report=self.report)
         for a in assess:
             if a.number > oldNum:
                 a.number -= 1
@@ -323,3 +339,7 @@ class DeleteNewAssessment(DeleteView):
         self.slo.numberOfAssess -= 1
         self.slo.save()        
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(DeleteNewAssessment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context

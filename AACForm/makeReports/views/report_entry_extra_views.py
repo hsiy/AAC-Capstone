@@ -23,6 +23,10 @@ class ReportFirstPage(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['pk'])
         return super(ReportFirstPage,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(ReportFirstPage,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def test_func(self):
@@ -35,6 +39,7 @@ class FinalReportSupplements(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return super(FinalReportSupplements,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         context = super(FinalReportSupplements,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
         context['report'] = self.report
         return context
     def get_queryset(self):
@@ -54,6 +59,7 @@ class AddEndSupplements(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super(AddEndSupplements,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         context = super(AddEndSupplements,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
         context['report'] = self.report
         return context
     def form_valid(self,form):
@@ -69,6 +75,11 @@ class DeleteEndSupplements(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DeleteEndSupplements,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(DeleteEndSupplements,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        context['report'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
     def test_func(self):
@@ -84,24 +95,41 @@ class SubmitReport(LoginRequiredMixin, UserPassesTestMixin, FormView):
         kwargs=super(SubmitReport,self).get_form_kwargs()
         slos = SLOInReport.objects.filter(report=self.report)
         valid = True
-        valid = valid and (slos.count()>0)
+        eMsg = "The report is not complete.\n"
+        if slos.count() == 0 :
+            valid = False
+            eMsg = eMsg+"There are no SLOs.\n"
         for slo in slos:
-            valid = valid and (AssessmentVersion.objects.filter(slo=slo).count()>0)
-            valid = valid and (DecisionsActions.objects.filter(report=self.report, SLO=slo.slo).count()>0)
+            if AssessmentVersion.objects.filter(slo=slo).count()==0:
+                valid = False
+                eMsg = eMsg+"There is no an assessment for SLO "+str(slo.number)+".\n"
+            if DecisionsActions.objects.filter(report=self.report, SLO=slo.slo).count()==0:
+                valid = False
+                eMsg = eMsg+"There are no decisions or actions for SLO "+str(slo.number)+".\n"
         assesses = AssessmentVersion.objects.filter(report=self.report)
         for a in assesses:
-            valid = valid and (AssessmentData.objects.filter(assessmentVersion=a).count()>0)
+            if AssessmentData.objects.filter(assessmentVersion=a).count()==0:
+                valid = False
+                eMsg = eMsg+"There is no data for assessment "+str(a.number)+".\n"
         if not self.report.author or self.report.author=="":
             valid = False
-        if not self.report.date_range or self.report.date_range_of_reported_data=="":
+            eMsg = eMsg+"There is no report author.\n"
+        if not self.report.date_range_of_reported_data or self.report.date_range_of_reported_data=="":
             valid = False
+            eMsg = eMsg+"There is no reported data range.\n"
         if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
             valid == False
+            eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
+        if ResultCommunicate.objects.filter(report=self.report).count() == 0:
+            valid = False
+            eMsg = eMsg+"There is no description of communicating results.\n"
         kwargs['valid'] = valid
+        kwargs['eMsg'] = eMsg
         return kwargs
     def get_context_data(self, **kwargs):
         context = super(SubmitReport,self).get_context_data(**kwargs)
         context['report'] = self.report
+        context['rpt'] = self.report
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)

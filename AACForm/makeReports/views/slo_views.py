@@ -42,6 +42,10 @@ class AddNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         else:
             kwargs['grad'] = False
         return kwargs
+    def get_context_data(self,**kwargs):
+        context = super(AddNewSLO,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -92,7 +96,7 @@ class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         r = self.report
         context['currentDPpk'] = Report.objects.get(pk=self.kwargs['report']).degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=r.degreeProgram.department)
-        context['rpt']=self.kwargs['report']
+        context['rpt'] = r
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -110,6 +114,10 @@ class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_success_url(self):
         r = Report.objects.get(pk=self.kwargs['report'])
         return reverse_lazy('makeReports:slo-summary', args=[r.pk])
+    def get_context_data(self,**kwargs):
+        context = super(EditImportedSLO,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def form_valid(self,form):
         r = self.report
         self.sloInRpt.date=datetime.now()
@@ -136,6 +144,10 @@ class EditNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return initial
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(EditNewSLO, self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def form_valid(self, form):
         self.sloInRpt.goalText = form.cleaned_data['text']
         self.sloInRpt.date = datetime.now()
@@ -208,7 +220,7 @@ class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         context = super(ImportStakeholderEntry, self).get_context_data(**kwargs)
         context['currentDPpk'] = self.report.degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=self.report.degreeProgram.department)
-        context['rpt']=self.kwargs['report']
+        context['rpt']=self.report
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -221,6 +233,10 @@ class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def get_success_url(self):
         #to be changed to assessment page!
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(Section1Comment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def form_valid(self, form):
         self.report.section1Comment = form.cleaned_data['text']
         self.report.save()
@@ -250,6 +266,10 @@ class DeleteImportedSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         self.report.numberOfSLOs -= 1
         self.report.save()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(DeleteImportedSLO,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class DeleteNewSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
@@ -277,3 +297,7 @@ class DeleteNewSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+    def get_context_data(self,**kwargs):
+        context = super(DeleteNewSLO,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
