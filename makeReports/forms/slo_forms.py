@@ -29,7 +29,7 @@ class EditNewSLOForm(forms.Form):
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
     def __init__(self,*args,**kwargs):
         grad = kwargs.pop('grad',None)
-        super(CreateNewSLO,self).__init__(*args,**kwargs)
+        super(EditNewSLOForm,self).__init__(*args,**kwargs)
         if not grad:
             del self.fields['gradGoals']
 class EditImportedSLOForm(forms.Form):

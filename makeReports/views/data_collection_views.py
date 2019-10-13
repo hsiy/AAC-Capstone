@@ -60,7 +60,10 @@ class CreateDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
 
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-
+    def get_context_data(self,**kwargs):
+        context = super(CreateDataCollectionRow,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
 class EditDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/DataCollection/editDataCollection.html"
     form_class = EditDataCollection
@@ -89,7 +92,10 @@ class EditDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
 
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
-
+    def get_context_data(self,**kwargs):
+        context = super(EditDataCollectionRow,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
 
 class DeleteDataCollectionRow(DeleteView):
     model = AssessmentData
@@ -101,6 +107,10 @@ class DeleteDataCollectionRow(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(DeleteDataCollectionRow,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
 
 
 class CreateSubassessmentRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
@@ -111,7 +121,10 @@ class CreateSubassessmentRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         return super(CreateSubassessmentRow,self).dispatch(request,*args,**kwargs)
-
+    def get_context_data(self,**kwargs):
+        context = super(CreateSubassessmentRow,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -131,7 +144,10 @@ class EditSubassessmentRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.subassessment = Subassessment.objects.get(pk=self.kwargs['pk'])
         return super(EditSubassessmentRow,self).dispatch(request,*args,**kwargs)
-
+    def get_context_data(self,**kwargs):
+        context = super(EditSubassessmentRow,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_initial(self):
         initial = super(EditSubassessmentRow, self).get_initial()
         initial['title'] = self.subassessment.title
@@ -158,7 +174,10 @@ class DeleteSubassessmentRow(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         self.report = Report.objects.get(pk=kwargs['report'])
         return super(DeleteSubassessmentRow,self).dispatch(request, *args, **kwargs)
-
+    def get_context_data(self,**kwargs):
+        context = super(DeleteSubassessmentRow,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -171,7 +190,10 @@ class NewSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         self.slo_ir = SLOInReport.objects.get(slo=self.slo, report=self.report)
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
-
+    def get_context_data(self,**kwargs):
+        context = super(NewSLOStatus,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -199,7 +221,10 @@ class EditSLOStatus(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial = super(EditSLOStatus, self).get_initial()
         initial['status'] = self.slo_status.status
         return initial
-
+    def get_context_data(self,**kwargs):
+        context = super(EditSLOStatus,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -221,7 +246,10 @@ class NewResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(NewResultCommunication,self).dispatch(request,*args,**kwargs)
-
+    def get_context_data(self,**kwargs):
+        context = super(NewResultCommunication,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -247,7 +275,10 @@ class EditResultCommunication(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial = super(EditResultCommunication, self).get_initial()
         initial['text'] = self.result_communication.text
         return initial
-
+    def get_context_data(self,**kwargs):
+        context = super(EditResultCommunication,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -267,6 +298,10 @@ class Section3Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return super(Section3Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(Section3Comment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def form_valid(self, form):
         self.report.section3Comment = form.cleaned_data['text']
         self.report.save()
@@ -284,6 +319,10 @@ class DataAssessmentAddInfo(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DataAssessmentAddInfo,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(DataAssessmentAddInfo,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def form_valid(self,form):
         form.instance.report=self.report
         return super(DataAssessmentAddInfo,self).form_valid(form)
@@ -297,6 +336,10 @@ class DataAssessmentDeleteInfo(LoginRequiredMixin,UserPassesTestMixin,DeleteView
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DataAssessmentDeleteInfo,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(DataAssessmentDeleteInfo,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def test_func(self):
@@ -308,6 +351,10 @@ class DataAssessmentUpdateInfo(LoginRequiredMixin,UserPassesTestMixin,UpdateView
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DataAssessmentUpdateInfo,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self,**kwargs):
+        context = super(DataAssessmentUpdateInfo,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def test_func(self):

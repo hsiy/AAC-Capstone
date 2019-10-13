@@ -51,6 +51,10 @@ class AddDecisionAction(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         form.instance.SLO = self.slo
         form.instance.report = self.report
         return super(AddDecisionAction,self).form_valid(form)
+    def get_context_data(self,**kwargs):
+        context = super(AddDecisionAction,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def test_func(self):
@@ -67,6 +71,10 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
         form = super(EditDecisionAction,self).get_form()
         form.fields['text'].widget=SummernoteWidget()
         return form
+    def get_context_data(self,**kwargs):
+        context = super(EditDecisionAction,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def test_func(self):
@@ -145,6 +153,10 @@ class Section4Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report.section4Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section4Comment,self).form_valid(form)
+    def get_context_data(self,**kwargs):
+        context = super(Section4Comment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_initial(self):
         initial = super(Section4Comment,self).get_initial()
         initial['text']="No comment."
