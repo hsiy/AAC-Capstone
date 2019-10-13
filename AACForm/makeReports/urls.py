@@ -5,6 +5,7 @@ from makeReports import views
 from django.contrib.auth import views as auth_views
 app_name = "makeReports"
 urlpatterns = [
+    path('summernote/', include('django_summernote.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.HomePage.as_view(), name="home-page"),
     re_path(r'^user/modify/$', views.UserModifyAccount.as_view(),name='modify-acct'),
