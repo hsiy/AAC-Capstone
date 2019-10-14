@@ -46,6 +46,7 @@ class AddDecisionAction(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     def get_form(self):
         form = super(AddDecisionAction,self).get_form()
         form.fields['text'].widget=SummernoteWidget()
+        form.fields['text'].label=""
         return form
     def form_valid(self,form):
         form.instance.SLO = self.slo
@@ -70,6 +71,7 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     def get_form(self):
         form = super(EditDecisionAction,self).get_form()
         form.fields['text'].widget=SummernoteWidget()
+        form.fields['text'].label=""
         return form
     def get_context_data(self,**kwargs):
         context = super(EditDecisionAction,self).get_context_data(**kwargs)

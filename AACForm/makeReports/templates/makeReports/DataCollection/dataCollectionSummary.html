@@ -2,6 +2,9 @@
 {% load bootstrap4 %}
 {% block inner_content %}
 <h3>Data Collection and Analysis Summary</h3>
+<div class="container" style="max-width: 95%;">
+ <div class="row">
+     <div class="col">
 <table class="table">
     <tbody>
         <tr>
@@ -93,7 +96,7 @@
         </tr>
         {% for slo_status in assessment_data_dict.slo_statuses %}
             <tr>
-                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text }}</td>
+                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text|safe }}</td>
                 {% if slo_status.slo_status_pk == None %}
                     <td>(Status Not Reported)</td>
                     <td>
@@ -124,7 +127,7 @@
                     <a type="button" title="Add Result Communication" class="btn btn-primary" href="{% url 'makeReports:add-result-communication' report=rpt.pk %}">✎</a>
                 </td>
             {% else %}
-                <td>{{ assessment_data_dict.result_communication_text }}</td>
+                <td>{{ assessment_data_dict.result_communication_text|safe }}</td>
                 <td>
                     <a type="button" title="Edit Result Communication" class="btn btn-primary" href="{% url 'makeReports:edit-result-communication' report=rpt.pk resultpk=assessment_data_dict.result_communication_id %}">✎</a>
                 </td>
@@ -132,5 +135,16 @@
         </tr>
     </tbody>
 </table>
+</div>
+<div class="col-3">
+        <h4>Section III.</h4>
+        1. Data Collection<br>
+        2. <a href="{% url 'makeReports:data-comment' report=rpt.pk %}">Additional Comments</a>
+    </div>
+</div>
+<div class="row"><div class="col">
 <a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:data-comment' report=rpt.pk %}">Continue</a>
+</div>
+</div>
+</div>
 {% endblock %}

@@ -102,7 +102,7 @@ class SubmitReport(LoginRequiredMixin, UserPassesTestMixin, FormView):
         for slo in slos:
             if AssessmentVersion.objects.filter(slo=slo).count()==0:
                 valid = False
-                eMsg = eMsg+"There is no an assessment for SLO "+str(slo.number)+".\n"
+                eMsg = eMsg+"There is not an assessment for SLO "+str(slo.number)+".\n"
             if DecisionsActions.objects.filter(report=self.report, SLO=slo.slo).count()==0:
                 valid = False
                 eMsg = eMsg+"There are no decisions or actions for SLO "+str(slo.number)+".\n"

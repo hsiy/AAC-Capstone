@@ -135,6 +135,10 @@ class EditImportedAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         kwargs = super(EditImportedAssessment,self).get_form_kwargs()
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report)
         return kwargs
+    def get_context_data(self, **kwargs):
+        context = super(EditImportedAssessment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_success_url(self):
         r = Report.objects.get(pk=self.kwargs['report'])
         return reverse_lazy('makeReports:assessment-summary', args=[r.pk])
@@ -181,6 +185,10 @@ class EditNewAssessment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial['target'] = self.assessVers.target
         initial['slo'] = self.assessVers.slo
         return initial
+    def get_context_data(self,**kwargs):
+        context = super(EditNewAssessment,self).get_context_data(**kwargs)
+        context['rpt'] = self.report
+        return context
     def get_form_kwargs(self):
         kwargs = super(EditNewAssessment,self).get_form_kwargs()
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report)

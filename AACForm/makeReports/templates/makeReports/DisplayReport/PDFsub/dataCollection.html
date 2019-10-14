@@ -46,7 +46,7 @@
         </tr>
         {% for slo_status in assessment_data_dict.slo_statuses %}
             <tr>
-                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text }}</td>
+                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text|safe }}</td>
                 {% if slo_status.slo_status_pk == None %}
                     <td>(Status Not Reported)</td>
                 {% else %}
@@ -58,7 +58,7 @@
 </table>
 </div>
 <div class="subsection">C. Description of how results are communicated within the program</div>
-<p>{{ assessment_data_dict.result_communication_text }}</p>
+<p>{{ assessment_data_dict.result_communication_text|safe }}</p>
 
 <div class="subsection">D. Comment</div>
 {{report.section3Comment|safe}}
