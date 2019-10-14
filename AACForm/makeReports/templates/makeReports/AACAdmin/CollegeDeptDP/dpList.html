@@ -11,6 +11,8 @@ Looking for a deleted degree program?  <a type="button" class="btn btn-primary" 
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-dp' dept=dp.department.pk pk=dp.pk %}">Update Degree Program</a>
             <a type="button" class="btn btn-danger" href="{% url 'makeReports:delete-dp' dept=dp.department.pk pk=dp.pk %}">Archive Degree Program</a>
     </li>
+    {% empty %}
+No degree programs.
 {% endfor %}
 </ul>
 {% endblock %}

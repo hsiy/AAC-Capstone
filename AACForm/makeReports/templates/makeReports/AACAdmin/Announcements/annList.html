@@ -8,6 +8,8 @@
       <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-announ' pk=a.pk %}">Delete</a>
       <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-announ' pk=a.pk %}">Edit</a>
     </li>
+{% empty %}
+No active announcements.
 {% endfor %}
 </ul>
 {% endblock %}

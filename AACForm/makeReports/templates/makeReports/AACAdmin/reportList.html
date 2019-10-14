@@ -50,6 +50,8 @@
             {% endif %}
             {% if rpt.submitted and not rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
     </li>
+    {% empty %}
+No reports matching query.
 {% endfor %}
 </ul>
 {% endblock %}

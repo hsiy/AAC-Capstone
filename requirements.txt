@@ -5,7 +5,7 @@ chardet==3.0.4
 Django==2.2.5
 django-appconf==1.0.3
 django-bootstrap4==1.0.1
-django-googledrive-storage==1.3.5
+git+https://github.com/tiktn/django-googledrive-storage.git
 google-api-python-client==1.7.11
 google-auth==1.6.3
 google-auth-httplib2==0.0.3

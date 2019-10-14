@@ -7,6 +7,8 @@
     <li class = "list-group-item">{{gg.text}}
         <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-gg' pk=gg.pk %}">Modify or Un-archive</a>
       </li>
+      {% empty %}
+No archived graduate goals.
 {% endfor %}
 </ul>
 {% endblock %}

@@ -8,6 +8,8 @@
     <li class = "list-group-item">{{dp.name}}, {{dp.level}} in {{dp.department.college.name}}
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:recover-dp' dept=dp.department.pk pk=dp.pk %}">Recover Degree Program</a>
     </li>
+{% empty %}
+No archived degree programs.
 {% endfor %}
 </ul>
 {% endblock %}

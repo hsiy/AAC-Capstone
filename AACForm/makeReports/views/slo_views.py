@@ -27,6 +27,7 @@ class SLOSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(SLOSummary, self).get_context_data()
         context['rpt'] = self.report
+        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last().text
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
