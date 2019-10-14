@@ -35,7 +35,7 @@ class EditNewSLOForm(forms.Form):
 class EditImportedSLOForm(forms.Form):
     text = forms.CharField(widget= SummernoteWidget(), max_length=600, label="SLO: ")
 class Single2000Textbox(forms.Form):
-    text = forms.CharField(max_length=2000, widget=SummernoteWidget())
+    text = forms.CharField(max_length=2000, widget=SummernoteWidget(),label="")
 class CreateReportByDept(forms.ModelForm):
     class Meta:
         model = Report

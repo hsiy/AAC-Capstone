@@ -2,6 +2,17 @@
 {% load bootstrap4 %}
 {% block inner_content %}
 <h3>SLO Summary</h3>
+<div class="container" style="max-width:95%">
+    <div class="row">
+            <div class="col">      
+    <div class="row">
+        <div class="col">
+                <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import SLO</a>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col">
 <table class="table">
     <tbody>
             <tr>
@@ -39,8 +50,20 @@
             <tr><td>No SLOs yet.</td></tr>
             {% endfor %}
     </tbody>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import SLO</a>
 </table>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Next</a>
+</div>
+<div class="col-3">
+        <h4>Section I.</h4>
+        1. Student Learning Outcomes<br>
+        2. <a href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Stakeholder Communication</a><br>
+        3. <a href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Additional Comments</a>
+    </div>
+</div>
+<div class="row">
+        <div class="col">
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Next</a>
+        </div>
+</div>
+</div>
+</div>
 {% endblock %}

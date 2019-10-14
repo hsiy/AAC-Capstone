@@ -9,7 +9,10 @@
       <a href="{{sup.supplement.url}}">{{sup.supplement}}</a> 
       <a class="btn btn-primary" href="{% url 'makeReports:delete-rpt-sup' report=report.pk pk=sup.pk %}">Delete Supplement</a>
     </li>
+{% empty %}
+No supplements.
 {% endfor %}
-<a class="btn btn-primary" href="{% url 'makeReports:submit-report' report=report.pk %}">Next</a>
 </ul>
+<a class="btn btn-primary" href="{% url 'makeReports:submit-report' report=report.pk %}">Next</a>
+
 {% endblock %}

@@ -96,18 +96,6 @@
                                                 <i>{{assessment.target}}%</i>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>Supplements</td>
-                                            <td>
-                                                {% for sup in assessment.supplements.all %}
-                                                    {% if forloop.last %}
-                                                        <a href="{{sup.supplement.url}}">{{sup.supplement}}</a>
-                                                    {% else %}
-                                                        <a href="{{sup.supplement.url}}">{{sup.supplement}}</a>,
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </td>
-                                        </tr>
                                     </tbody>
                                     </table>
                                 </div>
