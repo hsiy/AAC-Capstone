@@ -7,6 +7,8 @@
     <li class = "list-group-item">{{college.name}}
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:recover-college' pk=college.pk %}">Recover College</a>
     </li>
+{% empty %}
+No archived colleges.
 {% endfor %}
 </ul>
 {% endblock %}

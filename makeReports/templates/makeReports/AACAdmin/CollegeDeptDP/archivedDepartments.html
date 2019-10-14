@@ -7,6 +7,8 @@
     <li class = "list-group-item">{{dept.name}} in {{dept.college.name}} 
         <a type="button" class="btn btn-danger" href="{% url 'makeReports:delete-dept' pk=dept.pk %}">Recover Department</a>
     </li>
+{% empty %}
+No departments
 {% endfor %}
 </ul>
 {% endblock %}

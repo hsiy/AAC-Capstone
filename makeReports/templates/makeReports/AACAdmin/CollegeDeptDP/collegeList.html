@@ -10,6 +10,8 @@ Looking for a deleted college?  <a type="button" class="btn btn-primary" href="{
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-college' pk=college.pk %}">Update College</a>
 
     </li>
+    {% empty %}
+No colleges.
 {% endfor %}
 </ul>
 {% endblock %}

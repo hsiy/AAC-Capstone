@@ -35,6 +35,8 @@
                     {% endif %}
                 </td>
             </tr>
+            {% empty %}
+            <tr><td>No SLOs yet.</td></tr>
             {% endfor %}
     </tbody>
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
