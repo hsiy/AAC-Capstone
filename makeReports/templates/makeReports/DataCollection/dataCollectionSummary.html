@@ -5,6 +5,7 @@
 <div class="container" style="max-width: 95%;">
  <div class="row">
      <div class="col">
+         <h4>Data Table</h4>
 <table class="table">
     <tbody>
         <tr>
@@ -37,11 +38,11 @@
                 {% if assessment.subassessments_len > 0 %}
                     {% for subassessment in assessment.subassessments %}
                         {% if forloop.last %}
-                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}"> ✎</a>
-                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a>
+                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}">Edit</a>
+                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}">Delete</a>
                         {% else %}
-                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}"> ✎</a>
-                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a> <br>
+                            <a type="button" title="Edit subassessment" class="btn btn-primary" href="{% url 'makeReports:edit-subassessment' report=rpt.pk pk=subassessment.2%}">Edit</a>
+                            <a type="button" title="Delete subassessment" class="btn btn-primary" href="{% url 'makeReports:delete-subassessment' report=rpt.pk pk=assessment.assessment_data_id %}">Delete</a> <br>
                         {% endif %}
                     {% endfor %}
                 {% else %}
@@ -52,16 +53,16 @@
                 {% if assessment.data_range == None %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection' report=rpt.pk assessment=assessment.assessment_id %}"> Add Assessment Data</a>
                 {% else %}
-                    <a type="button" title="Add subassessment" class="btn btn-primary" href="{% url 'makeReports:add-subassessment' report=rpt.pk assessment=assessment.assessment_id%}"> 📝</a>
-                    <a type="button" title="Edit data for measure" class="btn btn-primary" href="{% url 'makeReports:edit-data-collection' report=rpt.pk dataCollection=assessment.assessment_data_id%}"> ✎</a>
-                    <a type="button" title="Delete data for measure" class="btn btn-primary" href="{% url 'makeReports:delete-data-collection' report=rpt.pk pk=assessment.assessment_data_id %}"> 🗑️</a>
+                    <a type="button" title="Add subassessment" class="btn btn-primary" href="{% url 'makeReports:add-subassessment' report=rpt.pk assessment=assessment.assessment_id%}">Add</a>
+                    <a type="button" title="Edit data for measure" class="btn btn-primary" href="{% url 'makeReports:edit-data-collection' report=rpt.pk dataCollection=assessment.assessment_data_id%}">Edit</a>
+                    <a type="button" title="Delete data for measure" class="btn btn-primary" href="{% url 'makeReports:delete-data-collection' report=rpt.pk pk=assessment.assessment_data_id %}">Delete</a>
                 {% endif %}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<h5>Supplements</h5>
+<h4>Supplements</h4>
 <a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:add-data-sup' report=rpt.pk %}">Add Supplement</a>
 <table class="table">
     <tbody>
@@ -87,7 +88,7 @@
 <table class="table">
     <tbody>
         <thead>
-            <h3>SLO Status</h3>
+            <h4>SLO Status</h4>
         </thead>
         <tr>
             <td>SLO</td>
@@ -100,12 +101,12 @@
                 {% if slo_status.slo_status_pk == None %}
                     <td>(Status Not Reported)</td>
                     <td>
-                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:add-slo-status' report=rpt.pk slopk=slo_status.slo_pk %}">✎</a>
+                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:add-slo-status' report=rpt.pk slopk=slo_status.slo_pk %}">Edit</a>
                     </td>
                 {% else %}
                     <td>{{ slo_status.slo_status }}</td>
                     <td>
-                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:edit-slo-status' report=rpt.pk slopk=slo_status.slo_pk statuspk=slo_status.slo_status_pk %}">✎</a>
+                        <a type="button" title="Edit Status" class="btn btn-primary" href="{% url 'makeReports:edit-slo-status' report=rpt.pk slopk=slo_status.slo_pk statuspk=slo_status.slo_status_pk %}">Edit</a>
                     </td>
                 {% endif %}
             </tr>
@@ -114,37 +115,46 @@
 </table>
 <table class='table'>
     <thead>
-        <h3>Describe how results are communicated within the program</h3>
+        <h4>Describe how results are communicated within the program</h4>
     </thead>
     <tbody>
         <tr>
-            <td>Text</td> <td>Actions</td>
+            <td>Text</td> <td>Options</td>
         </tr>
         <tr>
             {% if assessment_data_dict.result_communication_id == None %}
                 <td>Describe how results are communicated within the program. Address each SLO.</td>
                 <td>
-                    <a type="button" title="Add Result Communication" class="btn btn-primary" href="{% url 'makeReports:add-result-communication' report=rpt.pk %}">✎</a>
+                    <a type="button" title="Add Result Communication" class="btn btn-primary" href="{% url 'makeReports:add-result-communication' report=rpt.pk %}">Edit</a>
                 </td>
             {% else %}
                 <td>{{ assessment_data_dict.result_communication_text|safe }}</td>
                 <td>
-                    <a type="button" title="Edit Result Communication" class="btn btn-primary" href="{% url 'makeReports:edit-result-communication' report=rpt.pk resultpk=assessment_data_dict.result_communication_id %}">✎</a>
+                    <a type="button" title="Edit Result Communication" class="btn btn-primary" href="{% url 'makeReports:edit-result-communication' report=rpt.pk resultpk=assessment_data_dict.result_communication_id %}">Edit</a>
                 </td>
             {% endif %}
         </tr>
     </tbody>
 </table>
 </div>
-<div class="col-3">
+ </div>
+<!--<div class="col-3">
         <h4>Section III.</h4>
         1. Data Collection<br>
         2. <a href="{% url 'makeReports:data-comment' report=rpt.pk %}">Additional Comments</a>
     </div>
+</div>-->
+<div class="row mt-5">
+    <div class="col-7">
+        <h4>Additional Comments</h4>
+        {{rpt.section3Comment|safe}}
+    </div>
+    <div class="col-2">
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:data-comment' report=rpt.pk %}">Edit</a>
+    </div>
 </div>
-<div class="row"><div class="col">
-<a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:data-comment' report=rpt.pk %}">Continue</a>
-</div>
+<div class="row mt-5"><div class="col">
+<a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:decisions-actions-summary' report=rpt.pk %}">Next</a>
 </div>
 </div>
 {% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'form_entry_base.html' %}
+{% load bootstrap4 %}
+{% block inner_content %}
+<h3>Import Assessment</h3>
+<h5>Search For Assessments</h5>
+<form action="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}" type="get">
+        <!--<input id="name" type="text" name="name"></div>-->
+        <div><label>Year: </label> 
+            <input id="year" name="year" type="number">
+        </div>
+        <div> 
+            <label>Degree Program: </label>
+             <select id = "dp" name="dp" required>
+                 <option value = "-1">Any</option>
+                {% for degPro in degPro_list %}
+                    <option value = "{{degPro.pk}}" {% if degPro.pk == currentDPpk %}selected{% endif %}>{{degPro.name}}</option>
+               {% endfor %}
+             </select>
+        </div>
+        <div>
+            <label>SLO: </label>
+            <select id = "slo" name="slo" required>
+                <option value = "-1">Any</option>
+                {% for slo in slo_list %}
+                    <option value = "{{slo.pk}}">{{slo.goalText|safe}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% buttons %}
+        <button type="submit" class="btn btn-primary">Search for Assessments</button>
+        {% endbuttons %}
+</form>
+<h5>Select Assessments to Import</h5>
+<form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Add Assessments</button>
+    {% endbuttons %}
+</form>
+{% endblock %}

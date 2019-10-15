@@ -9,15 +9,11 @@
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Next</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     {% endbuttons %}
 </form>
 </div>
-<div class="col-3">
-        <h4>Section II.</h4>
-        1. <a href="{% url 'makeReports:assessment-summary' report=rpt.pk %}">Assessments</a><br>
-        2. Additional Comments
-    </div>
+
 </div>
 </div>
 
