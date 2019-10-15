@@ -24,7 +24,7 @@ class DataCollectionSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
 
     def get_queryset(self):
         report = self.report
-        assessments = AssessmentVersion.objects.filter(report=report)
+        assessments = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")
         assessment_qs = AssessmentData.objects.none()
         for assessment in assessments:
             assessment_data = AssessmentData.objects.filter(assessmentVersion = assessment)
@@ -57,13 +57,16 @@ class CreateDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
         assessmentDataObj = AssessmentData.objects.create(assessmentVersion=self.assessment, dataRange=form.cleaned_data['dataRange'], numberStudents=form.cleaned_data['numberStudents'], overallProficient=form.cleaned_data['overallProficient'])
         assessmentDataObj.save()
         return super(CreateDataCollectionRow, self).form_valid(form)
-
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
     def get_context_data(self,**kwargs):
         context = super(CreateDataCollectionRow,self).get_context_data(**kwargs)
         context['rpt'] = self.report
         return context
+class CreateDataCollectionRowAssess(CreateDataCollectionRow):
+    def get_success_url(self):
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
+
 class EditDataCollectionRow(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/DataCollection/editDataCollection.html"
     form_class = EditDataCollection

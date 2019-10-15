@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import TemplateView, DetailView
+from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy, reverse
 from makeReports.models import *
 from makeReports.forms import *
@@ -60,6 +61,9 @@ class AddDecisionAction(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+class AddDecisionActionSLO(AddDecisionAction):
+    def get_success_url(self):
+        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = DecisionsActions
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
@@ -81,6 +85,18 @@ class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
+class EditDecisionActionSLO(EditDecisionAction):
+    def get_success_url(self):
+        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+class AddEditRedirect(RedirectView):
+    def get_redirect_url(self, *args,**kwargs):
+        slo = SLO.objects.get(pk=self.kwargs['slopk'])
+        rpt = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            dA = DecisionsActions.objects.get(SLO=slo,report=rpt)
+            return reverse_lazy('makeReports:edit-decisions-actions-slo', args=[rpt.pk,slo.pk,dA.pk])
+        except:
+            return reverse_lazy('makeReports:add-decisions-actions-slo', args=[rpt.pk,slo.pk])
 # class AddDecisionAction(LoginRequiredMixin,UserPassesTestMixin,FormView):
 #     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
 #     form_class = DecisionsActionsForm
