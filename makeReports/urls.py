@@ -107,6 +107,7 @@ urlpatterns = [
     #Data Collection URLS
     re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/$', views.CreateDataCollectionRow.as_view(), name='add-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/assess/$', views.CreateDataCollectionRowAssess.as_view(), name='add-data-collection-assess'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/edit/(?P<dataCollection>\d+)/$', views.EditDataCollectionRow.as_view(), name='edit-data-collection'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/addsub/$', views.CreateSubassessmentRow.as_view(), name='add-subassessment'),
@@ -123,7 +124,10 @@ urlpatterns = [
     #Decisions and Actions URLs
     re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),
-    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<pk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/slo/$', views.AddDecisionActionSLO.as_view(), name='add-decisions-actions-slo'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<pk>\d+)/$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<pk>\d+)/slo/$', views.EditDecisionActionSLO.as_view(), name='edit-decisions-actions-slo'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/redirect/$', views.AddEditRedirect.as_view(), name='add-edit-redirect'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/comment/$',views.Section4Comment.as_view(),name='d-a-comment'),
     #PDF Generators
     re_path(r'^pdf/report/(?P<report>\d+)/rubric/graded/$',views.GradedRubricPDFGen.as_view(), name='graded-rub-pdf'),

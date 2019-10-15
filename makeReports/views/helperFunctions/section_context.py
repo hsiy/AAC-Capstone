@@ -19,11 +19,11 @@ def rubricItemsHelper(self,context):
     context['extraHelp']=extraHelp
     return context
 def section1Context(self,context):
-    context['slo_list'] = SLOInReport.objects.filter(report=self.report)
+    context['slo_list'] = SLOInReport.objects.filter(report=self.report).order_by("number")
     context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
     return context
 def section2Context(self,context):
-    context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report)
+    context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     return context
 def section3Context(self,context):
     assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
@@ -73,7 +73,7 @@ def section3Context(self,context):
 
         assessment_data_dict['assessments'].append(temp_dict)
 
-    SLOs = SLOInReport.objects.filter(report=self.report)
+    SLOs = SLOInReport.objects.filter(report=self.report).order_by("number")
     for sloir in SLOs:
         temp_dict = dict()
         temp_dict['slo_obj'] = sloir
@@ -99,7 +99,7 @@ def section3Context(self,context):
     context['supplement_list'] = DataAdditionalInformation.objects.filter(report=self.report)
     return context
 def section4Context(self,context):
-    SLOs_ir = SLOInReport.objects.filter(report=self.report)
+    SLOs_ir = SLOInReport.objects.filter(report=self.report).order_by("number")
     context_list = []
     for slo_ir in SLOs_ir:
         temp_dict = dict()

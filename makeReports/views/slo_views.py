@@ -78,8 +78,8 @@ class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
          kwargs = super(ImportSLO,self).get_form_kwargs()
          yearIn = self.request.GET['year']
          dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
-         sloChoices = SLOInReport.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
-         slosInReport = SLOInReport.objects.filter(report=self.report)
+         sloChoices = SLOInReport.objects.filter(report__year=yearIn, report__degreeProgram=dPobj).order_by("number")
+         slosInReport = SLOInReport.objects.filter(report=self.report).order_by("number")
          for slo in slosInReport:
              sloChoices = sloChoices.exclude(slo=slo.slo)
          kwargs['sloChoices'] = sloChoices
@@ -259,7 +259,7 @@ class DeleteImportedSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     def get_success_url(self):
         oldNum = self.oldNum
         num = self.report.numberOfSLOs
-        slos = SLOInReport.objects.filter(report=self.report)
+        slos = SLOInReport.objects.filter(report=self.report).order_by("number")
         for slo in slos:
             if slo.number > oldNum:
                 slo.number -= 1
@@ -288,7 +288,7 @@ class DeleteNewSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         slo.delete()
         slo.save()
         num = self.report.numberOfSLOs
-        slos = SLOInReport.objects.filter(report=self.report)
+        slos = SLOInReport.objects.filter(report=self.report).order_by("number")
         for slo in slos:
             if slo.number > oldNum:
                 slo.number -= 1
