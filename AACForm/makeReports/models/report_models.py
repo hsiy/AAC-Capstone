@@ -80,7 +80,7 @@ class SLOsToStakeholder(models.Model):
     text = models.CharField(max_length=2000)
     report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return self.text
+        return mark_safe(self.text)
 class Assessment(models.Model):
     title = models.CharField(max_length=300)
     domainExamination = models.BooleanField()

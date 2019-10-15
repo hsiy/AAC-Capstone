@@ -5,12 +5,13 @@
 <div class="container" style="max-width:95%">
     <div class="row">
         <div class="col">
+            <h4>Decisions and Actions Table</h4>
                 <table class='table'>
                         <tbody>
                             <tr>
                                 <td>SLO</td>
                                 <td>Description</td>
-                                <td>Actions</td>
+                                <td>Options</td>
                             </tr>
                             {% for SLO_decisions in decisions_actions_list %}
                                 <tr>
@@ -33,16 +34,25 @@
                         </tbody>
                     </table>
         </div>
-        <div class="col-3">
+        <!--<div class="col-3">
                 <h4>Section IV.</h4>
                 1. Decisions and Actions<br>
                 2. <a href="{% url 'makeReports:d-a-comment' report=rpt.pk %}">Additional Comments</a>
             </div>
+        </div>-->
+    </div>
+    <div class="row mt-5">
+        <div class="col-7">
+            <h4>Additional Comments</h4>
+            {{rpt.section4Comment|safe}}
+        </div>
+        <div class="col-2">
+                <a class="btn btn-primary" href="{% url 'makeReports:d-a-comment' report=rpt.pk %}">Edit</a>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-5">
         <div class="col">
-                <a class="btn btn-primary" href="{% url 'makeReports:d-a-comment' report=rpt.pk %}">Next</a>
+                <a class="btn btn-primary" href="{% url 'makeReports:rpt-sup-list' report=rpt.pk %}">Next</a>
         </div>
     </div>
 </div>

@@ -39,10 +39,16 @@
                     {% if slo.firstInstance %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment-slo' report=rpt.pk slo=slo.pk %}">Add New Assessment</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo={{slo.pk}}">Import Assessment</a>
+
 
                     {% else %}
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
                     <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment-slo' report=rpt.pk slo=slo.pk %}">Add New Assessment</a>
+                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo={{slo.pk}}">Import Assessment</a>
+
                     {% endif %}
                 </td>
             </tr>
@@ -52,16 +58,36 @@
     </tbody>
 </table>
 </div>
-<div class="col-3">
+<!--<div class="col-3">
         <h4>Section I.</h4>
         1. Student Learning Outcomes<br>
         2. <a href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Stakeholder Communication</a><br>
         3. <a href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Additional Comments</a>
+    </div>-->
+</div>
+<div class="row mt-5">
+    <div class="col-7">
+        <h4>Communication to Stakeholders</h4>
+        {{stk.text|safe}}
+    </div>
+    <div class="col-2">
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Edit</a>
     </div>
 </div>
-<div class="row">
+<div class="row mt-5">
+    <div class="col-7">
+        <h4>
+            Additional Comments
+        </h4>
+        {{rpt.section1Comment|safe}}
+    </div>
+    <div class="col-2">
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Edit</a>
+    </div>
+</div>
+<div class="row mt-5">
         <div class="col">
-        <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Next</a>
+        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-summary' report=rpt.pk %}">Next</a>
         </div>
 </div>
 </div>

@@ -27,7 +27,7 @@ class SLOSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(SLOSummary, self).get_context_data()
         context['rpt'] = self.report
-        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last().text
+        context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
         return context
     def test_func(self):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
@@ -168,7 +168,7 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.sts = SLOsToStakeholder.objects.filter(report=self.report).last()
         return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        return reverse_lazy('makeReports:slo-comment', args=[self.report.pk])
+        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_initial(self):
         initial = super(StakeholderEntry,self).get_initial()
         try:
@@ -233,8 +233,7 @@ class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(Section1Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
-        #to be changed to assessment page!
-        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
+        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_context_data(self,**kwargs):
         context = super(Section1Comment,self).get_context_data(**kwargs)
         context['rpt'] = self.report

@@ -33,7 +33,9 @@ urlpatterns = [
     #Assesssment URLs
     re_path(r'^report/(?P<report>\d+)/assessment/summary/$', views.AssessmentSummary.as_view(), name='assessment-summary'),
     re_path(r'^report/(?P<report>\d+)/assessment/add/$', views.AddNewAssessment.as_view(), name='add-assessment'),  
+    re_path(r'^report/(?P<report>\d+)/slo/(?P<slo>\d+)/assessment/add/$', views.AddNewAssessmentSLO.as_view(), name='add-assessment-slo'),  
     re_path(r'^report/(?P<report>\d+)/assessment/import/$', views.ImportAssessment.as_view(), name='import-assessment'), 
+    re_path(r'^report/(?P<report>\d+)/slo/(?P<slo>\d+)/assessment/import/$', views.ImportAssessmentSLO.as_view(), name='import-assessment-slo'), 
     re_path(r'^report/(?P<report>\d+)/assessment/edit/new/(?P<assessIR>\d+)/$', views.EditNewAssessment.as_view(), name='edit-new-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/edit/impt/(?P<assessIR>\d+)/$', views.EditImportedAssessment.as_view(), name='edit-impt-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/upload/(?P<assessIR>\d+)/$', views.SupplementUpload.as_view(), name='assessment-supplement-upload'),
