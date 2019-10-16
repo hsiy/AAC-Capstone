@@ -97,68 +97,6 @@ class AddEditRedirect(RedirectView):
             return reverse_lazy('makeReports:edit-decisions-actions-slo', args=[rpt.pk,slo.pk,dA.pk])
         except:
             return reverse_lazy('makeReports:add-decisions-actions-slo', args=[rpt.pk,slo.pk])
-# class AddDecisionAction(LoginRequiredMixin,UserPassesTestMixin,FormView):
-#     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
-#     form_class = DecisionsActionsForm
-    
-#     def dispatch(self, request, *args, **kwargs):
-#         self.report = Report.objects.get(pk=self.kwargs['report'])
-#         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-#         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
-
-#     def get_success_url(self):
-#         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
-
-#     def form_valid(self, form):
-#         result_communication = DecisionsActions.objects.create(
-#             report = self.report, 
-#             SLO = self.slo,
-#             decisionProcess = form.cleaned_data['decisionProcess'], 
-#             decisionMakers = form.cleaned_data['decisionMakers'], 
-#             decisionTimeline = form.cleaned_data['decisionTimeline'], 
-#             dataUsed = form.cleaned_data['dataUsed'], 
-#             actionTimeline = form.cleaned_data['actionTimeline'])
-#         result_communication.save()
-#         return super(AddDecisionAction, self).form_valid(form)
-
-#     def test_func(self):
-#         return (self.report.degreeProgram.department == self.request.user.profile.department)
-
-# class EditDecisionAction(LoginRequiredMixin,UserPassesTestMixin,FormView):
-#     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
-#     form_class = DecisionsActionsForm
-    
-#     def dispatch(self, request, *args, **kwargs):
-#         self.report = Report.objects.get(pk=self.kwargs['report'])
-#         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-#         self.decision_action = DecisionsActions.objects.get(pk=self.kwargs['decactpk'])
-#         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
-
-#     def get_initial(self):
-#         initial = super(EditDecisionAction, self).get_initial()
-#         initial['decisionProcess'] = self.decision_action.decisionProcess
-#         initial['decisionMakers'] = self.decision_action.decisionMakers
-#         initial['decisionTimeline'] = self.decision_action.decisionTimeline
-#         initial['dataUsed'] = self.decision_action.dataUsed
-#         initial['actionTimeline'] = self.decision_action.actionTimeline
-#         return initial
-
-#     def get_success_url(self):
-#         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
-
-#     def form_valid(self, form):
-#         self.decision_action.report = self.report
-#         self.decision_action.SLO = self.slo
-#         self.decision_action.decisionProcess = form.cleaned_data['decisionProcess']
-#         self.decision_action.decisionMakers = form.cleaned_data['decisionMakers'] 
-#         self.decision_action.decisionTimeline = form.cleaned_data['decisionTimeline']
-#         self.decision_action.dataUsed = form.cleaned_data['dataUsed']
-#         self.decision_action.actionTimeline = form.cleaned_data['actionTimeline']
-#         self.decision_action.save()
-#         return super(EditDecisionAction, self).form_valid(form)
-
-#     def test_func(self):
-#         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class Section4Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
     template_name = "makeReports/DecisionsActions/comment.html"
     form_class = Single2000Textbox

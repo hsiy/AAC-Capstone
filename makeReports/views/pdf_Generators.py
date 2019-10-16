@@ -25,14 +25,12 @@ import os, io, requests
 from django.contrib.auth.decorators import login_required, user_passes_test
 from functools import wraps
 from django.contrib.staticfiles.storage import staticfiles_storage
-
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import resolve_url
 from django.utils import six
 from django.utils.decorators import available_attrs
-from django.utils.six.moves.urllib.parse import urlparse
 from pathlib import Path
 def test_func_x(self,*args,**kwargs):
     report = Report.objects.get(pk=kwargs['report'])
