@@ -12,31 +12,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
 from django_summernote.widgets import SummernoteWidget
+from makeReports.views.helperFunctions.mixins import *
 
-class SLOSummary(LoginRequiredMixin,UserPassesTestMixin,ListView):
+class SLOSummary(DeptReportMixin,ListView):
     model = SLOInReport
     template_name ="makeReports/SLO/sloSummary.html"
     context_object_name = "slo_list"
-    def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(SLOSummary,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         report = self.report
         objs = SLOInReport.objects.filter(report=report).order_by("number")
         return objs
     def get_context_data(self, **kwargs):
         context = super(SLOSummary, self).get_context_data()
-        context['rpt'] = self.report
         context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
         return context
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class AddNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class AddNewSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/addSLO.html"
     form_class = CreateNewSLO
-    def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(AddNewSLO,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
         kwargs = super(AddNewSLO,self).get_form_kwargs()
         if self.report.degreeProgram.level == "GR":
@@ -44,10 +36,6 @@ class AddNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         else:
             kwargs['grad'] = False
         return kwargs
-    def get_context_data(self,**kwargs):
-        context = super(AddNewSLO,self).get_context_data(**kwargs)
-        context['rpt'] = self.report
-        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -57,28 +45,33 @@ class AddNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
             gGoals = []
         rpt = self.report
         sloObj = SLO.objects.create(blooms=form.cleaned_data['blooms'])
-        sloObj.gradGoals.set(gGoals)
+        sloObj.gradGoals.add(gGoals)
         self.report.numberOfSLOs += 1
         self.report.save()
-        sloRpt = SLOInReport.objects.create(date=datetime.now(), goalText =form.cleaned_data['text'], slo=sloObj, firstInstance= True, changedFromPrior=False, report=rpt, number=self.report.numberOfSLOs)
+        sloRpt = SLOInReport.objects.create(
+            date=datetime.now(), 
+            goalText =form.cleaned_data['text'], 
+            slo=sloObj, 
+            changedFromPrior=False, 
+            report=rpt, 
+            number=self.report.numberOfSLOs
+            )
         sloObj.save()
         sloRpt.save()
         return super(AddNewSLO, self).form_valid(form)
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class ImportSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/importSLO.html"
     form_class = ImportSLOForm
-    def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(ImportSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_form_kwargs(self):
          kwargs = super(ImportSLO,self).get_form_kwargs()
          yearIn = self.request.GET['year']
          dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
-         sloChoices = SLOInReport.objects.filter(report__year=yearIn, report__degreeProgram=dPobj).order_by("number")
+         sloChoices = SLOInReport.objects.filter(
+             report__year=yearIn, 
+             report__degreeProgram=dPobj
+             ).order_by("number")
          slosInReport = SLOInReport.objects.filter(report=self.report).order_by("number")
          for slo in slosInReport:
              sloChoices = sloChoices.exclude(slo=slo.slo)
@@ -89,7 +82,41 @@ class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         num = rpt.numberOfSLOs
         for sloInRpt in form.cleaned_data['slo']:
             num += 1
-            SLOInReport.objects.create(date=datetime.now(),number=num,goalText=sloInRpt.goalText,slo=sloInRpt.slo, firstInstance=False, report=rpt, changedFromPrior=False)
+            newS = SLOInReport.objects.create(
+                date=datetime.now(),
+                number=num,
+                goalText=sloInRpt.goalText,
+                slo=sloInRpt.slo,
+                report=rpt, 
+                changedFromPrior=False)
+            newS.slo.numberOfUses += 1
+            newS.slo.save()
+            if form.cleaned_data['importAssessments']:
+                    assessSet = AssessmentVersion.objects.filter(slo=sloInRpt)
+                    for assess in assessSet:
+                        newA = AssessmentVersion.objects.create(
+                            report=self.report,
+                            slo = newS,
+                            number=newS.numberOfAssess+1,
+                            changedFromPrior=False,
+                            assessment = assess.assessment,
+                            date = datetime.now(),
+                            description = assess.description,
+                            finalTerm = assess.finalTerm,
+                            where = assess.where,
+                            allStudents = assess.allStudents,
+                            sampleDescription = assess.sampleDescription,
+                            frequency = assess.frequency,
+                            threshold = assess.threshold,
+                            target = assess.target
+                            )
+                        assess.assessment.numberOfUses += 1
+                        assess.assessment.save()
+                        for aSup in assess.supplements.all():
+                            newA.supplements.add(a)
+                        newA.save()
+                        newS.numberOfAssess += 1
+                        newS.save()
         self.report.numberOfSLOs = num
         self.report.save()
         return super(ImportSLO,self).form_valid(form)
@@ -98,15 +125,11 @@ class ImportSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         r = self.report
         context['currentDPpk'] = Report.objects.get(pk=self.kwargs['report']).degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=r.degreeProgram.department)
-        context['rpt'] = r
         return context
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class EditImportedSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
     def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
         return super(EditImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
@@ -114,30 +137,29 @@ class EditImportedSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial['text'] = self.sloInRpt.goalText
         return initial
     def get_success_url(self):
-        r = Report.objects.get(pk=self.kwargs['report'])
-        return reverse_lazy('makeReports:slo-summary', args=[r.pk])
-    def get_context_data(self,**kwargs):
-        context = super(EditImportedSLO,self).get_context_data(**kwargs)
-        context['rpt'] = self.report
-        return context
+        return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self,form):
         r = self.report
         self.sloInRpt.date=datetime.now()
         self.sloInRpt.goalText=form.cleaned_data['text']
         self.sloInRpt.changedFromPrior = True
         self.sloInRpt.save()
-        #newSLOInRpt = SLOInReport.objects.create(report=r,date=datetime.now(), goalText=form.cleaned_data['text'], slo = sloInRpt.slo, changedFromPrior=False, firstInstance=False)
-        #newSLOInRpt.save()
         return super(EditImportedSLO, self).form_valid(form)
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class EditNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class EditNewSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/editNewSLO.html"
     form_class = EditNewSLOForm
     def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
         return super(EditNewSLO,self).dispatch(request,*args,**kwargs)
+    def get_form_kwargs(self):
+        kwargs = super(EditNewSLO,self).get_form_kwargs()
+        if self.report.degreeProgram.level == "GR":
+            kwargs['grad'] = True
+            self.grad = True
+        else:
+            kwargs['grad'] = False
+            self.grad = False
+        return kwargs
     def get_initial(self):
         initial = super(EditNewSLO, self).get_initial()
         initial['text'] = self.sloInRpt.goalText
@@ -146,25 +168,19 @@ class EditNewSLO(LoginRequiredMixin,UserPassesTestMixin,FormView):
         return initial
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
-    def get_context_data(self,**kwargs):
-        context = super(EditNewSLO, self).get_context_data(**kwargs)
-        context['rpt'] = self.report
-        return context
     def form_valid(self, form):
         self.sloInRpt.goalText = form.cleaned_data['text']
         self.sloInRpt.date = datetime.now()
         self.sloInRpt.slo.blooms = form.cleaned_data['blooms']
-        self.sloInRpt.slo.gradGoals.set(form.cleaned_data['gradGoals'])
+        if self.grad:
+            self.sloInRpt.slo.gradGoals.add(form.cleaned_data['gradGoals'])
         self.sloInRpt.save()
         self.sloInRpt.slo.save()
         return super(EditNewSLO,self).form_valid(form)
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class StakeholderEntry(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/stakeholdersSLO.html"
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sts = SLOsToStakeholder.objects.filter(report=self.report).last()
         return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
@@ -184,18 +200,9 @@ class StakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         except Exception as e:
             sTs = SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report=self.report)
         return super(StakeholderEntry,self).form_valid(form)
-    def get_context_data(self, **kwargs):
-        context = super(StakeholderEntry, self).get_context_data(**kwargs)
-        context['rpt']=self.report
-        return context
-    def test_func(self):
-        return (self.report.degreeProgram.department==self.request.user.profile.department)
-class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class ImportStakeholderEntry(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/importStakeholderComm.html"
     form_class = ImportStakeholderForm
-    def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(ImportStakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-stakeholders', args=[self.report.pk])
     def get_form_kwargs(self):
@@ -222,22 +229,12 @@ class ImportStakeholderEntry(LoginRequiredMixin,UserPassesTestMixin,FormView):
         context = super(ImportStakeholderEntry, self).get_context_data(**kwargs)
         context['currentDPpk'] = self.report.degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=self.report.degreeProgram.department)
-        context['rpt']=self.report
         return context
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
+class Section1Comment(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/sloComment.html"
     form_class = Single2000Textbox
-    def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(Section1Comment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
-    def get_context_data(self,**kwargs):
-        context = super(Section1Comment,self).get_context_data(**kwargs)
-        context['rpt'] = self.report
-        return context
     def form_valid(self, form):
         self.report.section1Comment = form.cleaned_data['text']
         self.report.save()
@@ -246,19 +243,23 @@ class Section1Comment(LoginRequiredMixin,UserPassesTestMixin,FormView):
         initial = super(Section1Comment,self).get_initial()
         initial['text']="No comment."
         return initial
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class DeleteImportedSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteImportedSLO(DeptReportMixin,DeleteView):
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
     def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
         SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
         self.oldNum = SLOIR.number
+        self.slo = SLOIR.slo
+        self.assess = Assessment.objects.filter(assessmentversion__slo=SLOIR).distinct()
         return super(DeleteImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         oldNum = self.oldNum
         num = self.report.numberOfSLOs
+        if self.slo.numberOfUses <= 1:
+            self.slo.delete()
+        else:
+            self.slo.numberOfUses -= 1
+            self.slo.save()
         slos = SLOInReport.objects.filter(report=self.report).order_by("number")
         for slo in slos:
             if slo.number > oldNum:
@@ -266,27 +267,30 @@ class DeleteImportedSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
                 slo.save()
         self.report.numberOfSLOs -= 1
         self.report.save()
+        for a in self.assess:
+            if a.numberOfUses == 1:
+                a.delete()
+            else:
+                a.numberOfUse -= 1
+                a.save()
+        dAs = DecisionsActions.objects.filter(report=self.report, SLO=self.slo)
+        for dA in dAs:
+            dA.delete()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
-    def get_context_data(self,**kwargs):
-        context = super(DeleteImportedSLO,self).get_context_data(**kwargs)
-        context['rpt'] = self.report
-        return context
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-class DeleteNewSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteNewSLO(DeptReportMixin,DeleteView):
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
     def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['report'])
         SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
         self.slo = SLOIR.slo
         self.oldNum = SLOIR.number
+        self.assess = Assessment.objects.filter(assessmentversion__slo=SLOIR).distinct()
         return super(DeleteNewSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         oldNum = self.oldNum
+        otherSLOs = SLOInReport
         slo = self.slo
         slo.delete()
-        slo.save()
         num = self.report.numberOfSLOs
         slos = SLOInReport.objects.filter(report=self.report).order_by("number")
         for slo in slos:
@@ -295,10 +299,13 @@ class DeleteNewSLO(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
                 slo.save()
         self.report.numberOfSLOs -= 1
         self.report.save()
+        for a in self.assess:
+            if a.numberOfUses == 1:
+                a.delete()
+            else:
+                a.numberOfUse -= 1
+                a.save()
+        dAs = DecisionsActions.objects.filter(report=self.report, SLO=self.slo)
+        for dA in dAs:
+            dA.delete()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
-    def get_context_data(self,**kwargs):
-        context = super(DeleteNewSLO,self).get_context_data(**kwargs)
-        context['rpt'] = self.report
-        return context

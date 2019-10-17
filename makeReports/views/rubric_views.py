@@ -11,14 +11,13 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
-class RubricList(LoginRequiredMixin,UserPassesTestMixin,ListView):
+from makeReports.views.helperFunctions.mixins import *
+class RubricList(AACOnlyMixin,ListView):
     model = Rubric
     template_name = "makeReports/Rubric/rubricList.html"
     def get_queryset(self):
         return Rubric.objects.order_by("-date")
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class SearchRubricList(LoginRequiredMixin,UserPassesTestMixin,ListView):
+class SearchRubricList(AACOnlyMixin,ListView):
     model = Rubric
     template_name = "makeReports/Rubric/rubricList.html"
     def get_queryset(self):
@@ -29,9 +28,7 @@ class SearchRubricList(LoginRequiredMixin,UserPassesTestMixin,ListView):
         if day!="":
             rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
         return rubs.order_by("-date")
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
+class AddRubric(AACOnlyMixin,CreateView):
     template_name = "makeReports/Rubric/addRubric.html"
     success_url = reverse_lazy('makeReports:rubric-list')
     model=Rubric
@@ -39,9 +36,7 @@ class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
     def form_valid(self,form):
         form.instance.date = datetime.now()
         return super(AddRubric,self).form_valid(form)
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
+class AddRubricItems(AACOnlyMixin, FormView):
     template_name = "makeReports/Rubric/addRI.html"
     form_class = RubricItemForm
     def dispatch(self, request,*args, **kwargs):
@@ -64,9 +59,7 @@ class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
         return context
     def get_success_url(self):
         return reverse_lazy('makeReports:add-RI', args=[self.kwargs['rubric']])
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
+class ViewRubric(AACOnlyMixin,DetailView):
     model = Rubric
     template_name = "makeReports/Rubric/rubricDetail.html"
     def get_context_data(self,**kwargs):
@@ -74,32 +67,24 @@ class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
         context['rIs'] = RubricItem.objects.filter(rubricVersion=self.object).order_by("section","order","pk")
         context['obj'] = self.object
         return context
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+class UpdateRubricItem(AACOnlyMixin,UpdateView):
     model = RubricItem
     fields = ['text','abbreviation','section','order','DMEtext','MEtext','EEtext']
     template_name = "makeReports/Rubric/updateRubricItem.html"
     def get_success_url(self):
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class UpdateRubricFile(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
+class UpdateRubricFile(AACOnlyMixin, UpdateView):
     model = Rubric
     fields = ['name','fullFile']
     template_name = "makeReports/Rubric/updateRubric.html"
     def get_success_url(self):
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DeleteRubricItem(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteRubricItem(AACOnlyMixin,DeleteView):
     model = RubricItem
     template_name = "makeReports/Rubric/deleteRubricItem.html"
     def get_success_url(self):
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
+class DuplicateRubric(AACOnlyMixin, FormView):
     #duplicate -> edit/delete/add intended workflow instead of some kind of import
     form_class = DuplicateRubricForm
     success_url = reverse_lazy('makeReports:rubric-list')
@@ -111,12 +96,8 @@ class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
         for ri in RIs:
             newRi = RubricItem.objects.create(text=ri.text, abbreviation=ri.abbreviation, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
         return super(DuplicateRubric,self).form_valid(form)
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DeleteRubric(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+class DeleteRubric(AACOnlyMixin,DeleteView):
     model = Rubric
     template_name = "makeReports/Rubric/deleteRubric.html"
     def get_success_url(self):
         return reverse_lazy('makeReports:rubric-list')
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")

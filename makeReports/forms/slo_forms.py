@@ -18,6 +18,7 @@ class CreateNewSLO(forms.Form):
             del self.fields['gradGoals']
 class ImportSLOForm(forms.Form):
     slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ")
+    importAssessments = forms.BooleanField(required=False,label="Also import assessments?")
     #of type SLOInReport
     def __init__(self, *args, **kwargs):
         sloChoices = kwargs.pop('sloChoices',None)

@@ -32,6 +32,8 @@ from django.shortcuts import resolve_url
 from django.utils import six
 from django.utils.decorators import available_attrs
 from pathlib import Path
+from makeReports.views.helperFunctions.mixins import *
+from urllib.parse import urlparse
 def test_func_x(self,*args,**kwargs):
     report = Report.objects.get(pk=kwargs['report'])
     dept= (report.degreeProgram.department == self.profile.department)
@@ -68,7 +70,7 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
                 path, resolved_login_url, redirect_field_name)
         return _wrapped_view
     return decorator
-class GradedRubricPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
+class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
         # Change this to suit your css path

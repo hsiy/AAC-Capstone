@@ -14,7 +14,7 @@ class SectionRubricForm(forms.Form):
         for rI in rubricItems:
             self.fields['rI'+str(rI.pk)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
             #required=False so allow partial completion of the 
-        self.fields['section_comment']=forms.CharField(max_length=2000, required=False, widget=SummernoteWidget())
+        self.fields['section_comment']=forms.CharField(max_length=2000, required=False, widget=SummernoteWidget(attrs={'summernote': {'width' : '415px'}}))
 class RubricItemForm(forms.ModelForm):
     class Meta:
         model = RubricItem

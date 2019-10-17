@@ -110,9 +110,14 @@
             </tr>
             <tr>
                 <td><b>Options</b></td>
-                <td>
+                <td>    
+                        {% if assessment.assessment.numberOfUses is 1 %}
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
+                        {% else %}
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-assessment' report=rpt.pk assessIR=assessment.pk %}">Edit Assessment</a>
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
+                        {% endif %}
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection-assess' report=rpt.pk assessment=assessment.pk %}">Add Data</a>

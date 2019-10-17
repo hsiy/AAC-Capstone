@@ -57,11 +57,11 @@ class DegreeProgram(models.Model):
 class SLO(models.Model):
     blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
     gradGoals = models.ManyToManyField('GradGoal')
+    numberOfUses = models.PositiveIntegerField(default=1)
 class SLOInReport(models.Model):
     date = models.DateField()
     goalText = models.CharField(max_length=600)
     slo = models.ForeignKey(SLO, on_delete=models.CASCADE)    
-    firstInstance = models.BooleanField()
     changedFromPrior = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     number = models.PositiveIntegerField(default=1)
@@ -87,6 +87,7 @@ class Assessment(models.Model):
     domainProduct = models.BooleanField()
     domainPerformance = models.BooleanField()
     directMeasure = models.BooleanField()
+    numberOfUses = models.PositiveIntegerField(default=1)
     #false = indirect measure
     def __str__(self):
         return self.title
@@ -94,7 +95,6 @@ class AssessmentVersion(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     slo = models.ForeignKey(SLOInReport, on_delete=models.CASCADE)
     number = models.PositiveIntegerField(default=0)
-    firstInstance = models.BooleanField()
     changedFromPrior = models.BooleanField()
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
     date = models.DateField()
