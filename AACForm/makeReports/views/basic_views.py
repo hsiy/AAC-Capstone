@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils import timezone
 from makeReports.views.helperFunctions.section_context import *
+from makeReports.views.helperFunctions.mixins import *
 class HomePage(ListView):
     template_name = "makeReports/home.html"
     model = Report
@@ -57,11 +58,8 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         if dP!="":
             objs=objs.filter(degreeProgram__name__icontains=dP)
         return objs
-class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
+class DisplayReport(DeptAACMixin,TemplateView):
     template_name = "makeReports/DisplayReport/report.html"
-    def dispatch(self,request,*args,**kwargs):
-        self.report = Report.objects.get(pk=self.kwargs['pk'])
-        return super(DisplayReport,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         context = super(DisplayReport,self).get_context_data(**kwargs)
         context['report'] = self.report
@@ -71,9 +69,7 @@ class DisplayReport(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
         context = section3Context(self,context)
         context = section4Context(self,context)
         return context
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac") or (self.report.degreeProgram.department == self.request.user.profile.department)
-class UserModifyAccount(FormView):
+class UserModifyAccount(LoginRequiredMixin,FormView):
     form_class = UserUpdateUserForm
     success_url = reverse_lazy('makeReports:home-page')
     template_name = "makeReports/AACAdmin/modify_account.html"
