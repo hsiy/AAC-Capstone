@@ -8,28 +8,26 @@
                 {# Load CSS and JavaScript #}
             </head>
     <body>
-    <table>
+        
+        <section>
             {% include 'makeReports/DisplayReport/PDFsub/headings.html' %}
-            <tr>
-                <td colspan="2">
-                        {% include 'makeReports/DisplayReport/PDFsub/slos.html' %}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                        {% include 'makeReports/DisplayReport/PDFsub/assessment.html' %}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    {% include 'makeReports/DisplayReport/PDFsub/dataCollection.html' %}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    {% include 'makeReports/DisplayReport/PDFsub/dAndAs.html' %}
-                </td>
-            </tr>
-        </table>
+        </section>
+
+        <section>
+            {% include 'makeReports/DisplayReport/PDFsub/slos.html' %}
+        </section>
+
+        <section>
+            {% include 'makeReports/DisplayReport/PDFsub/assessment.html' %}
+        </section>
+
+        <section>
+            {% include 'makeReports/DisplayReport/PDFsub/dataCollection.html' %}
+        </section>
+
+        <section>
+            {% include 'makeReports/DisplayReport/PDFsub/dAndAs.html' %}
+        </section>
+
 </body>
 </html>
