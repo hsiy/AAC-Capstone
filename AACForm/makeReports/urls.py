@@ -1,8 +1,6 @@
 from django.urls import include, path, re_path
-from django.conf.urls import url
-from django.contrib import admin
 from makeReports import views
-from django.contrib.auth import views as auth_views
+
 app_name = "makeReports"
 urlpatterns = [
     path('summernote/', include('django_summernote.urls')),

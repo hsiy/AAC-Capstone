@@ -1,9 +1,5 @@
 from django import forms
 from makeReports.models import *
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from datetime import datetime, timedelta
-from django.utils import timezone
 from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 
@@ -43,6 +39,6 @@ class SubmitGrade(forms.Form):
         self.valid = kwargs.pop('valid')
         super(SubmitGrade, self).__init__(*args, **kwargs)
     def clean(self):
-      cleaned_data = super().clean()
+      super().clean()
       if not self.valid:
           raise forms.ValidationError("Not all rubric items have been graded.")

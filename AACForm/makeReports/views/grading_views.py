@@ -1,16 +1,8 @@
-from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import UpdateView, FormView
+from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
-from datetime import datetime
-from django.contrib.auth.models import User
-from django.conf import settings 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.utils import timezone
-from django.views.generic.edit import FormMixin
 from django.template.defaulttags import register
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
@@ -22,7 +14,7 @@ def generateRubricItems(rIs,form,r):
                 GRI.grade=form.cleaned_data["rI"+str(ri.pk)]
             except:
                 gr = form.cleaned_data["rI"+str(ri.pk)]
-                if gr and (gr is not ""):
+                if gr and (gr != ""):
                     newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
 def getInitialRubric(rIs, r, initial):
     for ri in rIs:

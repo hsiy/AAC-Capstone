@@ -1,37 +1,25 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import TemplateView
 from makeReports.models import *
 from makeReports.forms import *
-from datetime import datetime
 from django.contrib.auth.models import User
 from django.conf import settings 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.utils import timezone
-from django.views.generic.edit import FormMixin
-from django.template.defaulttags import register
-from django.http import HttpResponse, FileResponse, StreamingHttpResponse
+from django.http import HttpResponse, FileResponse
 from makeReports.views.helperFunctions.section_context import *
-from django_weasyprint import WeasyTemplateResponseMixin, WeasyTemplateView
+from django_weasyprint import WeasyTemplateView
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from types import SimpleNamespace
 from weasyprint import HTML, CSS
-from django.core.files import File
 import tempfile
-import os, io, requests
+import requests
 from django.contrib.auth.decorators import login_required, user_passes_test
 from functools import wraps
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import resolve_url
-from django.utils import six
 from django.utils.decorators import available_attrs
-from pathlib import Path
 from makeReports.views.helperFunctions.mixins import *
 from urllib.parse import urlparse
 def test_func_x(self,*args,**kwargs):
@@ -181,8 +169,7 @@ def UngradedRubric(request, rubric):
     context['RIs4'] = RubricItem.objects.filter(rubricVersion=rubric, section=4)
     rend = template.render(context).encode(encoding="ISO-8859-1")
     html = HTML(string=rend)
-    f = tempfile.TemporaryFile()
-    pdf = html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(staticfiles_storage.path('css/report.css')),CSS(staticfiles_storage.path('css/landscape.css'))])
+    html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(staticfiles_storage.path('css/report.css')),CSS(staticfiles_storage.path('css/landscape.css'))])
     http_response = FileResponse(rubric.fullFile.open(),content_type="application/pdf")
     rubric.save()
     return http_response

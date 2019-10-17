@@ -1,17 +1,9 @@
-from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import DeleteView, FormView
+from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
-from django.contrib.auth.models import User
-from django.conf import settings 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.utils import timezone
-from django.views.generic.edit import FormMixin
-from django_summernote.widgets import SummernoteWidget
 from makeReports.views.helperFunctions.mixins import *
 
 class SLOSummary(DeptReportMixin,ListView):
@@ -288,10 +280,8 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
         return super(DeleteNewSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         oldNum = self.oldNum
-        otherSLOs = SLOInReport
         slo = self.slo
         slo.delete()
-        num = self.report.numberOfSLOs
         slos = SLOInReport.objects.filter(report=self.report).order_by("number")
         for slo in slos:
             if slo.number > oldNum:
