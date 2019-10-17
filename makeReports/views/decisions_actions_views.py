@@ -6,8 +6,6 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-from django_summernote.widgets import SummernoteWidget
-
 
 class DecisionsActionsSummary(DeptReportMixin,ListView):
     model = DecisionsActions
@@ -21,17 +19,11 @@ class DecisionsActionsSummary(DeptReportMixin,ListView):
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 
 class AddDecisionAction(DeptReportMixin,CreateView):
-    model = DecisionsActions
+    form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
-    fields = ['text']
     def dispatch(self, request, *args, **kwargs):
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
-    def get_form(self):
-        form = super(AddDecisionAction,self).get_form()
-        form.fields['text'].widget=SummernoteWidget()
-        form.fields['text'].label=""
-        return form
     def form_valid(self,form):
         form.instance.SLO = self.slo
         form.instance.report = self.report
@@ -42,17 +34,11 @@ class AddDecisionActionSLO(AddDecisionAction):
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class EditDecisionAction(DeptReportMixin,UpdateView):
-    model = DecisionsActions
+    form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
-    fields = ['text']
     def dispatch(self, request, *args, **kwargs):
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
-    def get_form(self):
-        form = super(EditDecisionAction,self).get_form()
-        form.fields['text'].widget=SummernoteWidget()
-        form.fields['text'].label=""
-        return form
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
 class EditDecisionActionSLO(EditDecisionAction):
