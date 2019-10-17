@@ -2,6 +2,13 @@
     font-family: 'Open Sans','Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
     font-size: 10pt;
 }
+@page {
+    size: letter;
+    margin: 1in; 
+  }
+table.print-friendly tr td, table.print-friendly tr th {
+    page-break-inside: avoid;
+}
 div.bT tr{
     border: 1px solid black;
     border-collapse: collapse;

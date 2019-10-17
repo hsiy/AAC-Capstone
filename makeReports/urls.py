@@ -6,6 +6,7 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.HomePage.as_view(), name="home-page"),
+    path('help/',views.HelpPage.as_view(),name='help-page'),
     re_path(r'^user/modify/$', views.UserModifyAccount.as_view(),name='modify-acct'),
     re_path(r'^report/list/$', views.FacultyReportList.as_view(), name='rpt-list-dept'),
     re_path(r'^report/list/search/$', views.ReportListSearchedDept.as_view(), name='search-reports-dept'),

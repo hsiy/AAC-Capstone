@@ -175,6 +175,7 @@ class StakeholderEntry(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/stakeholdersSLO.html"
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sts = SLOsToStakeholder.objects.filter(report=self.report).last()
         return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
