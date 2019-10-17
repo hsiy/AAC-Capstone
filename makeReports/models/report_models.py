@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
-from datetime import datetime
 from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os

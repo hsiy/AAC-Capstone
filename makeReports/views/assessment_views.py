@@ -1,16 +1,9 @@
-from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import CreateView, DeleteView, FormView
+from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
-from django.contrib.auth.models import User
-from django.conf import settings 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.utils import timezone
-from django.views.generic.edit import FormMixin
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
 
@@ -175,7 +168,6 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         r = Report.objects.get(pk=self.kwargs['report'])
         return reverse_lazy('makeReports:assessment-summary', args=[r.pk])
     def form_valid(self,form):
-        r = self.report
         self.assessVers.description = form.cleaned_data['description']
         self.assessVers.date = datetime.now()
         self.assessVers.finalTerm = form.cleaned_data['finalTerm']
@@ -303,7 +295,6 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
         return super(DeleteImportedAssessment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         oldNum = self.oldNum
-        num = self.slo.numberOfAssess
         assess = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
         for a in assess:
             if a.number > oldNum:
@@ -336,7 +327,6 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
             assessment.numberOfUses -= 1
             assessment.save()
         oldNum = self.oldNum
-        num = self.slo.numberOfAssess
         assess = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
         for a in assess:
             if a.number > oldNum:
