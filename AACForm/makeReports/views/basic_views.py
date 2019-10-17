@@ -56,6 +56,9 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         return objs
 class DisplayReport(DeptAACMixin,TemplateView):
     template_name = "makeReports/DisplayReport/report.html"
+    def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['pk'])
+        return super(DisplayReport,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         context = super(DisplayReport,self).get_context_data(**kwargs)
         context['report'] = self.report
@@ -87,3 +90,5 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
         self.userToChange.email = form.cleaned_data['email']
         self.userToChange.save()
         return super(UserModifyAccount,self).form_valid(form)
+class HelpPage(TemplateView):
+    template_name = "makeReports/help.html"

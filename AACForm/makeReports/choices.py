@@ -2,6 +2,7 @@ BLOOMS_CHOICES = (("KN","Knowledge"),
 ("CO","Comprehension"),
 ("AP", "Application"),
 ("AN", "Analysis"),
+("SN","Synthesis"),
 ("EV", "Evaluation"))
 RUBRIC_GRADES_CHOICES = (("DNM","Does Not Meet/Did Not Include"),
 ("MC", "Meets with Concerns"),

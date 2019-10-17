@@ -34,18 +34,14 @@
                 </style>-->
             </head>
     <body>
-    <table>
+    <section>
             {% include 'makeReports/DisplayReport/PDFsub/headings.html' %}
-            <tr>
-                <td colspan="2">
+    </section>
+            <section>
                         {% include 'makeReports/DisplayReport/PDFsub/slos.html' %}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
+            </section>
+            <section>
                         {% include 'makeReports/DisplayReport/PDFsub/assessment.html' %}
-                </td>
-            </tr>
-        </table>
+            </section>
 </body>
 </html>
