@@ -50,6 +50,8 @@ class CreateDPByDept(forms.ModelForm):
         model = DegreeProgram
         fields = ['name','level','cycle','startingYear']
         labels = {
+            'name': "Name",
+            'level': "Level",
             'cycle': "Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)",
             'startingYear': "The first year report is assigned for cycle (leave blank if no cycle)"
         }

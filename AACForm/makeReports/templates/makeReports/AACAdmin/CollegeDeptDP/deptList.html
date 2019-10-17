@@ -2,7 +2,20 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Department List</h3>
-Looking for a deleted department? <a type="button" class="btn btn-primary" href="{% url 'makeReports:arc-depts' %}">Archived Departments</a>
+Looking for a deleted department? <a type="button" class="btn btn-primary" href="{% url 'makeReports:arc-depts' %}">Archived Departments</a><br>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:add-dept'  %}">Create Department</a>
+<form action="{% url 'makeReports:dept-list' %}" type="get" style="max-width: 500px;">
+    <h3>Search:</h3>
+    <div class="form-group"><label for="college">College:</label>
+        <select id="college" class="form-control" name="college">
+            {% for col in college_list %}
+            <option value="{{col.name}}">{{col.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group"><label for="name">Name:</label><input id="name" type="text" class="form-control" name="name"></div>
+    <button id="sub" type="submit" class="btn btn-primary" style="margin-top:1em">Search</button><br>
+</form>
 <ul class="list-group">
 {% for dept in object_list %}
     <li class = "list-group-item">{{dept.name}} in {{dept.college.name}} 

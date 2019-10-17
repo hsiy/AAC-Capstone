@@ -137,3 +137,31 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-08fe48f6125f.json')
+DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
+SUMMERNOTE_THEME = 'bs3'
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        # As an example, using Summernote Air-mo
+        # Change editor size
+        'style':'width:500px;height:750px;'
+    },
+
+    # Set custom storage class for attachments.
+    'toolbar': [
+        ['cleaner',['cleaner']],
+        ['style',['style']],
+        ['font',['bold','italic','underline','clear']],
+        ['fontname',['fontname']],
+        ['color',['color']],
+        ['para',['ul','ol','paragraph']],
+        ['height',['height']],
+        ['table',['table']],
+        ['insert',['link','hr']],
+        ['view',['fullscreen','codeview']],
+    ],
+    # To use external plugins,
+    # Include them within `css` and `js`.
+    'js': (
+        os.path.join(STATIC_URL, 'extPlugin/summernote-cleaner.js'),
+    )
+}
