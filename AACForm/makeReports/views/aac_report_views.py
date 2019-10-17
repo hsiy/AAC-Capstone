@@ -71,25 +71,13 @@ class ManualReportSubmit(AACOnlyMixin,UpdateView):
     template_name = 'makeReports/AACAdmin/manualSubmit.html'
     success_url = reverse_lazy('makeReports:report-list')
 class MakeGradGoal(AACOnlyMixin,CreateView):
-    model = GradGoal
-    fields = ['text']
+    form_class = GradGoalForm
     template_name = "makeReports/AACAdmin/GG/addGG.html"
     success_url = reverse_lazy('makeReports:gg-list')
-    def get_form(self, form_class=None):
-        form = super(MakeGradGoal,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Goal text:"
-        return form
 class UpdateGradGoal(AACOnlyMixin,UpdateView):
-    model = GradGoal
-    fields = ['text','active']
+    form_class = GradGoalForm
     template_name = "makeReports/AACAdmin/GG/updateGG.html"
     success_url = reverse_lazy('makeReports:gg-list')
-    def get_form(self, form_class=None):
-        form = super(UpdateGradGoal,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Goal text:"
-        return form
 class ListActiveGradGoals(AACOnlyMixin,ListView):
     model = GradGoal
     template_name = "makeReports/AACAdmin/GG/GGlist.html"

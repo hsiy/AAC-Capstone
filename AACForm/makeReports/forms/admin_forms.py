@@ -3,6 +3,9 @@ from makeReports.models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from makeReports.choices import *
+from .cleaners import CleanSummer
+from django_summernote.widgets import SummernoteWidget
+
 
 class UpdateUserForm(forms.Form):
     aac = forms.BooleanField(label="AAC member",required=False)
@@ -37,3 +40,19 @@ class MakeNewAccount(UserCreationForm):
         user.save()
         profile.save()
         return user, profile
+class AnnouncementForm(CleanSummer,forms.ModelForm):
+    text = forms.CharField(widget=SummernoteWidget(),label="Announcement")
+    summer_max_length = 2000
+    class Meta:
+        model = Announcement
+        widgets = {
+            'expiration': forms.SelectDateWidget()
+        }
+        fields = ['text','expiration']
+class GradGoalForm(CleanSummer,forms.ModelForm):
+    text = forms.CharField(widget=SummernoteWidget(),label="Goal text: ")
+    summer_max_length = 300
+    class Meta:
+        model = GradGoal
+        fields = ['text']
+

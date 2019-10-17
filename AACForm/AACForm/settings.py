@@ -138,7 +138,7 @@ MEDIA_URL = '/media/'
 
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-08fe48f6125f.json')
 DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
-SUMMERNOTE_THEME = 'bs3'
+SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
     'summernote': {
         # As an example, using Summernote Air-mo
@@ -151,7 +151,6 @@ SUMMERNOTE_CONFIG = {
         ['cleaner',['cleaner']],
         ['style',['style']],
         ['font',['bold','italic','underline','clear']],
-        ['fontname',['fontname']],
         ['color',['color']],
         ['para',['ul','ol','paragraph']],
         ['height',['height']],
