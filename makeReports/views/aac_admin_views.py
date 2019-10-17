@@ -1,7 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import TemplateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
@@ -43,6 +43,12 @@ class DeleteCollege(AACOnlyMixin,UpdateView):
     fields = ['active']
     template_name = "makeReports/AACAdmin/CollegeDeptDP/deleteCollege.html"
     success_url = reverse_lazy('makeReports:college-list')
+    def form_valid(self,form):
+        depts = Department.objects.filter(college=self.object)
+        for dept in depts:
+            dept.active = False
+            dept.save()
+        return super(DeleteCollege,self).form_valid(form)
 class RecoverCollege(AACOnlyMixin,UpdateView):
     model = College
     fields = ['active']
@@ -59,32 +65,46 @@ class CreateDepartment(AACOnlyMixin,CreateView):
     #fields = ['name', 'college']
     form_class = CreateDepartmentForm
     template_name = "makeReports/AACAdmin/CollegeDeptDP/addDepartment.html"
-    success_url = reverse_lazy('makeReports:dept-list')
+    success_url = "/aac/department/list/?college=&name="
 class DepartmentList(AACOnlyMixin,LoginRequiredMixin,UserPassesTestMixin,ListView):
     model = Department
     template_name = "makeReports/AACAdmin/CollegeDeptDP/deptList.html"
+    def get_context_data(self, **kwargs):
+        context = super(DepartmentList,self).get_context_data(**kwargs)
+        context['college_list'] = College.active_objects.all()
+        return context
     def get_queryset(self):
-        objs = Department.active_objects.order_by('college__name')
-        return objs
+        objs = Department.active_objects
+        get = self.request.GET
+        if(get["college"]!=""):
+            objs=objs.filter(college__name__icontains=get["college"])
+        if(get["name"]!=""):
+            objs=objs.filter(name__icontains=get["name"])
+        return objs.order_by('college__name')
 class UpdateDepartment(AACOnlyMixin,UpdateView):
     model = Department
     fields = ['name', 'college']
     template_name = "makeReports/AACAdmin/CollegeDeptDP/updateDepartment.html"
-    success_url = reverse_lazy('makeReports:dept-list')
+    success_url = "/aac/department/list/?college=&name="
 class DeleteDepartment(AACOnlyMixin,UpdateView):
     model = Department
     fields = ['active']
     template_name = "makeReports/AACAdmin/CollegeDeptDP/deleteDept.html"
-    success_url = reverse_lazy('makeReports:dept-list')
+    success_url = "/aac/department/list/?college=&name="
 class RecoverDepartment(AACOnlyMixin,UpdateView):
     model = Department
     fields = ['active']
     template_name = "makeReports/AACAdmin/CollegeDeptDP/recoverDept.html"
-    success_url = reverse_lazy('makeReports:dept-list')
+    success_url = "/aac/department/list/?college=&name="
 class CreateDegreeProgram(AACOnlyMixin,CreateView):
     model = DegreeProgram
     fields=['name','level','cycle','startingYear']
     template_name = "makeReports/AACAdmin/CollegeDeptDP/addDP.html"
+    def get_form(self, form_class=None):
+        form = super(CreateDegreeProgram,self).get_form()
+        form.fields['cycle'].label="Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)"
+        form.fields['startingYear'].label="The first year report is assigned for cycle (leave blank if no cycle)"
+        return form
     def get_success_url(self):
         return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
     def form_valid(self, form):
@@ -121,62 +141,6 @@ class DegreeProgramList(AACOnlyMixin,ListView):
         context = super(DegreeProgramList, self).get_context_data(**kwargs)
         context['dept'] = self.dept
         return context
-class CreateReport(AACOnlyMixin,CreateView):
-    model = Report
-    form_class = CreateReportByDept
-    template_name = "makeReports/AACAdmin/manualReportCreate.html"
-    #success_url = reverse_lazy('makeReports:admin-home')
-    def get_form_kwargs(self):
-        kwargs = super(CreateReport, self).get_form_kwargs()
-        kwargs['dept'] = self.kwargs['dept']
-        return kwargs
-    def get_success_url(self):
-        self.object.rubric = self.GR
-        self.object.save()
-        return reverse_lazy('makeReports:admin-home')
-    def form_valid(self, form):
-        form.instance.submitted = False
-        self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
-        return super(CreateReport, self).form_valid(form)
-class DeleteReport(AACOnlyMixin,DeleteView):
-    model = Report
-    template_name = "makeReports/AACAdmin/deleteReport.html"
-    success_url = reverse_lazy('makeReports:admin-home')
-class ReportList(AACOnlyMixin,ListView):
-    model = Report
-    template_name = "makeReports/AACAdmin/reportList.html"
-    def get_queryset(self):
-        qs = Report.objects.filter(year=int(datetime.now().year), degreeProgram__active=True).order_by('submitted','-rubric__complete')
-        return qs
-class ReportListSearched(AACOnlyMixin,ListView):
-    model = Report
-    template_name = "makeReports/AACAdmin/reportList.html"
-    def get_queryset(self):
-        year = self.request.GET['year']
-        submitted = self.request.GET['submitted']
-        x=self.request.GET
-        graded = self.request.GET['graded']
-        dP = self.request.GET['dP']
-        dept = self.request.GET['dept']
-        college = self.request.GET['college']
-        objs = Report.objects.filter(degreeProgram__active=True).order_by('submitted','-rubric__complete')
-        if year!="":
-            objs=objs.filter(year=year)
-        if submitted == "S":
-            objs=objs.filter(submitted=True)
-        elif submitted == "nS":
-            objs=objs.filter(submitted=False)
-        if graded=="S":
-            objs=objs.filter(rubric__complete=True)
-        elif graded=="nS":
-            objs=objs.filter(rubric__complete=False)
-        if dP!="":
-            objs=objs.filter(degreeProgram__name__icontains=dP)
-        if dept!="":
-            objs=objs.filter(degreeProgram__department__name__icontains=dept)
-        if college!="":
-            objs=objs.filter(degreeProgram__department__college__name__icontains=college)
-        return objs
 class ArchivedColleges(AACOnlyMixin, ListView):
     model = College
     template_name = "makeReports/AACAdmin/CollegeDeptDP/archivedColleges.html"
@@ -203,6 +167,9 @@ class MakeAccount(AACOnlyMixin,FormView):
     template_name = "makeReports/AACAdmin/create_account.html"
     form_class = MakeNewAccount
     success_url = reverse_lazy('makeReports:admin-home')
+    def form_valid(self,form):
+        form.save()
+        return super().form_valid(form)
 class ModifyAccount(AACOnlyMixin,FormView):
     form_class = UpdateUserForm
     success_url = reverse_lazy('makeReports:account-list')
@@ -249,11 +216,6 @@ class SearchAccountList(AACOnlyMixin,ListView):
         if self.request.GET['e']!="":
             profs = profs.filter(user__email__icontains=self.request.GET['e'])
         return profs
-class ManualReportSubmit(AACOnlyMixin,UpdateView):
-    model = Report
-    fields = ['submitted']
-    template_name = 'makeReports/AACAdmin/manualSubmit.html'
-    success_url = reverse_lazy('makeReports:report-list')
 class MakeAnnouncement(AACOnlyMixin,CreateView):
     model = Announcement
     fields = ['text','expiration']
@@ -285,33 +247,4 @@ class DeleteAnnouncement(AACOnlyMixin,DeleteView):
     model = Announcement
     template_name = "makeReports/AACAdmin/Announcements/deleteAnn.html"
     success_url = reverse_lazy('makeReports:announ-list')
-class MakeGradGoal(AACOnlyMixin,CreateView):
-    model = GradGoal
-    fields = ['text']
-    template_name = "makeReports/AACAdmin/GG/addGG.html"
-    success_url = reverse_lazy('makeReports:gg-list')
-    def get_form(self, form_class=None):
-        form = super(MakeGradGoal,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Goal text:"
-        return form
-class UpdateGradGoal(AACOnlyMixin,UpdateView):
-    model = GradGoal
-    fields = ['text','active']
-    template_name = "makeReports/AACAdmin/GG/updateGG.html"
-    success_url = reverse_lazy('makeReports:gg-list')
-    def get_form(self, form_class=None):
-        form = super(UpdateGradGoal,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Goal text:"
-        return form
-class ListActiveGradGoals(AACOnlyMixin,ListView):
-    model = GradGoal
-    template_name = "makeReports/AACAdmin/GG/GGlist.html"
-    def get_queryset(self):
-        return GradGoal.active_objects.all()
-class ListInactiveGradGoals(AACOnlyMixin,ListView):
-    model = GradGoal
-    template_name = "makeReports/AACAdmin/GG/oldGGlist.html"
-    def get_queryset(self):
-        return GradGoal.objects.filter(active=False)
+

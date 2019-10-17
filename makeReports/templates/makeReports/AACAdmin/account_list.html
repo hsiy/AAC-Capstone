@@ -2,6 +2,7 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
 <form action="{% url 'makeReports:search-account-list' %}" type="get">
         <h3>Search:</h3>
         <div class="form-group"><label for="f">First name:</label><input id="f" type="text" class="form-control" name="f"></div>

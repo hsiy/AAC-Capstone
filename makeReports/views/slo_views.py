@@ -37,7 +37,8 @@ class AddNewSLO(DeptReportMixin,FormView):
             gGoals = []
         rpt = self.report
         sloObj = SLO.objects.create(blooms=form.cleaned_data['blooms'])
-        sloObj.gradGoals.add(gGoals)
+        for gg in gGoals:
+            sloObj.gradGoals.add(gg)
         self.report.numberOfSLOs += 1
         self.report.save()
         sloRpt = SLOInReport.objects.create(
@@ -165,7 +166,8 @@ class EditNewSLO(DeptReportMixin,FormView):
         self.sloInRpt.date = datetime.now()
         self.sloInRpt.slo.blooms = form.cleaned_data['blooms']
         if self.grad:
-            self.sloInRpt.slo.gradGoals.add(form.cleaned_data['gradGoals'])
+            for gg in form.cleaned_data['gradGoals']:
+                self.sloInRpt.slo.gradGoals.add(gg)
         self.sloInRpt.save()
         self.sloInRpt.slo.save()
         return super(EditNewSLO,self).form_valid(form)
