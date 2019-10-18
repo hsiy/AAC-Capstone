@@ -20,7 +20,9 @@
         </div>
         <div class="col-4 please-scroll">
             <!--grading column-->
-            Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% if report.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% endif %}
             <h5>Section {{section}} Rubric</h5>
             <form method="post" novalidate>
                 {% csrf_token %}

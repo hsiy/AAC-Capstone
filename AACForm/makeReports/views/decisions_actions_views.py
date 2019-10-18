@@ -24,6 +24,10 @@ class AddDecisionAction(DeptReportMixin,CreateView):
     def dispatch(self, request, *args, **kwargs):
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(AddDecisionAction,self).get_context_data(**kwargs)
+        context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
+        return context
     def form_valid(self,form):
         form.instance.SLO = self.slo
         form.instance.report = self.report
@@ -34,11 +38,16 @@ class AddDecisionActionSLO(AddDecisionAction):
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class EditDecisionAction(DeptReportMixin,UpdateView):
+    model = DecisionsActions
     form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(EditDecisionAction,self).get_context_data(**kwargs)
+        context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
 class EditDecisionActionSLO(EditDecisionAction):
@@ -57,7 +66,7 @@ class Section4Comment(DeptReportMixin,FormView):
     template_name = "makeReports/DecisionsActions/comment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
-        return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
+        return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def form_valid(self, form):
         self.report.section4Comment = form.cleaned_data['text']
         self.report.save()

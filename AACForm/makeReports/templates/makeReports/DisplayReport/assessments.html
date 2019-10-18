@@ -2,7 +2,7 @@
 <h3>II. Assessment Methods</h3>
 <div class="container float-left">
             {% for assessment in assessment_list %}
-            <div class="row">
+            <div class="row mt-5">
                     <div class="col">
             <table class="table-responsive table-bordered" style="border:0px;">
             <tr>
@@ -76,7 +76,11 @@
             <tr>
                 <td><b>7. Frequency of Data Collection</b></td>
                 <td>
+                    {% if assessment.frequencyChoice is "O" %}
                     {{assessment.frequency|safe}}
+                    {% else %}
+                    {{assessment.get_frequencyChoice_display}}
+                    {% endif %}
                 </td>
             <tr>
                 <td>

@@ -31,9 +31,10 @@ def get_item(dictionary, key1, key2):
         return s[key2]
     else:
         return ""
-class GradingView(AACReportMixin,FormView):
+class GradingView(AACOnlyMixin,FormView):
     form_class = SectionRubricForm
     def dispatch(self,request,*args,**kwargs):
+        self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion,section=self.section).order_by("order","pk")
         return super().dispatch(request,*args,**kwargs)
     def get_success_url(self):
@@ -53,6 +54,7 @@ class GradingView(AACReportMixin,FormView):
         context = rubricItemsHelper(self,context)
         context['section'] = self.section
         context['report'] = self.report
+        context['rpt'] = self.report
         return context
     def get_initial(self):
         initial = super().get_initial()
@@ -106,7 +108,7 @@ class RubricReview(AACReportMixin, FormView):
     template_name = "makeReports/Grading/rubric_review.html"
     form_class = SubmitGrade
     def dispatch(self,request,*args,**kwargs):
-        self.GRIs = GradedRubricItem.objects.filter(rubric__report=self.report)
+        self.GRIs = GradedRubricItem.objects.filter(rubric__report__pk=self.kwargs['report'])
         return super(RubricReview,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
         kwargs=super(RubricReview,self).get_form_kwargs()

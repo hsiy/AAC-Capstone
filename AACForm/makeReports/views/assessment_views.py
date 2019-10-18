@@ -29,7 +29,9 @@ class AddNewAssessment(DeptReportMixin,FormView):
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
         rpt = self.report
-        form.cleaned_data['slo'].numberOfAssess += 1
+        num = form.cleaned_data['slo'].numberOfAssess
+        num += 1
+        form.cleaned_data['slo'].numberOfAssess = num
         form.cleaned_data['slo'].save()
         assessObj = Assessment.objects.create(
             title=form.cleaned_data['title'], 
@@ -39,7 +41,7 @@ class AddNewAssessment(DeptReportMixin,FormView):
             directMeasure =form.cleaned_data['directMeasure'])
         assessRpt = AssessmentVersion.objects.create(
             date=datetime.now(), 
-            number=form.cleaned_data['slo'].numberOfAssess, 
+            number = num, 
             assessment=assessObj, 
             description=form.cleaned_data['description'], 
             finalTerm=form.cleaned_data['finalTerm'], 
@@ -47,6 +49,7 @@ class AddNewAssessment(DeptReportMixin,FormView):
             allStudents=form.cleaned_data['allStudents'], 
             sampleDescription=form.cleaned_data['sampleDescription'], 
             frequency=form.cleaned_data['frequency'], 
+            frequencyChoice = form.cleaned_data['frequencyChoice'],
             threshold=form.cleaned_data['threshold'], 
             target=form.cleaned_data['target'],
             slo=form.cleaned_data['slo'],
@@ -89,8 +92,8 @@ class ImportAssessment(DeptReportMixin,FormView):
         if self.request.GET['slo']!="" and self.request.GET['slo']!="-1":
             aCs=aCs.filter(slo=SLOInReport.objects.get(pk=self.request.GET['slo']))
         aCsInRpt = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
-        for a in aCsInRpt:
-            aCs=aCs.exclude(assessment=a.assessment)
+        #for a in aCsInRpt:
+        #    aCs=aCs.exclude(assessment=a.assessment)
         kwargs['assessChoices'] = aCs
         kwargs['slos'] = SLOInReport.objects.filter(report=self.report).order_by("number")
         return kwargs
@@ -112,6 +115,7 @@ class ImportAssessment(DeptReportMixin,FormView):
                 where=assessVers.where, 
                 allStudents=assessVers.allStudents, 
                 sampleDescription=assessVers.sampleDescription, 
+                frequencyChoice = assessVers.frequencyChoice,
                 frequency=assessVers.frequency, 
                 threshold=assessVers.threshold, 
                 target=assessVers.target)
@@ -155,6 +159,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         initial['where'] = self.assessVers.where
         initial['allStudents'] = self.assessVers.allStudents
         initial['sampleDescription'] = self.assessVers.sampleDescription
+        initial['frequencyChoice'] = self.assessVers.frequencyChoice
         initial['frequency'] = self.assessVers.frequency
         initial['threshold'] = self.assessVers.threshold
         initial['target'] = self.assessVers.target
@@ -174,6 +179,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         self.assessVers.where = form.cleaned_data['where']
         self.assessVers.allStudents = form.cleaned_data['allStudents']
         self.assessVers.sampleDescription = form.cleaned_data['sampleDescription']
+        self.assessVers.frequencyChoice = form.clenaed_data['frequencyChoice']
         self.assessVers.frequency = form.cleaned_data['frequency']
         self.assessVers.threshold = form.cleaned_data['threshold']
         self.assessVers.target = form.cleaned_data['target']
@@ -199,6 +205,7 @@ class EditNewAssessment(DeptReportMixin,FormView):
         initial['where'] = self.assessVers.where
         initial['allStudents'] = self.assessVers.allStudents
         initial['sampleDescription'] = self.assessVers.sampleDescription
+        initial['frequencyChoice'] = self.assessVers.frequencyChoice
         initial['frequency'] = self.assessVers.frequency
         initial['threshold'] = self.assessVers.threshold
         initial['target'] = self.assessVers.target
@@ -220,6 +227,7 @@ class EditNewAssessment(DeptReportMixin,FormView):
         self.assessVers.where = form.cleaned_data['where']
         self.assessVers.allStudents = form.cleaned_data['allStudents']
         self.assessVers.sampleDescription = form.cleaned_data['sampleDescription']
+        self.assessVers.frequencyChoice = form.cleaned_data['frequencyChoice']
         self.assessVers.frequency = form.cleaned_data['frequency']
         self.assessVers.threshold = form.cleaned_data['threshold']
         self.assessVers.target = form.cleaned_data['target']
@@ -255,7 +263,7 @@ class ImportSupplement(DeptReportMixin,FormView):
          yearIn = self.request.GET['year']
          dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
          kwargs['supChoices'] = AssessmentSupplement.objects.filter(
-             report__year=yearIn, report__degreeProgram=dPobj)
+             assessmentversion__report__year=yearIn, assessmentversion__report__degreeProgram=dPobj)
          return kwargs
     def form_valid(self,form):
         self.assessVers.supplements.add(form.cleaned_data['sup'])
@@ -263,6 +271,7 @@ class ImportSupplement(DeptReportMixin,FormView):
         return super(ImportSupplement,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(ImportSupplement, self).get_context_data(**kwargs)
+        context["aIR"] = self.kwargs['assessIR']
         context['currentDPpk'] = self.report.degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=self.report.degreeProgram.department)
         return context
