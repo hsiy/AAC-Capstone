@@ -50,7 +50,7 @@ class CreateReportByDept(forms.ModelForm):
         dept = Department.objects.get(pk=kwargs.pop('dept'))
         super(CreateReportByDept, self).__init__(*args, **kwargs)
         self.fields['degreeProgram'].queryset = DegreeProgram.objects.filter(department=dept)
-        self.fields['rubric'] = forms.ModelChoiceField(queryset=Rubric.objects.all())
+        self.fields['rubric'] = forms.ModelChoiceField(queryset=Rubric.objects.all().order_by("-date"))
 class CreateDPByDept(forms.ModelForm):   
     class Meta:
         model = DegreeProgram

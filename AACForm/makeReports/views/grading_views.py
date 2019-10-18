@@ -28,7 +28,7 @@ def getInitialRubric(rIs, r, initial):
 def get_item(dictionary, key1, key2):
     s = dictionary.get(key1)
     if s:
-        return s[key2]
+        return mark_safe(s[key2])
     else:
         return ""
 class GradingView(AACOnlyMixin,FormView):
@@ -68,18 +68,30 @@ class Section1Grading(GradingView):
     def get_context_data(self, **kwargs):
         context = super(Section1Grading,self).get_context_data(**kwargs)
         return section1Context(self,context)
+    def get_initial(self):
+        initial = super(Section1Grading,self).get_initial()
+        initial['section_comment'] = self.report.rubric.section1Comment
+        return initial
 class Section2Grading(GradingView):
     section = 2
     template_name = "makeReports/Grading/grading_section2.html"
     def get_context_data(self, **kwargs):
         context = super(Section2Grading,self).get_context_data(**kwargs)
         return section2Context(self,context)
+    def get_initial(self):
+        initial = super(Section2Grading,self).get_initial()
+        initial['section_comment'] = self.report.rubric.section2Comment
+        return initial
 class Section3Grading(GradingView):
     section = 3
     template_name = "makeReports/Grading/grading_section3.html"
     def get_context_data(self, **kwargs):
         context = super(Section3Grading,self).get_context_data(**kwargs)
         return section3Context(self,context)
+    def get_initial(self):
+        initial = super(Section3Grading,self).get_initial()
+        initial['section_comment'] = self.report.rubric.section3Comment
+        return initial
 class Section4Grading(GradingView):
     section = 4
     template_name = "makeReports/Grading/grading_section4.html"
@@ -88,11 +100,19 @@ class Section4Grading(GradingView):
     def get_context_data(self, **kwargs):
         context = super(Section4Grading,self).get_context_data(**kwargs)
         return section4Context(self,context)
+    def get_initial(self):
+        initial = super(Section4Grading,self).get_initial()
+        initial['section_comment'] = self.report.rubric.section4Comment
+        return initial
 class OverallComment(AACReportMixin,FormView):
     form_class = Single2000Textbox
     template_name = "makeReports/Grading/overall_comment.html"
     def get_success_url(self):
         return reverse_lazy("makeReports:rub-review", args=[self.report.pk])
+    def get_context_data(self,**kwargs):
+        context = super(OverallComment,self).get_context_data(**kwargs)
+        context['report'] = self.report
+        return context
     def form_valid(self, form):
         self.report.rubric.generalComment = form.cleaned_data['text']
         self.report.rubric.save()

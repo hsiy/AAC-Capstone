@@ -150,7 +150,7 @@ class DecisionsActions(models.Model):
     actionTimeline = models.CharField(max_length=3000, blank=True, default="")
 class Rubric(models.Model):
     date = models.DateField()
-    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage, null=True,blank=True, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
+    fullFile = models.FileField(default='settings.STATIC_ROOT/norubric.pdf',verbose_name="rubric file",upload_to='rubrics', storage=gd_storage, null=True,blank=True, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
     name = models.CharField(max_length = 150, default="Rubric")
     def __str__(self):
         return self.name
