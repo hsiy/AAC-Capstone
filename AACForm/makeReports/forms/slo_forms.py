@@ -39,28 +39,7 @@ class EditImportedSLOForm(CleanSummer,forms.Form):
 class Single2000Textbox(CleanSummer,forms.Form):
     text = forms.CharField(widget=SummernoteWidget(),label="")
     summer_max_length = 2000
-class CreateReportByDept(forms.ModelForm):
-    class Meta:
-        model = Report
-        fields = ['year', 'degreeProgram'] 
-        labels = {
-            'degreeProgram': "Degree Program"
-        }
-    def __init__(self,*args,**kwargs):
-        dept = Department.objects.get(pk=kwargs.pop('dept'))
-        super(CreateReportByDept, self).__init__(*args, **kwargs)
-        self.fields['degreeProgram'].queryset = DegreeProgram.objects.filter(department=dept)
-        self.fields['rubric'] = forms.ModelChoiceField(queryset=Rubric.objects.all().order_by("-date"))
-class CreateDPByDept(forms.ModelForm):   
-    class Meta:
-        model = DegreeProgram
-        fields = ['name','level','cycle','startingYear']
-        labels = {
-            'name': "Name",
-            'level': "Level",
-            'cycle': "Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)",
-            'startingYear': "The first year report is assigned for cycle (leave blank if no cycle)"
-        }
+
 class ImportStakeholderForm(forms.Form):
     stk = forms.ModelChoiceField(queryset=None, label="Stakeholder Communication Methods")
     def __init__(self, *args, **kwargs):
