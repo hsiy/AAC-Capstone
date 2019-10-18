@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% block styles %}
+<style>
+        .italics{
+            font-style: italic;
+        }
+        .italics p{
+            font-style: italic;
+            margin:2pt;
+        }
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="container-fluid" style="max-width:95%;">

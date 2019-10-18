@@ -11,7 +11,7 @@ class SectionRubricForm(forms.Form):
         rubricItems = kwargs.pop('rubricItems')
         super(SectionRubricForm, self).__init__(*args, **kwargs)
         for rI in rubricItems:
-            self.fields['rI'+str(rI.pk)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=rI.text,required=False)
+            self.fields['rI'+str(rI.pk)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=mark_safe(rI.text),required=False)
             #required=False so allow partial completion of the 
         self.fields['section_comment'] = forms.CharField(
             required=False, 
