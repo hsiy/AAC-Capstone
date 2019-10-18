@@ -26,6 +26,19 @@ class CreateReport(AACOnlyMixin,CreateView):
         form.instance.submitted = False
         self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
         return super(CreateReport, self).form_valid(form)
+class CreateReportByDP(AACOnlyMixin,CreateView):
+    model = Report
+    form_class = CreateReportByDPForm
+    template_name = "makeReports/AACAdmin/manualReportCreate.html"
+    def get_success_url(self):
+        self.object.rubric = self.GR
+        self.object.save()
+        return reverse_lazy('makeReports:admin-home')
+    def form_valid(self,form):
+        form.instance.degreeProgram = DegreeProgram.objects.get(pk=self.kwargs['dP'])
+        form.instance.submitted = False
+        self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
+        return super(CreateReportByDP,self).form_valid(form)
 class DeleteReport(AACOnlyMixin,DeleteView):
     model = Report
     template_name = "makeReports/AACAdmin/deleteReport.html"

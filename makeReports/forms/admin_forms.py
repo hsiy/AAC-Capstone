@@ -56,3 +56,32 @@ class GradGoalForm(CleanSummer,forms.ModelForm):
         model = GradGoal
         fields = ['text']
 
+class CreateReportByDept(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['year', 'degreeProgram'] 
+        labels = {
+            'degreeProgram': "Degree Program"
+        }
+    def __init__(self,*args,**kwargs):
+        dept = Department.objects.get(pk=kwargs.pop('dept'))
+        super(CreateReportByDept, self).__init__(*args, **kwargs)
+        self.fields['degreeProgram'].queryset = DegreeProgram.objects.filter(department=dept)
+        self.fields['rubric'] = forms.ModelChoiceField(queryset=Rubric.objects.all().order_by("-date"))
+class CreateReportByDPForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['year']
+    def __init__(self,*args,**kwargs):
+        super(CreateReportByDPForm,self).__init__(*args,**kwargs)
+        self.fields['rubric'] = forms.ModelChoiceField(queryset=Rubric.objects.all().order_by("-date"))
+class CreateDPByDept(forms.ModelForm):   
+    class Meta:
+        model = DegreeProgram
+        fields = ['name','level','cycle','startingYear']
+        labels = {
+            'name': "Name",
+            'level': "Level",
+            'cycle': "Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)",
+            'startingYear': "The first year report is assigned for cycle (leave blank if no cycle)"
+        }
