@@ -83,7 +83,11 @@
             <tr>
                 <td><b>7. Frequency of Data Collection</b></td>
                 <td>
+                    {% if assessment.frequencyChoice == "O" %}
                     {{assessment.frequency|safe}}
+                    {% else %}
+                    {{assessment.get_frequencyChoice_display}}
+                    {% endif %}
                 </td>
             <tr>
                 <td>
@@ -119,7 +123,7 @@
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
                         {% endif %}
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
-                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}?year={{rpt.year}}&dp={{rpt.degreeProgram.pk}}">Import Supplement</a>
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection-assess' report=rpt.pk assessment=assessment.pk %}">Add Data</a>
                 </td>
             </tr>

@@ -75,6 +75,7 @@ class MakeGradGoal(AACOnlyMixin,CreateView):
     template_name = "makeReports/AACAdmin/GG/addGG.html"
     success_url = reverse_lazy('makeReports:gg-list')
 class UpdateGradGoal(AACOnlyMixin,UpdateView):
+    model = GradGoal
     form_class = GradGoalForm
     template_name = "makeReports/AACAdmin/GG/updateGG.html"
     success_url = reverse_lazy('makeReports:gg-list')

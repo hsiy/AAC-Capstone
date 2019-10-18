@@ -39,7 +39,9 @@ class AddNewSLO(DeptReportMixin,FormView):
         sloObj = SLO.objects.create(blooms=form.cleaned_data['blooms'])
         for gg in gGoals:
             sloObj.gradGoals.add(gg)
-        self.report.numberOfSLOs += 1
+        num = self.report.numberOfSLOs
+        num += 1
+        self.report.numberOfSLOs = num
         self.report.save()
         sloRpt = SLOInReport.objects.create(
             date=datetime.now(), 
@@ -47,7 +49,7 @@ class AddNewSLO(DeptReportMixin,FormView):
             slo=sloObj, 
             changedFromPrior=False, 
             report=rpt, 
-            number=self.report.numberOfSLOs
+            number = num
             )
         sloObj.save()
         sloRpt.save()
@@ -99,6 +101,7 @@ class ImportSLO(DeptReportMixin,FormView):
                             where = assess.where,
                             allStudents = assess.allStudents,
                             sampleDescription = assess.sampleDescription,
+                            frequencyChoice = assess.frequencyChoice,
                             frequency = assess.frequency,
                             threshold = assess.threshold,
                             target = assess.target
@@ -266,7 +269,7 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
             if a.numberOfUses == 1:
                 a.delete()
             else:
-                a.numberOfUse -= 1
+                a.numberOfUses -= 1
                 a.save()
         dAs = DecisionsActions.objects.filter(report=self.report, SLO=self.slo)
         for dA in dAs:
@@ -296,7 +299,7 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
             if a.numberOfUses == 1:
                 a.delete()
             else:
-                a.numberOfUse -= 1
+                a.numberOfUses -= 1
                 a.save()
         dAs = DecisionsActions.objects.filter(report=self.report, SLO=self.slo)
         for dA in dAs:

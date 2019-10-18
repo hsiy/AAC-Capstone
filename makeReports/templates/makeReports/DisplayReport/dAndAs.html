@@ -4,7 +4,7 @@
     <tbody>
         {% for SLO_decisions in decisions_actions_list %}
             <tr>
-                <td><b>SLO {{ SLO_decisions.slo_obj.number }}</b></td>
+                <td style="width:10%"><b>SLO {{ SLO_decisions.slo_obj.number }}</b></td>
                 {% if SLO_decisions.decisions_obj == None %}
                     <td>(No Information)</td>
                 {% else %}

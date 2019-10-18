@@ -104,6 +104,7 @@ class AssessmentVersion(models.Model):
     allStudents = models.BooleanField()
     #false = sample of students
     sampleDescription = models.CharField(max_length=200,blank=True,null=True)
+    frequencyChoice = models.CharField(max_length=100,choices=FREQUENCY_CHOICES,default="O")
     frequency = models.CharField(max_length=100)
     #the below are percentage points
     threshold = models.CharField(max_length=500) # Should be text field, change later

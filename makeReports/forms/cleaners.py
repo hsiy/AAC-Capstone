@@ -19,19 +19,14 @@ def cleanText(txt):
     #cS = new RegExp('<!--(.*?)-->', 'gi');
     #     out = out.replace(cS, '');
     out=re.sub("<!--(.*)(meta|link|\\?xml:|st1:|o:|font)(.*)-->"," ",out)
-    print("3. ")
-    print(out)
     #  var tS = new RegExp('<(/)*(meta|link|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
     #     out = out.replace(tS, '');
     out=re.sub("<(/)*(meta|link|\\?xml:|st1:|o:|font)([^>]*)>"," ",out)
-    print("4. ")
-    print(out)
     bT = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript', 'html']
     for tag in bT:
         #tS = new RegExp('<' + bT[i] + '\\b.*>.*</' + bT[i] + '>', 'gi');
         #out = out.replace(tS, '');
         out=re.sub("<"+tag+"[^>]*>.*</"+tag+">"," ",out)
-        print(out)
         #var allowedTags = options.cleaner.keepOnlyTags;
         #if (typeof(allowedTags) == "undefined") allowedTags = [];
         #if (allowedTags.length > 0) {
@@ -46,6 +41,5 @@ def cleanText(txt):
         #var aS = new RegExp(' ' + bA[ii] + '=[\'|"](.*?)[\'|"]', 'gi');
         #   out = out.replace(aS, '');
         out=re.sub(" "+attr+"=[\\\'|\\\"]([^>]*)[\\\'|\\\"]"," ",out)
-        print(out)
     return out
 

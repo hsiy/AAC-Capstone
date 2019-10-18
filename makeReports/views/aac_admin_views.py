@@ -222,6 +222,7 @@ class MakeAnnouncement(AACOnlyMixin,CreateView):
     success_url = reverse_lazy('makeReports:announ-list')
     form_class = AnnouncementForm
 class ModifyAnnouncement(AACOnlyMixin,UpdateView):
+    model = Announcement
     template_name = "makeReports/AACAdmin/Announcements/editAnnoun.html"
     success_url = reverse_lazy('makeReports:announ-list')
     form_class = AnnouncementForm

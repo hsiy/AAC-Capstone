@@ -11,7 +11,7 @@ class DecisionsActionsForm(forms.Form):
     actionTimeline = forms.CharField(widget= forms.Textarea, max_length=3000, label="Action Timeline")
 class DecActForm1Box(CleanSummer,forms.ModelForm):
     text = forms.CharField(widget=SummernoteWidget,label="")
-    max_summer_length = 3000
+    summer_max_length = 3000
     class Meta:
         model = DecisionsActions
         fields = ['text']
