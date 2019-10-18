@@ -37,16 +37,23 @@ def section3Context(self,context):
             temp_dict['slo_obj'] = None
 
         try:
-            assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
-            temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
-            temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
-            temp_dict['data_range'] = assessment_data_obj.dataRange
-            temp_dict['assessment_data_id'] = assessment_data_obj.pk
+            assessment_data_objs = AssessmentData.objects.filter(assessmentVersion=assessment)
+            temp_dict['assess_data'] = assessment_data_objs
+            #temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
+            #temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
+            #temp_dict['data_range'] = assessment_data_obj.dataRange
+            #temp_dict['assessment_data_id'] = assessment_data_obj.pk
         except:
-            temp_dict['num_students_assessed'] = None
-            temp_dict['overall_proficient'] = None
-            temp_dict['data_range'] = None
-            temp_dict['assessment_data_id'] = None
+            temp_dict['assess_data'] = None
+            #temp_dict['num_students_assessed'] = None
+           # temp_dict['overall_proficient'] = None
+            #temp_dict['data_range'] = None
+            #temp_dict['assessment_data_id'] = None
+        try:
+            aggregate = AssessmentAggregate.objects.get(assessmentVersion=assessment)
+            temp_dict['agg'] = aggregate
+        except:
+            temp_dict['agg'] = None
 
         try:
             subassessments = Subassessment.objects.filter(assessmentVersion=assessment)

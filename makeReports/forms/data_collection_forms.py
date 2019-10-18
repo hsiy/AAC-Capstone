@@ -5,14 +5,14 @@ from django_summernote.widgets import SummernoteWidget
 from .cleaners import CleanSummer
 
 class AddDataCollection(forms.Form):
-    dataRange = forms.CharField(widget= forms.Textarea, max_length=500, label="Data Collection Range")
+    dataRange = forms.CharField(max_length=500, label="Data Collection Range")
     numberStudents = forms.IntegerField(widget= forms.NumberInput, label="Number of Students Sampled")
-    overallProficient = forms.IntegerField(widget= forms.NumberInput, label="Overall Number of Students Met/Exceeded Threshold Proficiency")
+    overallProficient = forms.IntegerField(widget= forms.NumberInput, label="Percentage of Students Met/Exceeded Threshold Proficiency")
 
 class EditDataCollection(forms.Form):
     dataRange = forms.CharField(widget= forms.Textarea, max_length=500, label="Data Collection Range")
     numberStudents = forms.IntegerField(widget= forms.NumberInput, label="Number of Students Sampled")
-    overallProficient = forms.IntegerField(widget= forms.NumberInput, label="Overall Percentage of Students Met/Exceeded Threshold Proficiency")
+    overallProficient = forms.IntegerField(widget= forms.NumberInput, label="Percentage of Students Met/Exceeded Threshold Proficiency")
 
 class AddSubassessment(forms.Form):
     title = forms.CharField(widget=forms.TextInput, max_length=500, label="Subassessment Title")

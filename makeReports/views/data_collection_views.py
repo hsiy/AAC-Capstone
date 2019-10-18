@@ -5,6 +5,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
+from makeReports.choices import *
 
 class DataCollectionSummary(DeptReportMixin,ListView):
     model = AssessmentData
@@ -237,3 +238,61 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
     fields = ['comment']
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+def sloStatusUpdate(sloIR):
+    aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sloIR)
+    met = True
+    partiallyMet = False
+    for a in aggs:
+        if a.met is False:
+            met = False
+        if a.met is True:
+            partiallyMet=True
+        if not met and partiallyMet:
+            break
+    try:
+        sS = SLOStatus.objects.get(report=sloIR.report,SLO=sloIR.slo)
+        if met:
+            sS.status = SLO_STATUS_CHOICES[0][0]
+        elif partiallyMet:
+            sS.status = SLO_STATUS_CHOICES[1][0]
+        else:
+            sS.status = SLO_STATUS_CHOICES[2][0]
+        sS.save()
+    except:
+        if met:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],report=sloIR.report,SLO=sloIR.slo)
+        elif partiallyMet:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],report=sloIR.report,SLO=sloIR.slo)
+        else:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],report=sloIR.report,SLO=sloIR.slo)
+    return
+class AssessmentAggregateCreate(DeptReportMixin, CreateView):
+    model = AssessmentAggregate
+    fields = ['aggregate_proficiency']
+    template_name = "makeReports/DataCollection/addAggregate.html"
+    def form_valid(self,form):
+        self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        form.instance.assessmentVersion = assess
+        if self.assess.target <= form.instance.aggregate_proficiency:
+            form.instance.met = True
+        else:
+            form.instance.met = False
+        return super(AssessmentAggregateCreate,self).form_valid(form)
+    def get_success_url(self):
+        sloStatusUpdate(self.assess.slo)
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
+    model = AssessmentAggregate
+    fields = ['aggregate_proficiency']
+    template_name = "makeReports/DataCollection/addAggregate.html"
+    def form_valid(self,form):
+        self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        if self.assess.target <= form.instance.aggregate_proficiency:
+            form.instance.met = True
+        else:
+            form.instance.met = False
+        return super(AssessmentAggregateEdit,self).form_valid(form)
+    def get_success_url(self):
+        sloStatusUpdate(self.assess.slo)
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+
