@@ -43,10 +43,12 @@
                 </td>
                 <td>
                     {% if assessment.assessment.domainProduct %}
-                        Product 
+                        Product{% if assessment.assessment.domainPerformance or assessment.assessment.domainExamination %},
+                        {% endif %}
                     {% endif %}
                     {% if assessment.assessment.domainPerformance %}
-                        Performance  
+                        Performance{% if assessment.assessment.domainExamination %},
+                        {% endif %}
                     {% endif %}
                     {% if assessment.assessment.domainExamination %}
                         Examination

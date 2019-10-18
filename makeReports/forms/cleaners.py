@@ -43,6 +43,5 @@ def cleanText(txt):
         out=re.sub(" "+attr+"=[\\\'|\\\"]([^>]*)[\\\'|\\\"]"," ",out)
     out = re.sub("\<br></p>","</p>",out)
     out = re.sub("<p></p>"," ",out)
-
     return out
 
