@@ -82,7 +82,6 @@ urlpatterns = [
     re_path(r'^aac/ann/add/$', views.MakeAnnouncement.as_view(),name='add-announ'),
     re_path(r'^aac/ann/(?P<pk>\d+)/delete/$', views.DeleteAnnouncement.as_view(),name='delete-announ'),
     re_path(r'^aac/ann/(?P<pk>\d+)/modify/$', views.ModifyAnnouncement.as_view(),name='edit-announ'),
-
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),
@@ -120,6 +119,8 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/datacollection/supplement/create/$',views.DataAssessmentAddInfo.as_view(),name='add-data-sup'),
     re_path(r'^report/(?P<report>\d+)/datacollection/supplement/(?P<pk>\d+)/edit/$',views.DataAssessmentUpdateInfo.as_view(),name='update-data-sup'),
     re_path(r'^report/(?P<report>\d+)/datacollection/supplement/(?P<pk>\d+)/delete/$',views.DataAssessmentDeleteInfo.as_view(),name='delete-data-sup'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/agg/create/$',views.AssessmentAggregateCreate.as_view(),name='data-agg-create'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/agg/(?P<pk>\d+)/edit/$',views.AssessmentAggregateEdit.as_view(),name='data-agg-edit'),
     #Decisions and Actions URLs
     re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),

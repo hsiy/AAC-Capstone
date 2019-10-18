@@ -126,6 +126,12 @@ class AssessmentData(models.Model):
     dataRange = models.CharField(max_length=500)
     numberStudents = models.PositiveIntegerField()
     overallProficient = models.PositiveIntegerField(blank=True)
+class AssessmentAggregate(models.Model):
+    assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
+    aggregate_proficiency = models.PositiveIntegerField(verbose_name="aggregate proficiency percentage")
+    met = models.BooleanField()
+    def __str__(self):
+        return str(self.aggregate_proficiency)
 class DataAdditionalInformation(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     comment = models.CharField(max_length=3000, blank=True, default="")
@@ -134,7 +140,7 @@ class DataAdditionalInformation(models.Model):
         return os.path.basename(self.supplement.name)
 class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, choices=SLO_STATUS_CHOICES)
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
 class ResultCommunicate(models.Model):
     text = models.CharField(max_length=3000)
