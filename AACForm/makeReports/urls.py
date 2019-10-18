@@ -61,6 +61,7 @@ urlpatterns = [
     re_path(r'^aac/department/(?P<dept>\d+)/dp/(?P<pk>\d+)/delete/$', views.DeleteDegreeProgram.as_view(), name='delete-dp'),
     re_path(r'^aac/department/(?P<dept>\d+)/dp/(?P<pk>\d+)/recover/$', views.RecoverDegreeProgram.as_view(), name='recover-dp'),
     re_path(r'^aac/department/(?P<dept>\d+)/report/create/$',views.CreateReport.as_view(),name='add-rpt'),
+    re_path(r'^aac/dp/(?P<dP>\d+)/report/create/$',views.CreateReportByDP.as_view(),name='add-rpt-dp'),
     re_path(r'^aac/report/delete/(?P<pk>\d+)/$', views.DeleteReport.as_view(), name='delete-rpt'),
     re_path(r'^aac/report/submit/(?P<pk>\d+)/$', views.ManualReportSubmit.as_view(), name='manual-submit-rpt'),
     re_path(r'^aac/report/list/$', views.ReportList.as_view(), name='report-list'),
