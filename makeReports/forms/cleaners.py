@@ -8,6 +8,7 @@ class CleanSummer():
         if len(cleaned)>max_length:
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned
+#This code was adapted from the summernote-cleaner plugin code (originally written in Javascript)
 def cleanText(txt):
     out = txt
     #sS = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;

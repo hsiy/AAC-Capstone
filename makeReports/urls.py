@@ -136,4 +136,6 @@ urlpatterns = [
     re_path(r'^pdf/report/(?P<report>\d+)/sups/$', views.reportPDF,name='report-pdf'),
     re_path(r'^pdf/report/(?P<report>\d+)/sups/view/$', views.PDFViewer.as_view(),name='trying-to-fix'),
     re_path(r'^pdf/rubric/(?P<rubric>\d+)/auto/$', views.UngradedRubric,name='rubric-auto-pdf'),
+    #APIs
+    re_path(r'^api/dept/col/$', views.DeptByColListAPI.as_view(),name='api-dept-by-col'),
 ]
