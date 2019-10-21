@@ -1,12 +1,119 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<script type='text/javascript'></script>
+<div id="vapp">
+{% endblock %}
+{% block styles %}
+<meta charset='utf-8' />
+<link
+type="text/css"
+rel="stylesheet"
+href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+/>
+<link
+type="text/css"
+rel="stylesheet"
+href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
+/> 
+{% endblock %}
 {% block content %}
+{% load static %}
 <h3>Create New Account</h3>
+{{ form.non_field_errors }}
+
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
-    {% bootstrap_form form %}
+    <div class="form-group">
+            {{ form.first_name.errors }}
+            <label for="id_first_name">First name</label>
+
+            <input type="text" class="form-control" id="id_first_name" name="first_name">
+    </div>
+    <div class="form-group">
+            {{ form.last_name.errors }}
+            <label for="id_last_name">Last name</label>
+
+            <input type="text" class="form-control" id="id_last_name" name="last_name">
+    </div>
+    <div class="form-group">
+            {{ form.email.errors }}
+            <label for="id_email">Email</label>
+
+            <input type="email" name="email" class="form-control" maxlength="254" id="id_email">
+    </div><div class="form-group">
+            {{ form.username.errors }}
+            <label for="id_username">Username</label>
+
+            <input type="text" name="username" class="form-control" id="id_username" required="required">
+    </div><div class="form-group">
+            {{ form.password1.errors }}
+            {% if form.password1.errors %}
+                {{form.password1.help_text}}
+            {% endif %}
+                <label for="id_password1">Password</label>
+
+            <input type="password" class="form-control" id="id_password1" name="password1" required="required">
+    </div><div class="form-group">
+            {{ form.password2.errors }}
+            <label for="id_password2">Re-enter Password</label>
+
+            <input type="password" name="password2" class="form-control" id="id_password2" required="required">
+    </div>
+    <div class="form-group">
+            {{ form.college.errors }}
+            <label for="id_college">College</label>
+
+            <select class="form-control" id="id_college" v-model="college" v-on:change="updateDept" name="college">
+                    {% for option in form.fields.college.queryset %}
+                    <option value="{{option.pk}}">{{option}}</option>
+                    {% endfor %}
+            </select>
+    </div>
+    <div class="form-group">
+            {{ form.department.errors }}
+            <label for="id_department">Department</label>
+            <select class="form-control" id="id_department" name="department">
+                <template v-for="d in depts">
+                    <option v-bind:value="d.pk">[[d.name]]</option>
+                </template>
+            </select>
+    </div>
+    <div class="form-check">
+            {{ form.isaac.errors }}
+            <input type="checkbox" class="form-check-input" id="id_isaac" name="isaac">
+            <label class="form-check-label" for="id_isaac">AAC Member </label>
+    </div>
     {% buttons %}
         <button type="submit" class="btn btn-primary">Add</button>
     {% endbuttons %}
 </form>
 {% endblock %}
+{% block endscripts %}
+    <script>
+    var vapp=new Vue({
+            el: '#vapp',
+            delimiters: ['[[', ']]'],
+            data: { 
+                depts: null,
+                college: null
+            },
+            computed: {
+            },
+            methods: {
+                updateDept: function () {
+                    fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
+                        .then(response => {
+                            response.clone().json()
+                        .then(json => {
+                            this.depts = json;
+                        })
+                    });
+                }
+            }
+        });
+    </script>
+    {% endblock %}

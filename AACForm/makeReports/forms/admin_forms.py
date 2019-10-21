@@ -29,6 +29,7 @@ class GenerateReports(forms.Form):
 class MakeNewAccount(UserCreationForm):
     isaac = forms.BooleanField(required=False, label="Account for AAC member?")
     department = forms.ModelChoiceField(queryset=Department.active_objects, label="Department", required=False)
+    college = forms.ModelChoiceField(queryset=College.active_objects, label="College",required=False)
     class Meta:
         model = User
         fields = ['email','username','password1','password2','isaac','first_name','last_name']
