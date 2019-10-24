@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'AACForm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd2l572kbfjiffo',                      
-        'USER': 'bwsqrclshcgdfz',
-        'PASSWORD': '7b786042eba0c72cac3f2e91ad94728ea16a6e172b21aa727bb81778768e5c67',
-        'HOST': 'ec2-54-197-238-238.compute-1.amazonaws.com',
+        'NAME': 'dec475dtrh1d4b',                      
+        'USER': 'dpigmvxcewudws',
+        'PASSWORD': '65ec3eb508b3cb11898fcfda37c5a6c727d501a619d818ea726aec13a059cb35',
+        'HOST': 'ec2-107-21-98-89.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
