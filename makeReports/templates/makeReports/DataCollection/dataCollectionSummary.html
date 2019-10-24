@@ -18,7 +18,7 @@
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
         <tr>
-            <td><b>SLO {{assessment.slo_obj.number}}: </b>{{assessment.slo_text|safe}}
+            <td><b>SLO {{assessment.slo_obj.number}}: </b>{{assessment.slo_text|safe}}<br>
                 <b>Measure {{assessment.assessment_obj.number}}: </b>{{assessment.assessment_text}}</td>
             <td style="width: 20%">
                 {% for d in assessment.assess_data %}
