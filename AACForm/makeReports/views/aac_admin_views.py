@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
 
+
 class AdminHome(AACOnlyMixin,FormView):
     template_name = "makeReports/AACAdmin/adminHome.html"
     form_class = GenerateReports
@@ -217,27 +218,14 @@ class SearchAccountList(AACOnlyMixin,ListView):
             profs = profs.filter(user__email__icontains=self.request.GET['e'])
         return profs
 class MakeAnnouncement(AACOnlyMixin,CreateView):
-    model = Announcement
-    fields = ['text','expiration']
     template_name = "makeReports/AACAdmin/Announcements/addAnnoun.html"
     success_url = reverse_lazy('makeReports:announ-list')
-    def get_form(self, form_class=None):
-        form = super(MakeAnnouncement,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['expiration'].widget = forms.SelectDateWidget()
-        form.fields['text'].label = "Announcement"
-        return form
+    form_class = AnnouncementForm
 class ModifyAnnouncement(AACOnlyMixin,UpdateView):
     model = Announcement
-    fields = ['text','expiration']
     template_name = "makeReports/AACAdmin/Announcements/editAnnoun.html"
     success_url = reverse_lazy('makeReports:announ-list')
-    def get_form(self, form_class=None):
-        form = super(ModifyAnnouncement,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Announcement"
-        form.fields['expiration'].widget = forms.SelectDateWidget()
-        return form
+    form_class = AnnouncementForm
 class ListAnnouncements(AACOnlyMixin,ListView):
     model = Announcement
     template_name = "makeReports/AACAdmin/Announcements/annList.html"

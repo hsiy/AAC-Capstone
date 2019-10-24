@@ -18,12 +18,14 @@
         </div>
         <div class="col">
             <!--grading column-->
-            Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% if report.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% endif %}
                 <table>
                   {% for GRI in obj_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text|safe}}: <b>{{GRI.get_grade_display}}</b>
+                        {{GRI.item.text|safe}} <br><b>{{GRI.get_grade_display}}</b>
                       </td>
                     </tr>
                     <tr>

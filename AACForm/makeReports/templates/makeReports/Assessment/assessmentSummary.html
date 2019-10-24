@@ -1,5 +1,15 @@
 {% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
+{% block in_scripts %}
+<style>
+    .italics{
+        font-style: italic;
+    }
+    .italics p{
+            margin:2pt;
+    }
+</style>
+{% endblock %}
 {% block inner_content %}
 <h3>Assessment Summary</h3>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
@@ -13,8 +23,8 @@
             <table class="table-responsive table-bordered" style="border:0px;">
             <tbody>
             <tr>
-                <td style="background-color:#C0C0C0;" colspan="2">
-                    <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText|safe}}</i>
+                <td style="background-color:#E0E0E0;" colspan="2">
+                    <b>SLO {{assessment.slo.number}}: </b><div class="italics">{{assessment.slo.goalText|safe}}</div>
                 </td>
             </tr>
             <tr>
@@ -33,10 +43,12 @@
                 </td>
                 <td>
                     {% if assessment.assessment.domainProduct %}
-                        Product 
+                        Product{% if assessment.assessment.domainPerformance or assessment.assessment.domainExamination %},
+                        {% endif %}
                     {% endif %}
                     {% if assessment.assessment.domainPerformance %}
-                        Performance  
+                        Performance{% if assessment.assessment.domainExamination %},
+                        {% endif %}
                     {% endif %}
                     {% if assessment.assessment.domainExamination %}
                         Examination
@@ -83,7 +95,11 @@
             <tr>
                 <td><b>7. Frequency of Data Collection</b></td>
                 <td>
+                    {% if assessment.frequencyChoice == "O" %}
                     {{assessment.frequency|safe}}
+                    {% else %}
+                    {{assessment.get_frequencyChoice_display}}
+                    {% endif %}
                 </td>
             <tr>
                 <td>
@@ -119,7 +135,7 @@
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-assessment' report=rpt.pk pk=assessment.pk %}">Delete Assessment</a>
                         {% endif %}
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
-                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}">Import Supplement</a>
+                        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}?year={{rpt.year}}&dp={{rpt.degreeProgram.pk}}">Import Supplement</a>
                         <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection-assess' report=rpt.pk assessment=assessment.pk %}">Add Data</a>
                 </td>
             </tr>

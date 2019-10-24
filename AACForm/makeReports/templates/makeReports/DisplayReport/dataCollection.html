@@ -7,26 +7,37 @@
             <td>Data Collection Date Range</td>
             <td>Number of Students Assessed</td>
             <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+            <td>Aggregate</td>
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
         <tr {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:#E0E0E0;" {% endif %}>
             <td><b>SLO {{assessment.slo_obj.number}} -
                 Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b></td>
-            <td>{{assessment.data_range}}</td>
-            <td>{{assessment.num_students_assessed}}</td>
-            <td>
-                {% if assessment.subassessments_len > 0 %}
-                    {% for subassessment in assessment.subassessments %}
-                        {% if forloop.last %}
-                            {{subassessment.0}}: <b>{{subassessment.1}}%</b>
-                        {% else %}
-                            {{subassessment.0}}: <b>{{subassessment.1}}%</b> <br>
+                <td style="width: 20%">
+                        {% for d in assessment.assess_data %}
+                        <p>
+                            {{d.dataRange}}
+                        </p>
+                        {% endfor %}
+                    </td>
+                    <td style="text-align: center;">{% for d in assessment.assess_data %}
+                            <p>
+                                {{d.numberStudents}}
+                            </p>
+                            {% endfor %}
+                    </td>
+                    <td style="text-align: center;">{% for d in assessment.assess_data %}
+                            <p>
+                                {{d.overallProficient}}%
+                            </p>
+                            {% endfor %}
+                        
+                    </td>
+                    <td style="text-align: center;">
+                        {% if assessment.agg %}
+                        {{assessment.agg}}%
                         {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <b>{{assessment.overall_proficient}}%</b>
-                {% endif %}
-            </td>
+                    </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -43,17 +54,16 @@
                 <a href="{{sup.supplement.url}}">{{sup}}</a>
             </td>
             <td>
-                {{sup.comment|safe}}
+                {{sup.comment}}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<table class="table">
-    <tbody>
-        <thead>
-            <h3>SLO Status</h3>
-        </thead>
+<div class="subsection">B. SLO Status Table
+        <div class="bT">
+        <table class="table">
+        <tbody>
         <tr>
             <td>SLO</td>
             <td>Status</td>
@@ -69,7 +79,9 @@
             </tr>
         {% endfor %}
     </tbody>
-</table>
+    </table>
+</div>
+</div>
 <h5>Description of how results are communicated within the program</h5>
 <p>{{ assessment_data_dict.result_communication_text|safe }}</p>
 

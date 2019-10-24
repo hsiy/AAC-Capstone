@@ -1,38 +1,39 @@
 <h3>I. Student Learning Outcomes (SLOs)</h3>
-                        <div class="bT">
-                            <div class="subsection">A. Outcome Table</div>
-                        <table class="table" style="width:100%;">
-                            <tbody>
-                                    <tr>
-                                        <td style="width:65%"><b>Program Student Learning Outcomes</b></td><td ><b>Bloom's Taxonomy</b></td>{% if slo_list.0.report.degreeProgram.level == "GR" %}<td><b>Graduate Goals</b></td>{% endif %}
-                                    </tr>
-                                    {% for slo in slo_list %}
-                                    <tr>
-                                        <td>
-                                            <b>SLO {{slo.number}}: </b>{{slo.goalText|safe}}
-                                        </td>
-                                        <td >
-                                            {{slo.slo.get_blooms_display}}
-                                        </td>
-                                        {% if slo_list.0.report.degreeProgram.level == "GR" %}
-                                        <td >
-                                            {% for gG in slo.slo.gradGoals.all %}
-                                                {% if forloop.last %}
-                                                    {{gG.text|safe}}
-                                                {% else %}
-                                                    {{gG.text|safe}},
-                                                {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                        {% endif %}
-                                    </tr>
-                                    {% endfor %}
-                            </tbody>
-                        </table>
-                        </div>
-                        <div class="subsection">B. Stakeholder Communication</div>
-                        {{stk|safe}}
-                        <div class="subsection">
-                            C. Comment
-                        </div>
-                        {{report.section1Comment|safe}}
+<div class="bT">
+    <div class="subsection">A. Outcome Table</div>
+<table class="table" style="width:100%;">
+    <tbody>
+            <tr>
+                <td style="width:65%"><b>Program Student Learning Outcomes</b></td><td ><b>Bloom's Taxonomy</b></td>{% if slo_list.0.report.degreeProgram.level == "GR" %}<td><b>Graduate Goals</b></td>{% endif %}
+            </tr>
+            {% for slo in slo_list %}
+            <tr>
+                <td>
+                    <b>SLO {{slo.number}}: </b>
+                    <p>{{slo.goalText|safe}}</p>
+                </td>
+                <td >
+                    {{slo.slo.get_blooms_display}}
+                </td>
+                {% if slo_list.0.report.degreeProgram.level == "GR" %}
+                <td >
+                    {% for gG in slo.slo.gradGoals.all %}
+                        {% if forloop.last %}
+                            {{gG.text|safe}}
+                        {% else %}
+                            {{gG.text|safe}},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+</div>
+<div class="subsection">B. Stakeholder Communication</div>
+{{stk|safe}}
+<div class="subsection">
+    C. Comment
+</div>
+{{report.section1Comment|safe}}

@@ -2,12 +2,12 @@
 <h3>II. Assessment Methods</h3>
 <div class="container float-left">
             {% for assessment in assessment_list %}
-            <div class="row">
+            <div class="row mt-5">
                     <div class="col">
             <table class="table-responsive table-bordered" style="border:0px;">
             <tr>
-                <td style="background-color:#C0C0C0;" colspan="2">
-                    <b>SLO {{assessment.slo.number}}: </b><i>{{assessment.slo.goalText|safe}}</i>
+                <td style="background-color:#E0E0E0;" colspan="2">
+                    <b>SLO {{assessment.slo.number}}: </b><div class="italics" style="display: inline;">{{assessment.slo.goalText|safe}}</div>
                 </td>
             </tr>
             <tr>
@@ -25,11 +25,13 @@
                     <b>3. Domain</b>
                 </td>
                 <td>
-                    {% if assessment.assessment.domainProduct %}
-                        Product 
+                        {% if assessment.assessment.domainProduct %}
+                        Product{% if assessment.assessment.domainPerformance or assessment.assessment.domainExamination %},
+                        {% endif %}
                     {% endif %}
                     {% if assessment.assessment.domainPerformance %}
-                        Performance  
+                        Performance{% if assessment.assessment.domainExamination %},
+                        {% endif %}
                     {% endif %}
                     {% if assessment.assessment.domainExamination %}
                         Examination
@@ -76,7 +78,11 @@
             <tr>
                 <td><b>7. Frequency of Data Collection</b></td>
                 <td>
+                    {% if assessment.frequencyChoice is "O" %}
                     {{assessment.frequency|safe}}
+                    {% else %}
+                    {{assessment.get_frequencyChoice_display}}
+                    {% endif %}
                 </td>
             <tr>
                 <td>
