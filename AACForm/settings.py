@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'gdstorage',
     'django_summernote',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -82,10 +83,10 @@ WSGI_APPLICATION = 'AACForm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd2l572kbfjiffo',                      
-        'USER': 'bwsqrclshcgdfz',
-        'PASSWORD': '7b786042eba0c72cac3f2e91ad94728ea16a6e172b21aa727bb81778768e5c67',
-        'HOST': 'ec2-54-197-238-238.compute-1.amazonaws.com',
+        'NAME': 'dec475dtrh1d4b',                      
+        'USER': 'dpigmvxcewudws',
+        'PASSWORD': '65ec3eb508b3cb11898fcfda37c5a6c727d501a619d818ea726aec13a059cb35',
+        'HOST': 'ec2-107-21-98-89.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -139,7 +140,7 @@ MEDIA_URL = '/media/'
 
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-08fe48f6125f.json')
 DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
-SUMMERNOTE_THEME = 'bs3'
+SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
     'summernote': {
         # As an example, using Summernote Air-mo
@@ -152,7 +153,6 @@ SUMMERNOTE_CONFIG = {
         ['cleaner',['cleaner']],
         ['style',['style']],
         ['font',['bold','italic','underline','clear']],
-        ['fontname',['fontname']],
         ['color',['color']],
         ['para',['ul','ol','paragraph']],
         ['height',['height']],
@@ -168,6 +168,9 @@ SUMMERNOTE_CONFIG = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }

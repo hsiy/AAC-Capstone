@@ -104,6 +104,7 @@ class AssessmentVersion(models.Model):
     allStudents = models.BooleanField()
     #false = sample of students
     sampleDescription = models.CharField(max_length=200,blank=True,null=True)
+    frequencyChoice = models.CharField(max_length=100,choices=FREQUENCY_CHOICES,default="O")
     frequency = models.CharField(max_length=100)
     #the below are percentage points
     threshold = models.CharField(max_length=500) # Should be text field, change later
@@ -125,6 +126,12 @@ class AssessmentData(models.Model):
     dataRange = models.CharField(max_length=500)
     numberStudents = models.PositiveIntegerField()
     overallProficient = models.PositiveIntegerField(blank=True)
+class AssessmentAggregate(models.Model):
+    assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
+    aggregate_proficiency = models.PositiveIntegerField(verbose_name="aggregate proficiency percentage")
+    met = models.BooleanField()
+    def __str__(self):
+        return str(self.aggregate_proficiency)
 class DataAdditionalInformation(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     comment = models.CharField(max_length=3000, blank=True, default="")
@@ -133,7 +140,7 @@ class DataAdditionalInformation(models.Model):
         return os.path.basename(self.supplement.name)
 class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, choices=SLO_STATUS_CHOICES)
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
 class ResultCommunicate(models.Model):
     text = models.CharField(max_length=3000)
@@ -149,7 +156,7 @@ class DecisionsActions(models.Model):
     actionTimeline = models.CharField(max_length=3000, blank=True, default="")
 class Rubric(models.Model):
     date = models.DateField()
-    fullFile = models.FileField(upload_to='rubrics', storage=gd_storage, null=True,blank=True, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
+    fullFile = models.FileField(default='settings.STATIC_ROOT/norubric.pdf',verbose_name="rubric file",upload_to='rubrics', storage=gd_storage, null=True,blank=True, validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
     name = models.CharField(max_length = 150, default="Rubric")
     def __str__(self):
         return self.name

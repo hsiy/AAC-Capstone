@@ -46,6 +46,11 @@ class AddRubricItems(AACOnlyMixin, FormView):
             ri.save()
         except:
             pass
+        try:
+            ri.abbreviation = form.cleaned_data['abbreviation']
+            ri.save()
+        except:
+            pass
         return super(AddRubricItems,self).form_valid(form)
     def get_context_data(self, **kwargs):
         context = super(AddRubricItems,self).get_context_data(**kwargs)
@@ -58,12 +63,15 @@ class ViewRubric(AACOnlyMixin,DetailView):
     template_name = "makeReports/Rubric/rubricDetail.html"
     def get_context_data(self,**kwargs):
         context = super(ViewRubric,self).get_context_data(**kwargs)
-        context['rIs'] = RubricItem.objects.filter(rubricVersion=self.object).order_by("section","order","pk")
+        context['rI1'] = RubricItem.objects.filter(rubricVersion=self.object, section=1).order_by("order","pk")
+        context['rI2'] = RubricItem.objects.filter(rubricVersion=self.object,section=2).order_by("order","pk")
+        context['rI3'] = RubricItem.objects.filter(rubricVersion=self.object,section=3).order_by("order","pk")
+        context['rI4'] = RubricItem.objects.filter(rubricVersion=self.object,section=4).order_by("order","pk")           
         context['obj'] = self.object
         return context
 class UpdateRubricItem(AACOnlyMixin,UpdateView):
     model = RubricItem
-    fields = ['text','abbreviation','section','order','DMEtext','MEtext','EEtext']
+    form_class = RubricItemForm
     template_name = "makeReports/Rubric/updateRubricItem.html"
     def get_success_url(self):
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
@@ -72,7 +80,7 @@ class UpdateRubricFile(AACOnlyMixin, UpdateView):
     fields = ['name','fullFile']
     template_name = "makeReports/Rubric/updateRubric.html"
     def get_success_url(self):
-        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['pk']])
 class DeleteRubricItem(AACOnlyMixin,DeleteView):
     model = RubricItem
     template_name = "makeReports/Rubric/deleteRubricItem.html"

@@ -5,6 +5,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
+from makeReports.choices import *
 
 class DataCollectionSummary(DeptReportMixin,ListView):
     model = AssessmentData
@@ -20,7 +21,7 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         return assessment_qs
     def get_context_data(self, **kwargs):
         report = self.report
-        context = super(DataCollectionSummary, self).get_context_data()
+        context = super(DataCollectionSummary, self).get_context_data(**kwargs)
         return section3Context(self,context)
 
 
@@ -30,6 +31,10 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         return super(CreateDataCollectionRow,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(CreateDataCollectionRow,self).get_context_data(**kwargs)
+        context["assess"] = self.assessment
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -47,7 +52,10 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         self.dataCollection = AssessmentData.objects.get(pk=self.kwargs['dataCollection'])
         return super(EditDataCollectionRow,self).dispatch(request,*args,**kwargs)
-
+    def get_context_data(self, **kwargs):
+        context = super(EditDataCollectionRow,self).get_context_data(**kwargs)
+        context["assess"] = self.dataCollection.assessmentVersion
+        return context
     def get_initial(self):
         initial = super(EditDataCollectionRow, self).get_initial()
         initial['dataRange'] = self.dataCollection.dataRange
@@ -79,6 +87,10 @@ class CreateSubassessmentRow(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         return super(CreateSubassessmentRow,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(CreateSubassessmentRow,self).get_context_data(**kwargs)
+        context["assess"] = self.assessment
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -99,7 +111,10 @@ class EditSubassessmentRow(DeptReportMixin,FormView):
         initial['title'] = self.subassessment.title
         initial['proficient'] = self.subassessment.proficient
         return initial
-
+    def get_context_data(self, **kwargs):
+        context = super(CreateSubassessmentRow,self).get_context_data(**kwargs)
+        context["assess"] = self.subassessment.assessmentVersion
+        return context
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -122,7 +137,7 @@ class NewSLOStatus(DeptReportMixin,FormView):
     
     def dispatch(self, request, *args, **kwargs):
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-        self.slo_ir = SLOInReport.objects.get(slo=self.slo, report=self.report)
+        self.slo_ir = SLOInReport.objects.get(slo=self.slo, report__pk=self.kwargs['report'])
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
@@ -194,7 +209,7 @@ class Section3Comment(DeptReportMixin,FormView):
     template_name = "makeReports/DataCollection/comment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
-        return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
         self.report.section3Comment = form.cleaned_data['text']
         self.report.save()
@@ -223,3 +238,61 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
     fields = ['comment']
     def get_success_url(self):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+def sloStatusUpdate(sloIR):
+    aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sloIR)
+    met = True
+    partiallyMet = False
+    for a in aggs:
+        if a.met is False:
+            met = False
+        if a.met is True:
+            partiallyMet=True
+        if not met and partiallyMet:
+            break
+    try:
+        sS = SLOStatus.objects.get(report=sloIR.report,SLO=sloIR.slo)
+        if met:
+            sS.status = SLO_STATUS_CHOICES[0][0]
+        elif partiallyMet:
+            sS.status = SLO_STATUS_CHOICES[1][0]
+        else:
+            sS.status = SLO_STATUS_CHOICES[2][0]
+        sS.save()
+    except:
+        if met:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],report=sloIR.report,SLO=sloIR.slo)
+        elif partiallyMet:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],report=sloIR.report,SLO=sloIR.slo)
+        else:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],report=sloIR.report,SLO=sloIR.slo)
+    return
+class AssessmentAggregateCreate(DeptReportMixin, CreateView):
+    model = AssessmentAggregate
+    fields = ['aggregate_proficiency']
+    template_name = "makeReports/DataCollection/addAggregate.html"
+    def form_valid(self,form):
+        self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        form.instance.assessmentVersion = assess
+        if self.assess.target <= form.instance.aggregate_proficiency:
+            form.instance.met = True
+        else:
+            form.instance.met = False
+        return super(AssessmentAggregateCreate,self).form_valid(form)
+    def get_success_url(self):
+        sloStatusUpdate(self.assess.slo)
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
+    model = AssessmentAggregate
+    fields = ['aggregate_proficiency']
+    template_name = "makeReports/DataCollection/addAggregate.html"
+    def form_valid(self,form):
+        self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        if self.assess.target <= form.instance.aggregate_proficiency:
+            form.instance.met = True
+        else:
+            form.instance.met = False
+        return super(AssessmentAggregateEdit,self).form_valid(form)
+    def get_success_url(self):
+        sloStatusUpdate(self.assess.slo)
+        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
+

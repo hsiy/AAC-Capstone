@@ -1,6 +1,47 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% block styles %}
+<style>
+.italics{
+    font-style: italic;
+}
+.italics p{
+    margin:2pt;
+}
+</style>
+{% endblock %}
+
 {% block content %}
+<nav id="main-nav-bar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Grading</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'makeReports:grade-sec1' report=report.pk %}">Section I <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'makeReports:grade-sec2' report=report.pk %}">Section II <span class="sr-only">(current)</span></a>
+                  </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'makeReports:grade-sec3' report=report.pk %}">Section III <span class="sr-only">(current)</span></a>
+                  </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'makeReports:grade-sec4' report=report.pk %}">Section IV <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'makeReports:grade-comment' report=report.pk %}">Overall Comments <span class="sr-only">(current)</span></a>
+                    </li>
+                  <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'makeReports:rub-review' report=report.pk %}">Preview & Submit <span class="sr-only">(current)</span></a>
+                    </li>
+            </div>
+          </nav>
+</nav>
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">
     <div class="row">
@@ -13,13 +54,15 @@
         </div>
         <div class="col">
             <!--grading column-->
-            Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% if report.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% endif %}
             <h5>Rubric</h5>
                 <table>
                   {% for GRI in object_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text|safe}}: {{GRI.get_grade_display}}
+                        {{GRI.item.text|safe}} <br><b>{{GRI.get_grade_display}}</b>
                       </td>
                     </tr>
                     <tr>

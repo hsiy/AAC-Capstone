@@ -26,6 +26,19 @@ class CreateReport(AACOnlyMixin,CreateView):
         form.instance.submitted = False
         self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
         return super(CreateReport, self).form_valid(form)
+class CreateReportByDP(AACOnlyMixin,CreateView):
+    model = Report
+    form_class = CreateReportByDPForm
+    template_name = "makeReports/AACAdmin/manualReportCreate.html"
+    def get_success_url(self):
+        self.object.rubric = self.GR
+        self.object.save()
+        return reverse_lazy('makeReports:admin-home')
+    def form_valid(self,form):
+        form.instance.degreeProgram = DegreeProgram.objects.get(pk=self.kwargs['dP'])
+        form.instance.submitted = False
+        self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
+        return super(CreateReportByDP,self).form_valid(form)
 class DeleteReport(AACOnlyMixin,DeleteView):
     model = Report
     template_name = "makeReports/AACAdmin/deleteReport.html"
@@ -71,25 +84,14 @@ class ManualReportSubmit(AACOnlyMixin,UpdateView):
     template_name = 'makeReports/AACAdmin/manualSubmit.html'
     success_url = reverse_lazy('makeReports:report-list')
 class MakeGradGoal(AACOnlyMixin,CreateView):
-    model = GradGoal
-    fields = ['text']
+    form_class = GradGoalForm
     template_name = "makeReports/AACAdmin/GG/addGG.html"
     success_url = reverse_lazy('makeReports:gg-list')
-    def get_form(self, form_class=None):
-        form = super(MakeGradGoal,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Goal text:"
-        return form
 class UpdateGradGoal(AACOnlyMixin,UpdateView):
     model = GradGoal
-    fields = ['text','active']
+    form_class = GradGoalForm
     template_name = "makeReports/AACAdmin/GG/updateGG.html"
     success_url = reverse_lazy('makeReports:gg-list')
-    def get_form(self, form_class=None):
-        form = super(UpdateGradGoal,self).get_form(form_class)
-        form.fields['text'].widget = SummernoteWidget()
-        form.fields['text'].label = "Goal text:"
-        return form
 class ListActiveGradGoals(AACOnlyMixin,ListView):
     model = GradGoal
     template_name = "makeReports/AACAdmin/GG/GGlist.html"

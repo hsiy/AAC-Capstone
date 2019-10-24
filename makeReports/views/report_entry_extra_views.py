@@ -67,7 +67,7 @@ class SubmitReport(DeptReportMixin, FormView):
             valid = False
             eMsg = eMsg+"There are no SLOs.\n"
         for slo in slos:
-            if AssessmentVersion.objects.filter(slo=slo).count()==0:
+            if slo.numberOfAssess==0:
                 valid = False
                 eMsg = eMsg+"There is not an assessment for SLO "+str(slo.number)+".\n"
             if DecisionsActions.objects.filter(report=self.report, SLO=slo.slo).count()==0:
@@ -78,6 +78,9 @@ class SubmitReport(DeptReportMixin, FormView):
             if AssessmentData.objects.filter(assessmentVersion=a).count()==0:
                 valid = False
                 eMsg = eMsg+"There is no data for assessment "+str(a.number)+".\n"
+            if AssessmentAggregate.objects.filter(assessmentVersion=a).count()==0:
+                valid = False
+                eMsg = eMsg+"There is no aggregate number for assessment "+str(a.number)+".\n"
         if not self.report.author or self.report.author=="":
             valid = False
             eMsg = eMsg+"There is no report author.\n"

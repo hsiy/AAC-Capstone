@@ -116,8 +116,10 @@
         </td>
     </tr>
     {% endfor %}
+</table>
+<table style="border: 1px solid black;width:100%">
     <tr class='table-secondary'>
-        <td colspan="5" ><b>General Comments</b></td>
+        <td colspan="5" ><b>Comments</b></td>
     </tr>
     <tr>
         <td colspan="5">
@@ -139,6 +141,12 @@
             <b>Decisions and Actions: </b>{{rubric.section4Comment|safe}}
         </td>
     </tr>
+    <tr>
+        <td colspan="5">
+            <b>Overall: </b>{{rubric.generalComment|safe}}
+        </td>
+    </tr>
+
 
 
 </table>
