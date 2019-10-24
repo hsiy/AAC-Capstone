@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Grahing Historical Data</h3>
+<form action="{% url 'makeReports:search-reports-dept' %}" type="get">
+    <h3>Search:</h3>
+    You can use as many or few fields as desired<br>
+    <div class="form-group"><label for="dP">Degree program:</label><input id="dP" type="text" class="form-control" name="dP"></div>
+        <button id="sub" type="submit" class="btn btn-primary" style="margin-top:1em">Search</button><br>
+</form>
+
+{% endblock %}

@@ -2,6 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
+<h4>To view summary of past reports:</h4>
+<button id="graph" class="btn btn-primary" href="{% %}">Click Here</button>
 <form action="{% url 'makeReports:search-reports-dept' %}" type="get">
         <h3>Search:</h3>
         You can use as many or few fields as desired<br>
