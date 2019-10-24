@@ -18,7 +18,8 @@
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
         <tr>
-            <td>{{assessment.slo_text|safe}} : {{assessment.assessment_text}}</td>
+            <td><b>SLO {{assessment.slo_obj.number}}: </b>{{assessment.slo_text|safe}}
+                <b>Measure {{assessment.assessment_obj.number}}: </b>{{assessment.assessment_text}}</td>
             <td>{{assessment.data_range}}</td>
             <td>{{assessment.num_students_assessed}}</td>
             <td>
@@ -75,7 +76,7 @@
                 <a href="{{sup.supplement.url}}">{{sup}}</a>
             </td>
             <td>
-                {{sup.comment|safe}}
+                {{sup.comment}}
             </td>
             <td>
                     <a type="button" title="Continue" class="btn btn-primary" href="{% url 'makeReports:update-data-sup' pk=sup.pk report=rpt.pk %}">Edit Comment</a>

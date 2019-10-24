@@ -43,17 +43,16 @@
                 <a href="{{sup.supplement.url}}">{{sup}}</a>
             </td>
             <td>
-                {{sup.comment|safe}}
+                {{sup.comment}}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<table class="table">
-    <tbody>
-        <thead>
-            <h3>SLO Status</h3>
-        </thead>
+<div class="subsection">B. SLO Status Table
+        <div class="bT">
+        <table class="table">
+        <tbody>
         <tr>
             <td>SLO</td>
             <td>Status</td>
@@ -69,7 +68,9 @@
             </tr>
         {% endfor %}
     </tbody>
-</table>
+    </table>
+</div>
+</div>
 <h5>Description of how results are communicated within the program</h5>
 <p>{{ assessment_data_dict.result_communication_text|safe }}</p>
 

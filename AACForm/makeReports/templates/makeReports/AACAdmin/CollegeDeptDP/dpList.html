@@ -8,6 +8,7 @@ Looking for a deleted degree program?  <a type="button" class="btn btn-primary" 
 <ul class="list-group">
 {% for dp in object_list %}
     <li class = "list-group-item">{{dp.name}}, {{dp.level}} in {{dp.department.college.name}} Cycle: Every {{dp.cycle}} years from {{dp.startingYear}}
+            <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-rpt-dp' dP=dp.pk %}">Assign Report</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:update-dp' dept=dp.department.pk pk=dp.pk %}">Update Degree Program</a>
             <a type="button" class="btn btn-danger" href="{% url 'makeReports:delete-dp' dept=dp.department.pk pk=dp.pk %}">Archive Degree Program</a>
     </li>

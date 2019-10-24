@@ -23,7 +23,7 @@ class DeptReportMixin(DeptOnlyMixin):
 class AACReportMixin(AACOnlyMixin):
     def dispatch(self,request,*args,**kwargs):
         self.report = Report.objects.get(pk=self.kwargs['report'])
-        return super(DeptReportMixin,self).dispatch(request,*args,**kwargs)
+        return super(AACReportMixin,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['rpt'] = self.report

@@ -2,15 +2,30 @@
     font-family: 'Open Sans','Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
     font-size: 10pt;
 }
+@page {
+    size: letter;
+    margin: 1in; 
+  }
+table.print-friendly tr td, table.print-friendly tr th {
+    page-break-inside: avoid;
+}
+.italicsSLO {
+    font-style: italic; 
+}
+
+div.bT p{
+    margin: 2pt;
+    padding: 1pt;
+}
 div.bT tr{
     border: 1px solid black;
     border-collapse: collapse;
-    padding: 3pt;
+    padding: 1pt;
+    margin: 1pt;
 }
 div.bT td{
     border: 1px solid black;
     border-collapse: collapse;
-    padding: 3pt;
 }
 div.bT table{
     border-collapse: collapse;
