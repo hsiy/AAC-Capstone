@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gdstorage',
     'django_summernote',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -164,4 +165,9 @@ SUMMERNOTE_CONFIG = {
     'js': (
         os.path.join(STATIC_URL, 'extPlugin/summernote-cleaner.js'),
     )
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
