@@ -5,7 +5,7 @@ from django_summernote.widgets import SummernoteWidget
 from .cleaners import CleanSummer
 from django.core.exceptions import ValidationError
 class CreateNewSLO(CleanSummer,forms.Form):
-    text = forms.CharField(widget= SummernoteWidget(), label="SLO: ") 
+    text = forms.CharField(widget= forms.Textarea, label="SLO: ") 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ")
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
     summer_max_length = 600
@@ -23,7 +23,7 @@ class ImportSLOForm(forms.Form):
         super(ImportSLOForm, self).__init__(*args, **kwargs)
         self.fields['slo'].queryset = sloChoices
 class EditNewSLOForm(CleanSummer,forms.Form):
-    text = forms.CharField(widget= SummernoteWidget(), label="SLO: ")
+    text = forms.CharField(widget= forms.Textarea, label="SLO: ")
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level: ")
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
     
@@ -34,7 +34,7 @@ class EditNewSLOForm(CleanSummer,forms.Form):
         if not grad:
             del self.fields['gradGoals']
 class EditImportedSLOForm(CleanSummer,forms.Form):
-    text = forms.CharField(widget= SummernoteWidget(), label="SLO: ")
+    text = forms.CharField(widget= forms.Textarea, label="SLO: ")
     summer_max_length = 600
 class Single2000Textbox(CleanSummer,forms.Form):
     text = forms.CharField(widget=SummernoteWidget(),label="")
