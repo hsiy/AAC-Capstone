@@ -8,53 +8,103 @@ from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
 
 class DecisionsActionsSummary(DeptReportMixin,ListView):
+    """
+    View to summary decisions and actions during form entry
+    """
     model = DecisionsActions
     template_name = 'makeReports/DecisionsActions/decisionsActionsSummary.html'
     context_object_name = "decisions_actions_list"
-
     def get_context_data(self, **kwargs):
         context = super(DecisionsActionsSummary, self).get_context_data()
         return section4Context(self,context)
-    def test_func(self):
-        return (self.report.degreeProgram.department == self.request.user.profile.department)
 
 class AddDecisionAction(DeptReportMixin,CreateView):
+    """
+    View to add new decision and action
+    """
     form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
+        """
+        Dispatches view and attaches SLo to instance
+        """
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets context data for template, including the SLO
+
+        Returns:
+            dict : context for template
+        """
         context = super(AddDecisionAction,self).get_context_data(**kwargs)
         context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
         return context
     def form_valid(self,form):
+        """
+        Sets the SLO and Report appropriately, then creates the object from the form
+        """
         form.instance.SLO = self.slo
         form.instance.report = self.report
         return super(AddDecisionAction,self).form_valid(form)
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
 class AddDecisionActionSLO(AddDecisionAction):
+    """
+    Add decision/action from SLO page
+    """
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class EditDecisionAction(DeptReportMixin,UpdateView):
+    """
+    Edit decision/action
+
+    Keyword Args:
+        pk (str): primary key of DecisionAction to update
+        slopk (str): primary key of SLO
+    """
     model = DecisionsActions
     form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
+        """
+        Dispatches the view and attaches the SLO to the instance
+        """
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets the context for the template, including the corresponding :class:`~makeReports.models.report-models.SLOInReport` 
+
+        Returns:
+            dict : context for template
+        """
         context = super(EditDecisionAction,self).get_context_data(**kwargs)
         context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
         return context
     def get_success_url(self):
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
 class EditDecisionActionSLO(EditDecisionAction):
+    """
+    Edit the decision/action
+    """
     def get_success_url(self):
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class AddEditRedirect(DeptReportMixin,RedirectView):
+    """
+    Correctly redirects to the right new or edit view for decision/actions
+    based upon whether a decision action already exists
+
+    Keyword Args:
+        slopk (str): primary key of SLO
+    """
     def get_redirect_url(self, *args,**kwargs):
+        """
+        Gets the redirect url
+
+        Returns:
+            str : URL of either add or edit decision action
+        """
         slo = SLO.objects.get(pk=self.kwargs['slopk'])
         rpt = self.report
         try:
@@ -63,6 +113,9 @@ class AddEditRedirect(DeptReportMixin,RedirectView):
         except:
             return reverse_lazy('makeReports:add-decisions-actions-slo', args=[rpt.pk,slo.pk])
 class Section4Comment(DeptReportMixin,FormView):
+    """
+    View to add a comment for section four
+    """
     template_name = "makeReports/DecisionsActions/comment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
