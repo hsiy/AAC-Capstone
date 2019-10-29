@@ -8,6 +8,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
+
 class HomePage(ListView):
     template_name = "makeReports/home.html"
     model = Report
