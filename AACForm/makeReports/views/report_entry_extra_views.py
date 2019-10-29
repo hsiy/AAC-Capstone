@@ -6,7 +6,9 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains extra views needed during the form input process
+"""
 class ReportFirstPage(DeptOnlyMixin,UpdateView):
     """
     View to set report wide attributes

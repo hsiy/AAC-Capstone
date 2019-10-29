@@ -6,7 +6,9 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains all views related to inputting decisions/actions into the form
+"""
 class DecisionsActionsSummary(DeptReportMixin,ListView):
     """
     View to summary decisions and actions during form entry

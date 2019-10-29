@@ -1,6 +1,8 @@
 from django.urls import include, path, re_path
 from makeReports import views
-
+"""
+Holds all the URLs for pages within the makeReports application
+"""
 app_name = "makeReports"
 urlpatterns = [
     path('summernote/', include('django_summernote.urls')),

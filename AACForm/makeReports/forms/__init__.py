@@ -5,3 +5,6 @@ from .admin_forms import *
 from .data_collection_forms import *
 from .decisions_actions_forms import *
 from .other_forms import *
+"""
+Collects forms together
+"""

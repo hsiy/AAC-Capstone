@@ -4207,6 +4207,7 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.AddRubric">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">AddRubric</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.AddRubric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.CreateView</span></code></p>
+<p>View to create a new rubric</p>
 <dl class="attribute">
 <dt id="makeReports.views.rubric_views.AddRubric.fields">
 <code class="sig-name descname">fields</code><em class="property"> = ['name', 'fullFile']</em><a class="headerlink" href="#makeReports.views.rubric_views.AddRubric.fields" title="Permalink to this definition">¶</a></dt>
@@ -4215,7 +4216,7 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.AddRubric.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.AddRubric.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, save the associated model.</p>
+<dd><p>Sets the date to now and creates object based upon the form</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4240,10 +4241,17 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.AddRubricItems">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">AddRubricItems</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.AddRubricItems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to add rubric items to rubric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>rubric</strong> (<em>str</em>) – primary key of rubric</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.AddRubricItems.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.AddRubricItems.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Dispatches view and attaches rubric to instance</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.rubric_views.AddRubricItems.form_class">
@@ -4254,13 +4262,21 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.AddRubricItems.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.AddRubricItems.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Creates rubric items from form after it was validated</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.rubric_views.AddRubricItems.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.AddRubricItems.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert the form into the context dict.</p>
+<dd><p>Returns context for the template, including the number of rubric items</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>template context</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4280,6 +4296,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.DeleteRubric">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">DeleteRubric</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.DeleteRubric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.DeleteView</span></code></p>
+<p>View to delete rubric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of rubric to delete</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.DeleteRubric.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.DeleteRubric.get_success_url" title="Permalink to this definition">¶</a></dt>
@@ -4302,6 +4324,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.DeleteRubricItem">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">DeleteRubricItem</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.DeleteRubricItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.DeleteView</span></code></p>
+<p>View to delete rubric item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of rubric item to delete</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.DeleteRubricItem.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.DeleteRubricItem.get_success_url" title="Permalink to this definition">¶</a></dt>
@@ -4324,6 +4352,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.DuplicateRubric">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">DuplicateRubric</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.DuplicateRubric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to duplicate rubric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>rubric</strong> (<em>str</em>) – primary key of rubric to duplicate</p>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="makeReports.views.rubric_views.DuplicateRubric.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.rubric_views.DuplicateRubric.form_class" title="Permalink to this definition">¶</a></dt>
@@ -4333,7 +4367,7 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.DuplicateRubric.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.DuplicateRubric.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Creates new rubric based upon form, and duplicates all rubric items</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4352,6 +4386,7 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.RubricList">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">RubricList</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.RubricList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
+<p>View to list rubrics in reverse chronological order</p>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.RubricList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.RubricList.get_queryset" title="Permalink to this definition">¶</a></dt>
@@ -4377,12 +4412,21 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.SearchRubricList">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">SearchRubricList</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.SearchRubricList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
+<p>View to search rubric, date must be within 180 days</p>
+<p class="rubric">Notes</p>
+<p>Search parameters sent via get request: ‘date’, ‘name’</p>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.SearchRubricList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.SearchRubricList.get_queryset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the list of items for this view.</p>
-<p>The return value must be an iterable and may be an instance of
-<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+<dd><p>Gets rubrics within 180 days of date if it exists and containing name if it exists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>rubrics meeting search parameters</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -4402,6 +4446,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.UpdateRubricFile">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">UpdateRubricFile</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.UpdateRubricFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.UpdateView</span></code></p>
+<p>View to update file associated with the rubric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of rubric to update</p>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="makeReports.views.rubric_views.UpdateRubricFile.fields">
 <code class="sig-name descname">fields</code><em class="property"> = ['name', 'fullFile']</em><a class="headerlink" href="#makeReports.views.rubric_views.UpdateRubricFile.fields" title="Permalink to this definition">¶</a></dt>
@@ -4430,6 +4480,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.UpdateRubricItem">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">UpdateRubricItem</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.UpdateRubricItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.UpdateView</span></code></p>
+<p>View to update rubric item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of rubric item to update</p>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="makeReports.views.rubric_views.UpdateRubricItem.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.rubric_views.UpdateRubricItem.form_class" title="Permalink to this definition">¶</a></dt>
@@ -4459,10 +4515,24 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.rubric_views.ViewRubric">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.rubric_views.</code><code class="sig-name descname">ViewRubric</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.ViewRubric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.detail.DetailView</span></code></p>
+<p>View to view a rubric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of rubric to view</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.rubric_views.ViewRubric.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.rubric_views.ViewRubric.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert the single object into the context dict.</p>
+<dd><p>Gets template context, including rubric items separated out by section</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>template context</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -4485,6 +4555,7 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.AddNewSLO">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">AddNewSLO</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.AddNewSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to add a new SLO</p>
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.AddNewSLO.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.slo_views.AddNewSLO.form_class" title="Permalink to this definition">¶</a></dt>
@@ -4494,13 +4565,22 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.AddNewSLO.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.AddNewSLO.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Creates SLO from form, updates report’s field numberOrSLOs</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.AddNewSLO.get_form_kwargs">
 <code class="sig-name descname">get_form_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.AddNewSLO.get_form_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the keyword arguments for instantiating the form.</p>
+<dd><p>”
+Returns keyword arguments for form, including whether the degree program is graduate level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>keyword arguments for form</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4520,15 +4600,32 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.DeleteImportedSLO">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">DeleteImportedSLO</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteImportedSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.DeleteView</span></code></p>
+<p>View to delete imported SLO (does not delete super SLO)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of SLOInReport to delete</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.slo_views.DeleteImportedSLO.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteImportedSLO.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Dispatches the view, and attachs SLO and corresponding assessments to instance</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.DeleteImportedSLO.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteImportedSLO.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets the success URL and used as hook to update the number of all SLOs in report,
+the numberOfUses of the assessments, delete corresponding DecisionsActions, and the numberOfSLOs in the report</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>URL of SLO summary page</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.DeleteImportedSLO.model">
@@ -4547,15 +4644,32 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.DeleteNewSLO">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">DeleteNewSLO</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteNewSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.DeleteView</span></code></p>
+<p>View to delete new SLO (deletes the super SLO as well)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of SLO to delete</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.slo_views.DeleteNewSLO.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteNewSLO.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Dispatches view, and attaches SLO and corresponding assessments to instance</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.DeleteNewSLO.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteNewSLO.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets success URL and used as hook to update number of other SLOs in report, number of
+uses of assessments, and delete corresponding decisions/actions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>URL of SLO summary page</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.DeleteNewSLO.model">
@@ -4574,6 +4688,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.EditImportedSLO">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">EditImportedSLO</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditImportedSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to edit imported SLO (more restricted than new SLO)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>sloIR</strong> (<em>str</em>) – primary key of SLO to edit</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.slo_views.EditImportedSLO.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditImportedSLO.dispatch" title="Permalink to this definition">¶</a></dt>
@@ -4614,10 +4734,17 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.EditNewSLO">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">EditNewSLO</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditNewSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to edit new SLO (not-restricted)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>sloIR</strong> (<em>str</em>) – primary key of SLO to edit</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.slo_views.EditNewSLO.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditNewSLO.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Dispatches view and attaches SLo to instance</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.EditNewSLO.form_class">
@@ -4628,19 +4755,35 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.EditNewSLO.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditNewSLO.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Update SLO based upon the form</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.EditNewSLO.get_form_kwargs">
 <code class="sig-name descname">get_form_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditNewSLO.get_form_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the keyword arguments for instantiating the form.</p>
+<dd><p>Gets keyword arguments for form, including whether it is graduate-level</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>form keyword arguments</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.EditNewSLO.get_initial">
 <code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.EditNewSLO.get_initial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the initial data to use for forms on this view.</p>
+<dd><p>Gets initial values for the form based upon current values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>initial form values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4660,6 +4803,9 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.ImportSLO">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">ImportSLO</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to import pre-existing SLO</p>
+<p class="rubric">Notes</p>
+<p>Search parameters ‘year’ and ‘dp’ (primary key of degree program) passed in get request</p>
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.ImportSLO.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.slo_views.ImportSLO.form_class" title="Permalink to this definition">¶</a></dt>
@@ -4669,19 +4815,35 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.ImportSLO.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportSLO.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Import SLO and assessments based upon form, also updates numberOfSLOs field in report</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.ImportSLO.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportSLO.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert the form into the context dict.</p>
+<dd><p>Returns context for template, including the current degree program and those within the department</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>context for template</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.ImportSLO.get_form_kwargs">
 <code class="sig-name descname">get_form_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportSLO.get_form_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the keyword arguments for instantiating the form.</p>
+<dd><p>Get keyword arguments for form, including SLOs meeting search parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>keyword arguments for form</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4701,6 +4863,9 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.ImportStakeholderEntry">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">ImportStakeholderEntry</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportStakeholderEntry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to import stakeholder communication from within department</p>
+<p class="rubric">Notes</p>
+<p>Search parameters ‘dp’ for degree program primary key and ‘year’ sent through get request</p>
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.ImportStakeholderEntry.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.slo_views.ImportStakeholderEntry.form_class" title="Permalink to this definition">¶</a></dt>
@@ -4710,19 +4875,35 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.ImportStakeholderEntry.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportStakeholderEntry.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Imports stakeholder communication or creates new one in case of error</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.ImportStakeholderEntry.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportStakeholderEntry.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert the form into the context dict.</p>
+<dd><p>Gets context for template, including current degree program and all degree programs within department</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>context for template</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.ImportStakeholderEntry.get_form_kwargs">
 <code class="sig-name descname">get_form_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.ImportStakeholderEntry.get_form_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the keyword arguments for instantiating the form.</p>
+<dd><p>Get keyword arguments for form, including stakeholder communications that match search parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>form keyword arguments</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -4742,6 +4923,7 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.SLOSummary">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">SLOSummary</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.SLOSummary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
+<p>View to summarize SLO while entering information</p>
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.SLOSummary.context_object_name">
 <code class="sig-name descname">context_object_name</code><em class="property"> = 'slo_list'</em><a class="headerlink" href="#makeReports.views.slo_views.SLOSummary.context_object_name" title="Permalink to this definition">¶</a></dt>
@@ -4750,15 +4932,29 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.SLOSummary.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.SLOSummary.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the context for this view.</p>
+<dd><p>Gets template context, including the stakeholder communication</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>context for template</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.SLOSummary.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.SLOSummary.get_queryset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the list of items for this view.</p>
-<p>The return value must be an iterable and may be an instance of
-<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+<dd><p>Gets SLOs in report ordered by number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>SLOs in report</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -4778,6 +4974,7 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.Section1Comment">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">Section1Comment</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.Section1Comment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to enter comment for section 1 of the report</p>
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.Section1Comment.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.slo_views.Section1Comment.form_class" title="Permalink to this definition">¶</a></dt>
@@ -4787,7 +4984,7 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.Section1Comment.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.Section1Comment.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Saves comment to report</p>
 </dd></dl>
 
 <dl class="method">
@@ -4813,10 +5010,12 @@ that takes the user object and returns True if the user passes.</p>
 <dt id="makeReports.views.slo_views.StakeholderEntry">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.slo_views.</code><code class="sig-name descname">StakeholderEntry</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.StakeholderEntry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to enter how SLOs are communicated to stakeholders</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.StakeholderEntry.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.StakeholderEntry.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Dispatches view and attaches report and current stakeholder object to instance</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.slo_views.StakeholderEntry.form_class">
@@ -4827,13 +5026,21 @@ that takes the user object and returns True if the user passes.</p>
 <dl class="method">
 <dt id="makeReports.views.slo_views.StakeholderEntry.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.StakeholderEntry.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Updates or creates stakeholder communication</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.slo_views.StakeholderEntry.get_initial">
 <code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.StakeholderEntry.get_initial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the initial data to use for forms on this view.</p>
+<dd><p>Initializes form value based upon current values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>initial form values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

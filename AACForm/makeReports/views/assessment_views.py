@@ -6,7 +6,9 @@ from makeReports.forms import *
 from datetime import datetime
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains all views related to inputting assessments into the form
+"""
 class AssessmentSummary(DeptReportMixin,ListView):
     """
     View to summarize state of assessment section of form
