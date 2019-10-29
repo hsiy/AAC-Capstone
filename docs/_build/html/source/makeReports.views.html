@@ -1436,6 +1436,74 @@ upon the chosen rubric version, and creates Report from form</p>
 <p>Serializes departments to JSON with the primary key and name</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="makeReports.views.apis.ProgByDeptListAPI">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">ProgByDeptListAPI</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.generics.ListAPIView</span></code></p>
+<dl class="attribute">
+<dt id="makeReports.views.apis.ProgByDeptListAPI.filter_backends">
+<code class="sig-name descname">filter_backends</code><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI.filter_backends" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">django_filters.rest_framework.backends.DjangoFilterBackend</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.apis.ProgByDeptListAPI.filterset_fields">
+<code class="sig-name descname">filterset_fields</code><em class="property"> = ['department']</em><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI.filterset_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.apis.ProgByDeptListAPI.queryset">
+<code class="sig-name descname">queryset</code><em class="property"> = QuerySet</em><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.apis.ProgByDeptListAPI.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#makeReports.views.apis.ProgSerializer" title="makeReports.views.apis.ProgSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.apis.ProgSerializer">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">ProgSerializer</code><span class="sig-paren">(</span><em class="sig-param">instance=None</em>, <em class="sig-param">data=&lt;class 'rest_framework.fields.empty'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.ProgSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.apis.SLOserializer">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">SLOserializer</code><span class="sig-paren">(</span><em class="sig-param">instance=None</em>, <em class="sig-param">data=&lt;class 'rest_framework.fields.empty'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.SLOserializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.apis.SloByDPListAPI">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">SloByDPListAPI</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.generics.ListAPIView</span></code></p>
+<dl class="attribute">
+<dt id="makeReports.views.apis.SloByDPListAPI.filter_backends">
+<code class="sig-name descname">filter_backends</code><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.filter_backends" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">django_filters.rest_framework.backends.DjangoFilterBackend</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.apis.SloByDPListAPI.filterset_fields">
+<code class="sig-name descname">filterset_fields</code><em class="property"> = ['report.degreeProgram']</em><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.filterset_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.apis.SloByDPListAPI.queryset">
+<code class="sig-name descname">queryset</code><em class="property"> = QuerySet</em><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.queryset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.apis.SloByDPListAPI.serializer_class">
+<code class="sig-name descname">serializer_class</code><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.serializer_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#makeReports.views.apis.SLOserializer" title="makeReports.views.apis.SLOserializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOserializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-makeReports.views.assessment_views">
 <span id="makereports-views-assessment-views-module"></span><h2>makeReports.views.assessment_views module<a class="headerlink" href="#module-makeReports.views.assessment_views" title="Permalink to this headline">¶</a></h2>
