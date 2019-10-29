@@ -32,11 +32,8 @@ class ProgByDeptListAPI(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend)
     filterset_fields = (['department'])
     serializer_class = ProgSerializer
-class CollsAvailListAPI(generics.ListAPIView):
-    queryset = College.active_objects.all()
-    serializer_class = CollSerializer
-class SloByDeptListAPI(generics.ListAPIView):
-    queryset = SLOInReport.active_objects.all()
+class SloByDPListAPI(generics.ListAPIView):
+    queryset = SLOInReport.objects.all()
     filter_backends = (filters.DjangoFilterBackend)
     filterset_fields = (['report.degreeProgram'])
     serializer_class = SLOserializer
