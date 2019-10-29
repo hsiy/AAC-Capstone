@@ -34,14 +34,14 @@ class CreateNewAssessment(forms.Form):
         return cleaned
     def clean_where(self):
         data = self.cleaned_data['where']
-        max_length = 200
+        max_length = 500
         cleaned = cleanText(data)
         if len(cleaned)>max_length:
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned   
     def clean_sampleDescription(self):
         data = self.cleaned_data['sampleDescription']
-        max_length = 200
+        max_length = 500
         cleaned = cleanText(data)
         if len(cleaned)>max_length:
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))

@@ -52,7 +52,7 @@ class AnnouncementForm(CleanSummer,forms.ModelForm):
         fields = ['text','expiration']
 class GradGoalForm(CleanSummer,forms.ModelForm):
     text = forms.CharField(widget=SummernoteWidget(),label="Goal text: ")
-    summer_max_length = 300
+    summer_max_length = 600
     class Meta:
         model = GradGoal
         fields = ['text']

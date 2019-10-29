@@ -59,7 +59,7 @@ class SLO(models.Model):
     numberOfUses = models.PositiveIntegerField(default=1)
 class SLOInReport(models.Model):
     date = models.DateField()
-    goalText = models.CharField(max_length=600)
+    goalText = models.CharField(max_length=1000)
     slo = models.ForeignKey(SLO, on_delete=models.CASCADE)    
     changedFromPrior = models.BooleanField()
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
@@ -68,7 +68,7 @@ class SLOInReport(models.Model):
     def __str__(self):
         return mark_safe(self.goalText)
 class GradGoal(models.Model):
-    text = models.CharField(max_length=300)
+    text = models.CharField(max_length=600)
     active = models.BooleanField(default=True)
 
     objects = models.Manager()
@@ -100,10 +100,10 @@ class AssessmentVersion(models.Model):
     description = models.CharField(max_length=1000)
     finalTerm = models.BooleanField()
     #false = final year
-    where = models.CharField(max_length=200)
+    where = models.CharField(max_length=500)
     allStudents = models.BooleanField()
     #false = sample of students
-    sampleDescription = models.CharField(max_length=200,blank=True,null=True)
+    sampleDescription = models.CharField(max_length=500,blank=True,null=True)
     frequencyChoice = models.CharField(max_length=100,choices=FREQUENCY_CHOICES,default="O")
     frequency = models.CharField(max_length=100)
     #the below are percentage points
