@@ -130,11 +130,11 @@ and includes fields which should never change</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
 <li><p><strong>title</strong> (<em>CharField</em>) – Title</p></li>
-<li><p><strong>domainExamination</strong> (<em>BooleanField</em>) – Domainexamination</p></li>
-<li><p><strong>domainProduct</strong> (<em>BooleanField</em>) – Domainproduct</p></li>
-<li><p><strong>domainPerformance</strong> (<em>BooleanField</em>) – Domainperformance</p></li>
-<li><p><strong>directMeasure</strong> (<em>BooleanField</em>) – Directmeasure</p></li>
-<li><p><strong>numberOfUses</strong> (<em>PositiveIntegerField</em>) – Numberofuses</p></li>
+<li><p><strong>domainExamination</strong> (<em>BooleanField</em>) – Examination domain</p></li>
+<li><p><strong>domainProduct</strong> (<em>BooleanField</em>) – Product domain</p></li>
+<li><p><strong>domainPerformance</strong> (<em>BooleanField</em>) – Performance domain</p></li>
+<li><p><strong>directMeasure</strong> (<em>BooleanField</em>) – Direct measure</p></li>
+<li><p><strong>numberOfUses</strong> (<em>PositiveIntegerField</em>) – Number of uses</p></li>
 </ul>
 </dd>
 </dl>
@@ -159,25 +159,25 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Assessment.directMeasure">
 <code class="sig-name descname">directMeasure</code><a class="headerlink" href="#makeReports.models.report_models.Assessment.directMeasure" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> directMeasure</p>
+<dd><p><strong>Model field:</strong> direct measure</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Assessment.domainExamination">
 <code class="sig-name descname">domainExamination</code><a class="headerlink" href="#makeReports.models.report_models.Assessment.domainExamination" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> domainExamination</p>
+<dd><p><strong>Model field:</strong> examination domain</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Assessment.domainPerformance">
 <code class="sig-name descname">domainPerformance</code><a class="headerlink" href="#makeReports.models.report_models.Assessment.domainPerformance" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> domainPerformance</p>
+<dd><p><strong>Model field:</strong> performance domain</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Assessment.domainProduct">
 <code class="sig-name descname">domainProduct</code><a class="headerlink" href="#makeReports.models.report_models.Assessment.domainProduct" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> domainProduct</p>
+<dd><p><strong>Model field:</strong> product domain</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -189,7 +189,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Assessment.numberOfUses">
 <code class="sig-name descname">numberOfUses</code><a class="headerlink" href="#makeReports.models.report_models.Assessment.numberOfUses" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> numberOfUses</p>
+<dd><p><strong>Model field:</strong> number of uses</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -214,9 +214,9 @@ and includes fields which should never change</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
-<li><p><strong>assessmentVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a>) – Assessmentversion</p></li>
+<li><p><strong>assessmentVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a>) – Assessment version</p></li>
 <li><p><strong>aggregate_proficiency</strong> (<em>PositiveIntegerField</em>) – Aggregate proficiency percentage</p></li>
-<li><p><strong>met</strong> (<em>BooleanField</em>) – Met</p></li>
+<li><p><strong>met</strong> (<em>BooleanField</em>) – Target met</p></li>
 </ul>
 </dd>
 </dl>
@@ -241,13 +241,13 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentAggregate.assessmentVersion">
 <code class="sig-name descname">assessmentVersion</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentAggregate.assessmentVersion" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> assessmentVersion, accesses the <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> assessment version, accesses the <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentAggregate.assessmentVersion_id">
 <code class="sig-name descname">assessmentVersion_id</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentAggregate.assessmentVersion_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> assessmentVersion</p>
+<dd><p><strong>Model field:</strong> assessment version</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -259,7 +259,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentAggregate.met">
 <code class="sig-name descname">met</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentAggregate.met" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> met</p>
+<dd><p><strong>Model field:</strong> target met</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -278,10 +278,10 @@ and includes fields which should never change</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
-<li><p><strong>assessmentVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a>) – Assessmentversion</p></li>
-<li><p><strong>dataRange</strong> (<em>CharField</em>) – Datarange</p></li>
-<li><p><strong>numberStudents</strong> (<em>PositiveIntegerField</em>) – Numberstudents</p></li>
-<li><p><strong>overallProficient</strong> (<em>PositiveIntegerField</em>) – Overallproficient</p></li>
+<li><p><strong>assessmentVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a>) – Assessment version</p></li>
+<li><p><strong>dataRange</strong> (<em>CharField</em>) – Data range</p></li>
+<li><p><strong>numberStudents</strong> (<em>PositiveIntegerField</em>) – Number of students</p></li>
+<li><p><strong>overallProficient</strong> (<em>PositiveIntegerField</em>) – Overall percentage proficient</p></li>
 </ul>
 </dd>
 </dl>
@@ -300,19 +300,19 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentData.assessmentVersion">
 <code class="sig-name descname">assessmentVersion</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentData.assessmentVersion" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> assessmentVersion, accesses the <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> assessment version, accesses the <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentData.assessmentVersion_id">
 <code class="sig-name descname">assessmentVersion_id</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentData.assessmentVersion_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> assessmentVersion</p>
+<dd><p><strong>Model field:</strong> assessment version</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentData.dataRange">
 <code class="sig-name descname">dataRange</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentData.dataRange" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> dataRange</p>
+<dd><p><strong>Model field:</strong> data range</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -324,7 +324,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentData.numberStudents">
 <code class="sig-name descname">numberStudents</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentData.numberStudents" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> numberStudents</p>
+<dd><p><strong>Model field:</strong> number of students</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -335,7 +335,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentData.overallProficient">
 <code class="sig-name descname">overallProficient</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentData.overallProficient" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> overallProficient</p>
+<dd><p><strong>Model field:</strong> overall percentage proficient</p>
 </dd></dl>
 
 </dd></dl>
@@ -420,17 +420,17 @@ and includes fields which should never change</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
 <li><p><strong>report</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a>) – Report</p></li>
-<li><p><strong>slo</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a>) – Slo</p></li>
+<li><p><strong>slo</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a>) – Slo in report</p></li>
 <li><p><strong>number</strong> (<em>PositiveIntegerField</em>) – Number</p></li>
-<li><p><strong>changedFromPrior</strong> (<em>BooleanField</em>) – Changedfromprior</p></li>
+<li><p><strong>changedFromPrior</strong> (<em>BooleanField</em>) – Changed from prior version</p></li>
 <li><p><strong>assessment</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Assessment" title="makeReports.models.report_models.Assessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>) – Assessment</p></li>
 <li><p><strong>date</strong> (<em>DateField</em>) – Date</p></li>
 <li><p><strong>description</strong> (<em>CharField</em>) – Description</p></li>
-<li><p><strong>finalTerm</strong> (<em>BooleanField</em>) – Finalterm</p></li>
-<li><p><strong>where</strong> (<em>CharField</em>) – Where</p></li>
-<li><p><strong>allStudents</strong> (<em>BooleanField</em>) – Allstudents</p></li>
-<li><p><strong>sampleDescription</strong> (<em>CharField</em>) – Sampledescription</p></li>
-<li><p><strong>frequencyChoice</strong> (<em>CharField</em>) – Frequencychoice</p></li>
+<li><p><strong>finalTerm</strong> (<em>BooleanField</em>) – Final term</p></li>
+<li><p><strong>where</strong> (<em>CharField</em>) – Location of assessment</p></li>
+<li><p><strong>allStudents</strong> (<em>BooleanField</em>) – All students assessed</p></li>
+<li><p><strong>sampleDescription</strong> (<em>CharField</em>) – Description of sample</p></li>
+<li><p><strong>frequencyChoice</strong> (<em>CharField</em>) – Frequency choice</p></li>
 <li><p><strong>frequency</strong> (<em>CharField</em>) – Frequency</p></li>
 <li><p><strong>threshold</strong> (<em>CharField</em>) – Threshold</p></li>
 <li><p><strong>target</strong> (<em>PositiveIntegerField</em>) – Target</p></li>
@@ -453,7 +453,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.allStudents">
 <code class="sig-name descname">allStudents</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.allStudents" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> allStudents</p>
+<dd><p><strong>Model field:</strong> all students assessed</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -471,19 +471,19 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.assessmentaggregate_set">
 <code class="sig-name descname">assessmentaggregate_set</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.assessmentaggregate_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> assessmentVersion, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.AssessmentAggregate" title="makeReports.models.report_models.AssessmentAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentAggregate</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> assessment version, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.AssessmentAggregate" title="makeReports.models.report_models.AssessmentAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentAggregate</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.assessmentdata_set">
 <code class="sig-name descname">assessmentdata_set</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.assessmentdata_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> assessmentVersion, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.AssessmentData" title="makeReports.models.report_models.AssessmentData"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentData</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> assessment version, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.AssessmentData" title="makeReports.models.report_models.AssessmentData"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentData</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.changedFromPrior">
 <code class="sig-name descname">changedFromPrior</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.changedFromPrior" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> changedFromPrior</p>
+<dd><p><strong>Model field:</strong> changed from prior version</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -501,7 +501,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.finalTerm">
 <code class="sig-name descname">finalTerm</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.finalTerm" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> finalTerm</p>
+<dd><p><strong>Model field:</strong> final term</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -513,7 +513,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.frequencyChoice">
 <code class="sig-name descname">frequencyChoice</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.frequencyChoice" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> frequencyChoice</p>
+<dd><p><strong>Model field:</strong> frequency choice</p>
 </dd></dl>
 
 <dl class="method">
@@ -566,19 +566,19 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.sampleDescription">
 <code class="sig-name descname">sampleDescription</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.sampleDescription" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> sampleDescription</p>
+<dd><p><strong>Model field:</strong> description of sample</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.slo">
 <code class="sig-name descname">slo</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.slo" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> slo, accesses the <a class="reference internal" href="#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> SLO in report, accesses the <a class="reference internal" href="#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.slo_id">
 <code class="sig-name descname">slo_id</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.slo_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> slo</p>
+<dd><p><strong>Model field:</strong> SLO in report</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -608,7 +608,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.AssessmentVersion.where">
 <code class="sig-name descname">where</code><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion.where" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> where</p>
+<dd><p><strong>Model field:</strong> location of assessment</p>
 </dd></dl>
 
 </dd></dl>
@@ -858,7 +858,7 @@ and includes fields which should never change</p>
 <li><p><strong>level</strong> (<em>CharField</em>) – Level</p></li>
 <li><p><strong>department</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a>) – Department</p></li>
 <li><p><strong>cycle</strong> (<em>IntegerField</em>) – Cycle</p></li>
-<li><p><strong>startingYear</strong> (<em>PositiveIntegerField</em>) – Startingyear</p></li>
+<li><p><strong>startingYear</strong> (<em>PositiveIntegerField</em>) – Starting year of cycle</p></li>
 <li><p><strong>active</strong> (<em>BooleanField</em>) – Active</p></li>
 </ul>
 </dd>
@@ -936,13 +936,13 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.DegreeProgram.report_set">
 <code class="sig-name descname">report_set</code><a class="headerlink" href="#makeReports.models.report_models.DegreeProgram.report_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> degreeProgram, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> degree program, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.DegreeProgram.startingYear">
 <code class="sig-name descname">startingYear</code><a class="headerlink" href="#makeReports.models.report_models.DegreeProgram.startingYear" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> startingYear</p>
+<dd><p><strong>Model field:</strong> starting year of cycle</p>
 </dd></dl>
 
 </dd></dl>
@@ -1079,7 +1079,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradGoal.slo_set">
 <code class="sig-name descname">slo_set</code><a class="headerlink" href="#makeReports.models.report_models.GradGoal.slo_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> gradGoals, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> graduate-level goals, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1099,12 +1099,12 @@ and includes fields which should never change</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
-<li><p><strong>rubricVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a>) – Rubricversion</p></li>
-<li><p><strong>section1Comment</strong> (<em>CharField</em>) – Section1comment</p></li>
-<li><p><strong>section2Comment</strong> (<em>CharField</em>) – Section2comment</p></li>
-<li><p><strong>section3Comment</strong> (<em>CharField</em>) – Section3comment</p></li>
-<li><p><strong>section4Comment</strong> (<em>CharField</em>) – Section4comment</p></li>
-<li><p><strong>generalComment</strong> (<em>CharField</em>) – Generalcomment</p></li>
+<li><p><strong>rubricVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a>) – Rubric version</p></li>
+<li><p><strong>section1Comment</strong> (<em>CharField</em>) – Section i comment</p></li>
+<li><p><strong>section2Comment</strong> (<em>CharField</em>) – Section ii comment</p></li>
+<li><p><strong>section3Comment</strong> (<em>CharField</em>) – Section iii comment</p></li>
+<li><p><strong>section4Comment</strong> (<em>CharField</em>) – Section iv comment</p></li>
+<li><p><strong>generalComment</strong> (<em>CharField</em>) – General comment</p></li>
 <li><p><strong>complete</strong> (<em>BooleanField</em>) – Complete</p></li>
 </ul>
 </dd>
@@ -1130,7 +1130,7 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.generalComment">
 <code class="sig-name descname">generalComment</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.generalComment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> generalComment</p>
+<dd><p><strong>Model field:</strong> general comment</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1159,37 +1159,37 @@ and includes fields which should never change</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.rubricVersion">
 <code class="sig-name descname">rubricVersion</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.rubricVersion" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> rubricVersion, accesses the <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> rubric version, accesses the <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.rubricVersion_id">
 <code class="sig-name descname">rubricVersion_id</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.rubricVersion_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> rubricVersion</p>
+<dd><p><strong>Model field:</strong> rubric version</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.section1Comment">
 <code class="sig-name descname">section1Comment</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.section1Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section1Comment</p>
+<dd><p><strong>Model field:</strong> section I comment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.section2Comment">
 <code class="sig-name descname">section2Comment</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.section2Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section2Comment</p>
+<dd><p><strong>Model field:</strong> section II comment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.section3Comment">
 <code class="sig-name descname">section3Comment</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.section3Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section3Comment</p>
+<dd><p><strong>Model field:</strong> section III comment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.GradedRubric.section4Comment">
 <code class="sig-name descname">section4Comment</code><a class="headerlink" href="#makeReports.models.report_models.GradedRubric.section4Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section4Comment</p>
+<dd><p><strong>Model field:</strong> section IV comment</p>
 </dd></dl>
 
 </dd></dl>
@@ -1373,16 +1373,16 @@ AAC members and the department</p>
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
 <li><p><strong>year</strong> (<em>PositiveIntegerField</em>) – Year</p></li>
 <li><p><strong>author</strong> (<em>CharField</em>) – Author</p></li>
-<li><p><strong>degreeProgram</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.DegreeProgram" title="makeReports.models.report_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a>) – Degreeprogram</p></li>
+<li><p><strong>degreeProgram</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.DegreeProgram" title="makeReports.models.report_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a>) – Degree program</p></li>
 <li><p><strong>date_range_of_reported_data</strong> (<em>CharField</em>) – Date range of reported data</p></li>
 <li><p><strong>rubric</strong> (OneToOneField to <a class="reference internal" href="#makeReports.models.report_models.GradedRubric" title="makeReports.models.report_models.GradedRubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubric</span></code></a>) – Rubric</p></li>
-<li><p><strong>section1Comment</strong> (<em>CharField</em>) – Section1comment</p></li>
-<li><p><strong>section2Comment</strong> (<em>CharField</em>) – Section2comment</p></li>
-<li><p><strong>section3Comment</strong> (<em>CharField</em>) – Section3comment</p></li>
-<li><p><strong>section4Comment</strong> (<em>CharField</em>) – Section4comment</p></li>
+<li><p><strong>section1Comment</strong> (<em>CharField</em>) – Section i comment</p></li>
+<li><p><strong>section2Comment</strong> (<em>CharField</em>) – Section ii comment</p></li>
+<li><p><strong>section3Comment</strong> (<em>CharField</em>) – Section iii comment</p></li>
+<li><p><strong>section4Comment</strong> (<em>CharField</em>) – Section iv comment</p></li>
 <li><p><strong>submitted</strong> (<em>BooleanField</em>) – Submitted</p></li>
 <li><p><strong>returned</strong> (<em>BooleanField</em>) – Returned</p></li>
-<li><p><strong>numberOfSLOs</strong> (<em>PositiveIntegerField</em>) – Numberofslos</p></li>
+<li><p><strong>numberOfSLOs</strong> (<em>PositiveIntegerField</em>) – Number of slos</p></li>
 </ul>
 </dd>
 </dl>
@@ -1431,13 +1431,13 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.degreeProgram">
 <code class="sig-name descname">degreeProgram</code><a class="headerlink" href="#makeReports.models.report_models.Report.degreeProgram" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> degreeProgram, accesses the <a class="reference internal" href="#makeReports.models.report_models.DegreeProgram" title="makeReports.models.report_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> degree program, accesses the <a class="reference internal" href="#makeReports.models.report_models.DegreeProgram" title="makeReports.models.report_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.degreeProgram_id">
 <code class="sig-name descname">degreeProgram_id</code><a class="headerlink" href="#makeReports.models.report_models.Report.degreeProgram_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> degreeProgram</p>
+<dd><p><strong>Model field:</strong> degree program</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1449,7 +1449,7 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.numberOfSLOs">
 <code class="sig-name descname">numberOfSLOs</code><a class="headerlink" href="#makeReports.models.report_models.Report.numberOfSLOs" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> numberOfSLOs</p>
+<dd><p><strong>Model field:</strong> number of SLOs</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1490,25 +1490,25 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.section1Comment">
 <code class="sig-name descname">section1Comment</code><a class="headerlink" href="#makeReports.models.report_models.Report.section1Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section1Comment</p>
+<dd><p><strong>Model field:</strong> section I comment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.section2Comment">
 <code class="sig-name descname">section2Comment</code><a class="headerlink" href="#makeReports.models.report_models.Report.section2Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section2Comment</p>
+<dd><p><strong>Model field:</strong> section II comment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.section3Comment">
 <code class="sig-name descname">section3Comment</code><a class="headerlink" href="#makeReports.models.report_models.Report.section3Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section3Comment</p>
+<dd><p><strong>Model field:</strong> section III comment</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Report.section4Comment">
 <code class="sig-name descname">section4Comment</code><a class="headerlink" href="#makeReports.models.report_models.Report.section4Comment" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> section4Comment</p>
+<dd><p><strong>Model field:</strong> section IV comment</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1713,7 +1713,7 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Rubric.gradedrubric_set">
 <code class="sig-name descname">gradedrubric_set</code><a class="headerlink" href="#makeReports.models.report_models.Rubric.gradedrubric_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> rubricVersion, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.GradedRubric" title="makeReports.models.report_models.GradedRubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubric</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> rubric version, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.GradedRubric" title="makeReports.models.report_models.GradedRubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubric</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1736,7 +1736,7 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.Rubric.rubricitem_set">
 <code class="sig-name descname">rubricitem_set</code><a class="headerlink" href="#makeReports.models.report_models.Rubric.rubricitem_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> rubricVersion, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.RubricItem" title="makeReports.models.report_models.RubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> rubric version, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.RubricItem" title="makeReports.models.report_models.RubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code></a> model.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1752,19 +1752,19 @@ AAC members and the department</p>
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
 <li><p><strong>text</strong> (<em>CharField</em>) – Text</p></li>
 <li><p><strong>section</strong> (<em>PositiveIntegerField</em>) – Section</p></li>
-<li><p><strong>rubricVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a>) – Rubricversion</p></li>
+<li><p><strong>rubricVersion</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a>) – Rubric version</p></li>
 <li><p><strong>order</strong> (<em>PositiveIntegerField</em>) – Order</p></li>
 <li><p><strong>abbreviation</strong> (<em>CharField</em>) – Abbreviation</p></li>
-<li><p><strong>DMEtext</strong> (<em>CharField</em>) – Dmetext</p></li>
-<li><p><strong>MEtext</strong> (<em>CharField</em>) – Metext</p></li>
-<li><p><strong>EEtext</strong> (<em>CharField</em>) – Eetext</p></li>
+<li><p><strong>DMEtext</strong> (<em>CharField</em>) – Did not meet expectations text</p></li>
+<li><p><strong>MEtext</strong> (<em>CharField</em>) – Met expectations text</p></li>
+<li><p><strong>EEtext</strong> (<em>CharField</em>) – Exceeded expecations text</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.RubricItem.DMEtext">
 <code class="sig-name descname">DMEtext</code><a class="headerlink" href="#makeReports.models.report_models.RubricItem.DMEtext" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> DMEtext</p>
+<dd><p><strong>Model field:</strong> did not meet expectations text</p>
 </dd></dl>
 
 <dl class="exception">
@@ -1776,13 +1776,13 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.RubricItem.EEtext">
 <code class="sig-name descname">EEtext</code><a class="headerlink" href="#makeReports.models.report_models.RubricItem.EEtext" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> EEtext</p>
+<dd><p><strong>Model field:</strong> exceeded expecations text</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.RubricItem.MEtext">
 <code class="sig-name descname">MEtext</code><a class="headerlink" href="#makeReports.models.report_models.RubricItem.MEtext" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> MEtext</p>
+<dd><p><strong>Model field:</strong> met expectations text</p>
 </dd></dl>
 
 <dl class="exception">
@@ -1829,13 +1829,13 @@ AAC members and the department</p>
 <dl class="attribute">
 <dt id="makeReports.models.report_models.RubricItem.rubricVersion">
 <code class="sig-name descname">rubricVersion</code><a class="headerlink" href="#makeReports.models.report_models.RubricItem.rubricVersion" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> rubricVersion, accesses the <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> rubric version, accesses the <a class="reference internal" href="#makeReports.models.report_models.Rubric" title="makeReports.models.report_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.RubricItem.rubricVersion_id">
 <code class="sig-name descname">rubricVersion_id</code><a class="headerlink" href="#makeReports.models.report_models.RubricItem.rubricVersion_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> rubricVersion</p>
+<dd><p><strong>Model field:</strong> rubric version</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1862,9 +1862,9 @@ includes only the attributes which should never change and counts how often it i
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
-<li><p><strong>blooms</strong> (<em>CharField</em>) – Blooms</p></li>
-<li><p><strong>numberOfUses</strong> (<em>PositiveIntegerField</em>) – Numberofuses</p></li>
-<li><p><strong>gradGoals</strong> (<em>ManyToManyField</em>) – Gradgoals</p></li>
+<li><p><strong>blooms</strong> (<em>CharField</em>) – Bloom’s taxonomy level</p></li>
+<li><p><strong>numberOfUses</strong> (<em>PositiveIntegerField</em>) – Number of uses of this slo</p></li>
+<li><p><strong>gradGoals</strong> (<em>ManyToManyField</em>) – Graduate-level goals</p></li>
 </ul>
 </dd>
 </dl>
@@ -1883,7 +1883,7 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLO.blooms">
 <code class="sig-name descname">blooms</code><a class="headerlink" href="#makeReports.models.report_models.SLO.blooms" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> blooms</p>
+<dd><p><strong>Model field:</strong> Bloom’s taxonomy level</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1901,7 +1901,7 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLO.gradGoals">
 <code class="sig-name descname">gradGoals</code><a class="headerlink" href="#makeReports.models.report_models.SLO.gradGoals" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> gradGoals, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> graduate-level goals, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1913,7 +1913,7 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLO.numberOfUses">
 <code class="sig-name descname">numberOfUses</code><a class="headerlink" href="#makeReports.models.report_models.SLO.numberOfUses" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> numberOfUses</p>
+<dd><p><strong>Model field:</strong> number of uses of this SLO</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1924,7 +1924,7 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLO.sloinreport_set">
 <code class="sig-name descname">sloinreport_set</code><a class="headerlink" href="#makeReports.models.report_models.SLO.sloinreport_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> slo, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> SLO, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1945,12 +1945,12 @@ includes only the attributes which should never change and counts how often it i
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
 <li><p><strong>date</strong> (<em>DateField</em>) – Date</p></li>
-<li><p><strong>goalText</strong> (<em>CharField</em>) – Goaltext</p></li>
+<li><p><strong>goalText</strong> (<em>CharField</em>) – Goal text</p></li>
 <li><p><strong>slo</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a>) – Slo</p></li>
-<li><p><strong>changedFromPrior</strong> (<em>BooleanField</em>) – Changedfromprior</p></li>
+<li><p><strong>changedFromPrior</strong> (<em>BooleanField</em>) – Changed from prior version</p></li>
 <li><p><strong>report</strong> (ForeignKey to <a class="reference internal" href="#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a>) – Report</p></li>
 <li><p><strong>number</strong> (<em>PositiveIntegerField</em>) – Number</p></li>
-<li><p><strong>numberOfAssess</strong> (<em>PositiveIntegerField</em>) – Numberofassess</p></li>
+<li><p><strong>numberOfAssess</strong> (<em>PositiveIntegerField</em>) – Number of assessments</p></li>
 </ul>
 </dd>
 </dl>
@@ -1969,13 +1969,13 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLOInReport.assessmentversion_set">
 <code class="sig-name descname">assessmentversion_set</code><a class="headerlink" href="#makeReports.models.report_models.SLOInReport.assessmentversion_set" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> slo, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> SLO in report, accesses the M2M <a class="reference internal" href="#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLOInReport.changedFromPrior">
 <code class="sig-name descname">changedFromPrior</code><a class="headerlink" href="#makeReports.models.report_models.SLOInReport.changedFromPrior" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> changedFromPrior</p>
+<dd><p><strong>Model field:</strong> changed from prior version</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1999,7 +1999,7 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLOInReport.goalText">
 <code class="sig-name descname">goalText</code><a class="headerlink" href="#makeReports.models.report_models.SLOInReport.goalText" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> goalText</p>
+<dd><p><strong>Model field:</strong> goal text</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2017,7 +2017,7 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLOInReport.numberOfAssess">
 <code class="sig-name descname">numberOfAssess</code><a class="headerlink" href="#makeReports.models.report_models.SLOInReport.numberOfAssess" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> numberOfAssess</p>
+<dd><p><strong>Model field:</strong> number of assessments</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2040,13 +2040,13 @@ includes only the attributes which should never change and counts how often it i
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLOInReport.slo">
 <code class="sig-name descname">slo</code><a class="headerlink" href="#makeReports.models.report_models.SLOInReport.slo" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> slo, accesses the <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> model.</p>
+<dd><p><strong>Model field:</strong> SLO, accesses the <a class="reference internal" href="#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> model.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.models.report_models.SLOInReport.slo_id">
 <code class="sig-name descname">slo_id</code><a class="headerlink" href="#makeReports.models.report_models.SLOInReport.slo_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Model field:</strong> slo</p>
+<dd><p><strong>Model field:</strong> SLO</p>
 </dd></dl>
 
 </dd></dl>

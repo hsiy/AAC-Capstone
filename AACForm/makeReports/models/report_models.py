@@ -29,16 +29,16 @@ class Report(models.Model):
     """
     year = models.PositiveIntegerField()
     author = models.CharField(max_length=100, blank=True)
-    degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE)
+    degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE, verbose_name="degree program")
     date_range_of_reported_data = models.CharField(max_length=500,blank=True, null=True)
     rubric = models.OneToOneField('GradedRubric', on_delete=models.SET_NULL, null=True)
-    section1Comment = models.CharField(max_length=2000, blank=True, null=True)
-    section2Comment = models.CharField(max_length=2000, blank=True, null=True)
-    section3Comment = models.CharField(max_length=2000, blank=True, null=True)
-    section4Comment = models.CharField(max_length=2000, blank=True, null=True)
+    section1Comment = models.CharField(max_length=2000, blank=True, null=True, verbose_name="section I comment")
+    section2Comment = models.CharField(max_length=2000, blank=True, null=True, verbose_name="section II comment")
+    section3Comment = models.CharField(max_length=2000, blank=True, null=True, verbose_name="section III comment")
+    section4Comment = models.CharField(max_length=2000, blank=True, null=True, verbose_name="section IV comment")
     submitted = models.BooleanField()
     returned = models.BooleanField(default=False)
-    numberOfSLOs = models.PositiveIntegerField(default=0)
+    numberOfSLOs = models.PositiveIntegerField(default=0, verbose_name="number of SLOs")
 class College(models.Model):
     """
     College model for colleges within the university
@@ -70,7 +70,7 @@ class DegreeProgram(models.Model):
     level = models.CharField(max_length=75, choices= LEVELS)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     cycle = models.IntegerField(blank=True, null=True)
-    startingYear = models.PositiveIntegerField(blank=True, null=True)
+    startingYear = models.PositiveIntegerField(blank=True, null=True, verbose_name="starting year of cycle")
     #not all degree programs are on a clear cycle
     active = models.BooleanField(default=True)
     objects = models.Manager()
@@ -82,20 +82,20 @@ class SLO(models.Model):
     Model collects SLO in reports which are ostensibly  the same except minor changes, 
     includes only the attributes which should never change and counts how often it is used
     """
-    blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50)
-    gradGoals = models.ManyToManyField('GradGoal')
-    numberOfUses = models.PositiveIntegerField(default=1)
+    blooms = models.CharField(choices=BLOOMS_CHOICES,max_length=50, verbose_name="Bloom's taxonomy level")
+    gradGoals = models.ManyToManyField('GradGoal', verbose_name="graduate-level goals")
+    numberOfUses = models.PositiveIntegerField(default=1, verbose_name="number of uses of this SLO")
 class SLOInReport(models.Model):
     """
     A specific version of an SLO which occurs within a report
     """
     date = models.DateField()
-    goalText = models.CharField(max_length=1000)
-    slo = models.ForeignKey(SLO, on_delete=models.CASCADE)    
-    changedFromPrior = models.BooleanField()
+    goalText = models.CharField(max_length=1000, verbose_name="goal text")
+    slo = models.ForeignKey(SLO, on_delete=models.CASCADE, verbose_name="SLO")    
+    changedFromPrior = models.BooleanField(verbose_name="changed from prior version")
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     number = models.PositiveIntegerField(default=1)
-    numberOfAssess = models.PositiveIntegerField(default=0)
+    numberOfAssess = models.PositiveIntegerField(default=0, verbose_name="number of assessments")
     def __str__(self):
         return mark_safe(self.goalText)
 class GradGoal(models.Model):
@@ -123,11 +123,11 @@ class Assessment(models.Model):
     and includes fields which should never change
     """
     title = models.CharField(max_length=300)
-    domainExamination = models.BooleanField()
-    domainProduct = models.BooleanField()
-    domainPerformance = models.BooleanField()
-    directMeasure = models.BooleanField()
-    numberOfUses = models.PositiveIntegerField(default=1)
+    domainExamination = models.BooleanField(verbose_name="examination domain")
+    domainProduct = models.BooleanField(verbose_name="product domain")
+    domainPerformance = models.BooleanField(verbose_name="performance domain")
+    directMeasure = models.BooleanField(verbose_name="direct measure")
+    numberOfUses = models.PositiveIntegerField(default=1, verbose_name="number of uses")
     #false = indirect measure
     def __str__(self):
         return self.title
@@ -136,22 +136,22 @@ class AssessmentVersion(models.Model):
     Specific versions of Assessments that occur within a report
     """
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    slo = models.ForeignKey(SLOInReport, on_delete=models.CASCADE)
+    slo = models.ForeignKey(SLOInReport, on_delete=models.CASCADE, verbose_name="SLO in report")
     number = models.PositiveIntegerField(default=0)
-    changedFromPrior = models.BooleanField()
+    changedFromPrior = models.BooleanField(verbose_name="changed from prior version")
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
     date = models.DateField()
     description = models.CharField(max_length=1000)
-    finalTerm = models.BooleanField()
+    finalTerm = models.BooleanField(verbose_name="final term")
     #false = final year
-    where = models.CharField(max_length=500)
-    allStudents = models.BooleanField()
+    where = models.CharField(max_length=500, verbose_name="location of assessment")
+    allStudents = models.BooleanField(verbose_name="all students assessed")
     #false = sample of students
-    sampleDescription = models.CharField(max_length=500,blank=True,null=True)
-    frequencyChoice = models.CharField(max_length=100,choices=FREQUENCY_CHOICES,default="O")
+    sampleDescription = models.CharField(max_length=500,blank=True,null=True, verbose_name="description of sample")
+    frequencyChoice = models.CharField(max_length=100,choices=FREQUENCY_CHOICES,default="O", verbose_name="frequency choice")
     frequency = models.CharField(max_length=100)
     #the below are percentage points
-    threshold = models.CharField(max_length=500) # Should be text field, change later
+    threshold = models.CharField(max_length=500)
     target = models.PositiveIntegerField()
     supplements = models.ManyToManyField('AssessmentSupplement')
     def __str__(self):
@@ -178,17 +178,17 @@ class AssessmentData(models.Model):
     """
     Assessment data point for a particular assessment in a report
     """
-    assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE)
-    dataRange = models.CharField(max_length=500)
-    numberStudents = models.PositiveIntegerField()
-    overallProficient = models.PositiveIntegerField(blank=True)
+    assessmentVersion = models.ForeignKey(AssessmentVersion,on_delete=models.CASCADE, verbose_name="assessment version")
+    dataRange = models.CharField(max_length=500, verbose_name="data range")
+    numberStudents = models.PositiveIntegerField(verbose_name="number of students")
+    overallProficient = models.PositiveIntegerField(blank=True, verbose_name="overall percentage proficient")
 class AssessmentAggregate(models.Model):
     """
     Aggregates the various assessments on different ranges for an aggregate success rate
     """ 
-    assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE)
+    assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE, verbose_name="assessment version")
     aggregate_proficiency = models.PositiveIntegerField(verbose_name="aggregate proficiency percentage")
-    met = models.BooleanField()
+    met = models.BooleanField(verbose_name="target met")
     def __str__(self):
         return str(self.aggregate_proficiency)
 class DataAdditionalInformation(models.Model):
@@ -248,12 +248,12 @@ class GradedRubric(models.Model):
     """
     Model to collect graded rubric items and comments on a report
     """
-    rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
-    section1Comment = models.CharField(max_length=2000,blank=True,null=True)
-    section2Comment = models.CharField(max_length=2000,blank=True,null=True)
-    section3Comment = models.CharField(max_length=2000,blank=True,null=True)
-    section4Comment = models.CharField(max_length=2000,blank=True,null=True)
-    generalComment = models.CharField(max_length=2000,blank=True,null=True)
+    rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE, verbose_name="rubric version")
+    section1Comment = models.CharField(max_length=2000,blank=True,null=True, verbose_name="section I comment")
+    section2Comment = models.CharField(max_length=2000,blank=True,null=True, verbose_name="section II comment")
+    section3Comment = models.CharField(max_length=2000,blank=True,null=True, verbose_name="section III comment")
+    section4Comment = models.CharField(max_length=2000,blank=True,null=True, verbose_name="section IV comment")
+    generalComment = models.CharField(max_length=2000,blank=True,null=True, verbose_name="general comment")
     complete = models.BooleanField(default=False)
     def __str__(self):
         return self.rubricVersion.name
@@ -263,12 +263,12 @@ class RubricItem(models.Model):
     """
     text = models.CharField(max_length=1000)
     section = models.PositiveIntegerField(choices=SECTIONS)
-    rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE)
+    rubricVersion = models.ForeignKey(Rubric, on_delete=models.CASCADE, verbose_name="rubric version")
     order = models.PositiveIntegerField(null=True, blank=True)
     abbreviation = models.CharField(max_length=20, default="", blank=True)
-    DMEtext = models.CharField(max_length=1000, default="", blank=True)
-    MEtext = models.CharField(max_length=1000, default="", blank=True)
-    EEtext = models.CharField(max_length=1000, default="", blank=True)
+    DMEtext = models.CharField(max_length=1000, default="", blank=True, verbose_name="did not meet expectations text")
+    MEtext = models.CharField(max_length=1000, default="", blank=True, verbose_name="met expectations text")
+    EEtext = models.CharField(max_length=1000, default="", blank=True, verbose_name="exceeded expecations text")
     def __str__(self):
         return mark_safe(self.text)
 class GradedRubricItem(models.Model):
