@@ -8,7 +8,7 @@ class CreateNewSLO(CleanSummer,forms.Form):
     text = forms.CharField(widget= SummernoteWidget(), label="SLO: ") 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ")
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
-    summer_max_length = 600
+    summer_max_length = 1000
     def __init__(self,*args,**kwargs):
         grad = kwargs.pop('grad',None)
         super(CreateNewSLO,self).__init__(*args,**kwargs)
@@ -27,7 +27,7 @@ class EditNewSLOForm(CleanSummer,forms.Form):
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level: ")
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
     
-    summer_max_length = 600
+    summer_max_length = 1000
     def __init__(self,*args,**kwargs):
         grad = kwargs.pop('grad',None)
         super(EditNewSLOForm,self).__init__(*args,**kwargs)
@@ -35,7 +35,7 @@ class EditNewSLOForm(CleanSummer,forms.Form):
             del self.fields['gradGoals']
 class EditImportedSLOForm(CleanSummer,forms.Form):
     text = forms.CharField(widget= SummernoteWidget(), label="SLO: ")
-    summer_max_length = 600
+    summer_max_length = 1000
 class Single2000Textbox(CleanSummer,forms.Form):
     text = forms.CharField(widget=SummernoteWidget(),label="")
     summer_max_length = 2000
