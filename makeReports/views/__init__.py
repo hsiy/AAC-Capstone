@@ -10,6 +10,7 @@ from .data_collection_views import *
 from .decisions_actions_views import *
 from .pdf_Generators import *
 from .apis import *
+from .graphing_views import *
 
 """
 This collects all the views together
