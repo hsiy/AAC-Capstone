@@ -39,8 +39,9 @@
 <span id="makereports-models-report-models-module"></span><h2>makeReports.models.report_models module<a class="headerlink" href="#module-makeReports.models.report_models" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="makeReports.models.report_models.Announcement">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Announcement</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">text</em>, <em class="sig-param">expiration</em>, <em class="sig-param">creation</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Announcement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Announcement</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Announcement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model to hold annnoucements the AAC make</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -120,8 +121,10 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.Assessment">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Assessment</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">title</em>, <em class="sig-param">domainExamination</em>, <em class="sig-param">domainProduct</em>, <em class="sig-param">domainPerformance</em>, <em class="sig-param">directMeasure</em>, <em class="sig-param">numberOfUses</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Assessment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Assessment</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Assessment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Assessment model collects assessments that are ostensibly the same except for minor changes,
+and includes fields which should never change</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -204,8 +207,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.AssessmentAggregate">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentAggregate</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">assessmentVersion</em>, <em class="sig-param">aggregate_proficiency</em>, <em class="sig-param">met</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentAggregate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentAggregate</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentAggregate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Aggregates the various assessments on different ranges for an aggregate success rate</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -267,8 +271,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.AssessmentData">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentData</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">assessmentVersion</em>, <em class="sig-param">dataRange</em>, <em class="sig-param">numberStudents</em>, <em class="sig-param">overallProficient</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentData</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Assessment data point for a particular assessment in a report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -337,8 +342,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.AssessmentSupplement">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentSupplement</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">supplement</em>, <em class="sig-param">uploaded_at</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentSupplement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentSupplement</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentSupplement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Supplemental PDF files to assessments</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -406,8 +412,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.AssessmentVersion">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentVersion</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">report</em>, <em class="sig-param">slo</em>, <em class="sig-param">number</em>, <em class="sig-param">changedFromPrior</em>, <em class="sig-param">assessment</em>, <em class="sig-param">date</em>, <em class="sig-param">description</em>, <em class="sig-param">finalTerm</em>, <em class="sig-param">where</em>, <em class="sig-param">allStudents</em>, <em class="sig-param">sampleDescription</em>, <em class="sig-param">frequencyChoice</em>, <em class="sig-param">frequency</em>, <em class="sig-param">threshold</em>, <em class="sig-param">target</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">AssessmentVersion</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.AssessmentVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Specific versions of Assessments that occur within a report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -608,8 +615,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.College">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">College</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">name</em>, <em class="sig-param">active</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.College" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">College</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.College" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>College model for colleges within the university</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -669,8 +677,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.DataAdditionalInformation">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">DataAdditionalInformation</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">report</em>, <em class="sig-param">comment</em>, <em class="sig-param">supplement</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.DataAdditionalInformation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">DataAdditionalInformation</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.DataAdditionalInformation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model to hold additional information about the data, possibly with a PDF supplement</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -733,8 +742,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.DecisionsActions">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">DecisionsActions</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">SLO</em>, <em class="sig-param">report</em>, <em class="sig-param">text</em>, <em class="sig-param">decisionProcess</em>, <em class="sig-param">decisionMakers</em>, <em class="sig-param">decisionTimeline</em>, <em class="sig-param">dataUsed</em>, <em class="sig-param">actionTimeline</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.DecisionsActions" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">DecisionsActions</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.DecisionsActions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model of decisions/actions for a report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -837,8 +847,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.DegreeProgram">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">DegreeProgram</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">name</em>, <em class="sig-param">level</em>, <em class="sig-param">department</em>, <em class="sig-param">cycle</em>, <em class="sig-param">startingYear</em>, <em class="sig-param">active</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.DegreeProgram" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">DegreeProgram</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.DegreeProgram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Degree program model for degree programs within departments</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -938,8 +949,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.Department">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Department</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">name</em>, <em class="sig-param">college</em>, <em class="sig-param">active</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Department" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Department</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Department" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Department model for departments within colleges</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1018,8 +1030,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.GradGoal">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">GradGoal</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">text</em>, <em class="sig-param">active</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.GradGoal" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">GradGoal</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.GradGoal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>A graduate goal graduate level programs may obtain</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1079,8 +1092,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.GradedRubric">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">GradedRubric</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">rubricVersion</em>, <em class="sig-param">section1Comment</em>, <em class="sig-param">section2Comment</em>, <em class="sig-param">section3Comment</em>, <em class="sig-param">section4Comment</em>, <em class="sig-param">generalComment</em>, <em class="sig-param">complete</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.GradedRubric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">GradedRubric</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.GradedRubric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model to collect graded rubric items and comments on a report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1182,8 +1196,9 @@
 
 <dl class="class">
 <dt id="makeReports.models.report_models.GradedRubricItem">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">GradedRubricItem</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">rubric</em>, <em class="sig-param">item</em>, <em class="sig-param">grade</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.GradedRubricItem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">GradedRubricItem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.GradedRubricItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model individual items within a graded rubric</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1259,19 +1274,29 @@
 <dt id="makeReports.models.report_models.NonArchivedManager">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">NonArchivedManager</code><a class="headerlink" href="#makeReports.models.report_models.NonArchivedManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.manager.Manager</span></code></p>
+<p>Includes only active objects</p>
 <dl class="method">
 <dt id="makeReports.models.report_models.NonArchivedManager.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.NonArchivedManager.get_queryset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a new QuerySet object. Subclasses can override this method to
-customize the behavior of the Manager.</p>
+<dd><p>Retrieves only active objects within type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>active objects only</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.Profile">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Profile</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">aac</em>, <em class="sig-param">department</em>, <em class="sig-param">user</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Profile" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Profile</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model to hold extra information in addition to Django’s User class, including whether they are
+AAC members and the department</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1339,8 +1364,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.Report">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Report</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">year</em>, <em class="sig-param">author</em>, <em class="sig-param">degreeProgram</em>, <em class="sig-param">date_range_of_reported_data</em>, <em class="sig-param">rubric</em>, <em class="sig-param">section1Comment</em>, <em class="sig-param">section2Comment</em>, <em class="sig-param">section3Comment</em>, <em class="sig-param">section4Comment</em>, <em class="sig-param">submitted</em>, <em class="sig-param">returned</em>, <em class="sig-param">numberOfSLOs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Report" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Report</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Report model which collects attributes specific to a report and completion status</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1519,8 +1545,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.ReportSupplement">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">ReportSupplement</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">supplement</em>, <em class="sig-param">report</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.ReportSupplement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">ReportSupplement</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.ReportSupplement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model to hold supplements to the report as a whole</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1576,8 +1603,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.ResultCommunicate">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">ResultCommunicate</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">text</em>, <em class="sig-param">report</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.ResultCommunicate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">ResultCommunicate</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.ResultCommunicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model holds the text for communicating results</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1632,8 +1660,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.Rubric">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Rubric</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">date</em>, <em class="sig-param">fullFile</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Rubric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Rubric</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Rubric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model of rubric to collect rubric items and hold a file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1714,8 +1743,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.RubricItem">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">RubricItem</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">text</em>, <em class="sig-param">section</em>, <em class="sig-param">rubricVersion</em>, <em class="sig-param">order</em>, <em class="sig-param">abbreviation</em>, <em class="sig-param">DMEtext</em>, <em class="sig-param">MEtext</em>, <em class="sig-param">EEtext</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.RubricItem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">RubricItem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.RubricItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model of individual items within a rubric</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1824,8 +1854,10 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.SLO">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLO</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">blooms</em>, <em class="sig-param">numberOfUses</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLO" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLO</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model collects SLO in reports which are ostensibly  the same except minor changes,
+includes only the attributes which should never change and counts how often it is used</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1905,8 +1937,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.SLOInReport">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLOInReport</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">date</em>, <em class="sig-param">goalText</em>, <em class="sig-param">slo</em>, <em class="sig-param">changedFromPrior</em>, <em class="sig-param">report</em>, <em class="sig-param">number</em>, <em class="sig-param">numberOfAssess</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLOInReport" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLOInReport</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLOInReport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>A specific version of an SLO which occurs within a report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2020,8 +2053,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.SLOStatus">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLOStatus</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">report</em>, <em class="sig-param">status</em>, <em class="sig-param">SLO</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLOStatus" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLOStatus</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLOStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Status of whether the target was met for an SLO</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2095,8 +2129,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.SLOsToStakeholder">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLOsToStakeholder</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">text</em>, <em class="sig-param">report</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLOsToStakeholder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">SLOsToStakeholder</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.SLOsToStakeholder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Text describing how SLOs are communicated to stakeholders</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2151,8 +2186,9 @@ customize the behavior of the Manager.</p>
 
 <dl class="class">
 <dt id="makeReports.models.report_models.Subassessment">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Subassessment</code><span class="sig-paren">(</span><em class="sig-param">id</em>, <em class="sig-param">assessmentVersion</em>, <em class="sig-param">title</em>, <em class="sig-param">proficient</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Subassessment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">Subassessment</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.Subassessment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Subassessment for data collection</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2215,7 +2251,17 @@ customize the behavior of the Manager.</p>
 <dl class="function">
 <dt id="makeReports.models.report_models.update_user_profile">
 <code class="sig-prename descclassname">makeReports.models.report_models.</code><code class="sig-name descname">update_user_profile</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">created</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.report_models.update_user_profile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Updates the custom profile when users are created</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>User</em>) – model sending hook</p></li>
+<li><p><strong>instance</strong> (<em>User</em>) – user updated</p></li>
+<li><p><strong>created</strong> (<em>Boolean</em>) – whether model was newly created</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-makeReports.models">
