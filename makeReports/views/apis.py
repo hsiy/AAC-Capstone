@@ -12,10 +12,16 @@ class DeptSerializer(serializers.HyperlinkedModelSerializer):
         model = Department
         fields = ['pk','name']
 class ProgSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializes degree programs to JSON with the primary key, name, and level
+    """
     class Meta:
         model = DegreeProgram
         fields = ['pk', 'name', 'level']
 class SLOserializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializes slos to JSON with the primary key and name
+    """
     class Meta:
         model = SLOInReport
         fields = ['pk', 'name']
@@ -28,11 +34,17 @@ class DeptByColListAPI(generics.ListAPIView):
     filterset_fields = (['college'])
     serializer_class = DeptSerializer
 class ProgByDeptListAPI(generics.ListAPIView):
+    """
+    JSON API to gets active degree programs within specified department
+    """
     queryset = DegreeProgram.active_objects.all()
     filter_backends = (filters.DjangoFilterBackend)
     filterset_fields = (['department'])
     serializer_class = ProgSerializer
 class SloByDPListAPI(generics.ListAPIView):
+    """
+    JSON API to gets past slos within specified degree program
+    """
     queryset = SLOInReport.objects.all()
     filter_backends = (filters.DjangoFilterBackend)
     filterset_fields = (['report.degreeProgram'])
