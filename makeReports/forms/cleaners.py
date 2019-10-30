@@ -1,7 +1,20 @@
 import re
 from django.core.exceptions import ValidationError
+"""
+This file contains class and method related to cleaning user input
+"""
 class CleanSummer():
+    """
+    Assumes the plugin Summernote is being used as a widget for a field called text,
+    which this class then implements the cleaning method for
+    """
     def clean_text(self):
+        """
+        Cleans the user input on the text field, and checks maximum length
+        
+        Returns:
+            str : cleaned input
+        """
         data = self.cleaned_data['text']
         max_length = self.summer_max_length
         cleaned = cleanText(data)
@@ -10,6 +23,16 @@ class CleanSummer():
         return cleaned
 #This code was adapted from the summernote-cleaner plugin code (originally written in Javascript)
 def cleanText(txt):
+    """
+    This code removes unnecessary markup from rich text, primarily from malicious purposes such as
+    adding scripts or from copying pasting (e.g. Word adds thousands of lines of markup)
+
+    Notes:
+        This code was adapted from the Javascript plugin summernote-cleaner (also part of project)
+    
+    Args:
+        txt (str): text to be cleaned
+    """
     out = txt
     #sS = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
     #out = txt.replace(sS, ' ');

@@ -84,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dec475dtrh1d4b',                      
-        'USER': 'dpigmvxcewudws',
-        'PASSWORD': '65ec3eb508b3cb11898fcfda37c5a6c727d501a619d818ea726aec13a059cb35',
+        'USER': 'npaddmsaelzkwn',
+        'PASSWORD': '35536c3e563d2356d340584ccdc300cd67bb7e311f86408872183b955b4bb2ff',
         'HOST': 'ec2-107-21-98-89.compute-1.amazonaws.com',
         'PORT': '5432',
     }
@@ -138,7 +138,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-08fe48f6125f.json')
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-7fa0f5fdaa9f.json')
 DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
 SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
