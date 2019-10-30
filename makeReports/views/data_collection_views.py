@@ -272,7 +272,7 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
     template_name = "makeReports/DataCollection/addAggregate.html"
     def form_valid(self,form):
         self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
-        form.instance.assessmentVersion = assess
+        form.instance.assessmentVersion = self.assess
         if self.assess.target <= form.instance.aggregate_proficiency:
             form.instance.met = True
         else:
