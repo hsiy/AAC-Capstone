@@ -2,14 +2,11 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Administration Home</h3>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:add-college' %}">Create College</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:college-list'  %}">All Colleges</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:add-dept'  %}">Create Department</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:dept-list'  %}">All Departments</a>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:report-list'  %}">Reports</a>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:announ-list'  %}">Announcements</a>
 <a type="button" class="btn btn-primary" href="{% url 'makeReports:rubric-list'  %}">Rubrics</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
-
+<br>
+<br>
 <h5>Generate This Year's Reports:</h5>
 Note, if a report for a degree program this year already exists, this will not assign anotther or change the assignment for that degree program.
 Use create manual report or update report instead if needed.
@@ -20,4 +17,14 @@ Use create manual report or update report instead if needed.
         <button type="submit" class="btn btn-primary">Generate</button>
     {% endbuttons %}
 </form>
+<br>
+<h5>Report Template Management</h5>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:gg-list'  %}">Graduate Goals</a>
+<h5>Colleges & Departments</h5>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:college-list'  %}">All Colleges</a>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:dept-list'  %}?college=&name=">All Departments</a>
+<h5>Account Management</h5>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:account-list'  %}">Account List</a><a type="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
+
+
 {% endblock %}

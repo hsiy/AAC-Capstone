@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
-{% block content %}
+{% block inner_content %}
 <h3>Report Supplements List</h3>
 <a class="btn btn-primary" href="{% url 'makeReports:add-rpt-sup' report=report.pk%}">Add Supplement to Report</a>
 <ul class="list-group">
@@ -9,7 +9,10 @@
       <a href="{{sup.supplement.url}}">{{sup.supplement}}</a> 
       <a class="btn btn-primary" href="{% url 'makeReports:delete-rpt-sup' report=report.pk pk=sup.pk %}">Delete Supplement</a>
     </li>
+{% empty %}
+No supplements.
 {% endfor %}
-<a class="btn btn-primary" href="{% url 'makeReports:submit-report' report=report.pk %}">Next</a>
 </ul>
+<a class="btn btn-primary" href="{% url 'makeReports:submit-report' report=report.pk %}">Next</a>
+
 {% endblock %}

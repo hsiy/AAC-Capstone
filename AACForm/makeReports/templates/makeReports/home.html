@@ -3,6 +3,9 @@
 {% block content %}
 <h3>Welcome!</h3>
 {% if user.profile %}
+    <div class="container">
+      <div class="row">
+        <div class="col-9">
     {% if user.profile.aac %}
     Continue to AAC Administration: <a type="button" class="btn btn-primary" href="{% url 'makeReports:admin-home'%}">Administration Home</a>
 
@@ -11,7 +14,7 @@
     <h3>Department Reports To-Do</h3>
     <ul class="list-group">
     {% for r in object_list %}
-        <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
+        <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} ({{r.degreeProgram.level}})
                 {% if r.returned %} (this report has been returned by the AAC for modification) <a type="button" class="btn btn-danger" href="{% url 'makeReports:slo-summary' report=r.pk %}">Modify</a> 
                 <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
                 {% else %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-first-page' pk=r.pk %}">Start</a>
@@ -23,7 +26,7 @@
     </ul>
     <h3>Department Reports Graded</h3>
     {% for r in gReps %}
-    <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}} 
+    <li class = "list-group-item">{{r.year|add:"-1"}}-{{r.year}} Report for {{r.degreeProgram.name}}  ({{r.degreeProgram.level}})
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=r.pk %}">View</a>
             <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=r.pk %}">Feedback</a>
     </li>
@@ -34,10 +37,22 @@
     <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-list-dept' %}">Your Archived Reports</a>
     </div>
     {% endif %}
-    <a type="button" class="btn btn-primary" href="accounts/logout/">Logout</a>
-    
+    <a type="button" class="btn btn-primary" href="{% url 'makeReports:modify-acct' %}">Edit Account</a>
+    </div>
+    <div class="col-3">
+        <h5>Announcements</h5>
+        <table class="table">
+            {% for a in announ %}
+            <tr>
+                <td>{{a.text|safe}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+    </div>
 {% else %}
 <a type="button" class="btn btn-primary" href="accounts/login/">Login</a>
 {% endif %}
+
 
 {% endblock %}

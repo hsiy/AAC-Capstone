@@ -1,49 +1,20 @@
 <!--things needed in context: decision_actions_list,report-->
-<h3>Decisions and Actions</h3>
+<h3>IV. Decisions and Actions</h3>
 <table class='table'>
     <tbody>
-        <tr>
-            <td>SLO</td>
-            <td>Descriptions</td>
-        </tr>
         {% for SLO_decisions in decisions_actions_list %}
             <tr>
-                <td>{{ SLO_decisions.slo_text }}</td>
+                <td style="width:10%"><b>SLO {{ SLO_decisions.slo_obj.number }}</b></td>
                 {% if SLO_decisions.decisions_obj == None %}
                     <td>(No Information)</td>
-                    <td>
-                    </td>
                 {% else %}
                     <td>
-                        <table class='table'>
-                            <tr> 
-                                <td> Decision Process: </td>
-                                <td> {{ SLO_decisions.decisions_obj.decisionProcess }} </td>
-                            </tr>
-                            <tr> 
-                                <td> Decision Makers: </td>
-                                <td> {{ SLO_decisions.decisions_obj.decisionMakers }} </td>
-                            </tr>
-                            <tr> 
-                                <td> Decision Timeline: </td>
-                                <td> {{ SLO_decisions.decisions_obj.decisionTimeline }} </td>
-                            </tr>
-                            <tr> 
-                                <td> Data Used: </td>  
-                                <td> {{ SLO_decisions.decisions_obj.dataUsed }} </td>
-                            </tr>
-                            <tr> 
-                                <td> Action Timeline </td>
-                                <td> {{ SLO_decisions.decisions_obj.actionTimeline }} </td> 
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
+                        {{SLO_decisions.decisions_obj.text|safe}}
                     </td>
                 {% endif %}
             </tr>
         {% endfor %}
     </tbody>
 </table>
-<h3>Comment</h3>
-{{report.section4Comment}}
+<h5>Comment</h5>
+{{report.section4Comment|safe}}

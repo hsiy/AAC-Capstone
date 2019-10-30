@@ -1,0 +1,74 @@
+<!--things needed in context: assessment_data_dict,report-->
+<h3>III. Data Collection and Analysis</h3>
+<div class="bT">
+    <div class="subsection">A. Results Table</div>
+<table class="table">
+    <tbody>
+        <tr>
+            <td style="width:30%"><b>Measure</b></td>
+            <td style="width:20%"><b>Data Collection Date Range</b></td>
+            <td><b>Number of Students Assessed</b></td>
+            <td style="width: 25%;"><b>Percentage of Students<br> Who Met/Exceeded<br>Threshold Proficiency</b></td>
+            <td><b>Aggregate</b></td>
+        </tr>
+        {% for assessment in assessment_data_dict.assessments %}
+        <tr {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:#E0E0E0;" {% endif %}>
+            <td><b>SLO {{assessment.slo_obj.number}} -
+                Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b></td>
+                <td style="width: 20%">
+                        {% for d in assessment.assess_data %}
+                        <p>
+                            {{d.dataRange}}
+                        </p>
+                        {% endfor %}
+                    </td>
+                    <td style="text-align: center;">{% for d in assessment.assess_data %}
+                            <p>
+                                {{d.numberStudents}}
+                            </p>
+                            {% endfor %}
+                    </td>
+                    <td style="text-align: center;">{% for d in assessment.assess_data %}
+                            <p>
+                                {{d.overallProficient}}%
+                            </p>
+                            {% endfor %}
+                        
+                    </td>
+                    <td style="text-align: center;">
+                        {% if assessment.agg %}
+                        {{assessment.agg}}%
+                        {% endif %}
+                    </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<div class="subsection">B. SLO Status Table
+<div class="bT">
+<table class="table" style="page-break-inside: avoid;">
+    <tbody>
+        <tr>
+            <td>SLO</td>
+            <td style="width:15%">Status</td>
+        </tr>
+        {% for slo_status in assessment_data_dict.slo_statuses %}
+            <tr>
+                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text|safe }}</td>
+                {% if slo_status.slo_status_pk == None %}
+                    <td>(Status Not Reported)</td>
+                {% else %}
+                    <td>{{ slo_status.slo_status }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+<div class="subsection">C. Description of how results are communicated within the program</div>
+<p>{{ assessment_data_dict.result_communication_text|safe }}</p>
+
+<div class="subsection">D. Comment</div>
+{{report.section3Comment|safe}}

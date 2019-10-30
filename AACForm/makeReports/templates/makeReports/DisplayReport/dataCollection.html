@@ -1,5 +1,5 @@
 <!--things needed in context: assessment_data_dict,report-->
-<h3>Data Collection and Analysis Summary</h3>
+<h3>III. Data Collection and Analysis</h3>
 <table class="table">
     <tbody>
         <tr>
@@ -7,42 +7,70 @@
             <td>Data Collection Date Range</td>
             <td>Number of Students Assessed</td>
             <td>Percentage of Students Who Met/<br>Exceeded Threshold Proficiency</td>
+            <td>Aggregate</td>
         </tr>
         {% for assessment in assessment_data_dict.assessments %}
-        <tr>
-            <td>{{assessment.slo_text}} : {{assessment.assessment_text}}</td>
-            <td>{{assessment.data_range}}</td>
-            <td>{{assessment.num_students_assessed}}</td>
-            <td>
-                {% if assessment.subassessments_len > 0 %}
-                    {% for subassessment in assessment.subassessments %}
-                        {% if forloop.last %}
-                            {{subassessment.0}}: {{subassessment.1}}%
-                        {% else %}
-                            {{subassessment.0}}: {{subassessment.1}}% <br>
+        <tr {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:#E0E0E0;" {% endif %}>
+            <td><b>SLO {{assessment.slo_obj.number}} -
+                Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b></td>
+                <td style="width: 20%">
+                        {% for d in assessment.assess_data %}
+                        <p>
+                            {{d.dataRange}}
+                        </p>
+                        {% endfor %}
+                    </td>
+                    <td style="text-align: center;">{% for d in assessment.assess_data %}
+                            <p>
+                                {{d.numberStudents}}
+                            </p>
+                            {% endfor %}
+                    </td>
+                    <td style="text-align: center;">{% for d in assessment.assess_data %}
+                            <p>
+                                {{d.overallProficient}}%
+                            </p>
+                            {% endfor %}
+                        
+                    </td>
+                    <td style="text-align: center;">
+                        {% if assessment.agg %}
+                        {{assessment.agg}}%
                         {% endif %}
-                    {% endfor %}
-                {% else %}
-                    {{assessment.overall_proficient}}%
-                {% endif %}
+                    </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h5>Supplements</h5>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Supplement</td><td>Comment</td>
+        </tr>
+        {% for sup in supplement_list %}
+        <tr>
+            <td>
+                <a href="{{sup.supplement.url}}">{{sup}}</a>
+            </td>
+            <td>
+                {{sup.comment}}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
-<table class="table">
-    <tbody>
-        <thead>
-            <h3>SLO Status</h3>
-        </thead>
+<div class="subsection">B. SLO Status Table
+        <div class="bT">
+        <table class="table">
+        <tbody>
         <tr>
             <td>SLO</td>
             <td>Status</td>
         </tr>
         {% for slo_status in assessment_data_dict.slo_statuses %}
             <tr>
-                <td>{{ slo_status.slo_text }}</td>
+                <td>SLO {{slo_status.slo_obj.number}}: {{ slo_status.slo_text|safe }}</td>
                 {% if slo_status.slo_status_pk == None %}
                     <td>(Status Not Reported)</td>
                 {% else %}
@@ -51,23 +79,11 @@
             </tr>
         {% endfor %}
     </tbody>
-</table>
-<table class='table'>
-    <thead>
-        <h3>Describe how results are communicated within the program</h3>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Text</td>
-        </tr>
-        <tr>
-            {% if assessment_data_dict.result_communication_id == None %}
-                <td>Describe how results are communicated within the program. Address each SLO.</td>
-            {% else %}
-                <td>{{ assessment_data_dict.result_communication_text }}</td>
-            {% endif %}
-        </tr>
-    </tbody>
-</table>
-<h3>Comment</h3>
-{{report.section3Comment}}
+    </table>
+</div>
+</div>
+<h5>Description of how results are communicated within the program</h5>
+<p>{{ assessment_data_dict.result_communication_text|safe }}</p>
+
+<h5>Comment</h5>
+{{report.section3Comment|safe}}

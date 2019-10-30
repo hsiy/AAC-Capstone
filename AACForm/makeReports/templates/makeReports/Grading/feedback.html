@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<h3>Grading Section {{section}}</h3>
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">
+    <div class = "row">
+      <div class="col">
+          <a class="btn btn-primary" type="button" href="{% url 'makeReports:graded-rub-pdf' report=report.pk %}">PDF of Feedback </a>
+      </div>
+    </div>
     <div class="row">
         <div class="col-8">
             <!--showreport column-->
@@ -14,13 +18,14 @@
         </div>
         <div class="col">
             <!--grading column-->
-            Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
-            <h5>Section {{section}} Rubric</h5>
+            {% if report.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% endif %}
                 <table>
                   {% for GRI in obj_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text}}: {{GRI.get_grade_display}}
+                        {{GRI.item.text|safe}} <br><b>{{GRI.get_grade_display}}</b>
                       </td>
                     </tr>
                     <tr>
@@ -31,9 +36,9 @@
                         <div class="collapse" id="col{{GRI.pk}}">
                                 <div class="card card-body">
                                         <ul class="list-group">
-                                            <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{GRI.item.DMEtext}}</li>
-                                            <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{GRI.item.MEtext}}</li>
-                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext}}</li>
+                                            <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{GRI.item.DMEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{GRI.item.MEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext|safe}}</li>
                                         </ul>
                                 </div>
                         </div>
@@ -41,11 +46,11 @@
                     </tr>
                   {% endfor %}
                   <tr><td><h5>Comments</h5></td></tr>
-                  <tr><td><b>Section 1: </b>{{gRub.section1Comment}}</td></tr>
-                  <tr><td><b>Section 2: </b>{{gRub.section2Comment}}</td></tr>
-                  <tr><td><b>Section 3: </b>{{gRub.section3Comment}}</td></tr>
-                  <tr><td><b>Section 4: </b>{{gRub.section4Comment}}</td></tr>
-                  <tr><td><b>Overall: </b>{{gRub.generalComment}}</td></tr>
+                  <tr><td><b>Section 1: </b>{{gRub.section1Comment|safe}}</td></tr>
+                  <tr><td><b>Section 2: </b>{{gRub.section2Comment|safe}}</td></tr>
+                  <tr><td><b>Section 3: </b>{{gRub.section3Comment|safe}}</td></tr>
+                  <tr><td><b>Section 4: </b>{{gRub.section4Comment|safe}}</td></tr>
+                  <tr><td><b>Overall: </b>{{gRub.generalComment|safe}}</td></tr>
                 </table>
         </div>
     </div>

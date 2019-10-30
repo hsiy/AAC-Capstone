@@ -1,12 +1,15 @@
 from django.urls import include, path, re_path
-from django.conf.urls import url
-from django.contrib import admin
 from makeReports import views
-from django.contrib.auth import views as auth_views
+"""
+Holds all the URLs for pages within the makeReports application
+"""
 app_name = "makeReports"
 urlpatterns = [
+    path('summernote/', include('django_summernote.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.HomePage.as_view(), name="home-page"),
+    path('help/',views.HelpPage.as_view(),name='help-page'),
+    re_path(r'^user/modify/$', views.UserModifyAccount.as_view(),name='modify-acct'),
     re_path(r'^report/list/$', views.FacultyReportList.as_view(), name='rpt-list-dept'),
     re_path(r'^report/list/search/$', views.ReportListSearchedDept.as_view(), name='search-reports-dept'),
     re_path(r'^report/(?P<pk>\d+)/view/$', views.DisplayReport.as_view(),name='view-rpt'),
@@ -31,7 +34,9 @@ urlpatterns = [
     #Assesssment URLs
     re_path(r'^report/(?P<report>\d+)/assessment/summary/$', views.AssessmentSummary.as_view(), name='assessment-summary'),
     re_path(r'^report/(?P<report>\d+)/assessment/add/$', views.AddNewAssessment.as_view(), name='add-assessment'),  
+    re_path(r'^report/(?P<report>\d+)/slo/(?P<slo>\d+)/assessment/add/$', views.AddNewAssessmentSLO.as_view(), name='add-assessment-slo'),  
     re_path(r'^report/(?P<report>\d+)/assessment/import/$', views.ImportAssessment.as_view(), name='import-assessment'), 
+    re_path(r'^report/(?P<report>\d+)/slo/(?P<slo>\d+)/assessment/import/$', views.ImportAssessmentSLO.as_view(), name='import-assessment-slo'), 
     re_path(r'^report/(?P<report>\d+)/assessment/edit/new/(?P<assessIR>\d+)/$', views.EditNewAssessment.as_view(), name='edit-new-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/edit/impt/(?P<assessIR>\d+)/$', views.EditImportedAssessment.as_view(), name='edit-impt-assessment'),
     re_path(r'^report/(?P<report>\d+)/assessment/supplements/upload/(?P<assessIR>\d+)/$', views.SupplementUpload.as_view(), name='assessment-supplement-upload'),
@@ -53,21 +58,33 @@ urlpatterns = [
     re_path(r'^aac/department/(?P<pk>\d+)/delete/$', views.DeleteDepartment.as_view(), name='delete-dept'),
     re_path(r'^aac/department/(?P<pk>\d+)/recover/$', views.RecoverDepartment.as_view(), name='recover-dept'),
     re_path(r'^aac/department/(?P<dept>\d+)/dp/create/$',views.CreateDegreeProgram.as_view(), name='add-dp'),
-    re_path(r'^aac/department/dp/update/(?P<pk>\d+)/$',views.UpdateDegreeProgram.as_view(), name='update-dp'),
+    re_path(r'^aac/department/(?P<dept>\d+)/dp/update/(?P<pk>\d+)/$',views.UpdateDegreeProgram.as_view(), name='update-dp'),
     re_path(r'^aac/department/(?P<dept>\d+)/dp/list/$', views.DegreeProgramList.as_view(),name='dp-list'),
-    re_path(r'^aac/department/dp/(?P<pk>\d+)/delete/$', views.DeleteDegreeProgram.as_view(), name='delete-dp'),
-    re_path(r'^aac/department/dp/(?P<pk>\d+)/recover/$', views.RecoverDegreeProgram.as_view(), name='recover-dp'),
+    re_path(r'^aac/department/(?P<dept>\d+)/dp/(?P<pk>\d+)/delete/$', views.DeleteDegreeProgram.as_view(), name='delete-dp'),
+    re_path(r'^aac/department/(?P<dept>\d+)/dp/(?P<pk>\d+)/recover/$', views.RecoverDegreeProgram.as_view(), name='recover-dp'),
     re_path(r'^aac/department/(?P<dept>\d+)/report/create/$',views.CreateReport.as_view(),name='add-rpt'),
+    re_path(r'^aac/dp/(?P<dP>\d+)/report/create/$',views.CreateReportByDP.as_view(),name='add-rpt-dp'),
     re_path(r'^aac/report/delete/(?P<pk>\d+)/$', views.DeleteReport.as_view(), name='delete-rpt'),
+    re_path(r'^aac/report/submit/(?P<pk>\d+)/$', views.ManualReportSubmit.as_view(), name='manual-submit-rpt'),
     re_path(r'^aac/report/list/$', views.ReportList.as_view(), name='report-list'),
     re_path(r'^aac/report/list/searched/$', views.ReportListSearched.as_view(), name='search-reports'),
     re_path(r'^aac/account/create/$', views.MakeAccount.as_view(), name='make-account'),
-    re_path(r'^aac/account/(?P<pk>\d+)/modify/$', views.ModifyAccount.as_view(), name='modify-account'),
+    re_path(r'^aac/account/list/$', views.AccountList.as_view(), name='account-list'),
+    re_path(r'^aac/account/list/search/$', views.SearchAccountList.as_view(), name='search-account-list'),
+    re_path(r'^aac/account/(?P<pk>\d+)/modify/$', views.ModifyAccount.as_view(), name='aac-modify-account'),
     re_path(r'^aac/account/(?P<pk>\d+)/inactivate/$', views.InactivateUser.as_view(), name='inactivate-account'),
     re_path(r'^aac/report/success/$', views.GenerateReportSuccess.as_view(), name='gen-rpt-suc'),
     re_path(r'^aac/department/archived/list/$', views.ArchivedDepartments.as_view(), name='arc-depts'),
     re_path(r'^aac/college/archived/list/$', views.ArchivedColleges.as_view(), name='arc-colleges'),
     re_path(r'^aac/department/(?P<dept>\d+)/dp/archived/list/$', views.ArchivedDegreePrograms.as_view(), name='arc-dps'),
+    re_path(r'^aac/gg/list/$', views.ListActiveGradGoals.as_view(),name='gg-list'),
+    re_path(r'^aac/gg/list/inactive/$', views.ListInactiveGradGoals.as_view(),name='old-gg-list'),
+    re_path(r'^aac/gg/(?P<pk>\d+)/update/$', views.UpdateGradGoal.as_view(),name='update-gg'),
+    re_path(r'^aac/gg/add/$', views.MakeGradGoal.as_view(),name='add-gg'),
+    re_path(r'^aac/ann/list/$', views.ListAnnouncements.as_view(),name='announ-list'),
+    re_path(r'^aac/ann/add/$', views.MakeAnnouncement.as_view(),name='add-announ'),
+    re_path(r'^aac/ann/(?P<pk>\d+)/delete/$', views.DeleteAnnouncement.as_view(),name='delete-announ'),
+    re_path(r'^aac/ann/(?P<pk>\d+)/modify/$', views.ModifyAnnouncement.as_view(),name='edit-announ'),
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),
@@ -79,12 +96,19 @@ urlpatterns = [
     re_path(r'report/(?P<report>\d+)/feedback/$', views.Feedback.as_view(), name='rpt-feedback'),
     #Rubric urls
     re_path(r'^aac/rubric/list/$', views.RubricList.as_view(),name="rubric-list"),
+    re_path(r'^aac/rubric/list/searched/$', views.SearchRubricList.as_view(),name="search-rubric-list"),
     re_path(r'^aac/rubric/add/$', views.AddRubric.as_view(), name="add-rubric"),
     re_path(r'^aac/rubric/(?P<rubric>\d+)/addRI/$', views.AddRubricItems.as_view(), name='add-RI'),
-
+    re_path(r'^aac/rubric/(?P<pk>\d+)/view/$', views.ViewRubric.as_view(), name='view-rubric'),
+    re_path(r'^aac/rubric/(?P<pk>\d+)/update/$', views.UpdateRubricFile.as_view(), name='update-rubric'),
+    re_path(r'^aac/rubric/(?P<pk>\d+)/delete/$', views.DeleteRubric.as_view(), name='delete-rubric'),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/edit/$', views.UpdateRubricItem.as_view(), name='update-RI'),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/duplicate/$', views.DuplicateRubric.as_view(), name='dup-rub'),
+    re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/delete/$', views.DeleteRubricItem.as_view(), name='delete-RI'),
     #Data Collection URLS
     re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/$', views.CreateDataCollectionRow.as_view(), name='add-data-collection'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/assess/$', views.CreateDataCollectionRowAssess.as_view(), name='add-data-collection-assess'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/edit/(?P<dataCollection>\d+)/$', views.EditDataCollectionRow.as_view(), name='edit-data-collection'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/addsub/$', views.CreateSubassessmentRow.as_view(), name='add-subassessment'),
@@ -95,10 +119,30 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/$', views.NewResultCommunication.as_view(), name='add-result-communication'),
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/(?P<resultpk>\d+)/$', views.EditResultCommunication.as_view(), name='edit-result-communication'),
     re_path(r'^report/(?P<report>\d+)/datacollection/comment/$',views.Section3Comment.as_view(),name='data-comment'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/supplement/create/$',views.DataAssessmentAddInfo.as_view(),name='add-data-sup'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/supplement/(?P<pk>\d+)/edit/$',views.DataAssessmentUpdateInfo.as_view(),name='update-data-sup'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/supplement/(?P<pk>\d+)/delete/$',views.DataAssessmentDeleteInfo.as_view(),name='delete-data-sup'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/agg/create/$',views.AssessmentAggregateCreate.as_view(),name='data-agg-create'),
+    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/agg/(?P<pk>\d+)/edit/$',views.AssessmentAggregateEdit.as_view(),name='data-agg-edit'),
     #Decisions and Actions URLs
     re_path(r'^report/(?P<report>\d+)/decisionsactions/$', views.DecisionsActionsSummary.as_view(), name='decisions-actions-summary'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/$', views.AddDecisionAction.as_view(), name='add-decisions-actions'),
-    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<decactpk>\d+)$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/slo/$', views.AddDecisionActionSLO.as_view(), name='add-decisions-actions-slo'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<pk>\d+)/$', views.EditDecisionAction.as_view(), name='edit-decisions-actions'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/(?P<pk>\d+)/slo/$', views.EditDecisionActionSLO.as_view(), name='edit-decisions-actions-slo'),
+    re_path(r'^report/(?P<report>\d+)/decisionsactions/(?P<slopk>\d+)/redirect/$', views.AddEditRedirect.as_view(), name='add-edit-redirect'),
     re_path(r'^report/(?P<report>\d+)/decisionsactions/comment/$',views.Section4Comment.as_view(),name='d-a-comment'),
-
+    #PDF Generators
+    re_path(r'^pdf/report/(?P<report>\d+)/rubric/graded/$',views.GradedRubricPDFGen.as_view(), name='graded-rub-pdf'),
+    re_path(r'^pdf/report/(?P<report>\d+)/nosups/$', views.ReportPDFGen.as_view(), name='report-pdf-no-sups'),
+    re_path(r'^pdf/report/(?P<report>\d+)/sups/$', views.reportPDF,name='report-pdf'),
+    re_path(r'^pdf/report/(?P<report>\d+)/sups/view/$', views.PDFViewer.as_view(),name='trying-to-fix'),
+    re_path(r'^pdf/rubric/(?P<rubric>\d+)/auto/$', views.UngradedRubric,name='rubric-auto-pdf'),
+    #APIs
+    re_path(r'^api/dept/col/$', views.DeptByColListAPI.as_view(),name='api-dept-by-col'),
+    re_path(r'^api/prog/dep/$', views.ProgByDeptListAPI.as_view(),name='api-prog-by-dept'),
+    re_path(r'^api/slo/dp/$', views.SloByDPListAPI.as_view(),name='api-slo-by-dp'),
+    #Graphing
+    re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
+    re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),
 ]

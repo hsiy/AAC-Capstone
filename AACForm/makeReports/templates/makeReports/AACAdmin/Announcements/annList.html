@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h3>Active Announcements List</h3>
+<a type="button" class="btn btn-primary" href="{% url 'makeReports:add-announ' %}">Add Announcement</a>
+{% for a in object_list %}
+    <li class = "list-group-item">{{a.text|safe}} Expiring on: {{a.expiration}}
+      <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-announ' pk=a.pk %}">Delete</a>
+      <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-announ' pk=a.pk %}">Edit</a>
+    </li>
+{% empty %}
+No active announcements.
+{% endfor %}
+</ul>
+{% endblock %}

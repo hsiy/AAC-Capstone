@@ -1,0 +1,41 @@
+<table>
+<tr>
+        <td colspan="2">
+            <h2 style="text-align: center;">Report</h2>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;" colspan="2">
+            <b >{{report.year|add:"-1"}}-{{report.year}}</b>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:50%">
+            <b>College: {{report.degreeProgram.department.college.name}}</b>
+        </td>
+        <td>
+            <b>Department: {{report.degreeProgram.department.name}}</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Program: {{report.degreeProgram.name}}</b>
+        </td>
+        <td>
+            <b>Degree Level: {{report.degreeProgram.get_level_display}}</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Academic Year of Report: {{report.year|add:"-1"}}-{{report.year}}</b>
+        </td>
+        <td>
+            <b>Date Range of Reported Data: {{report.date_range_of_reported_data}}</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Person Preparing the Report: {{report.author}}</b>
+        </td>
+    </tr>
+</table>

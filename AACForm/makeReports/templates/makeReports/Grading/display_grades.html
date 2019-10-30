@@ -17,13 +17,13 @@
                     {% for item in GRIs %}
                             <tr>
                                 <td>
-                                    {{item.item.text}}: {{item.grade_display}}
+                                    {{item.item.text|safe}}: {{item.grade_display}}
                                 </td>
                             </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <b>Additional Comment: </b>{{report.section1Comment}}
+            <b>Additional Comment: </b>{{report.section1Comment|safe}}
         </div>
     </div>
 </div>

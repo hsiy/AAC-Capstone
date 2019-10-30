@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
-{% block content %}
+{% block inner_content %}
 <h3>Import SLO</h3>
 <h5>Search For SLOs</h5>
-<form action="{% url 'makeReports:import-slo' report=rpt %}" type="get">
+<form action="{% url 'makeReports:import-slo' report=rpt.pk %}" type="get">
         <!--<input id="name" type="text" name="name"></div>-->
         <div><label>Year</label> 
             <input id="year" name="year" type="number" required>

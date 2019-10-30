@@ -1,17 +1,30 @@
 from django import forms
-from makeReports.models import *
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from datetime import datetime, timedelta
-from django.utils import timezone
-from makeReports.choices import *
-
+"""
+File with forms that do not fit elsewhere
+"""
 class SubmitReportForm(forms.Form):
+    """
+    Dummy form to submit report
+    """
     hidden = forms.CharField(max_length=5,widget=forms.HiddenInput(), required=False)
     def __init__(self, *args, **kwargs):
+        """
+        Initializes form and sets the valid and error message on the instance
+
+        Keyword Args:
+            valid (Boolean) : if report is valid to be submitted
+            eMsg (str): error message
+        """
         self.valid = kwargs.pop('valid')
+        self.error = kwargs.pop('eMsg')
         super(SubmitReportForm, self).__init__(*args, **kwargs)
     def clean(self):
-      cleaned_data = super().clean()
-      if not self.valid:
-          raise forms.ValidationError("The minimum requirements for the report have not been fulfilled.")
+        """
+        Cleans form and checks if valid
+
+        Raises:
+            ValidationError
+        """
+        super().clean()
+        if not self.valid:
+            raise forms.ValidationError(self.error)

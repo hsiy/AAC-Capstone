@@ -1,6 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
-{% block content %}
+{% block in_scripts %}
+{{form.media}}
+{% endblock %}
+{% block inner_content %}
 <h3>Edit Assessment</h3>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}

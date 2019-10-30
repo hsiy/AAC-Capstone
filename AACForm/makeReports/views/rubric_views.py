@@ -1,40 +1,78 @@
-from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import DetailView
+from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
-from django.contrib.auth.models import User
-from django.conf import settings 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.utils import timezone
-from django.views.generic.edit import FormMixin
-class RubricList(LoginRequiredMixin,UserPassesTestMixin,ListView):
+from makeReports.views.helperFunctions.mixins import *
+"""
+This file contains views related to managing rubrics (but not grading with them)
+"""
+class RubricList(AACOnlyMixin,ListView):
+    """
+    View to list rubrics in reverse chronological order
+    """
     model = Rubric
     template_name = "makeReports/Rubric/rubricList.html"
     def get_queryset(self):
         return Rubric.objects.order_by("-date")
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class AddRubric(LoginRequiredMixin,UserPassesTestMixin,CreateView):
+class SearchRubricList(AACOnlyMixin,ListView):
+    """
+    View to search rubric, date must be within 180 days
+    
+    Notes:
+        Search parameters sent via get request: 'date', 'name'
+    """
+    model = Rubric
+    template_name = "makeReports/Rubric/rubricList.html"
+    def get_queryset(self):
+        """
+        Gets rubrics within 180 days of date if it exists and containing name if it exists
+        
+        Returns:
+            QuerySet : rubrics meeting search parameters
+        """
+        rubs = Rubric.objects
+        day = self.request.GET['date']
+        if self.request.GET['name']!="":
+            rubs=rubs.filter(name__icontains=self.request.GET['name'])
+        if day!="":
+            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
+        return rubs.order_by("-date")
+class AddRubric(AACOnlyMixin,CreateView):
+    """
+    View to create a new rubric
+    """
     template_name = "makeReports/Rubric/addRubric.html"
     success_url = reverse_lazy('makeReports:rubric-list')
     model=Rubric
     fields = ['name','fullFile']
     def form_valid(self,form):
+        """
+        Sets the date to now and creates object based upon the form
+        """
         form.instance.date = datetime.now()
         return super(AddRubric,self).form_valid(form)
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
+class AddRubricItems(AACOnlyMixin, FormView):
+    """
+    View to add rubric items to rubric
+    
+    Keyword Args:
+        rubric (str): primary key of rubric
+    """
     template_name = "makeReports/Rubric/addRI.html"
     form_class = RubricItemForm
     def dispatch(self, request,*args, **kwargs):
+        """
+        Dispatches view and attaches rubric to instance
+        """
         self.rubric = Rubric.objects.get(pk=self.kwargs['rubric'])
         return super(AddRubricItems, self).dispatch(request,*args,**kwargs)
     def form_valid(self,form):
+        """
+        Creates rubric items from form after it was validated
+        """
         ri = RubricItem.objects.create(text=form.cleaned_data['text'], \
                 section=form.cleaned_data['section'], rubricVersion=self.rubric, \
                     DMEtext=form.cleaned_data['DMEtext'], MEtext=form.cleaned_data['MEtext'], \
@@ -44,52 +82,115 @@ class AddRubricItems(LoginRequiredMixin,UserPassesTestMixin, FormView):
             ri.save()
         except:
             pass
+        try:
+            ri.abbreviation = form.cleaned_data['abbreviation']
+            ri.save()
+        except:
+            pass
         return super(AddRubricItems,self).form_valid(form)
-    def get_context_data(self):
-        context = super(AddRubricItems,self).get_context_data()
+    def get_context_data(self, **kwargs):
+        """
+        Returns context for the template, including the number of rubric items
+
+        Returns:
+            dict : template context
+        """
+        context = super(AddRubricItems,self).get_context_data(**kwargs)
         context['numRIs'] = RubricItem.objects.filter(rubricVersion=self.rubric).count()
         return context
     def get_success_url(self):
         return reverse_lazy('makeReports:add-RI', args=[self.kwargs['rubric']])
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class ViewRubric(LoginRequiredMixin,UserPassesTestMixin,DetailView):
+class ViewRubric(AACOnlyMixin,DetailView):
+    """
+    View to view a rubric
+
+    Keyword Args:
+        pk (str): primary key of rubric to view
+    """
     model = Rubric
-    template_name = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class UpdateRubricItem(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    template_name = "makeReports/Rubric/rubricDetail.html"
+    def get_context_data(self,**kwargs):
+        """
+        Gets template context, including rubric items separated out by section
+
+        Returns:
+            dict : template context
+        """
+        context = super(ViewRubric,self).get_context_data(**kwargs)
+        context['rI1'] = RubricItem.objects.filter(rubricVersion=self.object, section=1).order_by("order","pk")
+        context['rI2'] = RubricItem.objects.filter(rubricVersion=self.object,section=2).order_by("order","pk")
+        context['rI3'] = RubricItem.objects.filter(rubricVersion=self.object,section=3).order_by("order","pk")
+        context['rI4'] = RubricItem.objects.filter(rubricVersion=self.object,section=4).order_by("order","pk")           
+        context['obj'] = self.object
+        return context
+class UpdateRubricItem(AACOnlyMixin,UpdateView):
+    """
+    View to update rubric item
+
+    Keyword Args:
+        pk (str): primary key of rubric item to update
+    """
     model = RubricItem
-    fields = ['text','section','order','DMEtext','MEtext','EEtext']
-    template_name = ""
-    success_url = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class UpdateRubricFile(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
+    form_class = RubricItemForm
+    template_name = "makeReports/Rubric/updateRubricItem.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
+class UpdateRubricFile(AACOnlyMixin, UpdateView):
+    """
+    View to update file associated with the rubric
+
+    Keyword Args:
+        pk (str): primary key of rubric to update
+    """
     model = Rubric
     fields = ['name','fullFile']
-    template_name = ""
-    success_url = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DeleteRubricItem(LoginRequiredMixin,UserPassesTestMixin):
-    #error will result if they try to delete a ri that already has a grade somewhere
+    template_name = "makeReports/Rubric/updateRubric.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['pk']])
+class DeleteRubricItem(AACOnlyMixin,DeleteView):
+    """
+    View to delete rubric item
+
+    Keyword Args:
+        pk (str): primary key of rubric item to delete
+    """
     model = RubricItem
-    template_name = ""
-    success_url = ""
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
-class DuplicateRubric(LoginRequiredMixin,UserPassesTestMixin, FormView):
+    template_name = "makeReports/Rubric/deleteRubricItem.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
+class DuplicateRubric(AACOnlyMixin, FormView):
+    """
+    View to duplicate rubric 
+
+    Keyword Args:
+        rubric (str): primary key of rubric to duplicate
+    """
     #duplicate -> edit/delete/add intended workflow instead of some kind of import
-    form_class = DuplicateRubric
-    success_url = ""
-    template_name = ""
+    form_class = DuplicateRubricForm
+    success_url = reverse_lazy('makeReports:rubric-list')
+    template_name = "makeReports/Rubric/duplicateRubric.html"
     def form_valid(self,form):
-        rubToDup = form.cleaned_data['rubToDup']
+        """
+        Creates new rubric based upon form, and duplicates all rubric items
+        """
+        rubToDup = Rubric.objects.get(pk=self.kwargs['rubric'])
         RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
-        newRub = Rubric.object.create(date=datetime.now(), fullFile=rubToDup.fullFile)
+        newRub = Rubric.objects.create(
+            date=datetime.now(), 
+            fullFile=rubToDup.fullFile, 
+            name=form.cleaned_data['new_name']
+            )
         for ri in RIs:
-            newRi = RubricItem.object.create(text=ri.text, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
-        return super(DuplicateRubric,)
-    def test_func(self):
-        return getattr(self.request.user.profile, "aac")
+            newRi = RubricItem.objects.create(text=ri.text, abbreviation=ri.abbreviation, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
+        return super(DuplicateRubric,self).form_valid(form)
+class DeleteRubric(AACOnlyMixin,DeleteView):
+    """
+    View to delete rubric
+
+    Keyword Args:
+        pk (str) : primary key of rubric to delete
+    """
+    model = Rubric
+    template_name = "makeReports/Rubric/deleteRubric.html"
+    def get_success_url(self):
+        return reverse_lazy('makeReports:rubric-list')

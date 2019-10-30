@@ -39,11 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gdstorage'
+    'gdstorage',
+    'django_summernote',
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,10 +83,10 @@ WSGI_APPLICATION = 'AACForm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd2l572kbfjiffo',                      
-        'USER': 'bwsqrclshcgdfz',
-        'PASSWORD': '7b786042eba0c72cac3f2e91ad94728ea16a6e172b21aa727bb81778768e5c67',
-        'HOST': 'ec2-54-197-238-238.compute-1.amazonaws.com',
+        'NAME': 'dec475dtrh1d4b',                      
+        'USER': 'dpigmvxcewudws',
+        'PASSWORD': '65ec3eb508b3cb11898fcfda37c5a6c727d501a619d818ea726aec13a059cb35',
+        'HOST': 'ec2-107-21-98-89.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -125,10 +129,48 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-08fe48f6125f.json')
+DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
+SUMMERNOTE_THEME = 'bs4'
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        # As an example, using Summernote Air-mo
+        # Change editor size
+        'style':'width:500px;height:750px;'
+    },
+
+    # Set custom storage class for attachments.
+    'toolbar': [
+        ['cleaner',['cleaner']],
+        ['style',['style']],
+        ['font',['bold','italic','underline','clear']],
+        ['color',['color']],
+        ['para',['ul','ol','paragraph']],
+        ['height',['height']],
+        ['table',['table']],
+        ['insert',['link','hr']],
+        ['view',['fullscreen','codeview']],
+    ],
+    # To use external plugins,
+    # Include them within `css` and `js`.
+    'js': (
+        os.path.join(STATIC_URL, 'extPlugin/summernote-cleaner.js'),
+    )
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

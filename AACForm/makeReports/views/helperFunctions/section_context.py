@@ -1,59 +1,91 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy, reverse
 from makeReports.models import *
 from makeReports.forms import *
-from datetime import datetime
 from django.contrib.auth.models import User
-from django.conf import settings 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.utils import timezone
-from django.views.generic.edit import FormMixin
-from django.template.defaulttags import register
 def rubricItemsHelper(self,context):
+    """
+    Adds the text of each rubric item to the context
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     extraHelp = dict()
     for rI in self.rubricItems:
         extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
     context['extraHelp']=extraHelp
     return context
 def section1Context(self,context):
-    context['slo_list'] = SLOInReport.objects.filter(report=self.report)
+    """
+    Adds all context needed to display section 1 of the report (SLOs and stakeholder communication)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
+    context['slo_list'] = SLOInReport.objects.filter(report=self.report).order_by("number")
     context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
     return context
 def section2Context(self,context):
-    context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report)
+    """
+    Adds all context needed to display section 2 of the report (assessments)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
+    context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     return context
 def section3Context(self,context):
+    """
+    Adds all context needed to display section 3 of the report (assessment, SLOs, data points)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
-    assessments = AssessmentVersion.objects.filter(report=self.report)
+    assessments = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     for assessment in assessments:
         temp_dict = dict()
         temp_dict['assessment_id'] = assessment.pk
         try:
             assessment_obj = Assessment.objects.get(pk=assessment.assessment.pk)
             temp_dict['assessment_text'] = assessment_obj.title
+            temp_dict['assessment_obj'] = assessment
         except:
             temp_dict['assessment_text'] = None
+            temp_dict['assessment_obj'] = None
 
         try:
             slo_obj = SLOInReport.objects.get(pk=assessment.slo.pk)
             temp_dict['slo_text'] = slo_obj.goalText
+            temp_dict['slo_obj'] = slo_obj
         except:
             temp_dict['slo_text'] = None
+            temp_dict['slo_obj'] = None
 
         try:
-            assessment_data_obj = AssessmentData.objects.get(assessmentVersion=assessment)
-            temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
-            temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
-            temp_dict['data_range'] = assessment_data_obj.dataRange
-            temp_dict['assessment_data_id'] = assessment_data_obj.pk
+            assessment_data_objs = AssessmentData.objects.filter(assessmentVersion=assessment)
+            temp_dict['assess_data'] = assessment_data_objs
+            #temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
+            #temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
+            #temp_dict['data_range'] = assessment_data_obj.dataRange
+            #temp_dict['assessment_data_id'] = assessment_data_obj.pk
         except:
-            temp_dict['num_students_assessed'] = None
-            temp_dict['overall_proficient'] = None
-            temp_dict['data_range'] = None
-            temp_dict['assessment_data_id'] = None
+            temp_dict['assess_data'] = None
+            #temp_dict['num_students_assessed'] = None
+           # temp_dict['overall_proficient'] = None
+            #temp_dict['data_range'] = None
+            #temp_dict['assessment_data_id'] = None
+        try:
+            aggregate = AssessmentAggregate.objects.get(assessmentVersion=assessment)
+            temp_dict['agg'] = aggregate
+        except:
+            temp_dict['agg'] = None
 
         try:
             subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
@@ -69,9 +101,10 @@ def section3Context(self,context):
 
         assessment_data_dict['assessments'].append(temp_dict)
 
-    SLOs = SLOInReport.objects.filter(report=self.report)
+    SLOs = SLOInReport.objects.filter(report=self.report).order_by("number")
     for sloir in SLOs:
         temp_dict = dict()
+        temp_dict['slo_obj'] = sloir
         temp_dict['slo_text'] = sloir.goalText
         temp_dict['slo_pk'] = sloir.slo.pk
         try:
@@ -91,13 +124,23 @@ def section3Context(self,context):
     except:
         pass
     context['assessment_data_dict'] = assessment_data_dict
+    context['supplement_list'] = DataAdditionalInformation.objects.filter(report=self.report)
     return context
 def section4Context(self,context):
-    SLOs_ir = SLOInReport.objects.filter(report=self.report)
+    """
+    Adds all context needed to display section 4 of the report (SLOs and decisions/actions)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
+    SLOs_ir = SLOInReport.objects.filter(report=self.report).order_by("number")
     context_list = []
     for slo_ir in SLOs_ir:
         temp_dict = dict()
         slo_obj = slo_ir.slo
+        temp_dict['slo_obj'] = slo_ir
         temp_dict['slo_pk'] = slo_obj.pk
         temp_dict['slo_text'] = slo_ir.goalText
         try:
