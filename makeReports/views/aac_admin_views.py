@@ -8,7 +8,9 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains all views needed by the AAC to administer the website
+"""
 class AdminHome(AACOnlyMixin,FormView):
     """
     Home page for AAC administration: mostly buttons to other page

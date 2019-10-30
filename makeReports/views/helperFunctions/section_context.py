@@ -2,19 +2,51 @@ from makeReports.models import *
 from makeReports.forms import *
 from django.contrib.auth.models import User
 def rubricItemsHelper(self,context):
+    """
+    Adds the text of each rubric item to the context
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     extraHelp = dict()
     for rI in self.rubricItems:
         extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
     context['extraHelp']=extraHelp
     return context
 def section1Context(self,context):
+    """
+    Adds all context needed to display section 1 of the report (SLOs and stakeholder communication)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     context['slo_list'] = SLOInReport.objects.filter(report=self.report).order_by("number")
     context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
     return context
 def section2Context(self,context):
+    """
+    Adds all context needed to display section 2 of the report (assessments)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     context['assessment_list'] = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     return context
 def section3Context(self,context):
+    """
+    Adds all context needed to display section 3 of the report (assessment, SLOs, data points)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
     assessments = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     for assessment in assessments:
@@ -95,6 +127,14 @@ def section3Context(self,context):
     context['supplement_list'] = DataAdditionalInformation.objects.filter(report=self.report)
     return context
 def section4Context(self,context):
+    """
+    Adds all context needed to display section 4 of the report (SLOs and decisions/actions)
+
+    Args:
+        context (dict): template context
+    Returns:
+        dict : template context
+    """
     SLOs_ir = SLOInReport.objects.filter(report=self.report).order_by("number")
     context_list = []
     for slo_ir in SLOs_ir:

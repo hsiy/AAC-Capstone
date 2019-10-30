@@ -8,7 +8,9 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains miscellaneous views that are used by many users
+"""
 class HomePage(ListView):
     """
     Home page view
