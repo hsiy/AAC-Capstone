@@ -1,6 +1,8 @@
 from django.urls import include, path, re_path
 from makeReports import views
-
+"""
+Holds all the URLs for pages within the makeReports application
+"""
 app_name = "makeReports"
 urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
@@ -139,4 +141,9 @@ urlpatterns = [
     #APIs
     re_path(r'^api/dept/col/$', views.DeptByColListAPI.as_view(),name='api-dept-by-col'),
     re_path(r'^api/SLOSuggestions/$', views.SLOSuggestionsAPI.as_view(), name='api-slo-suggestions'),
+    re_path(r'^api/prog/dep/$', views.ProgByDeptListAPI.as_view(),name='api-prog-by-dept'),
+    re_path(r'^api/slo/dp/$', views.SloByDPListAPI.as_view(),name='api-slo-by-dp'),
+    #Graphing
+    re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
+    re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),
 ]
