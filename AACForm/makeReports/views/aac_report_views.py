@@ -8,7 +8,9 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains views directly related to creating, editing, and viewing reports done by the AAC
+"""
 class CreateReport(AACOnlyMixin,CreateView):
     """
     View to create report by department

@@ -2,8 +2,9 @@ from rest_framework import generics
 from django_filters import rest_framework as filters
 from rest_framework import serializers
 from makeReports.models import *
-
-
+"""
+This file contains the JSON APIs used
+"""
 class DeptSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializes departments to JSON with the primary key and name

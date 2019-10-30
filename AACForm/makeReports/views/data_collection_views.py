@@ -6,7 +6,9 @@ from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
 from makeReports.choices import *
-
+"""
+This file contains all views related to inputting data into the form
+"""
 class DataCollectionSummary(DeptReportMixin,ListView):
     """
     View to summarize data collection of in-progress form
