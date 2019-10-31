@@ -14,7 +14,7 @@ class CreateNewAssessment(forms.Form):
     directMeasure = forms.ChoiceField(label="Direct measure",choices = ((True, "Direct Measure"), (False,"Indirect Measure")))
     finalTerm = forms.ChoiceField(label="Point in Program Assessment is Administered",choices = ((True, "In final term"), (False, "In final year")))
     where = forms.CharField(label="Where does the assessment occur",widget= SummernoteWidget())
-    allStudents = forms.ChoiceField(label="Population Measured",choices = ((True, "All Students"), (False,"Sample of Students")))
+    allStudents = forms.ChoiceField(label="Population Measured",choices = ((False,"Sample of Students"), (True, "All Students")))
     sampleDescription = forms.CharField(label="Describe what students are sampled (if not all)",widget= SummernoteWidget(), required=False)
     frequencyChoice = forms.ChoiceField(label="Frequency of Data Collection", choices=FREQUENCY_CHOICES)
     frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(),required=False)
