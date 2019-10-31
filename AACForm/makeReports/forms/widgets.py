@@ -1,7 +1,13 @@
 from django import forms
 from django.conf import settings
 import os
+"""
+Includes custom widgets
+"""
 class SLOChoicesJSWidget(forms.widgets.Select):
+    """
+    Widget that uses the Choices Javascript plugin for a drop-down
+    """
     template_name = 'widgets/select.html'
     option_template_name = 'widgets/option.html'
     class Media:

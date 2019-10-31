@@ -22,12 +22,29 @@ from django.shortcuts import resolve_url
 from django.utils.decorators import available_attrs
 from makeReports.views.helperFunctions.mixins import *
 from urllib.parse import urlparse
+"""
+This file contains views and methods needed to generate PDFs throughout the application
+"""
 def test_func_x(self,*args,**kwargs):
+    """
+    Ensures the user accessing the page is in the AAC or right department
+
+    Keyword Args:
+        report (str): primary key of report
+    Returns:
+        boolean : whether user passes test
+    """
     report = Report.objects.get(pk=kwargs['report'])
     dept= (report.degreeProgram.department == self.profile.department)
     aac = getattr(self.profile, "aac")
     return dept or aac
 def test_func_a(self):
+    """
+    Ensures the user accessing page is in the AAC
+
+    Returns:
+        boolean : whether user passes test
+    """
     aac = getattr(self.profile, "aac")
     return aac
 def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
@@ -59,6 +76,12 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
         return _wrapped_view
     return decorator
 class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
+    """
+    View to generate a graded rubric PDF
+
+    Keyword Args:
+        report (str): primary key of report
+    """
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
         # Change this to suit your css path
@@ -68,9 +91,19 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
         #settings.BASE_DIR + 'css/main.css',
     ]
     def dispatch(self,request,*args,**kwargs):
+        """
+        Dispatches view and attaches report to the view
+        """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(GradedRubricPDFGen,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets the context for the template, including the rubric and graded rubric items for the report,
+        separated by section
+
+        Returns:
+            dict : template context
+        """
         context = super(GradedRubricPDFGen,self).get_context_data(**kwargs)
         context['rubric'] = self.report.rubric
         context['GRIs1'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=1)
@@ -78,20 +111,32 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
         context['GRIs3'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=3)
         context['GRIs4'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=4)
         return context
-    def test_func(self):
-        dept= (self.report.degreeProgram.department == self.request.user.profile.department)
-        aac = getattr(self.request.user.profile, "aac")
-        return dept or aac
-class ReportPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
+class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
+    """
+    View to generate PDF of report, without supplements
+
+    Keyword Args:
+        report (str): primary key of report
+    """
     template_name = "makeReports/DisplayReport/pdf.html"
     pdf_stylesheets =[
         staticfiles_storage.path('css/report.css'),
         #settings.BASE_DIR + 'css/main.css',
     ]
     def dispatch(self,request,*args,**kwargs):
+        """
+        Dispatches view and attaches report to instance
+        """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(ReportPDFGen,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets the context for the template, including the report and context
+        needed for each section
+
+        Returns:
+            dict : context for template
+        """
         context = super(ReportPDFGen,self).get_context_data(**kwargs)
         context['rubric'] = self.report.rubric
         context['report'] = self.report
@@ -100,69 +145,111 @@ class ReportPDFGen(WeasyTemplateView, LoginRequiredMixin, UserPassesTestMixin):
         context = section3Context(self,context)
         context = section4Context(self,context)
         return context
-    def test_func(self):
-        dept= (self.report.degreeProgram.department == self.request.user.profile.department)
-        aac = getattr(self.request.user.profile, "aac")
-        return dept or aac
 @login_required
 @my_user_passes_test(test_func_x)
 def reportPDF(request, report):
+    """
+    View to generate report PDF with supplements
+
+    Args:
+        request (HttpRequest): request to view page
+        report (str): primary key of report 
+
+    Returns:
+        HttpResponse : the PDF
+
+    Notes:
+        A function instead of class due to limitations of class based views
+    """
+    #first get report or return 404 error
     report = get_object_or_404(Report, pk=report)
+    #get templates for each of the sections (sec 1 and 2 together since sec 1 doesn't have supplements) 
     sec1and2 = get_template('makeReports/DisplayReport/PDFsub/pdf1and2.html')
     sec3 = get_template('makeReports/DisplayReport/PDFsub/pdf3.html')
     sec4 = get_template('makeReports/DisplayReport/PDFsub/pdf4.html')
+    #build the context needed for the report
     context = {'report':report}
+    #SimpleNamespace lets report be accessed via dot-notation in section#Context
     s = SimpleNamespace(**context)
     context = section1Context(s,context)
     context = section2Context(s,context)
+    #render HTML string for section 1 and 2
     p1and2 = sec1and2.render(context).encode()
+    #reset context for section 3
     context = {'report':report}
     context = section3Context(s,context)
+    #render HTML string for section 3
     p3 = sec3.render(context).encode()
+    #reset context
     context = {'report':report}
     context = section4Context(s,context)
+    #render HTML string for section 4
     p4 =sec4.render(context).encode()
+    #get all supplements (PDFs) that go with the report
     assessSups = AssessmentSupplement.objects.filter(assessmentversion__report=report)
     dataSups = DataAdditionalInformation.objects.filter(report=report)
     repSups = ReportSupplement.objects.filter(report=report)
+    #get the HTML of all sections
     html1and2 = HTML(string=p1and2)
     html3 = HTML(string=p3)
     html4 = HTML(string=p4)
+    #set-up temporary files to write pdfs for each section
     f1and2 = tempfile.TemporaryFile()
     f3 = tempfile.TemporaryFile()
     f4 = tempfile.TemporaryFile()
+    #write to those temporary files from the HTML generated
     html1and2.write_pdf(target=f1and2,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
     html3.write_pdf(target=f3,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
     html4.write_pdf(target=f4,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))]) 
+    #set-up a merger to merge all PDFs together
     merged = PdfFileMerger()
     merged.append(f1and2)
+    #start with section 1 and 2, then append assessment supplements
     for sup in assessSups:
+        #get from file server, write to temporary file, append file
         rep = requests.get(sup.supplement.url)
         f7 = tempfile.TemporaryFile()
         f7.write(rep.content)
         merged.append(PdfFileReader(f7))
+    #add section 3
     merged.append(f3)
+    #append data supplements
     for sup in dataSups:
+        #get from file server, write to temporary file, append file
         rep = requests.get(sup.supplement.url)
         f7 = tempfile.TemporaryFile()
         f7.write(rep.content)
         merged.append(PdfFileReader(f7))
+    #append section 4
     merged.append(f4)
+    #add report supplements
     for sup in repSups:
+        #get from file server, write to temporary file, append file
         rep = requests.get(sup.supplement.url)
         f7 = tempfile.TemporaryFile()
         f7.write(rep.content)
         merged.append(PdfFileReader(f7))
+    #write the merged pdf to the HTTP Response
     http_response = HttpResponse(content_type="application/pdf")
     merged.write(http_response)
     return http_response
 @login_required
 @user_passes_test(test_func_a)
 def UngradedRubric(request, rubric):
+    """
+    View to generate ungraded rubric PDF
+
+    Args:
+        request (HttpRequest): request for page
+        rubric (str): primary key of rubric
+    Returns:
+        HttpResponse : the PDF
+    """
     rubric = get_object_or_404(Rubric, pk=rubric)
     template = get_template("makeReports/Grading/rubricPDF.html")
     context = dict()
     context['rubric'] = rubric
+    #get the rubric items separated by section
     context['RIs1'] = RubricItem.objects.filter(rubricVersion=rubric, section=1)
     context['RIs2'] = RubricItem.objects.filter(rubricVersion=rubric, section=2)
     context['RIs3'] = RubricItem.objects.filter(rubricVersion=rubric, section=3)

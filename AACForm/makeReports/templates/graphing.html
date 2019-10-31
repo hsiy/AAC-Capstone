@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<script type='text/javascript'></script>
+<div id="vapp">
+{% endblock %}
+{% block styles %}
+<meta charset='utf-8' />
+<link
+type="text/css"
+rel="stylesheet"
+href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+/>
+<link
+type="text/css"
+rel="stylesheet"
+href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
+/> 
+{% endblock %}
+{% block content %}
+<h3>Historical Data</h3>
+{% if user.profile.aac %}
+    <h4>Please choose your college</h4>
+    <div class="dd_col">
+        <select id="id_college" v-model="college" v-on:change="updateDept" name="college">
+                    <template v-for="c in cols">
+                        <option v-bind:value="c.pk">[[c.name]]</option>
+                    </template>
+        </select>
+    </div>
+    <h4>Please choose your department</h4>
+    <div class="dd_dept">
+        <select id="id_department" v-model="department" v-on:change="updateProg" name="department">
+            <template v-for="d in depts">
+                    <option v-bind:value="d.pk">[[d.name]]</option>
+            </template>
+        </select>
+    </div>
+{% endif %}
+<h4>Please choose your desired degree program</h4>
+<div class="dd_dprog">
+    <select id="id_prog" v-model="dept" v-on:change="updateProg" name="dept">
+        <template v-for="p in progs">
+            <option v-bind:value="p.pk">[[p.name]]</option>
+        </template>
+    </select>
+</div>
+<h4>Date Range</h4>
+<div class="dd_drange">
+    <select id="id_range"></select>
+</div>
+<h4>What would you like to see graphed?</h4>
+<div class="dd_graph">
+    <select id="id_graph">
+        <option value="1">Specific SLO: target vs actual</option>
+        <option value="2">Number of SLO's met</option>
+        <option value="3">Number of degree programs meeting target</option>
+    </select>
+</div>
+<template v-if:"id_graph == 1">
+    <h4>Pick the SLO you would like to see graphed</h4>
+    <div class="specific">
+        <select id="spec">
+            <template v-for="s in slos">
+                <option v-bind:value="p.pk">[[slo.name]]</option>
+            </template>
+        </select>
+    </div>
+</template>    
+{% endblock %}
+{% block endscripts %}
+    <script>
+    var vapp=new Vue({
+            el: '#vapp',
+            delimiters: ['[[', ']]'],
+            data: { 
+                dept: null,
+                progs: null,
+                slos: null
+            },
+            computed: {
+            },
+            methods: {
+                updateDept: function () {
+                    fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
+                        .then(response => {
+                            response.clone().json()
+                        .then(json => {
+                            this.depts = json;
+                        })
+                    });
+                },
+                updateProg: function() {
+                    fetch("{% url 'makeReports:api-prog-by-dept' %}?department="+this.department)
+                        .then(response => {
+                            response.clone().json()
+                        .then(json => {
+                            this.progs = json;
+                        })
+                    });
+                },
+                updateSLOs: function() {
+                    fetch("{% url 'makeReports:api-slo-by-prog' %}?program="+this.program)
+                        .then(response => {
+                            response.clone().json()
+                        .then(json => {
+                            this.slos = json;
+                        })
+                    });
+                }
+            }
+        });
+    </script>
+    <script>
+        var start = 2015;
+        var end = new Date().getFullYear();
+        var options = "";
+        for (var year = start; year <= end; year++)
+        {
+            options += "<option>"+ "Fall " + year + "</option>";
+            options += "<option>"+ "Spring " + year + "</option>";
+        }
+        document.getElementById("id_range").innerHTML = options;
+    </script>
+{% endblock %}
