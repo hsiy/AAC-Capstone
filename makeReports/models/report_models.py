@@ -97,7 +97,7 @@ class SLOInReport(models.Model):
     number = models.PositiveIntegerField(default=1)
     numberOfAssess = models.PositiveIntegerField(default=0, verbose_name="number of assessments")
     def __str__(self):
-        return mark_safe(self.goalText)
+        return self.goalText
 class GradGoal(models.Model):
     """
     A graduate goal graduate level programs may obtain

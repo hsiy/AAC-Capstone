@@ -11,8 +11,8 @@ class CreateNewSLO(CleanSummer,forms.Form):
     """
     Form to create a new SLO
     """
-    text = forms.CharField(widget= forms.Textarea, label="SLO: ") 
-    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ")
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO: ") 
+    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ", widget=forms.Select(attrs={'class':'form-control col-5'}))
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
     summer_max_length = 1000
     def __init__(self,*args,**kwargs):
@@ -30,7 +30,7 @@ class ImportSLOForm(forms.Form):
     """
     Form to import pre-existing SLO
     """
-    slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ")
+    slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ", widget=forms.Select(attrs={'class':'form-control col-5'}))
     importAssessments = forms.BooleanField(required=False,label="Also import assessments?")
     #of type SLOInReport
     def __init__(self, *args, **kwargs):
@@ -47,9 +47,9 @@ class EditNewSLOForm(CleanSummer,forms.Form):
     """
     Form to edit a new SLO (no restrictions)
     """
-    text = forms.CharField(widget= forms.Textarea, label="SLO: ")
-    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level: ")
-    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO: ")
+    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level: ",widget=forms.Select(attrs={'class':'form-control col-5'}))
+    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple(), label="Graduate-level Goals: ")
     
     summer_max_length = 1000
     def __init__(self,*args,**kwargs):
@@ -67,20 +67,20 @@ class EditImportedSLOForm(CleanSummer,forms.Form):
     """
     Form to edit imported SLO (more restricted than new)
     """
-    text = forms.CharField(widget= forms.Textarea, label="SLO: ", max_length=1000)
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO: ", max_length=1000)
     summer_max_length = 1000
 class Single2000Textbox(CleanSummer,forms.Form):
     """
     Form for a single 2000 character textbox
     """
-    text = forms.CharField(widget=SummernoteWidget(),label="")
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="")
     summer_max_length = 2000
 
 class ImportStakeholderForm(forms.Form):
     """
     Form to import pre-existing stakeholder communication text
     """
-    stk = forms.ModelChoiceField(queryset=None, label="Stakeholder Communication Methods")
+    stk = forms.ModelChoiceField(queryset=None, label="Stakeholder Communication Methods", widget=forms.Select(attrs={'class':'form-control col-7'}))
     def __init__(self, *args, **kwargs):
         """
         Initializes form, including setting choices for stakeholder communication

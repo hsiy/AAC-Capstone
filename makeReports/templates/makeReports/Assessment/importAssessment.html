@@ -22,7 +22,7 @@
             <select id = "slo" name="slo" required>
                 <option value = "-1">Any</option>
                 {% for slo in slo_list %}
-                    <option value = "{{slo.pk}}">{{slo.goalText|safe}}</option>
+                    <option value = "{{slo.pk}}">{{slo.goalText}}</option>
                 {% endfor %}
             </select>
         </div>

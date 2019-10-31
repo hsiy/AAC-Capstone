@@ -31,7 +31,7 @@ class SectionRubricForm(forms.Form):
         self.fields['section_comment'] = forms.CharField(
             required=False, 
             widget=SummernoteWidget(
-                attrs={'summernote': {'width' : '415px'}}))
+                attrs={'style':'width:445px','summernote': {'width' : '415px'}}))
     def clean_section_comment(self):
         """
         Cleans the markup of the comment
@@ -62,10 +62,10 @@ class RubricItemForm(forms.ModelForm):
             'EEtext':'Met expectations text'
         }
         widgets ={
-            'text': SummernoteWidget(),
-            'DMEtext':SummernoteWidget(),
-            'MEtext':SummernoteWidget(),
-            'EEtext':SummernoteWidget()
+            'text': SummernoteWidget(attrs={'style':'width:750px'}),
+            'DMEtext':SummernoteWidget(attrs={'style':'width:750px'}),
+            'MEtext':SummernoteWidget(attrs={'style':'width:750px'}),
+            'EEtext':SummernoteWidget(attrs={'style':'width:750px'})
         }
     def clean_text(self):
         """

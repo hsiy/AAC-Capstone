@@ -4,7 +4,7 @@
 <h3>Delete SLO</h3>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Are you sure you want to delete "{{ object.goalText|safe }}"?</p>
+    <p>Are you sure you want to delete "{{ object.goalText }}"?</p>
     {% buttons %}
         <button type="submit" class="btn btn-primary">Delete SLO</button>
     {% endbuttons %}
