@@ -8,7 +8,7 @@
             {% for slo in slo_list %}
             <tr>
                 <td>
-                    <b>SLO {{slo.number}}: </b>{{slo.goalText|safe}}
+                    <b>SLO {{slo.number}}: </b>{{slo.goalText}}
                 </td>
                 <td>
                     {{slo.slo.get_blooms_display}}

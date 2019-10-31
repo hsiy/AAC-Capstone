@@ -4,20 +4,41 @@ from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 from .cleaners import cleanText
 from django.core.exceptions import ValidationError
-
-
+"""
+Forms related to AAC grading reports
+"""
 class SectionRubricForm(forms.Form):
+    """
+    Form to grade one section of a report based upon a rubric
+    """
     def __init__(self, *args, **kwargs):
+        """
+        Initializes form with fields for each rubric item
+
+        Keyword Args:
+            rubricItems (QuerySet): rubric items for the section
+        """
         rubricItems = kwargs.pop('rubricItems')
         super(SectionRubricForm, self).__init__(*args, **kwargs)
         for rI in rubricItems:
-            self.fields['rI'+str(rI.pk)] = forms.ChoiceField(choices=RUBRIC_GRADES_CHOICES, widget=forms.RadioSelect,label=mark_safe(rI.text),required=False)
-            #required=False so allow partial completion of the 
+            self.fields['rI'+str(rI.pk)] = forms.ChoiceField(
+                choices=RUBRIC_GRADES_CHOICES, 
+                widget=forms.RadioSelect,
+                label=mark_safe(rI.text),
+                required=False
+                )
+            #required=False so allow partial completion of the form
         self.fields['section_comment'] = forms.CharField(
             required=False, 
             widget=SummernoteWidget(
-                attrs={'summernote': {'width' : '415px'}}))
+                attrs={'style':'width:445px','summernote': {'width' : '415px'}}))
     def clean_section_comment(self):
+        """
+        Cleans the markup of the comment
+        
+        Returns:
+            str : cleaned input
+        """
         data = self.cleaned_data['section_comment']
         max_length = 2000
         cleaned = cleanText(data)
@@ -25,6 +46,9 @@ class SectionRubricForm(forms.Form):
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned
 class RubricItemForm(forms.ModelForm):
+    """
+    Form to create a new rubric item
+    """
     class Meta:
         model = RubricItem
         fields = ['text','abbreviation','section','order','DMEtext','MEtext','EEtext']
@@ -38,12 +62,18 @@ class RubricItemForm(forms.ModelForm):
             'EEtext':'Met expectations text'
         }
         widgets ={
-            'text': SummernoteWidget(),
-            'DMEtext':SummernoteWidget(),
-            'MEtext':SummernoteWidget(),
-            'EEtext':SummernoteWidget()
+            'text': SummernoteWidget(attrs={'style':'width:750px'}),
+            'DMEtext':SummernoteWidget(attrs={'style':'width:750px'}),
+            'MEtext':SummernoteWidget(attrs={'style':'width:750px'}),
+            'EEtext':SummernoteWidget(attrs={'style':'width:750px'})
         }
     def clean_text(self):
+        """
+        Cleans user input of field text
+        
+        Returns:
+            str : cleaned input
+        """
         data = self.cleaned_data['text']
         max_length = 1000
         cleaned = cleanText(data)
@@ -51,6 +81,12 @@ class RubricItemForm(forms.ModelForm):
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned
     def clean_DMEtext(self):
+        """
+        Cleans user input of field DMEtext
+        
+        Returns:
+            str : cleaned input
+        """
         data = self.cleaned_data['DMEtext']
         max_length = 1000
         cleaned = cleanText(data)
@@ -58,6 +94,12 @@ class RubricItemForm(forms.ModelForm):
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned
     def clean_MEtext(self):
+        """
+        Cleans user input of field MEtext
+        
+        Returns:
+            str : cleaned input
+        """
         data = self.cleaned_data['MEtext']
         max_length = 1000
         cleaned = cleanText(data)
@@ -65,6 +107,12 @@ class RubricItemForm(forms.ModelForm):
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned
     def clean_EEtext(self):
+        """
+        Cleans user input of field EEtext
+        
+        Returns:
+            str : cleaned input
+        """
         data = self.cleaned_data['EEtext']
         max_length = 1000
         cleaned = cleanText(data)
@@ -72,14 +120,32 @@ class RubricItemForm(forms.ModelForm):
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
         return cleaned
 class DuplicateRubricForm(forms.Form):
+    """
+    Form to duplicate a rubric (given the rubric) and set the new name
+    """
     #rubToDup = forms.ModelChoiceField(label="Rubric to duplicate",queryset=Rubric.objects,widget=forms.HiddenInput(),required=False)
     new_name = forms.CharField(max_length=1000)
 class SubmitGrade(forms.Form):
+    """
+    Dummy form to submit rubric
+    """
     hidden = forms.CharField(max_length=5,widget=forms.HiddenInput(), required=False)
     def __init__(self, *args, **kwargs):
+        """
+        Initializes form and sets valid on the instance
+
+        Keyword Args:
+            valid (Boolean) : the grading is complete
+        """
         self.valid = kwargs.pop('valid')
         super(SubmitGrade, self).__init__(*args, **kwargs)
     def clean(self):
-      super().clean()
-      if not self.valid:
-          raise forms.ValidationError("Not all rubric items have been graded.")
+        """
+        Cleans form and raises validation error if not valid
+
+        Raises:
+            ValidationError
+        """
+        super().clean()
+        if not self.valid:
+            raise forms.ValidationError("Not all rubric items have been graded.")
