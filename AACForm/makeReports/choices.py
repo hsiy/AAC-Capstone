@@ -27,7 +27,7 @@ SLO_STATUS_CHOICES = (
     ("Not Met", "Not Met"), 
     ("Unknown", "Unknown"))
 FREQUENCY_CHOICES = (
+    ("O","Other"),
     ("S","Once/semester"),
-    ("Y","Once/year"),
-    ("O","Other")
+    ("Y","Once/year")    
 )
