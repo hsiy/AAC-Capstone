@@ -6,6 +6,9 @@ from django.http import HttpResponse
 import requests
 from model_mommy import mommy
 class NonAACTest(TestCase):
+    """
+    Creates Non AAC member logged in
+    """
     def setUp(self):
         """
         Setups a user
@@ -17,13 +20,13 @@ class NonAACTest(TestCase):
                 password = 'passywordy',
             )
         self.col = mommy.make("College")
-        self.dept = Department.objects.create(name="Dept",college=col)
-        self.user.profile.department = dept
+        self.dept = Department.objects.create(name="Dept",college=self.col)
+        self.user.profile.department = self.dept
         self.user.profile.save()
         self.client.login(username='Megan', password='passywordy')
 
 class AACTest(TestCase):
-        def setUp(self):
+    def setUp(self):
         """
         Setups a user
         """
@@ -34,8 +37,8 @@ class AACTest(TestCase):
                 password = 'passywordy',
             )
         self.col = mommy.make("College")
-        self.dept = Department.objects.create(name="Dept",college=col)
-        self.user.profile.department = dept
+        self.dept = Department.objects.create(name="Dept",college=self.col)
+        self.user.profile.department = self.dept
         self.user.profile.aac = True
         self.user.profile.save()
         self.client.login(username='Megan', password='passywordy')
@@ -69,21 +72,63 @@ class FacultyReportList(NonAACTest):
         self.client.logout()
         response = self.client.get(reverse('makeReports:rpt-list-dept'))
         self.assertEquals(response.status_code,302)
-class ReportListSearchedDept(AACTest):
+class ReportAACSetupTest(AACTest):
     """
-    Tests the by department report list page
+    Creates a report during setup to test
     """
     def setUp(self):
         """
         Sets up user and creates report to search
         """
-        super(ReportListSearchedDept,self).setUp()
-        degProg = mommy.make('DegreeProgram')
-        degProg.department = self.dept
+        super(ReportAACSetupTest,self).setUp()
+        self.degProg = mommy.make('DegreeProgram')
+        self.degProg.department = self.dept
+        self.degProg.save()
         self.rpt = mommy.make('Report')
         self.rpt.submitted = True
-        self.rpt.returned = False
-        self.rpt.degreeProgram = degProg
+        self.rpt.degreeProgram = self.degProg
         self.rpt.save()
+class ReportSetupTest(NonAACTest):
+    def setUp(self):
+        """
+        Sets up user and creates report to search
+        """
+        super(ReportSetupTest,self).setUp()
+        self.degProg = mommy.make('DegreeProgram')
+        self.degProg.department = self.dept
+        self.degProg.save()
+        self.rpt = mommy.make('Report')
+        self.rpt.submitted = True
+        self.rpt.degreeProgram = self.degProg
+        self.rpt.save()
+
+class ReportListSearchedDept(ReportAACSetupTest):
+    """
+    Tests the by department report list page
+    """
     def test_view(self):
-        response = self.client.get(reverse('makeReports:search-reports-dept',args={}))
+        """
+        Test 200 response and that report is in the list
+        """
+        response = self.client.get(reverse('makeReports:search-reports-dept')+"?submitted=S&year=&dP=&graded=")
+        self.assertEquals(response.status_code,200)
+        self.assertContains(response,self.rpt.degreeProgram.name)
+        response = self.client.get(reverse('makeReports:search-reports-dept')+"?submitted=nS&year=&dP=&graded=")
+        self.assertNotContains(response,self.rpt.degreeProgram.name)
+class DisplayReportTest(ReportSetupTest):
+    """
+    Tests display report page
+    """
+    def test_view(self):
+        """
+        Tests 200 response and that something from the report is displayed
+        """
+        response = self.client.get(reverse('makeReports:view-rpt',kwargs={'pk':self.rpt.pk}))
+        self.assertEquals(response.status_code,200)
+        self.assertContains(response, self.rpt.degreeProgram.name)
+        self.assertContains(response, self.rpt.degreeProgram.department.name)
+        self.assertContains(response, self.rpt.author)
+        self.assertContains(response, "SLO")
+        self.assertContains(response, "Assessment")
+        self.assertContains(response, "Data")
+        self.assertContains(response, "Decision")
