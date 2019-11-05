@@ -397,7 +397,7 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
         Sets whether the target has been met and then create objects based upon the form
         """
         self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
-        form.instance.assessmentVersion = assess
+        form.instance.assessmentVersion = self.assess
         if self.assess.target <= form.instance.aggregate_proficiency:
             form.instance.met = True
         else:

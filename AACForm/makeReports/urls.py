@@ -140,6 +140,7 @@ urlpatterns = [
     re_path(r'^pdf/rubric/(?P<rubric>\d+)/auto/$', views.UngradedRubric,name='rubric-auto-pdf'),
     #APIs
     re_path(r'^api/dept/col/$', views.DeptByColListAPI.as_view(),name='api-dept-by-col'),
+    re_path(r'^api/SLOSuggestions/$', views.SLOSuggestionsAPI.as_view(), name='api-slo-suggestions'),
     re_path(r'^api/prog/dep/$', views.ProgByDeptListAPI.as_view(),name='api-prog-by-dept'),
     re_path(r'^api/slo/dp/$', views.SloByDPListAPI.as_view(),name='api-slo-by-dp'),
     #Graphing

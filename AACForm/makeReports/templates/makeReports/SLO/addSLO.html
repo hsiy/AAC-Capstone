@@ -4,9 +4,75 @@
 <h3>Add New SLO</h3>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
+    {% load static %}
     {% bootstrap_form form %}
+    <p id='errors'></p>
     {% buttons %}
         <button type="submit" class="btn btn-primary">Add SLO</button>
     {% endbuttons %}
 </form>
+{% endblock %}
+{% block in_endscripts %}
+<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js">
+</script> 
+<script>
+    $('#id_text').blur(function() {
+        // Method to get cookie
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        // Method to check if HTTP method needs cookie
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        // Ensure cookie is sent in ajax request
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        // actual ajax request
+        $.ajax({
+            url: '{% url 'makeReports:api-slo-suggestions' %}',
+            type: 'post', 
+            data: {
+                "slo_text": $('#id_text').val()
+            },
+            // If the request goes through, do the following
+            success: function(msg, status, jqXHR){
+                var label_str = "Highest Bloom's Taxonomy Level:";
+                if(msg.blooms == "none"){
+                    label_str = "Highest Bloom's Taxonomy Level:";
+                } else {
+                    label_str = "Highest Bloom's Taxonomy Level (Suggested Level: " + msg.blooms + "):"
+                }
+                document.querySelector('[for="id_blooms"]').innerHTML = label_str;
+
+                var error_str;
+                if(msg.complex){
+                    error_str = "This SLO may be too complex. Consider breaking it down into multiple SLOs.";
+                } else {
+                    error_str = "";
+                }
+                document.getElementById("errors").innerHTML = error_str;
+            }
+        });
+    });
+</script>
 {% endblock %}

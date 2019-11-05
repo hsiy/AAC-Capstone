@@ -14,17 +14,17 @@ class CreateNewAssessment(forms.Form):
     """
     slo = forms.ModelChoiceField(label="SLO",queryset=None, widget=SLOChoicesJSWidget)
     title = forms.CharField(max_length=300)
-    description = forms.CharField(widget=SummernoteWidget(),label="Describe How Measure Aligns with SLO")
+    description = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Describe How Measure Aligns with SLO")
     domain = forms.MultipleChoiceField(choices = (("Pe", "Performance"), ("Pr","Product"), ("Ex","Examination") ), widget=forms.CheckboxSelectMultiple,required=False)
     directMeasure = forms.ChoiceField(label="Direct measure",choices = ((True, "Direct Measure"), (False,"Indirect Measure")))
     finalTerm = forms.ChoiceField(label="Point in Program Assessment is Administered",choices = ((True, "In final term"), (False, "In final year")))
     where = forms.CharField(label="Where does the assessment occur",widget= SummernoteWidget())
-    allStudents = forms.ChoiceField(label="Population Measured",choices = ((True, "All Students"), (False,"Sample of Students")))
+    allStudents = forms.ChoiceField(label="Population Measured",choices = ((False,"Sample of Students"), (True, "All Students")))
     sampleDescription = forms.CharField(label="Describe what students are sampled (if not all)",widget= SummernoteWidget(), required=False)
     frequencyChoice = forms.ChoiceField(label="Frequency of Data Collection", choices=FREQUENCY_CHOICES)
-    frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(),required=False)
+    frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(attrs={'style':'width:750px'}),required=False)
     threshold = forms.CharField(max_length=500,label="Proficiency Threshold")
-    target = forms.IntegerField(min_value=0, label="Program Proficiency Target: % of students that achieve the proficiency threshold")
+    target = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'addon_after':'%'}), label="Program Proficiency Target: Percentage of students that achieve the proficiency threshold")
     
     def __init__(self,*args,**kwargs):
         """

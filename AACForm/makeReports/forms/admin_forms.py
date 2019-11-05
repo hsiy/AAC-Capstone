@@ -64,7 +64,7 @@ class AnnouncementForm(CleanSummer,forms.ModelForm):
     """
     Form to create announcement by AAC
     """
-    text = forms.CharField(widget=SummernoteWidget(),label="Announcement")
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Announcement")
     summer_max_length = 2000
     class Meta:
         model = Announcement
@@ -76,7 +76,7 @@ class GradGoalForm(CleanSummer,forms.ModelForm):
     """
     Form to create new graduate goal
     """
-    text = forms.CharField(widget=SummernoteWidget(),label="Goal text: ")
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Goal text: ")
     summer_max_length = 600
     class Meta:
         model = GradGoal
