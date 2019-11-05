@@ -22,6 +22,12 @@ class ReportFirstPage(DeptOnlyMixin,UpdateView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatch the view and attach the report to the instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.report = Report.objects.get(pk=self.kwargs['pk'])
         return super(ReportFirstPage,self).dispatch(request,*args,**kwargs)
@@ -36,6 +42,12 @@ class ReportFirstPage(DeptOnlyMixin,UpdateView):
         context['rpt'] = self.report
         return context
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class FinalReportSupplements(DeptReportMixin, ListView):
     """
@@ -75,10 +87,22 @@ class AddEndSupplements(DeptReportMixin, CreateView):
     def form_valid(self,form):
         """
         Sets the report then creates the report supplement from the form
+
+        Args:
+            form (ModelForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         form.instance.report = self.report
         return super(AddEndSupplements,self).form_valid(form)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (report supplement summary)
+
+        Returns:
+            str : URL of report supplement list page
+        """
         return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
 class DeleteEndSupplements(DeptReportMixin, DeleteView):
     """
@@ -100,6 +124,12 @@ class DeleteEndSupplements(DeptReportMixin, DeleteView):
         context['report'] = self.report
         return context
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (report supplement summary)
+
+        Returns:
+            str : URL of report supplement list page
+        """
         return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
 class SubmitReport(DeptReportMixin, FormView):
     """
@@ -169,6 +199,12 @@ class SubmitReport(DeptReportMixin, FormView):
     def form_valid(self,form):
         """
         After the form is validated, set the report to submitted
+
+        Args:
+            form (SubmitReportForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.report.submitted = True
         self.report.save()

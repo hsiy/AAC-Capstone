@@ -22,6 +22,12 @@ class AdminHome(AACOnlyMixin,FormView):
     def form_valid(self, form):
         """
         Generates all reports in cycle for this year with given rubric (in form)
+        
+        Args:
+            form (GenerateReports): completed form to process
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         #generate this years reports
         thisYear = datetime.now().year
@@ -80,6 +86,13 @@ class DeleteCollege(AACOnlyMixin,UpdateView):
     def form_valid(self,form):
         """
         Processes form after submission and validation
+
+        Args:
+            form (ModelForm): completed form to process
+            
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         depts = Department.objects.filter(college=self.object)
         for dept in depts:
@@ -107,6 +120,9 @@ class CollegeList(AACOnlyMixin,ListView):
     def get_queryset(self):
         """
         Returns active colleges in a QuerySet
+
+        Returns:
+            QuerySet : queryset of all active colleges
         """
         objs = College.active_objects.all()
         return objs
@@ -140,6 +156,9 @@ class DepartmentList(AACOnlyMixin,ListView):
     def get_queryset(self):
         """
         Returns QuerySet of :class:`~makeReports.models.report-models.Department` objects meeting search parameters
+        
+        Returns:
+            QuerySet : queryset of active departments meeting search criteria
         """
 
         objs = Department.active_objects
@@ -196,18 +215,33 @@ class CreateDegreeProgram(AACOnlyMixin,CreateView):
         """
         Returns the form to be used
 
+        Keyword Args:
+            form_class (class) : class of form to be used
+
         Notes:
-            To the default form it changes the label of the cycle and startingYear field
+            To the default form, it changes the label of the cycle and startingYear field
         """
         form = super(CreateDegreeProgram,self).get_form()
         form.fields['cycle'].label="Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)"
         form.fields['startingYear'].label="The first year report is assigned for cycle (leave blank if no cycle)"
         return form
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (degree program list)
+
+        Returns:
+            str : URL of success
+        """
         return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
     def form_valid(self, form):
         """
         First sets the department passed upon pk in the kwargs, then creates the DegreeProgram model based upon the form
+        
+        Args:
+            form (ModelForm): completed form to be processed
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         form.instance.department = Department.objects.get(pk=int(self.kwargs['dept']))
         return super(CreateDegreeProgram, self).form_valid(form)
@@ -223,6 +257,12 @@ class UpdateDegreeProgram(AACOnlyMixin,UpdateView):
     form_class = CreateDPByDept
     template_name = "makeReports/AACAdmin/CollegeDeptDP/updateDP.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (degree program list)
+
+        Returns:
+            str : URL of success
+        """
         return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
 class DeleteDegreeProgram(AACOnlyMixin,UpdateView):
     """
@@ -236,6 +276,12 @@ class DeleteDegreeProgram(AACOnlyMixin,UpdateView):
     fields = ['active']
     template_name = "makeReports/AACAdmin/CollegeDeptDP/deleteDP.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (degree program list)
+
+        Returns:
+            str : URL of success
+        """
         return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
 class RecoverDegreeProgram(AACOnlyMixin,UpdateView):
     """
@@ -249,6 +295,12 @@ class RecoverDegreeProgram(AACOnlyMixin,UpdateView):
     fields = ['active']
     template_name = "makeReports/AACAdminCollegeDeptDP//recoverDP.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (degree program list)
+
+        Returns:
+            str : URL of success
+        """
         return reverse_lazy('makeReports:dp-list',args=[self.kwargs['dept']])
 class DegreeProgramList(AACOnlyMixin,ListView):
     """
@@ -262,6 +314,20 @@ class DegreeProgramList(AACOnlyMixin,ListView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches the view
+        
+        
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            dept (str): primary key of :class:`~makeReports.models.report-models.Department`
+
+        Keyword Args:
+            dept (str): primary key of :class:`~makeReports.models.report-models.Department`
+
+        Returns:
+            HttpResponse : response of page to request
+
         Notes:
             attaches the department associated with the primary key to the instance
         """
@@ -323,6 +389,14 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
     def dispatch(self, request,*args, **kwargs):
         """
         Dispatches the view
+
+        Args:
+            request (HttpRequest) : request to view page
+        Keyword Args:
+            dept (str): primary key of department
+
+        Returns:
+            HttpResponse : response of page to request
         Notes:
             attaches the department to the instance
         """
@@ -330,6 +404,8 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
         return super(ArchivedDegreePrograms, self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         """
+        Gets QuerySet of degree programs user has access to
+
         Returns:
             QuerySet : degree programs which are inactive and in the department
         """
@@ -337,6 +413,7 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
     def get_context_data(self, **kwargs):
         """
         Calls super and adds department to context to pass to template
+        
         Returns:
             dict : context to pass to template
         """
@@ -351,6 +428,15 @@ class MakeAccount(AACOnlyMixin,FormView):
     form_class = MakeNewAccount
     success_url = reverse_lazy('makeReports:admin-home')
     def form_valid(self,form):
+        """
+        Saves form after validation
+
+        Args:
+            form (MakeNewAccount) : form to be processed and saved
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         form.save()
         return super().form_valid(form)
 class ModifyAccount(AACOnlyMixin,FormView):
@@ -365,10 +451,14 @@ class ModifyAccount(AACOnlyMixin,FormView):
     template_name = "makeReports/AACAdmin/modify_account.html"
     def dispatch(self,request, *args,**kwargs):
         """
-        Dispatches view
-
-        Notes:
-            attaches user to instance
+        Dispatches view and attaches user to instance
+        
+        Keyword Args:
+            pk (str): primary key of user to change
+        Returns:
+            HttpResponse : response of page to request
+        Args:
+            request (HttpRequest) : HTTP request to page
         """
         self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
         return super(ModifyAccount,self).dispatch(request,*args,**kwargs)
@@ -387,6 +477,15 @@ class ModifyAccount(AACOnlyMixin,FormView):
         initial['email'] = self.userToChange.user.email
         return initial
     def form_valid(self,form):
+        """
+        Sets the User to the attributes submitted in the field
+
+        Args:
+            form (UpdateUserForm): filled out form
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.userToChange.aac = form.cleaned_data['aac']
         self.userToChange.department = form.cleaned_data['department']
         self.userToChange.user.first_name = form.cleaned_data['first_name']

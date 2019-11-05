@@ -55,7 +55,7 @@ class AddNewAssessment(DeptReportMixin,FormView):
         return kwargs
     def get_success_url(self):
         """
-        Gets assessment summary url
+        Gets assessment summary url (assessment summary)
 
         Returns:
             str : success url
@@ -65,6 +65,12 @@ class AddNewAssessment(DeptReportMixin,FormView):
         """
         |  Creates :class:`~makeReports.models.report_models.Assessment` and :class:`~makeReports.models.report-models.AssessmentVersion` based upon form
         |  Updates the numberOfAssess fields for :class:`~makeReports.models.report-models.SLO`
+
+        Args:
+            form (CreateNewAssessment): completed form to be processed
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         rpt = self.report
         num = form.cleaned_data['slo'].numberOfAssess
@@ -121,6 +127,12 @@ class AddNewAssessmentSLO(AddNewAssessment):
         initial['slo'] = SLOInReport.objects.get(pk=self.kwargs['slo'])
         return initial
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class ImportAssessment(DeptReportMixin,FormView):
     """
@@ -133,6 +145,12 @@ class ImportAssessment(DeptReportMixin,FormView):
     template_name = "makeReports/Assessment/importAssessment.html"
     form_class = ImportAssessmentForm
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def get_form_kwargs(self):
         """
@@ -166,6 +184,13 @@ class ImportAssessment(DeptReportMixin,FormView):
         |  Creates :class:`~makeReports.models.report-models.AssessmentVersion` from form
         |  Also updates the numberOfAssess field of corresponding :class:`~makeReports.models.report-models.SLOInReport`
         |  Updates the numberOfUses field of corresponding :class:`~makeReports.models.report-models.Assessment`
+        
+        Args:
+            form (ImportAssessmentForm): completed form to be processed
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        
         """
         rpt = self.report
         slo = form.cleaned_data['slo']
@@ -220,10 +245,24 @@ class ImportAssessmentSLO(ImportAssessment):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches the view, and attaches the specific SLO to the instance
+
+        Args:
+            request (HttpRequest): request to view page
+        Keyword Args:
+            slo (str) : primary key of SLO
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.slo = SLOInReport.objects.get(pk=self.kwargs['slo'])
         return super(ImportAssessmentSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_initial(self):
         """
@@ -257,6 +296,15 @@ class EditImportedAssessment(DeptReportMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view, and attaches AssessmentVersion to instance
+
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            assessIR (str): primary key of assessment to update
+        
+        Returns:
+            HttpResponse : response of page to request
         """
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(EditImportedAssessment,self).dispatch(request,*args,**kwargs)
@@ -290,9 +338,23 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report).order_by("number")
         return kwargs
     def get_success_url(self):
-        r = Report.objects.get(pk=self.kwargs['report'])
-        return reverse_lazy('makeReports:assessment-summary', args=[r.pk])
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
+        return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self,form):
+        """
+        Edits imported assessment based upon form
+
+        Args:
+            form (EditImportedAssessmentForm): completed form to be processed
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.assessVers.description = form.cleaned_data['description']
         self.assessVers.date = datetime.now()
         self.assessVers.finalTerm = form.cleaned_data['finalTerm']
@@ -319,6 +381,14 @@ class EditNewAssessment(DeptReportMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatch view and attach assessment to instance
+
+        Args:
+            request (HttpRequest): request to view page
+        Keyword Args:
+            assessIR (str): primary key of assessment to edit
+        
+        Returns:
+            HttpResponse : response of page to request
         """
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(EditNewAssessment,self).dispatch(request,*args,**kwargs)
@@ -357,8 +427,23 @@ class EditNewAssessment(DeptReportMixin,FormView):
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report).order_by("number")
         return kwargs
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
+        """
+        Edit assessment according to form
+
+        Args:
+            form (EditNewAssessmentForm) : form to be processed
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.assessVers.description = form.cleaned_data['description']
         self.assessVers.date = datetime.now()
         self.assessVers.assessment.title = form.cleaned_data['title']
@@ -389,20 +474,39 @@ class SupplementUpload(DeptReportMixin,CreateView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatch view and attach assessment to instance
+
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            assessIR (str): primary key of assessment
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(SupplementUpload,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets success_url and used as hook to add supplement to assessment
+        Gets success URL and used as hook to add supplement to assessment
 
         Returns:
-            str : url of assessment summary
+            str : URL of assessment summary
         """
         self.assessVers.supplements.add(self.object)
         self.assessVers.save()
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self,form):
+        """
+        Sets the assessment version and datetime, then 
+        creates supplement to assessment based upon form
+
+        Args:
+            form (ModelForm): completed form to process
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         form.instance.assessmentVersion = self.assessVers
         form.instance.uploaded_at = datetime.now()
         return super(SupplementUpload,self).form_valid(form)
@@ -422,10 +526,25 @@ class ImportSupplement(DeptReportMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches assessment to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Keyword Args:
+            assessIR (str): primary key of assessment
+        
+        Returns:
+            HttpResponse : response of page to request
         """
         self.assessVers = AssessmentVersion.objects.get(pk=self.kwargs['assessIR'])
         return super(ImportSupplement,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def get_form_kwargs(self):
         """
@@ -441,6 +560,15 @@ class ImportSupplement(DeptReportMixin,FormView):
             assessmentversion__report__year=yearIn, assessmentversion__report__degreeProgram=dPobj)
         return kwargs
     def form_valid(self,form):
+        """
+        Imports supplement to another assessment based upon form
+
+        Args:
+            form (ImportSupplementForm): completed form to be processed
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.assessVers.supplements.add(form.cleaned_data['sup'])
         self.assessVers.save()
         return super(ImportSupplement,self).form_valid(form)
@@ -467,6 +595,12 @@ class DeleteSupplement(DeptReportMixin,DeleteView):
     model = AssessmentSupplement
     template_name = "makeReports/Assessment/deleteSupplement.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
 class Section2Comment(DeptReportMixin,FormView):
     """
@@ -475,14 +609,37 @@ class Section2Comment(DeptReportMixin,FormView):
     template_name = "makeReports/Assessment/assessmentComment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
+        """
+        Sets the section 2 comment from the form
+
+        Args:
+            form (Single2000Textbox): completed form to be processed
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.report.section2Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section2Comment,self).form_valid(form)
     def get_initial(self):
+        """
+        Gets initial value for form based upon current comment value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section2Comment,self).get_initial()
         initial['text']="No comment."
+        if self.report.section2Comment:
+            initial['text'] = self.report.section2Comment
         return initial
 class DeleteImportedAssessment(DeptReportMixin,DeleteView):
     """
@@ -496,6 +653,15 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches the view, and attaches the assessement, the SLO, the number of the assessment to the instance
+        
+        Args:
+            request (HttpRequest): request to view page
+            
+        Keyword Args:
+            pk (str): primary key of assessment to "delete"
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         a = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
         self.oldNum = a.number
@@ -504,7 +670,7 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
         return super(DeleteImportedAssessment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets success url and uses it has a hook to update the number of other assessments and 
+        Gets success url (assessment summary) and uses it has a hook to update the number of other assessments and 
         update corresponding :class:`~makeReports.models.report-models.Assessment` and
         :class:`~makeReports.models.report-models.SLOInReport`
 
@@ -538,6 +704,15 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view, and attaches assessment to the instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Keyword Args:
+            pk (str): primary key of assessment delete
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         a = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
         self.oldNum = a.number
@@ -545,7 +720,7 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
         return super(DeleteNewAssessment,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets success url, and uses as hook to update corresponding
+        Gets success url (assessment summary page), and uses as hook to update corresponding
         :class:`~makeReports.models.report-models.Assessment` and 
         :class:`~makeReports.models.report-models.SLOInReport`
 

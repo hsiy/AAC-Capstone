@@ -75,6 +75,16 @@ class GradingView(AACOnlyMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view, and attaches report and rubric items to instance
+
+        Args:
+            request (HttpRequest): request to view page
+
+        
+        Keyword Args:
+            report (str): primary key of current report to grade
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.rubricItems = RubricItem.objects.filter(
@@ -83,6 +93,12 @@ class GradingView(AACOnlyMixin,FormView):
             ).order_by("order","pk")
         return super().dispatch(request,*args,**kwargs)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (grading the next section page)
+
+        Returns:
+            str : URL of next section's grading page
+        """
         return reverse_lazy("makeReports:grade-sec"+str(self.section+1), args=[self.report.pk])
     def get_form_kwargs(self):
         """
@@ -97,6 +113,12 @@ class GradingView(AACOnlyMixin,FormView):
     def form_valid(self,form):
         """
         Generates all graded rubric items and sets the grading comment for the section
+        
+        Args:
+            form (SectionRubricForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         generateRubricItems(self.rubricItems,form,self.report)
         tempStr = "section"+str(self.section)+"Comment"
@@ -106,6 +128,10 @@ class GradingView(AACOnlyMixin,FormView):
     def get_context_data(self, **kwargs):
         """
         Gets template context, including the section, report, and rubric items
+        
+        Returns:
+            dict : context for template
+        
         """
         context = super().get_context_data(**kwargs)
         context = rubricItemsHelper(self,context)
@@ -126,9 +152,21 @@ class Section1Grading(GradingView):
     #model = SLOInReport
     success_url = reverse_lazy("makeReports:admin-home")
     def get_context_data(self, **kwargs):
+        """
+        Returns the context for template needed to display section 1
+
+        Returns:
+            dict : context for template
+        """
         context = super(Section1Grading,self).get_context_data(**kwargs)
         return section1Context(self,context)
     def get_initial(self):
+        """
+        Initializes the section comment based upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section1Grading,self).get_initial()
         initial['section_comment'] = self.report.rubric.section1Comment
         return initial
@@ -139,9 +177,21 @@ class Section2Grading(GradingView):
     section = 2
     template_name = "makeReports/Grading/grading_section2.html"
     def get_context_data(self, **kwargs):
+        """
+        Provides all context needed to display section 2 of the form
+
+        Returns:
+            dict : context for template
+        """
         context = super(Section2Grading,self).get_context_data(**kwargs)
         return section2Context(self,context)
     def get_initial(self):
+        """
+        Gets initial value for comment based upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section2Grading,self).get_initial()
         initial['section_comment'] = self.report.rubric.section2Comment
         return initial
@@ -152,9 +202,21 @@ class Section3Grading(GradingView):
     section = 3
     template_name = "makeReports/Grading/grading_section3.html"
     def get_context_data(self, **kwargs):
+        """
+        Gets context needed to display section 3 of the form
+
+        Returns:
+            dict : context for template
+        """
         context = super(Section3Grading,self).get_context_data(**kwargs)
         return section3Context(self,context)
     def get_initial(self):
+        """
+        Gets initial form values, specifically the comment, based upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section3Grading,self).get_initial()
         initial['section_comment'] = self.report.rubric.section3Comment
         return initial
@@ -165,11 +227,29 @@ class Section4Grading(GradingView):
     section = 4
     template_name = "makeReports/Grading/grading_section4.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (comment page)
+
+        Returns:
+            str : URL of overall comment page
+        """
         return reverse_lazy("makeReports:grade-comment", args=[self.report.pk])
     def get_context_data(self, **kwargs):
+        """
+        Gets context needed to display section 4 of the form
+
+        Returns:
+            dict : context for template
+        """
         context = super(Section4Grading,self).get_context_data(**kwargs)
         return section4Context(self,context)
     def get_initial(self):
+        """
+        Gets the initial comment value based upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section4Grading,self).get_initial()
         initial['section_comment'] = self.report.rubric.section4Comment
         return initial
@@ -180,6 +260,12 @@ class OverallComment(AACReportMixin,FormView):
     form_class = Single2000Textbox
     template_name = "makeReports/Grading/overall_comment.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (review the feedback page)
+
+        Returns:
+            str : URL of review the feedback page
+        """
         return reverse_lazy("makeReports:rub-review", args=[self.report.pk])
     def get_context_data(self,**kwargs):
         """
@@ -192,10 +278,25 @@ class OverallComment(AACReportMixin,FormView):
         context['report'] = self.report
         return context
     def form_valid(self, form):
+        """
+        Saves the comment to the database
+
+        Args:
+            form (Single2000Textbox): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.report.rubric.generalComment = form.cleaned_data['text']
         self.report.rubric.save()
         return super(OverallComment,self).form_valid(form)
     def get_initial(self):
+        """
+        Gets initial value of the comment passed upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(OverallComment,self).get_initial()
         try:
             initial['text'] = self.report.rubric.generalComment
@@ -211,6 +312,13 @@ class RubricReview(AACReportMixin, FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches the view and attaches the graded rubric items to the instance
+        
+        Args:
+            request (HttpRequest): request to view page
+
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.GRIs = GradedRubricItem.objects.filter(rubric__report__pk=self.kwargs['report'])
         return super(RubricReview,self).dispatch(request,*args,**kwargs)
@@ -228,11 +336,23 @@ class RubricReview(AACReportMixin, FormView):
     def form_valid(self,form):
         """
         Sets the rubric to complete and saves the rubric
+
+        Args:
+            form (SubmitGrade): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.report.rubric.complete = True
         self.report.rubric.save()
         return super(RubricReview,self).form_valid(form)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (return report option page)
+
+        Returns:
+            str : URL of return report option page
+        """
         return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
     def get_context_data(self,**kwargs):
         """
@@ -265,6 +385,12 @@ class ReturnReport(AACOnlyMixin,UpdateView):
     def form_valid(self,form):
         """
         Sets the report to be returned, not submitted, and not complete
+
+        Args:
+            form (ModelForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         if form.cleaned_data['returned']:
             self.object.submitted = False
@@ -282,13 +408,35 @@ class Feedback(DeptAACMixin, ListView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches report and graded items to the view
+
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            report (str): primary key of report to view feedback for
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.GRIs = GradedRubricItem.objects.filter(rubric__report=self.report)
         return super(Feedback,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
+        """
+        Returns all graded rubric items within report
+
+        Returns:
+            QuerySet : all graded rubric items in report
+        """
+
         return self.GRIs
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (return report option page)
+
+        Returns:
+            str : URL of return report option page
+        """
         return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
     def get_context_data(self, **kwargs):
         """

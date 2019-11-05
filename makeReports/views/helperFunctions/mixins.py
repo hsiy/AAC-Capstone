@@ -6,6 +6,12 @@ class AACOnlyMixin(LoginRequiredMixin,UserPassesTestMixin):
     Only allows AAC members to access page
     """
     def test_func(self):
+        """
+        Tests is user is part of the AAC
+
+        Returns:
+            bool : if is member of AAC
+        """
         return getattr(self.request.user.profile, "aac")
 class DeptOnlyMixin(LoginRequiredMixin,UserPassesTestMixin):
     """
@@ -15,6 +21,12 @@ class DeptOnlyMixin(LoginRequiredMixin,UserPassesTestMixin):
         Assumes URL has report attribute
     """
     def test_func(self):
+        """
+        Tests if user is in the department
+
+        Returns:
+            bool : if is in department
+        """
         return (self.report.degreeProgram.department == self.request.user.profile.department)
 class DeptAACMixin(LoginRequiredMixin,UserPassesTestMixin):
     """
@@ -24,6 +36,12 @@ class DeptAACMixin(LoginRequiredMixin,UserPassesTestMixin):
         Assumes URL has report attribute
     """
     def test_func(self):
+        """
+        Tests if the user is in the AAC or is in the department
+
+        Returns:
+            bool : if is in AAC or in department
+        """
         dept = (self.report.degreeProgram.department == self.request.user.profile.department)
         aac = getattr(self.request.user.profile, "aac")
         return dept or aac
@@ -35,9 +53,25 @@ class DeptReportMixin(DeptOnlyMixin):
         report (str): primary key of report
     """
     def dispatch(self,request,*args,**kwargs):
+        """
+        Dispatches view and attaches report to the instance
+
+        Args:
+            request (HttpRequest): request for the page
+        Keyword Args:
+            report (str): primary key of report
+        Returns:
+            HttpResponse : response with page to request
+        """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(DeptReportMixin,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets context needed for template, including the report
+
+        Returns:
+            dict : context for template
+        """
         context = super().get_context_data()
         context['rpt'] = self.report
         return context
@@ -49,9 +83,25 @@ class AACReportMixin(AACOnlyMixin):
         report (str): primary key of report
     """
     def dispatch(self,request,*args,**kwargs):
+        """
+        Dispatches view and attaches report to the instance
+
+        Args:
+            request (HttpRequest): request for the page
+        Keyword Args:
+            report (str): primary key of report
+        Returns:
+            HttpResponse : response with page to request
+        """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(AACReportMixin,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets context needed for template, including the report
+
+        Returns:
+            dict : context for template
+        """
         context = super().get_context_data()
         context['rpt'] = self.report
         return context
