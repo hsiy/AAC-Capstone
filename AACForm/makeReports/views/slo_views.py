@@ -55,10 +55,22 @@ class AddNewSLO(DeptReportMixin,FormView):
             kwargs['grad'] = False
         return kwargs
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
         """
         Creates SLO from form, updates report's field numberOrSLOs
+
+        Args:
+            form (CreateNewSLO): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         try:
             gGoals = form.cleaned_data["gradGoals"]
@@ -93,6 +105,12 @@ class ImportSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/importSLO.html"
     form_class = ImportSLOForm
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_form_kwargs(self):
         """
@@ -116,6 +134,12 @@ class ImportSLO(DeptReportMixin,FormView):
     def form_valid(self,form):
         """
         Import SLO and assessments based upon form, also updates numberOfSLOs field in report
+        
+        Args:
+            form (ImportSLOForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         rpt = self.report
         num = rpt.numberOfSLOs
@@ -182,15 +206,48 @@ class EditImportedSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
     def dispatch(self,request,*args,**kwargs):
+        """
+        Dispatches view and attaches SLO to instance
+
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            sloIR (str): primary key of SLO to edit
+            
+        Returns:
+            HttpResponse : response of page to request
+        """
         self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
         return super(EditImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
+        """
+        Gets initial form values, including goal text from current values
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(EditImportedSLO, self).get_initial()
         initial['text'] = self.sloInRpt.goalText
         return initial
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self,form):
+        """
+        Edits SLO from form
+
+        Args:
+            form (EditImportedSLOForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         r = self.report
         self.sloInRpt.date=datetime.now()
         self.sloInRpt.goalText=form.cleaned_data['text']
@@ -209,6 +266,15 @@ class EditNewSLO(DeptReportMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches SLo to instance
+
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            sloIR (str): primary key of SLO to edit
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
         return super(EditNewSLO,self).dispatch(request,*args,**kwargs)
@@ -240,10 +306,22 @@ class EditNewSLO(DeptReportMixin,FormView):
         initial['gradGoals'] = self.sloInRpt.slo.gradGoals.all
         return initial
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
         """
         Update SLO based upon the form
+
+        Args:
+            form (EditNewSLOForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.sloInRpt.goalText = form.cleaned_data['text']
         self.sloInRpt.date = datetime.now()
@@ -263,11 +341,24 @@ class StakeholderEntry(DeptReportMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches report and current stakeholder object to instance
+        
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
+        
         """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         self.sts = SLOsToStakeholder.objects.filter(report=self.report).last()
         return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_initial(self):
         """
@@ -286,6 +377,12 @@ class StakeholderEntry(DeptReportMixin,FormView):
     def form_valid(self,form):
         """
         Updates or creates stakeholder communication
+
+        Args:
+            form (Single2000Textbox): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         try:
             self.sts.text = form.cleaned_data['text']
@@ -303,6 +400,12 @@ class ImportStakeholderEntry(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/importStakeholderComm.html"
     form_class = ImportStakeholderForm
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (Communicating to Stakeholders)
+
+        Returns:
+            str : URL of communicating to stakeholders page
+        """
         return reverse_lazy('makeReports:slo-stakeholders', args=[self.report.pk])
     def get_form_kwargs(self):
         """
@@ -319,6 +422,12 @@ class ImportStakeholderEntry(DeptReportMixin,FormView):
     def form_valid(self,form):
         """
         Imports stakeholder communication or creates new one in case of error
+
+        Args:
+            form (ImportStakeholderForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         oldSTS = form.cleaned_data["stk"]
         try:
@@ -351,17 +460,36 @@ class Section1Comment(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/sloComment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
         """
         Saves comment to report 
+
+        Args:
+            form (Single2000Textbox): filled out form to process
+
+        Returns:
+            HttpResponseRedirect : redirects to success URL
         """
         self.report.section1Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section1Comment,self).form_valid(form)
     def get_initial(self):
+        """
+        Initializes the form with "No Commment"
+        Returns:
+            dict : initial values for form
+        """
         initial = super(Section1Comment,self).get_initial()
         initial['text']="No comment."
+        if self.report.section1Comment:
+            initial['text'] = self.report.section1Comment
         return initial
 class DeleteImportedSLO(DeptReportMixin,DeleteView):
     """
@@ -375,6 +503,15 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches the view, and attachs SLO and corresponding assessments to instance
+        
+        Args:
+            request (HttpRequest): request to view page
+            
+        Keyword Args:
+            pk (str): primary key of SLOInReport to delete
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
         self.oldNum = SLOIR.number
@@ -383,7 +520,7 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
         return super(DeleteImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets the success URL and used as hook to update the number of all SLOs in report,
+        Gets the success URL (SLO summary) and used as hook to update the number of all SLOs in report,
         the numberOfUses of the assessments, delete corresponding DecisionsActions, and the numberOfSLOs in the report
 
         Returns:
@@ -425,6 +562,15 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view, and attaches SLO and corresponding assessments to instance
+        
+        Args:
+            request (HttpRequest): request to view page
+            
+        Keyword Args:
+            pk (str): primary key of SLO to delete
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
         self.slo = SLOIR.slo
@@ -433,7 +579,7 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
         return super(DeleteNewSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets success URL and used as hook to update number of other SLOs in report, number of
+        Gets success URL (SLO summary) and used as hook to update number of other SLOs in report, number of
         uses of assessments, and delete corresponding decisions/actions
         
         Returns:

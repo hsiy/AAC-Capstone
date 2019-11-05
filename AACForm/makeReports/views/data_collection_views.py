@@ -31,6 +31,12 @@ class DataCollectionSummary(DeptReportMixin,ListView):
             assessment_qs.union(assessment_data)
         return assessment_qs
     def get_context_data(self, **kwargs):
+        """
+        Returns context for the template, including all information relating to data collection
+
+        Returns:
+            dict : context for template
+        """
         report = self.report
         context = super(DataCollectionSummary, self).get_context_data(**kwargs)
         return section3Context(self,context)
@@ -48,6 +54,12 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches view and attaches assessment to instance
+
+        Args:
+            request(HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         return super(CreateDataCollectionRow,self).dispatch(request,*args,**kwargs)
@@ -62,8 +74,23 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
         context["assess"] = self.assessment
         return context
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
+        """
+        Processes form and creates new AssessmentData object
+
+        Args:
+            form (AddDataCollection): filled out form to be processed
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         assessmentDataObj = AssessmentData.objects.create(
             assessmentVersion=self.assessment, 
             dataRange=form.cleaned_data['dataRange'], 
@@ -77,6 +104,12 @@ class CreateDataCollectionRowAssess(CreateDataCollectionRow):
     View to create data collection row from assessment page
     """
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (assessment summary)
+
+        Returns:
+            str : URL of assessment summary page
+        """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
 
 class EditDataCollectionRow(DeptReportMixin,FormView):
@@ -92,6 +125,12 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches view and attaches data to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.dataCollection = AssessmentData.objects.get(pk=self.kwargs['dataCollection'])
         return super(EditDataCollectionRow,self).dispatch(request,*args,**kwargs)
@@ -119,9 +158,24 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
         return initial
 
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
+        """
+        Saves data collection object with updated values based upon form
+
+        Args:
+            form (EditDataCollection): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.dataCollection.dataRange = form.cleaned_data['dataRange']
         self.dataCollection.numberStudents = form.cleaned_data['numberStudents']
         self.dataCollection.overallProficient = form.cleaned_data['overallProficient']
@@ -139,6 +193,12 @@ class DeleteDataCollectionRow(DeptReportMixin,DeleteView):
     template_name = "makeReports/DataCollection/deleteDataCollection.html"
 
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
 class CreateSubassessmentRow(DeptReportMixin,FormView):
@@ -146,21 +206,54 @@ class CreateSubassessmentRow(DeptReportMixin,FormView):
     template_name = "makeReports/DataCollection/createSubassessment.html"
 
     def dispatch(self, request, *args, **kwargs):
+        """
+        Dispatches view and attaches assessment to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
+        """
         self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         return super(CreateSubassessmentRow,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
+        """
+        Gets context for the template, including the current assessment
+
+        Returns:
+            dict : context for template
+        """
         context = super(CreateSubassessmentRow,self).get_context_data(**kwargs)
         context["assess"] = self.assessment
         return context
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
+        """
+        Creates subassessment object based upon form
+
+        Args:
+            form (AddSubassessment): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         subassessmentDataObj = Subassessment.objects.create(assessmentVersion=self.assessment, title=form.cleaned_data['title'], proficient=form.cleaned_data['proficient'])
         subassessmentDataObj.save()
         return super(CreateSubassessmentRow, self).form_valid(form)
 
 class EditSubassessmentRow(DeptReportMixin,FormView):
+    """
+    To be deleted
+    """
     template_name = "makeReports/DataCollection/editSubassessment.html"
     form_class = EditSubassessment
 
@@ -177,6 +270,12 @@ class EditSubassessmentRow(DeptReportMixin,FormView):
         context["assess"] = self.subassessment.assessmentVersion
         return context
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
@@ -190,9 +289,18 @@ class DeleteSubassessmentRow(DeptReportMixin,DeleteView):
     model = Subassessment
     template_name = "makeReports/DataCollection/deleteSubassessment.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
 class NewSLOStatus(DeptReportMixin,FormView):
+    """
+    To be deleted
+    """
     template_name = "makeReports/DataCollection/SLOStatus.html"
     form_class = SLOStatusForm
     
@@ -201,6 +309,12 @@ class NewSLOStatus(DeptReportMixin,FormView):
         self.slo_ir = SLOInReport.objects.get(slo=self.slo, report__pk=self.kwargs['report'])
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
@@ -223,6 +337,12 @@ class EditSLOStatus(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches view and attaches SLO and Status to the instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         self.slo_ir = SLOInReport.objects.get(slo=self.slo,report=self.report)
@@ -240,9 +360,24 @@ class EditSLOStatus(DeptReportMixin,FormView):
         initial['status'] = self.slo_status.status
         return initial
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
+        """
+        Sets SLO status based upon the form
+
+        Args:
+            form (SLOStatusForm): filled out form to process
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.slo_status.report = self.report
         self.slo_status.SLO = self.slo
         self.slo_status.status = form.cleaned_data['status']
@@ -257,9 +392,24 @@ class NewResultCommunication(DeptReportMixin,FormView):
     template_name = "makeReports/DataCollection/ResultCommunication.html"
     form_class = ResultCommunicationForm
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
+        """
+        Sets SLO status based upon the form
+
+        Args:
+            form (SLOStatusForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         result_communication = ResultCommunicate.objects.create(
             report = self.report, 
             text = form.cleaned_data['text']
@@ -281,18 +431,45 @@ class EditResultCommunication(DeptReportMixin,FormView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches view and attaches result to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.result_communication = ResultCommunicate.objects.get(pk=self.kwargs['resultpk'])
         return super(EditResultCommunication,self).dispatch(request,*args,**kwargs)
 
     def get_initial(self):
+        """
+        Returns initial form based upon current values in database
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(EditResultCommunication, self).get_initial()
         initial['text'] = self.result_communication.text
         return initial
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
+        """
+        Sets data communication based upon the form
+
+        Args:
+            form (ResultCommunicationForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.result_communication.report = self.report
         self.result_communication.text = form.cleaned_data['text']
         self.result_communication.save()
@@ -304,14 +481,37 @@ class Section3Comment(DeptReportMixin,FormView):
     template_name = "makeReports/DataCollection/comment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
+        """
+        Sets comment based upon the form
+
+        Args:
+            form (Single2000Textbox): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.report.section3Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section3Comment,self).form_valid(form)
     def get_initial(self):
+        """
+        Sets initial form value based upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section3Comment,self).get_initial()
         initial['text']="No comment."
+        if self.report.section3Comment:
+            initial['text'] = self.report.section3Comment
         return initial
 class DataAssessmentAddInfo(DeptReportMixin,CreateView):
     """
@@ -323,10 +523,22 @@ class DataAssessmentAddInfo(DeptReportMixin,CreateView):
     def form_valid(self,form):
         """
         Sets report to the current report and then creates object based upon the form
+        
+        Args:
+            form (ModelForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         form.instance.report=self.report
         return super(DataAssessmentAddInfo,self).form_valid(form)
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 class DataAssessmentDeleteInfo(DeptReportMixin,DeleteView):
     """
@@ -338,6 +550,12 @@ class DataAssessmentDeleteInfo(DeptReportMixin,DeleteView):
     model = DataAdditionalInformation
     template_name = "makeReports/DataCollection/deleteInfo.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
     """
@@ -350,6 +568,12 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
     template_name = "makeReports/DataCollection/updateInfo.html"
     fields = ['comment']
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (data summary)
+
+        Returns:
+            str : URL of data summary page
+        """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 def sloStatusUpdate(sloIR):
     """
@@ -395,6 +619,12 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
     def form_valid(self,form):
         """
         Sets whether the target has been met and then create objects based upon the form
+        
+        Args:
+            form (ModelForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         form.instance.assessmentVersion = assess
@@ -425,6 +655,12 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
     def form_valid(self,form):
         """
         Updates object, including whether the target has been met 
+
+        Args:
+            form (ModelForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
         if self.assess.target <= form.instance.aggregate_proficiency:

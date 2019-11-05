@@ -51,6 +51,12 @@ class AddRubric(AACOnlyMixin,CreateView):
     def form_valid(self,form):
         """
         Sets the date to now and creates object based upon the form
+
+        Args:
+            form (ModelForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         form.instance.date = datetime.now()
         return super(AddRubric,self).form_valid(form)
@@ -66,12 +72,27 @@ class AddRubricItems(AACOnlyMixin, FormView):
     def dispatch(self, request,*args, **kwargs):
         """
         Dispatches view and attaches rubric to instance
+
+        Args:
+            request (HttpRequest): request to view page
+        
+        Keyword Args:
+            rubric (str): primary key of rubric
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.rubric = Rubric.objects.get(pk=self.kwargs['rubric'])
         return super(AddRubricItems, self).dispatch(request,*args,**kwargs)
     def form_valid(self,form):
         """
         Creates rubric items from form after it was validated
+
+        Args:
+            form (RubricItemForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         ri = RubricItem.objects.create(text=form.cleaned_data['text'], \
                 section=form.cleaned_data['section'], rubricVersion=self.rubric, \
@@ -99,6 +120,12 @@ class AddRubricItems(AACOnlyMixin, FormView):
         context['numRIs'] = RubricItem.objects.filter(rubricVersion=self.rubric).count()
         return context
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (add rubric item page)
+
+        Returns:
+            str : URL of add rubric item page
+        """
         return reverse_lazy('makeReports:add-RI', args=[self.kwargs['rubric']])
 class ViewRubric(AACOnlyMixin,DetailView):
     """
@@ -134,6 +161,12 @@ class UpdateRubricItem(AACOnlyMixin,UpdateView):
     form_class = RubricItemForm
     template_name = "makeReports/Rubric/updateRubricItem.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (view rubric)
+
+        Returns:
+            str : URL of view rubric page
+        """
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
 class UpdateRubricFile(AACOnlyMixin, UpdateView):
     """
@@ -146,6 +179,12 @@ class UpdateRubricFile(AACOnlyMixin, UpdateView):
     fields = ['name','fullFile']
     template_name = "makeReports/Rubric/updateRubric.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (view rubric)
+
+        Returns:
+            str : URL of view rubric page
+        """
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['pk']])
 class DeleteRubricItem(AACOnlyMixin,DeleteView):
     """
@@ -157,6 +196,12 @@ class DeleteRubricItem(AACOnlyMixin,DeleteView):
     model = RubricItem
     template_name = "makeReports/Rubric/deleteRubricItem.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (view rubric)
+
+        Returns:
+            str : URL of view rubric page
+        """
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
 class DuplicateRubric(AACOnlyMixin, FormView):
     """
@@ -172,6 +217,12 @@ class DuplicateRubric(AACOnlyMixin, FormView):
     def form_valid(self,form):
         """
         Creates new rubric based upon form, and duplicates all rubric items
+
+        Args:
+            form (DuplicateRubricForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         rubToDup = Rubric.objects.get(pk=self.kwargs['rubric'])
         RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
@@ -193,4 +244,10 @@ class DeleteRubric(AACOnlyMixin,DeleteView):
     model = Rubric
     template_name = "makeReports/Rubric/deleteRubric.html"
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (rubric list)
+
+        Returns:
+            str : URL of rubric list page
+        """
         return reverse_lazy('makeReports:rubric-list')

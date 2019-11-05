@@ -34,7 +34,8 @@ class CreateReport(AACOnlyMixin,CreateView):
         return kwargs
     def get_success_url(self):
         """
-        Uses success url as hook to set the graded rubric of the report
+        Uses success url as hook to set the graded rubric of the report, 
+        also returns administrative home as success URL
 
         Notes:
             The graded rubric was created during form_valid
@@ -49,6 +50,12 @@ class CreateReport(AACOnlyMixin,CreateView):
         Saves model based upon form, along with setting submitted to false,
         and attaching a new graded rubric based upon the chosen rubric version
         to the instance
+
+        Args:
+            form (CreateReportByDept): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         form.instance.submitted = False
         self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
@@ -65,7 +72,7 @@ class CreateReportByDP(AACOnlyMixin,CreateView):
     template_name = "makeReports/AACAdmin/manualReportCreate.html"
     def get_success_url(self):
         """
-        Uses success_url as hook to attach graded rubric to object
+        Uses success_url as hook to attach graded rubric to object, and also gets the success URL
 
         Returns:
             str : success url of administrative home
@@ -77,6 +84,12 @@ class CreateReportByDP(AACOnlyMixin,CreateView):
         """
         Sets the degree program, sets submitted to False, creates graded rubric based
         upon the chosen rubric version, and creates Report from form
+        
+        Args:
+            form (CreateReportByDPForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         form.instance.degreeProgram = DegreeProgram.objects.get(pk=self.kwargs['dP'])
         form.instance.submitted = False

@@ -52,6 +52,12 @@ class MakeNewAccount(UserCreationForm):
     def save(self, commit=True):
         """
         Upon creating a new user, both the Django User type and custom profile type must be created
+
+        Keyword Args:
+            commit (bool) : whether to actually save user to database
+
+        Returns:
+            user, profile : user and profile created
         """
         user = super(MakeNewAccount, self).save(commit=True)
         profile = user.profile

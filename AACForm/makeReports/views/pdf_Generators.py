@@ -52,6 +52,14 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
     Decorator for views that checks that the user passes the given test,
     redirecting to the log-in page if necessary. The test should be a callable
     that takes the user object and returns True if the user passes.
+    
+    This function is very slightly modified from Django source code in order to allow args and
+    kwargs to be passed to the test function
+
+    Args:
+        test_func (method) : function that user must return tru
+        login_url (str) : URL to login page
+        redirect_field_name (str) : field name of where to put redirect URL
     """
 
     def decorator(view_func):
@@ -93,6 +101,12 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches report to the view
+
+        Args:
+            request (HttpRequest): request to view PDF page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(GradedRubricPDFGen,self).dispatch(request,*args,**kwargs)
@@ -126,6 +140,12 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches report to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.report = Report.objects.get(pk=self.kwargs['report'])
         return super(ReportPDFGen,self).dispatch(request,*args,**kwargs)

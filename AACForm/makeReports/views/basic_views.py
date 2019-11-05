@@ -55,6 +55,12 @@ class FacultyReportList(LoginRequiredMixin,ListView):
     template_name = "makeReports/reportList.html"
     model = Report
     def get_queryset(self):
+        """
+        Gets QuerySet of reports within the department
+        
+        Returns:
+            QuerySet : reports 
+        """
         objs = Report.objects.filter(
             degreeProgram__department=self.request.user.profile.department, 
             degreeProgram__active=True
@@ -106,6 +112,14 @@ class DisplayReport(DeptAACMixin,TemplateView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches report to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Keyword Args:
+            pk (str): primary key of report to display
+        Returns:
+            HttpResponse : response of page to request
         """
         self.report = Report.objects.get(pk=self.kwargs['pk'])
         return super(DisplayReport,self).dispatch(request,*args,**kwargs)
@@ -135,6 +149,12 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
     def dispatch(self, request,*args,**kwargs):
         """
         Dispatches view and attaches user to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.userToChange = self.request.user
         return super(UserModifyAccount,self).dispatch(request,*args,**kwargs)
@@ -154,6 +174,15 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
             pass
         return initial
     def form_valid(self,form):
+        """
+        Sets user to attributes given in form
+
+        Args:
+            form (UserUpdateUserForm): filled out form to process
+                
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.userToChange.first_name = form.cleaned_data['first_name']
         self.userToChange.last_name = form.cleaned_data['last_name']
         self.userToChange.email = form.cleaned_data['email']

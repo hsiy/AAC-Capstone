@@ -29,6 +29,12 @@ class AddDecisionAction(DeptReportMixin,CreateView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches view and attaches SLo to instance
+
+        Args:
+            request (HttpRequest): request to view page
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
@@ -56,6 +62,12 @@ class AddDecisionActionSLO(AddDecisionAction):
     Add decision/action from SLO page
     """
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class EditDecisionAction(DeptReportMixin,UpdateView):
     """
@@ -71,6 +83,15 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
     def dispatch(self, request, *args, **kwargs):
         """
         Dispatches the view and attaches the SLO to the instance
+
+        Args:
+            request (HttpRequest): request to view page
+        Keyword Args:
+            pk (str): primary key of DecisionAction to update
+            slopk (str): primary key of SLO
+            
+        Returns:
+            HttpResponse : response of page to request
         """
         self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
@@ -91,6 +112,12 @@ class EditDecisionActionSLO(EditDecisionAction):
     Edit the decision/action
     """
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (SLO summary)
+
+        Returns:
+            str : URL of SLO summary page
+        """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class AddEditRedirect(DeptReportMixin,RedirectView):
     """
@@ -121,12 +148,35 @@ class Section4Comment(DeptReportMixin,FormView):
     template_name = "makeReports/DecisionsActions/comment.html"
     form_class = Single2000Textbox
     def get_success_url(self):
+        """
+        Gets URL to go to upon success (decisions/actions summary)
+
+        Returns:
+            str : URL of decisions/actions summary page
+        """
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def form_valid(self, form):
+        """
+        Sets comment based upon form
+
+        Args:
+            form (Single2000Textbox): filled out form to be processed
+            
+        Returns:
+            HttpResponseRedirect : redirects to success URL given by get_success_url
+        """
         self.report.section4Comment = form.cleaned_data['text']
         self.report.save()
         return super(Section4Comment,self).form_valid(form)
     def get_initial(self):
+        """
+        Gets initial form values based upon current value
+
+        Returns:
+            dict : initial form values
+        """
         initial = super(Section4Comment,self).get_initial()
         initial['text']="No comment."
+        if self.report.section4Comment:
+            initial['text'] = self.report.section4Comment
         return initial

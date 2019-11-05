@@ -1,14 +1,26 @@
 import string
 
-# Helper functions for text processing
-# Since textblob or NLTK have required static files, and heroku is
-# a pain in the butt when dealing with those, I've decided
-# to take a naiive and simplistic approach to text processing,
-# only using the precise heuristics I need, and nothing further
+""" 
+Helper functions for text processing
+Since textblob or NLTK have required static files, and heroku is
+a pain in the butt when dealing with those, I've decided
+to take a naiive and simplistic approach to text processing,
+only using the precise heuristics I need, and nothing further
 
-# Returns a dictionary containing blooms suggestions and
-# whether or not the given input SLO is complex
+Returns a dictionary containing blooms suggestions and
+whether or not the given input SLO is complex
+ """
 def create_suggestions_dict(in_string):
+    """
+    Creates suggestion dictionary
+
+    Args:
+        in_string (str): string to create suggestions for
+
+    Returns:
+        dict : dictionary containing Blooms and Complexity suggestion
+    
+    """
     sug_dict = {
         'blooms' : blooms_suggestion(in_string),
         'complex' : is_complex(in_string)
@@ -18,6 +30,15 @@ def create_suggestions_dict(in_string):
 
 # Returns a string corresponding to a bloom's taxonomy
 def blooms_suggestion(in_string):
+    """
+    Creates suggestion of Bloom's taxonomy level
+
+    Args:
+        in_string (str) : input string to generate suggestions from
+
+    Returns:
+        str : suggested level
+    """
     create_words = ['design', 'assemble', 'construct', 'conjecture', 'develop',
                     'formulate', 'author', 'investigate', 'create', 'adapt', 'plan',
                     'produce', 'build', 'solve', 'compose', 'think', 'theorize', 'modify',
@@ -74,10 +95,18 @@ def blooms_suggestion(in_string):
 
     return(suggestion)
 
-# Returns a boolean stating whether the given phrase is complex
-# complexity is measured by having more than 3 words belonging to
-# the following set: and, or, but
+
 def is_complex(in_string):
+    """
+    Returns a boolean stating whether the given phrase is complex
+    complexity is measured by having more than 3 words belonging to
+    the following set: and, or, but
+
+    Args:
+        in_string (str): string to evaluate complexity of
+    Returns:
+        bool : whether the string should be considered complex
+    """
     conjunctions = ['and', 'or', 'but']
     max_conjs = 3
     num_conjs = 0
