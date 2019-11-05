@@ -88,11 +88,19 @@ DATABASES = {
         'PASSWORD': '35536c3e563d2356d340584ccdc300cd67bb7e311f86408872183b955b4bb2ff',
         'HOST': 'ec2-107-21-98-89.compute-1.amazonaws.com',
         'PORT': '5432',
-    }
+    } 
 }
 
 if 'test' in sys.argv:
-    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
+    #use when wanting PostgreqSQL database for testing
+    # DATABASES['default'] = {'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'd2u8q51dtl989v',                      
+    #     'USER': 'dxvjgcmgawltpn',
+    #     'PASSWORD': '2c00fc0bfb1a1ddcd6ecc3435e29711fe2178d5dbef11f96b93ab623215ddf80',
+    #     'HOST': 'ec2-54-235-92-244.compute-1.amazonaws.com',
+    #     'PORT': '5432'
+    # }
+    DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -110,6 +118,18 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+TEST_DATABASES = {
+    'default':{'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd2u8q51dtl989v',                      
+        'USER': 'dxvjgcmgawltpn',
+        'PASSWORD': '2c00fc0bfb1a1ddcd6ecc3435e29711fe2178d5dbef11f96b93ab623215ddf80',
+        'HOST': 'ec2-54-235-92-244.compute-1.amazonaws.com',
+        'PORT': '5432'
+    }
+}
+
+# Use when wanting PostgreSQL database
+#TEST_RUNNER =  "makeReports.tests.test_suite_runner.HerokuTestSuiteRunner"
 
 LOGIN_REDIRECT_URL="/"
 # Internationalization
