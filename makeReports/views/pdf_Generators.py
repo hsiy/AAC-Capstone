@@ -1,3 +1,6 @@
+"""
+This file contains views and methods needed to generate PDFs throughout the application
+"""
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from django.views.generic import TemplateView
@@ -22,9 +25,7 @@ from django.shortcuts import resolve_url
 from django.utils.decorators import available_attrs
 from makeReports.views.helperFunctions.mixins import *
 from urllib.parse import urlparse
-"""
-This file contains views and methods needed to generate PDFs throughout the application
-"""
+
 def test_func_x(self,*args,**kwargs):
     """
     Ensures the user accessing the page is in the AAC or right department

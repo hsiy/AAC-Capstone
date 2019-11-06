@@ -1,3 +1,8 @@
+"""
+|This file contains all views needed by the AAC to administer the website.
+|This includes administrative home and creating, updating, and deleting colleges, departments, and degree programs.
+|It also includes pages related to account management and making announcements.
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import TemplateView
@@ -8,9 +13,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
-"""
-This file contains all views needed by the AAC to administer the website
-"""
+
 class AdminHome(AACOnlyMixin,FormView):
     """
     Home page for AAC administration: mostly buttons to other page

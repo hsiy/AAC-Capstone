@@ -1,3 +1,6 @@
+"""
+This file contains all views related to inputting data into the form
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
@@ -6,9 +9,7 @@ from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
 from makeReports.choices import *
-"""
-This file contains all views related to inputting data into the form
-"""
+
 class DataCollectionSummary(DeptReportMixin,ListView):
     """
     View to summarize data collection of in-progress form
