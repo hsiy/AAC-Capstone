@@ -4,14 +4,13 @@ makeReports.tests package
 Submodules
 ----------
 
-makeReports.tests.test\_200response module
-------------------------------------------
+.. toctree::
 
-.. automodule:: makeReports.tests.test_200response
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+   makeReports.tests.test_assessViews
+   makeReports.tests.test_basicViews
+   makeReports.tests.test_reportExtraViews
+   makeReports.tests.test_sloViews
+   makeReports.tests.test_suite_runner
 
 Module contents
 ---------------

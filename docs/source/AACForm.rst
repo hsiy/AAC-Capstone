@@ -4,30 +4,11 @@ AACForm package
 Submodules
 ----------
 
-AACForm.settings module
------------------------
+.. toctree::
 
-.. automodule:: AACForm.settings
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-AACForm.urls module
--------------------
-
-.. automodule:: AACForm.urls
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-AACForm.wsgi module
--------------------
-
-.. automodule:: AACForm.wsgi
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+   AACForm.settings
+   AACForm.urls
+   AACForm.wsgi
 
 Module contents
 ---------------

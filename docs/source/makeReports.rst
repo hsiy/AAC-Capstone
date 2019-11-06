@@ -15,22 +15,10 @@ Subpackages
 Submodules
 ----------
 
-makeReports.choices module
---------------------------
+.. toctree::
 
-.. automodule:: makeReports.choices
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-makeReports.urls module
------------------------
-
-.. automodule:: makeReports.urls
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+   makeReports.choices
+   makeReports.urls
 
 Module contents
 ---------------

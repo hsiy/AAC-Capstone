@@ -4,14 +4,9 @@ makeReports.models package
 Submodules
 ----------
 
-makeReports.models.report\_models module
-----------------------------------------
+.. toctree::
 
-.. automodule:: makeReports.models.report_models
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+   makeReports.models.report_models
 
 Module contents
 ---------------
