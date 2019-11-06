@@ -106,18 +106,18 @@ class DisplayReport(DeptAACMixin,TemplateView):
     View to see report
 
     Keyword Args:
-        pk (str): primary key of report to display
+        pk (str): primary key of :class:`~makeReports.models.report_models.Report` to display
     """
     template_name = "makeReports/DisplayReport/report.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to instance
 
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            pk (str): primary key of report to display
+            pk (str): primary key of :class:`~makeReports.models.report_models.Report` to display
         Returns:
             HttpResponse : response of page to request
         """
@@ -148,7 +148,7 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
     template_name = "makeReports/AACAdmin/modify_account.html"
     def dispatch(self, request,*args,**kwargs):
         """
-        Dispatches view and attaches user to instance
+        Dispatches view and attaches :class:`~django.contrib.auth.models.User` to instance
 
         Args:
             request (HttpRequest): request to view page

@@ -47,19 +47,19 @@ class DeptAACMixin(LoginRequiredMixin,UserPassesTestMixin):
         return dept or aac
 class DeptReportMixin(DeptOnlyMixin):
     """
-    Attaches the report matching to the instance and puts it in the context
+    Attaches the :class:`~makeReports.models.report_models.Report` matching to the instance and puts it in the context
 
     Keyword Args:
-        report (str): primary key of report
+        report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report to the instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the instance
 
         Args:
             request (HttpRequest): request for the page
         Keyword Args:
-            report (str): primary key of report
+            report (str): primary key of :class:`~makeReports.models.report_models.Report`
         Returns:
             HttpResponse : response with page to request
         """
@@ -77,19 +77,19 @@ class DeptReportMixin(DeptOnlyMixin):
         return context
 class AACReportMixin(AACOnlyMixin):
     """
-    Attaches report matching to the instance and puts it in the context
+    Attaches :class:`~makeReports.models.report_models.Report` matching to the instance and puts it in the context
 
     Keyword Args:
-        report (str): primary key of report
+        report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report to the instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the instance
 
         Args:
             request (HttpRequest): request for the page
         Keyword Args:
-            report (str): primary key of report
+            report (str): primary key of :class:`~makeReports.models.report_models.Report`
         Returns:
             HttpResponse : response with page to request
         """

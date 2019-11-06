@@ -28,7 +28,7 @@ class AddDecisionAction(DeptReportMixin,CreateView):
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches SLo to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.SLO` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -56,6 +56,12 @@ class AddDecisionAction(DeptReportMixin,CreateView):
         form.instance.report = self.report
         return super(AddDecisionAction,self).form_valid(form)
     def get_success_url(self):
+        """
+        Gets url of success page (decision actions summary)
+
+        Returns:
+            str : URL of decisions actions summary (:class:`~makeReports.views.decisions_actions_views.DecisionsActionsSummary`)
+        """
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
 class AddDecisionActionSLO(AddDecisionAction):
     """
@@ -66,7 +72,7 @@ class AddDecisionActionSLO(AddDecisionAction):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class EditDecisionAction(DeptReportMixin,UpdateView):
@@ -74,21 +80,21 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
     Edit decision/action
 
     Keyword Args:
-        pk (str): primary key of DecisionAction to update
-        slopk (str): primary key of SLO
+        pk (str): primary key of :class:`~makeReports.models.report_models.DecisionsActions` to update
+        slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
     """
     model = DecisionsActions
     form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches the view and attaches the SLO to the instance
+        Dispatches the view and attaches the :class:`~makeReports.models.report_models.SLO` to the instance
 
         Args:
             request (HttpRequest): request to view page
         Keyword Args:
-            pk (str): primary key of DecisionAction to update
-            slopk (str): primary key of SLO
+            pk (str): primary key of :class:`~makeReports.models.report_models.DecisionsActions` to update
+            slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
             
         Returns:
             HttpResponse : response of page to request
@@ -97,7 +103,7 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
-        Gets the context for the template, including the corresponding :class:`~makeReports.models.report-models.SLOInReport` 
+        Gets the context for the template, including the corresponding :class:`~makeReports.models.report_models.SLOInReport` 
 
         Returns:
             dict : context for template
@@ -106,6 +112,12 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
         context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
         return context
     def get_success_url(self):
+        """
+        Gets URL of success page (decisions/actions summary)
+
+        Returns:
+            str : URL of decisions and actions summary page (:class:`~makeReports.views.decisions_actions_views.DecisionsActionsSummary`)
+        """
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
 class EditDecisionActionSLO(EditDecisionAction):
     """
@@ -116,7 +128,7 @@ class EditDecisionActionSLO(EditDecisionAction):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class AddEditRedirect(DeptReportMixin,RedirectView):
@@ -125,7 +137,7 @@ class AddEditRedirect(DeptReportMixin,RedirectView):
     based upon whether a decision action already exists
 
     Keyword Args:
-        slopk (str): primary key of SLO
+        slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
     """
     def get_redirect_url(self, *args,**kwargs):
         """
@@ -152,7 +164,7 @@ class Section4Comment(DeptReportMixin,FormView):
         Gets URL to go to upon success (decisions/actions summary)
 
         Returns:
-            str : URL of decisions/actions summary page
+            str : URL of decisions/actions summary page (:class:`~makeReports.views.decisions_actions_views.DecisionsActionsSummary`)
         """
         return reverse_lazy('makeReports:decisions-actions-summary', args=[self.report.pk])
     def form_valid(self, form):

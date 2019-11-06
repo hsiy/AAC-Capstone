@@ -46,7 +46,7 @@ class ReportFirstPage(DeptOnlyMixin,UpdateView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class FinalReportSupplements(DeptReportMixin, ListView):
@@ -101,7 +101,7 @@ class AddEndSupplements(DeptReportMixin, CreateView):
         Gets URL to go to upon success (report supplement summary)
 
         Returns:
-            str : URL of report supplement list page
+            str : URL of report supplement list page (:class:`~makeReports.views.report_entry_extra_views.FinalReportSupplements`)
         """
         return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
 class DeleteEndSupplements(DeptReportMixin, DeleteView):
@@ -109,7 +109,7 @@ class DeleteEndSupplements(DeptReportMixin, DeleteView):
     Delete a report supplement
 
     Keyword Args:
-        pk (str): primary key of supplement to be deleted
+        pk (str): primary key of :class:`~makeReports.models.report_models.ReportSupplement` to be deleted
     """
     model = ReportSupplement
     template_name = "makeReports/ReportEntryExtras/deleteSupplement.html"
@@ -128,7 +128,7 @@ class DeleteEndSupplements(DeptReportMixin, DeleteView):
         Gets URL to go to upon success (report supplement summary)
 
         Returns:
-            str : URL of report supplement list page
+            str : URL of report supplement list page (:class:`~makeReports.views.report_entry_extra_views.FinalReportSupplements`)
         """
         return reverse_lazy('makeReports:rpt-sup-list', args=[self.report.pk])
 class SubmitReport(DeptReportMixin, FormView):

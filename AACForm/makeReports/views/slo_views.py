@@ -59,7 +59,7 @@ class AddNewSLO(DeptReportMixin,FormView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -109,7 +109,7 @@ class ImportSLO(DeptReportMixin,FormView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_form_kwargs(self):
@@ -201,19 +201,19 @@ class EditImportedSLO(DeptReportMixin,FormView):
     View to edit imported SLO (more restricted than new SLO)
 
     Keyword Args:
-        sloIR (str): primary key of SLO to edit
+        sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
     """
     template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches SLO to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            sloIR (str): primary key of SLO to edit
+            sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
             
         Returns:
             HttpResponse : response of page to request
@@ -235,7 +235,7 @@ class EditImportedSLO(DeptReportMixin,FormView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self,form):
@@ -259,19 +259,19 @@ class EditNewSLO(DeptReportMixin,FormView):
     View to edit new SLO (not-restricted)
 
     Keyword Args:
-        sloIR (str): primary key of SLO to edit
+        sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
     """
     template_name = "makeReports/SLO/editNewSLO.html"
     form_class = EditNewSLOForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches SLo to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            sloIR (str): primary key of SLO to edit
+            sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
             
         Returns:
             HttpResponse : response of page to request
@@ -310,7 +310,7 @@ class EditNewSLO(DeptReportMixin,FormView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -340,7 +340,8 @@ class StakeholderEntry(DeptReportMixin,FormView):
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report and current stakeholder object to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report`
+         and current stakeholder communication (:class:`~makeReports.models.report_models.SLOsToStakeholder`) to instance
         
         Args:
             request (HttpRequest): request to view page
@@ -357,7 +358,7 @@ class StakeholderEntry(DeptReportMixin,FormView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_initial(self):
@@ -404,7 +405,7 @@ class ImportStakeholderEntry(DeptReportMixin,FormView):
         Gets URL to go to upon success (Communicating to Stakeholders)
 
         Returns:
-            str : URL of communicating to stakeholders page
+            str : URL of communicating to stakeholders page (:class:`~makeReports.views.slo_views.StakeholderEntry`)
         """
         return reverse_lazy('makeReports:slo-stakeholders', args=[self.report.pk])
     def get_form_kwargs(self):
@@ -464,7 +465,7 @@ class Section1Comment(DeptReportMixin,FormView):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -496,19 +497,19 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
     View to delete imported SLO (does not delete super SLO)
 
     Keyword Args:
-        pk (str): primary key of SLOInReport to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches the view, and attachs SLO and corresponding assessments to instance
+        Dispatches the view, and attaches :class:`~makeReports.models.report_models.SLOInReport` and corresponding assessments to instance
         
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            pk (str): primary key of SLOInReport to delete
+            pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
             
         Returns:
             HttpResponse : response of page to request
@@ -524,7 +525,7 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
         the numberOfUses of the assessments, delete corresponding DecisionsActions, and the numberOfSLOs in the report
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """ 
         oldNum = self.oldNum
         num = self.report.numberOfSLOs
@@ -555,19 +556,20 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
     View to delete new SLO (deletes the super SLO as well)
 
     Keyword Args:
-        pk (str): primary key of SLO to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view, and attaches SLO and corresponding assessments to instance
+        Dispatches view, and attaches :class:`~makeReports.models.report_models.SLOInReport`
+         and corresponding assessments (:class:`~makeReports.models.report_models.Assessment`) to instance
         
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            pk (str): primary key of SLO to delete
+            pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
             
         Returns:
             HttpResponse : response of page to request
@@ -583,7 +585,7 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
         uses of assessments, and delete corresponding decisions/actions
         
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         oldNum = self.oldNum
         slo = self.slo

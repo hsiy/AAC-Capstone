@@ -58,13 +58,13 @@ class AddNewAssessment(DeptReportMixin,FormView):
         Gets assessment summary url (assessment summary)
 
         Returns:
-            str : success url
+            str : success url of success page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
         """
-        |  Creates :class:`~makeReports.models.report_models.Assessment` and :class:`~makeReports.models.report-models.AssessmentVersion` based upon form
-        |  Updates the numberOfAssess fields for :class:`~makeReports.models.report-models.SLO`
+        |  Creates :class:`~makeReports.models.report_models.Assessment` and :class:`~makeReports.models.report_models.AssessmentVersion` based upon form
+        |  Updates the numberOfAssess fields for :class:`~makeReports.models.report_models.SLO`
 
         Args:
             form (CreateNewAssessment): completed form to be processed
@@ -114,7 +114,7 @@ class AddNewAssessmentSLO(AddNewAssessment):
     View to add new assessment from the SLO page
     
     Keyword Args:
-        slo (str): primary key of :class:`~makeReports.models.report-models.SLO` to add assessment
+        slo (str): primary key of :class:`~makeReports.models.report_models.SLO` to add assessment
     """
     def get_initial(self):
         """
@@ -131,7 +131,7 @@ class AddNewAssessmentSLO(AddNewAssessment):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class ImportAssessment(DeptReportMixin,FormView):
@@ -140,7 +140,7 @@ class ImportAssessment(DeptReportMixin,FormView):
 
     Notes:
         Through get request URL, the following search parameters are sent:
-        'yearIn','dP': primary key of degree program, 'slo': primary key of SLO
+        'yearIn','dP': primary key of degree program, 'slo': primary key of SLO (:class:`~makeReports.models.report_models.SLOInReport`)
     """
     template_name = "makeReports/Assessment/importAssessment.html"
     form_class = ImportAssessmentForm
@@ -149,7 +149,7 @@ class ImportAssessment(DeptReportMixin,FormView):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def get_form_kwargs(self):
@@ -181,9 +181,9 @@ class ImportAssessment(DeptReportMixin,FormView):
         return kwargs
     def form_valid(self,form):
         """
-        |  Creates :class:`~makeReports.models.report-models.AssessmentVersion` from form
-        |  Also updates the numberOfAssess field of corresponding :class:`~makeReports.models.report-models.SLOInReport`
-        |  Updates the numberOfUses field of corresponding :class:`~makeReports.models.report-models.Assessment`
+        |  Creates :class:`~makeReports.models.report_models.AssessmentVersion` from form
+        |  Also updates the numberOfAssess field of corresponding :class:`~makeReports.models.report_models.SLOInReport`
+        |  Updates the numberOfUses field of corresponding :class:`~makeReports.models.report_models.Assessment`
         
         Args:
             form (ImportAssessmentForm): completed form to be processed
@@ -239,17 +239,17 @@ class ImportAssessmentSLO(ImportAssessment):
     Imports assessment for a specific SLO
     
     Keyword Args:
-        slo (str) : primary key of SLO
+        slo (str) : primary key of :class:`~makeReports.models.report_models.SLOInReport`
     """
     template_name = "makeReports/Assessment/importAssessmentSLO.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches the view, and attaches the specific SLO to the instance
+        Dispatches the view, and attaches the specific :class:`~makeReports.models.report_models.SLOInReport` to the instance
 
         Args:
             request (HttpRequest): request to view page
         Keyword Args:
-            slo (str) : primary key of SLO
+            slo (str) : primary key of :class:`~makeReports.models.report_models.SLOInReport`
             
         Returns:
             HttpResponse : response of page to request
@@ -261,7 +261,7 @@ class ImportAssessmentSLO(ImportAssessment):
         Gets URL to go to upon success (SLO summary)
 
         Returns:
-            str : URL of SLO summary page
+            str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
     def get_initial(self):
@@ -276,7 +276,7 @@ class ImportAssessmentSLO(ImportAssessment):
         return initial
     def get_context_data(self, **kwargs):
         """
-        Gets context for the template, and attaches the SLO to the context
+        Gets context for the template, and attaches the :class:`~makeReports.models.report_models.SLOInReport` to the context
 
         Returns:
             dict : context for template
@@ -286,22 +286,22 @@ class ImportAssessmentSLO(ImportAssessment):
         return context
 class EditImportedAssessment(DeptReportMixin,FormView):
     """
-    View to edit imported assessment (cannot change fields in :class:`~makeReports.models.report-models.Assessment`)
+    View to edit imported assessment (cannot change fields in :class:`~makeReports.models.report_models.Assessment`)
     
     Keyword Args:
-        assessIR (str): primary key of assessment to update
+        assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to update
     """
     template_name = "makeReports/Assessment/editImportedAssessment.html"
     form_class = EditImportedAssessmentForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view, and attaches AssessmentVersion to instance
+        Dispatches view, and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            assessIR (str): primary key of assessment to update
+            assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to update
         
         Returns:
             HttpResponse : response of page to request
@@ -310,7 +310,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         return super(EditImportedAssessment,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         """
-        Gets initial form values based upon the current values of the :class:`~makeReports.models.report-models.AssessmentVersion`
+        Gets initial form values based upon the current values of the :class:`~makeReports.models.report_models.AssessmentVersion`
         
         Returns:
             dict : initial form values
@@ -342,7 +342,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self,form):
@@ -371,10 +371,10 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         return super(EditImportedAssessment, self).form_valid(form)
 class EditNewAssessment(DeptReportMixin,FormView):
     """
-    View to edit new assessments (can change fields in :class:`~makeReports.models.report-models.Assessment`)
+    View to edit new assessments (can change fields in :class:`~makeReports.models.report_models.Assessment`)
     
     Keyword Args:
-        assessIR (str): primary key of assessment to edit
+        assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to edit
     """
     template_name = "makeReports/Assessment/editNewAssessment.html"
     form_class = EditNewAssessmentForm
@@ -385,7 +385,7 @@ class EditNewAssessment(DeptReportMixin,FormView):
         Args:
             request (HttpRequest): request to view page
         Keyword Args:
-            assessIR (str): primary key of assessment to edit
+            assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to edit
         
         Returns:
             HttpResponse : response of page to request
@@ -431,7 +431,7 @@ class EditNewAssessment(DeptReportMixin,FormView):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -466,7 +466,7 @@ class SupplementUpload(DeptReportMixin,CreateView):
     View to upload supplements to assessments
 
     Keyword Args:
-        assessIR (str): primary key of assessment
+        assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion`
     """
     template_name = "makeReports/Assessment/supplementUpload.html"
     model = AssessmentSupplement
@@ -479,7 +479,7 @@ class SupplementUpload(DeptReportMixin,CreateView):
             request (HttpRequest): request to view page
         
         Keyword Args:
-            assessIR (str): primary key of assessment
+            assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion`
             
         Returns:
             HttpResponse : response of page to request
@@ -491,7 +491,7 @@ class SupplementUpload(DeptReportMixin,CreateView):
         Gets success URL and used as hook to add supplement to assessment
 
         Returns:
-            str : URL of assessment summary
+            str : URL of assessment summary (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         self.assessVers.supplements.add(self.object)
         self.assessVers.save()
@@ -515,7 +515,7 @@ class ImportSupplement(DeptReportMixin,FormView):
     View to import supplement to assessment
     
     Keyword Args:
-        assessIR (str): primary key of assessment
+        assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion`
     
     Notes:
         Year and degree program to search for assessment passed via get request under
@@ -525,13 +525,13 @@ class ImportSupplement(DeptReportMixin,FormView):
     form_class = ImportSupplementsForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches assessment to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to instance
 
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            assessIR (str): primary key of assessment
+            assessIR (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion`
         
         Returns:
             HttpResponse : response of page to request
@@ -543,7 +543,7 @@ class ImportSupplement(DeptReportMixin,FormView):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def get_form_kwargs(self):
@@ -590,7 +590,7 @@ class DeleteSupplement(DeptReportMixin,DeleteView):
     View to delete supplement
 
     Keyword Args:
-        pk (str): primary key of supplement to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentSupplement` to delete
     """
     model = AssessmentSupplement
     template_name = "makeReports/Assessment/deleteSupplement.html"
@@ -599,7 +599,7 @@ class DeleteSupplement(DeptReportMixin,DeleteView):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
 class Section2Comment(DeptReportMixin,FormView):
@@ -613,7 +613,7 @@ class Section2Comment(DeptReportMixin,FormView):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -646,19 +646,20 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
     View to delete imported assessments (more restricted than new assessments)
 
     Keyword Args:
-        pk (str): primary key of assessment to "delete"
+        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to "delete"
     """
     model = AssessmentVersion
     template_name = "makeReports/Assessment/deleteAssessment.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches the view, and attaches the assessement, the SLO, the number of the assessment to the instance
+        Dispatches the view, and attaches the :class:`~makeReports.models.report_models.AssessmentVersion`, 
+        the :class:`~makeReports.models.report_models.SLOInReport`, and the number of the assessments to the instance
         
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            pk (str): primary key of assessment to "delete"
+            pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to "delete"
             
         Returns:
             HttpResponse : response of page to request
@@ -671,11 +672,11 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
     def get_success_url(self):
         """
         Gets success url (assessment summary) and uses it has a hook to update the number of other assessments and 
-        update corresponding :class:`~makeReports.models.report-models.Assessment` and
-        :class:`~makeReports.models.report-models.SLOInReport`
+        update corresponding :class:`~makeReports.models.report_models.Assessment` and
+        :class:`~makeReports.models.report_models.SLOInReport`
 
         Returns:
-            str : URL of assessment summary
+            str : URL of assessment summary (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         oldNum = self.oldNum
         assess = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
@@ -697,19 +698,19 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
     View to delete new assessment
 
     Keyword Args:
-        pk (str): primary key of assessment delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` delete
     """
     model = AssessmentVersion
     template_name = "makeReports/Assessment/deleteAssessment.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view, and attaches assessment to the instance
+        Dispatches view, and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to the instance
 
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            pk (str): primary key of assessment delete
+            pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` delete
             
         Returns:
             HttpResponse : response of page to request
@@ -721,11 +722,11 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
     def get_success_url(self):
         """
         Gets success url (assessment summary page), and uses as hook to update corresponding
-        :class:`~makeReports.models.report-models.Assessment` and 
-        :class:`~makeReports.models.report-models.SLOInReport`
+        :class:`~makeReports.models.report_models.Assessment` and 
+        :class:`~makeReports.models.report_models.SLOInReport`
 
         Returns:
-            str : assessment-summary URL
+            str : assessment summary URL (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         ASSESSIR = AssessmentVersion.objects.get(pk=self.kwargs['pk'])
         assessment = ASSESSIR.assessment

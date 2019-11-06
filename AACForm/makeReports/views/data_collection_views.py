@@ -47,13 +47,13 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
     View to add new data
 
     Keyword Args:
-        assessment (str): primary key of assessment to add data for
+        assessment (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to add data for
     """
     template_name = "makeReports/DataCollection/addDataCollection.html"
     form_class = AddDataCollection
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches assessment to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to instance
 
         Args:
             request(HttpRequest): request to view page
@@ -78,7 +78,7 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -108,7 +108,7 @@ class CreateDataCollectionRowAssess(CreateDataCollectionRow):
         Gets URL to go to upon success (assessment summary)
 
         Returns:
-            str : URL of assessment summary page
+            str : URL of assessment summary page (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         return reverse_lazy('makeReports:assessment-summary', args=[self.report.pk])
 
@@ -117,14 +117,14 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
     View to edit a data point
 
     Keyword Args:
-        dataCollection (str): primary key of data to edit
+        dataCollection (str): primary key of :class:`~makeReports.models.report_models.AssessmentData` to edit
     """
     template_name = "makeReports/DataCollection/editDataCollection.html"
     form_class = EditDataCollection
 
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches data to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentData` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -162,7 +162,7 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -187,7 +187,7 @@ class DeleteDataCollectionRow(DeptReportMixin,DeleteView):
     View to delete data point
 
     Keyword Args:
-        pk (str): primary key of data to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentData` to delete
     """
     model = AssessmentData
     template_name = "makeReports/DataCollection/deleteDataCollection.html"
@@ -197,7 +197,7 @@ class DeleteDataCollectionRow(DeptReportMixin,DeleteView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -207,7 +207,7 @@ class CreateSubassessmentRow(DeptReportMixin,FormView):
 
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches assessment to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -232,7 +232,7 @@ class CreateSubassessmentRow(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -274,7 +274,7 @@ class EditSubassessmentRow(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -293,7 +293,7 @@ class DeleteSubassessmentRow(DeptReportMixin,DeleteView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -313,7 +313,7 @@ class NewSLOStatus(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -328,15 +328,16 @@ class EditSLOStatus(DeptReportMixin,FormView):
     View to edit SLO status
 
     Keyword Args:
-        slopk (str): primary key of SLO
-        statuspk (str): primary key of SLO status
+        slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
+        statuspk (str): primary key of :class:`~makeReports.models.report_models.SLOStatus`
     """
     template_name = "makeReports/Datacollection/SLOStatus.html"
     form_class = SLOStatusForm
     
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches SLO and Status to the instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.SLO`, :class:`~makeReports.models.report_models.SLOInReport`,
+         and :class:`~makeReports.models.report_models.SLOStatus` to the instance
 
         Args:
             request (HttpRequest): request to view page
@@ -364,7 +365,7 @@ class EditSLOStatus(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -396,7 +397,7 @@ class NewResultCommunication(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -423,14 +424,14 @@ class EditResultCommunication(DeptReportMixin,FormView):
     View to edit result communication
 
     Keyword Args:
-        resultpk (str): primary key of result to edit
+        resultpk (str): primary key of :class:`~makeReports.models.report_models.ResultCommunicate` to edit
     """
     template_name = "makeReports/DataCollection/ResultCommunication.html"
     form_class = ResultCommunicationForm
     
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches result to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.ResultCommunicate` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -456,7 +457,7 @@ class EditResultCommunication(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
@@ -485,7 +486,7 @@ class Section3Comment(DeptReportMixin,FormView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
     def form_valid(self, form):
@@ -537,7 +538,7 @@ class DataAssessmentAddInfo(DeptReportMixin,CreateView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 class DataAssessmentDeleteInfo(DeptReportMixin,DeleteView):
@@ -545,7 +546,7 @@ class DataAssessmentDeleteInfo(DeptReportMixin,DeleteView):
     View to delete additional data information
 
     Keyword Args:
-        pk (str): primary key of data supplement to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.DataAdditionalInformation` to delete
     """
     model = DataAdditionalInformation
     template_name = "makeReports/DataCollection/deleteInfo.html"
@@ -554,7 +555,7 @@ class DataAssessmentDeleteInfo(DeptReportMixin,DeleteView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
@@ -562,7 +563,7 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
     View to update data assessment supplement
     
     Keyword Args:
-        pk (str): primary key of data info to update
+        pk (str): primary key of :class:`~makeReports.models.report_models.DataAdditionalInformation` to update
     """
     model = DataAdditionalInformation
     template_name = "makeReports/DataCollection/updateInfo.html"
@@ -572,7 +573,7 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
         Gets URL to go to upon success (data summary)
 
         Returns:
-            str : URL of data summary page
+            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 def sloStatusUpdate(sloIR):
@@ -580,7 +581,7 @@ def sloStatusUpdate(sloIR):
     Updates the SLO status based upon the assessment aggregate data points
 
     Args:
-        sloIR (int): primary key of SLO to update the status of
+        sloIR (int): primary key of :class:`~makeReports.models.report_models.SLOInReport` to update the status of
     """
     aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sloIR)
     met = True
@@ -638,7 +639,7 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
         Gets the success url and used as hook to update the SLO status based upon target
 
         Returns:
-            str : URL of data summary
+            str : URL of data summary (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         sloStatusUpdate(self.assess.slo)
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
@@ -647,7 +648,7 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
     View to edit assessment aggregate
 
     Keyword Args:
-        pk (str): primary key of assessment aggregate to update
+        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentAggregate` to update
     """
     model = AssessmentAggregate
     fields = ['aggregate_proficiency']
@@ -673,7 +674,7 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
         Gets success url and used as hook to update the SLO status automatically
 
         Returns:
-            str : URL of data collection summary
+            str : URL of data collection summary (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         sloStatusUpdate(self.assess.slo)
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
