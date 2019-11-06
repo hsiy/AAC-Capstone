@@ -144,6 +144,8 @@ class ImportSLO(DeptReportMixin,FormView):
         """
         rpt = self.report
         num = rpt.numberOfSLOs
+        x = form.cleaned_data['slo']
+        y= form.cleaned_data
         for sloInRpt in form.cleaned_data['slo']:
             num += 1
             newS = SLOInReport.objects.create(

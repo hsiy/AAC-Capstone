@@ -1,6 +1,18 @@
 {% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
+{% block in_scripts %}
+{{form.media}}
+{% endblock %}
 {% block inner_content %}
+<style>
+    #hide-sam{
+        display: inherit;
+    }
+    #hide-freq{
+        display: inherit;
+    }
+</style>
+
 <h3>Import SLO</h3>
 <h5>Search For SLOs</h5>
 <form action="{% url 'makeReports:import-slo' report=rpt.pk %}" type="get">
@@ -20,7 +32,7 @@
         <button type="submit" class="btn btn-primary">Search for SLOs</button>
         {% endbuttons %}
 </form>
-<h5>Select SLOs to Import</h5>
+<h5>Select SLO to Import</h5>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
