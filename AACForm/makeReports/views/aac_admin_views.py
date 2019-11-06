@@ -125,7 +125,7 @@ class CollegeList(AACOnlyMixin,ListView):
         Returns active colleges in a QuerySet
 
         Returns:
-            QuerySet : queryset of all active colleges (:class:`~makeReports.models.report_models.College`)
+            QuerySet : QuerySet of all active colleges (:class:`~makeReports.models.report_models.College`)
         """
         objs = College.active_objects.all()
         return objs
@@ -148,8 +148,6 @@ class DepartmentList(AACOnlyMixin,ListView):
         """
         Returns context to pass to template with list of :class:`~makeReports.models.report_models.College` objects
 
-        Args:
-            **kwargs (list): list of keyword arguments
         Returns:
             dict : dictionary of context
         """
@@ -162,7 +160,7 @@ class DepartmentList(AACOnlyMixin,ListView):
             QuerySet of :class:`~makeReports.models.report_models.Department` objects meeting search parameters
         
         Returns:
-            QuerySet : queryset of active departments (:class:`~makeReports.models.report_models.Department`) meeting search criteria
+            QuerySet : QuerySet of active departments (:class:`~makeReports.models.report_models.Department`) meeting search criteria
         """
 
         objs = Department.active_objects
@@ -520,7 +518,7 @@ class AccountList(AACOnlyMixin,ListView):
         Gets all active profiles
 
         Returns:
-            QuerySet : set of :class:`~makeReports.models.report_models.Profile` that are active
+            QuerySet : set of :class:`~makeReports.models.report_models.Profile` objects that are active
         """
         return Profile.objects.filter(user__is_active=True)
 class SearchAccountList(AACOnlyMixin,ListView):
@@ -528,17 +526,17 @@ class SearchAccountList(AACOnlyMixin,ListView):
     View to search list of accounts
 
     Notes:
-        Through request url, search parameters are passed through f for the
+        Through request URL, search parameters are passed through f for the
         first name, l for the last name, and e for email
     """
     model = Profile
     template_name = 'makeReports/AACAdmin/account_list.html'
     def get_queryset(self):
         """
-        Filters the queryset based upon the search parameters
+        Filters the QuerySet based upon the search parameters
 
         Returns:
-            QuerySet : queryset matching search with only active profiles (:class:`~makeReports.models.report_models.Profile`)
+            QuerySet : QuerySet matching search with only active profiles (:class:`~makeReports.models.report_models.Profile`)
         """
         profs = Profile.objects.filter(user__is_active=True)
         if self.request.GET['f']!="":
