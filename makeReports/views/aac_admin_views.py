@@ -1,7 +1,7 @@
 """
-|This file contains all views needed by the AAC to administer the website.
-|This includes administrative home and creating, updating, and deleting colleges, departments, and degree programs.
-|It also includes pages related to account management and making announcements.
+|   This file contains all views needed by the AAC to administer the website.
+|   This includes administrative home and creating, updating, and deleting colleges, departments, and degree programs.
+|   It also includes pages related to account management and making announcements.
 """
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView

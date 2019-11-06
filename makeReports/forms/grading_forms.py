@@ -1,12 +1,13 @@
+"""
+Forms related to AAC grading reports
+"""
 from django import forms
 from makeReports.models import *
 from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 from .cleaners import cleanText
 from django.core.exceptions import ValidationError
-"""
-Forms related to AAC grading reports
-"""
+
 class SectionRubricForm(forms.Form):
     """
     Form to grade one section of a report based upon a rubric

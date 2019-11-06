@@ -1,3 +1,6 @@
+"""
+Includes all models used in application, which act both as Python objects and abstractions for database items
+"""
 from django.db import models
 from makeReports.choices import *
 from django.contrib.auth.models import User
@@ -7,9 +10,7 @@ from gdstorage.storage import GoogleDriveStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os
-"""
-Includes all models used in application
-"""
+
 gd_storage = GoogleDriveStorage()
 class NonArchivedManager(models.Manager):
     """

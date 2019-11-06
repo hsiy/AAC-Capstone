@@ -1,7 +1,8 @@
-from django import forms
 """
 File with forms that do not fit elsewhere
 """
+from django import forms
+
 class SubmitReportForm(forms.Form):
     """
     Dummy form to submit report

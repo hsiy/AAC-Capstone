@@ -1,3 +1,6 @@
+"""
+This file contains extra views needed during the form input process
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import TemplateView
@@ -6,9 +9,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-"""
-This file contains extra views needed during the form input process
-"""
+
 class ReportFirstPage(DeptOnlyMixin,UpdateView):
     """
     View to set report wide attributes

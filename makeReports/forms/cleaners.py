@@ -1,8 +1,9 @@
-import re
-from django.core.exceptions import ValidationError
 """
 This file contains class and method related to cleaning user input
 """
+import re
+from django.core.exceptions import ValidationError
+
 class CleanSummer():
     """
     Assumes the plugin Summernote is being used as a widget for a field called text,
