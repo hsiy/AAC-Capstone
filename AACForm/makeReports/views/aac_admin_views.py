@@ -16,8 +16,8 @@ from makeReports.views.helperFunctions.mixins import *
 
 class AdminHome(AACOnlyMixin,FormView):
     """
-    Home page for AAC administration: mostly buttons to other page
-    Does contain the form to generate all the reports for the year
+    |   Home page for AAC administration: mostly buttons to other page
+    |   It does contain the form to generate all the reports for the year.
     """
     template_name = "makeReports/AACAdmin/adminHome.html"
     form_class = GenerateReports
@@ -54,8 +54,7 @@ class GenerateReportSuccess(AACOnlyMixin,TemplateView):
 
 class CreateCollege(AACOnlyMixin,CreateView):
     """
-    Creates a new college
-    Upon success, goes to college-list page
+    View to create a new college
     """
     model = College
     template_name = "makeReports/AACAdmin/CollegeDeptDP/addCollege.html"
@@ -315,7 +314,7 @@ class DegreeProgramList(AACOnlyMixin,ListView):
     template_name = "makeReports/AACAdmin/CollegeDeptDP/dpList.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches the view
+        Dispatches the view and attaches the :class:`~makeReports.models.report_models.Department` associated with the primary key to the instance
         
         
         Args:
@@ -330,8 +329,6 @@ class DegreeProgramList(AACOnlyMixin,ListView):
         Returns:
             HttpResponse : response of page to request
 
-        Notes:
-            attaches the :class:`~makeReports.models.report_models.Department` associated with the primary key to the instance
         """
         self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
         return super(DegreeProgramList, self).dispatch(request,*args,**kwargs)
@@ -344,13 +341,10 @@ class DegreeProgramList(AACOnlyMixin,ListView):
         return objs
     def get_context_data(self, **kwargs):
         """
-        Returns context to be passed to template
+        Returns context to be passed to template, including the current department
 
         Returns:
             dict : context for template
-
-        Notes:
-            Adds department to context
         """
         context = super(DegreeProgramList, self).get_context_data(**kwargs)
         context['dept'] = self.dept
@@ -390,7 +384,7 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
     template_name = "makeReports/AACAdmin/CollegeDeptDP/archivedDPs.html"
     def dispatch(self, request,*args, **kwargs):
         """
-        Dispatches the view
+        Dispatches the view and attaches the :class:`~makeReports.models.report_models.Department` to the instance
 
         Args:
             request (HttpRequest) : request to view page
@@ -399,8 +393,7 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
 
         Returns:
             HttpResponse : response of page to request
-        Notes:
-            attaches the :class:`~makeReports.models.report_models.Department` to the instance
+            
         """
         self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
         return super(ArchivedDegreePrograms, self).dispatch(request,*args,**kwargs)
@@ -443,7 +436,7 @@ class MakeAccount(AACOnlyMixin,FormView):
         return super().form_valid(form)
 class ModifyAccount(AACOnlyMixin,FormView):
     """
-    View to modify an account
+    View to modify an account (intended for AAC use, not self-service)
     
     Keyword Args:
         pk (str): primary key of :class:`~makeReports.models.report_models.Profile` to change
@@ -526,8 +519,8 @@ class SearchAccountList(AACOnlyMixin,ListView):
     View to search list of accounts
 
     Notes:
-        Through request URL, search parameters are passed through f for the
-        first name, l for the last name, and e for email
+        Through GET request, search parameters are passed through "f" for the
+        first name, "l" for the last name, and "e" for email
     """
     model = Profile
     template_name = 'makeReports/AACAdmin/account_list.html'

@@ -188,8 +188,10 @@
 <dt id="makeReports.views.aac_admin_views.AdminHome">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.aac_admin_views.</code><code class="sig-name descname">AdminHome</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.AdminHome" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
-<p>Home page for AAC administration: mostly buttons to other page
-Does contain the form to generate all the reports for the year</p>
+<div class="line-block">
+<div class="line">Home page for AAC administration: mostly buttons to other page</div>
+<div class="line">It does contain the form to generate all the reports for the year.</div>
+</div>
 <dl class="attribute">
 <dt id="makeReports.views.aac_admin_views.AdminHome.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.aac_admin_views.AdminHome.form_class" title="Permalink to this definition">¶</a></dt>
@@ -269,7 +271,7 @@ Does contain the form to generate all the reports for the year</p>
 <dl class="method">
 <dt id="makeReports.views.aac_admin_views.ArchivedDegreePrograms.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.ArchivedDegreePrograms.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view</p>
+<dd><p>Dispatches the view and attaches the <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
@@ -284,8 +286,6 @@ Does contain the form to generate all the reports for the year</p>
 <dd class="field-even"><p>HttpResponse</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>attaches the <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to the instance</p>
 </dd></dl>
 
 <dl class="method">
@@ -396,8 +396,7 @@ Does contain the form to generate all the reports for the year</p>
 <dt id="makeReports.views.aac_admin_views.CreateCollege">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.aac_admin_views.</code><code class="sig-name descname">CreateCollege</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.CreateCollege" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.CreateView</span></code></p>
-<p>Creates a new college
-Upon success, goes to college-list page</p>
+<p>View to create a new college</p>
 <dl class="attribute">
 <dt id="makeReports.views.aac_admin_views.CreateCollege.fields">
 <code class="sig-name descname">fields</code><em class="property"> = ['name']</em><a class="headerlink" href="#makeReports.views.aac_admin_views.CreateCollege.fields" title="Permalink to this definition">¶</a></dt>
@@ -535,7 +534,7 @@ Upon success, goes to college-list page</p>
 <dl class="method">
 <dt id="makeReports.views.aac_admin_views.DegreeProgramList.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.DegreeProgramList.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view</p>
+<dd><p>Dispatches the view and attaches the <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> associated with the primary key to the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
@@ -553,14 +552,12 @@ Upon success, goes to college-list page</p>
 <dd class="field-even"><p>HttpResponse</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>attaches the <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> associated with the primary key to the instance</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.views.aac_admin_views.DegreeProgramList.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.DegreeProgramList.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns context to be passed to template</p>
+<dd><p>Returns context to be passed to template, including the current department</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>context for template</p>
@@ -569,8 +566,6 @@ Upon success, goes to college-list page</p>
 <dd class="field-even"><p>dict</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>Adds department to context</p>
 </dd></dl>
 
 <dl class="method">
@@ -950,7 +945,7 @@ Upon success, goes to college-list page</p>
 <dt id="makeReports.views.aac_admin_views.ModifyAccount">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.aac_admin_views.</code><code class="sig-name descname">ModifyAccount</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.ModifyAccount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
-<p>View to modify an account</p>
+<p>View to modify an account (intended for AAC use, not self-service)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Profile" title="makeReports.models.report_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> to change</p>
@@ -1176,8 +1171,8 @@ Upon success, goes to college-list page</p>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
 <p>View to search list of accounts</p>
 <p class="rubric">Notes</p>
-<p>Through request URL, search parameters are passed through f for the
-first name, l for the last name, and e for email</p>
+<p>Through GET request, search parameters are passed through “f” for the
+first name, “l” for the last name, and “e” for email</p>
 <dl class="method">
 <dt id="makeReports.views.aac_admin_views.SearchAccountList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.SearchAccountList.get_queryset" title="Permalink to this definition">¶</a></dt>
