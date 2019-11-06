@@ -1,15 +1,18 @@
+"""
+This file contains helper functions for text processing.
+"""
 import string
 
-""" 
-Helper functions for text processing
-Since textblob or NLTK have required static files, and heroku is
-a pain in the butt when dealing with those, I've decided
-to take a naiive and simplistic approach to text processing,
-only using the precise heuristics I need, and nothing further
 
-Returns a dictionary containing blooms suggestions and
-whether or not the given input SLO is complex
- """
+# Helper functions for text processing
+# Since textblob or NLTK have required static files, and heroku is
+# a pain in the butt when dealing with those, I've decided
+# to take a naiive and simplistic approach to text processing,
+# only using the precise heuristics I need, and nothing further
+
+# Returns a dictionary containing blooms suggestions and
+# whether or not the given input SLO is complex
+
 def create_suggestions_dict(in_string):
     """
     Creates suggestion dictionary

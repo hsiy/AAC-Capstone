@@ -1,3 +1,7 @@
+"""
+This file contains custom mixins. These mixins are intended to reduce redunancy in logic
+associated with checking if a user is allowed to access a page and between views dealing with a specific report
+"""
 from makeReports.models import *
 from makeReports.forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin

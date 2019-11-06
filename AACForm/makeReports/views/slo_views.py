@@ -1,3 +1,6 @@
+"""
+This file contains all view related to inputting SLOs into the form
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, FormView
 from django.urls import reverse_lazy
@@ -5,9 +8,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
 from makeReports.views.helperFunctions.mixins import *
-"""
-This file contains all view related to inputting SLOs into the form
-"""
+
 class SLOSummary(DeptReportMixin,ListView):
     """
     View to summarize SLO while entering information

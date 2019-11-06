@@ -1,3 +1,6 @@
+"""
+This file contains methods that generate the context needed to display each section of the report and grading views.
+"""
 from makeReports.models import *
 from makeReports.forms import *
 from django.contrib.auth.models import User

@@ -1,3 +1,6 @@
+"""
+This file contains all views related to inputting decisions/actions into the form
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, FormView
 from django.views.generic.base import RedirectView
@@ -6,9 +9,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-"""
-This file contains all views related to inputting decisions/actions into the form
-"""
+
 class DecisionsActionsSummary(DeptReportMixin,ListView):
     """
     View to summary decisions and actions during form entry

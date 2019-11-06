@@ -1,3 +1,6 @@
+"""
+This file contains views related to the AAC grading completed reports
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView, FormView
 from django.urls import reverse_lazy
@@ -6,9 +9,7 @@ from makeReports.forms import *
 from django.template.defaulttags import register
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-"""
-This file contains views related to the AAC grading completed reports
-"""
+
 def generateRubricItems(rIs,form,r):
     """
     Generates graded rubric items based on grading form
