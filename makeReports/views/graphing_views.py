@@ -6,7 +6,9 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
-
+"""
+This file contains views related to graphing
+"""
 class GraphingHome(AACOnlyMixin,TemplateView):
     template_name = "graphing.html"
     def get_context_data(self, **kwargs):

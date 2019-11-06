@@ -7,7 +7,7 @@ from django.template.defaulttags import register
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
 """
-This view contains views related to the AAC grading completed reports
+This file contains views related to the AAC grading completed reports
 """
 def generateRubricItems(rIs,form,r):
     """
