@@ -210,22 +210,23 @@ class CreateDegreeProgram(AACOnlyMixin,CreateView):
         dept (str): primary key of :class:`~makeReports.models.report_models.Department` to create degree program in
     """
     model = DegreeProgram
-    fields=['name','level','cycle','startingYear']
+    #fields=['name','level','cycle','startingYear']
+    form_class = CreateDPByDept
     template_name = "makeReports/AACAdmin/CollegeDeptDP/addDP.html"
-    def get_form(self, form_class=None):
-        """
-        Returns the form to be used
+    # def get_form(self, form_class=None):
+    #     """
+    #     Returns the form to be used
 
-        Keyword Args:
-            form_class (class) : class of form to be used
+    #     Keyword Args:
+    #         form_class (class) : class of form to be used
 
-        Notes:
-            To the default form, it changes the label of the cycle and startingYear field
-        """
-        form = super(CreateDegreeProgram,self).get_form()
-        form.fields['cycle'].label="Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)"
-        form.fields['startingYear'].label="The first year report is assigned for cycle (leave blank if no cycle)"
-        return form
+    #     Notes:
+    #         To the default form, it changes the label of the cycle and startingYear field
+    #     """
+    #     form = super(CreateDegreeProgram,self).get_form()
+    #     form.fields['cycle'].label="Number of years between automatically assigned reports (put 0 or leave blank if there is no regular cycle)"
+    #     form.fields['startingYear'].label="The first year report is assigned for cycle (leave blank if no cycle)"
+    #     return form
     def get_success_url(self):
         """
         Gets URL to go to upon success (degree program list)

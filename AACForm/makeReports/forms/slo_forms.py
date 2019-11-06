@@ -7,6 +7,13 @@ from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 from .cleaners import CleanSummer
 from django.core.exceptions import ValidationError
+from .widgets import SLOChoicesJSWidget, SLOMultipleChoicesJSWidget
+from django.template.defaultfilters import register
+
+@register.filter(name='dict_key')
+def dict_key(d, k):
+    '''Returns the given key from a dictionary.'''
+    return d[k]
 
 class CreateNewSLO(CleanSummer,forms.Form):
     """
@@ -31,8 +38,8 @@ class ImportSLOForm(forms.Form):
     """
     Form to import pre-existing SLO
     """
-    slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ", widget=forms.Select(attrs={'class':'form-control col-5'}))
-    importAssessments = forms.BooleanField(required=False,label="Also import assessments?")
+    slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ", widget=SLOMultipleChoicesJSWidget(attrs={'class':'form-control col-5'}))
+    importAssessments = forms.BooleanField(required=False,label="Also import assessments with SLO")
     def __init__(self, *args, **kwargs):
         """
         Initializes form, including setting SLO choices
@@ -43,6 +50,9 @@ class ImportSLOForm(forms.Form):
         sloChoices = kwargs.pop('sloChoices',None)
         super(ImportSLOForm, self).__init__(*args, **kwargs)
         self.fields['slo'].queryset = sloChoices
+    def clean(self):
+        print(self.fields['slo'])
+        return super(ImportSLOForm,self).clean()
 class EditNewSLOForm(CleanSummer,forms.Form):
     """
     Form to edit a new SLO (no restrictions)
