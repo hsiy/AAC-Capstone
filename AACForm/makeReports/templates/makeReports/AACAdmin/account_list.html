@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
 <form action="{% url 'makeReports:search-account-list' %}" type="get">
         <h3>Search:</h3>
         <div class="form-group"><label for="f">First name:</label><input id="f" type="text" class="form-control" name="f"></div>
@@ -13,8 +13,8 @@
 <ul class="list-group">
 {% for prof in object_list %}
     <li class = "list-group-item">{{prof.user.first_name}} {{prof.user.last_name}}, {{prof.user.email}}
-        <a type="button" class="btn btn-primary" href="{% url 'makeReports:aac-modify-account' pk=prof.pk %}">Modify</a>
-        <a type="button" class="btn btn-primary" href="{% url 'makeReports:inactivate-account' pk=prof.user.pk %}">Deactivate</a>
+        <a  role="button" class="btn btn-primary" href="{% url 'makeReports:aac-modify-account' pk=prof.pk %}">Modify</a>
+        <a  role="button" class="btn btn-primary" href="{% url 'makeReports:inactivate-account' pk=prof.user.pk %}">Deactivate</a>
       </li>
 {% empty %}
 No reports matching query.

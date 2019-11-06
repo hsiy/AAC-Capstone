@@ -3,7 +3,7 @@
 {% block content %}
 <h3>Report List</h3>
 <h4>To view past data graphically, click here: </h4>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:graphing' %}">Click Here</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:graphing' %}">Click Here</a>
 <form action="{% url 'makeReports:search-reports-dept' %}" type="get">
         <h3>Search:</h3>
         You can use as many or few fields as desired<br>
@@ -40,8 +40,8 @@
 <ul class="list-group">
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for {{rpt.year|add:"-1"}}-{{rpt.year}} academic year
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
-            {% if rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Feedback</a>{% endif %}
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
+            {% if rpt.rubric.complete %}<a  role="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Feedback</a>{% endif %}
     </li>
 {% endfor %}
 </ul>
