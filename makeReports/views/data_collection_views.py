@@ -628,7 +628,7 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
-        form.instance.assessmentVersion = assess
+        form.instance.assessmentVersion = self.assess
         if self.assess.target <= form.instance.aggregate_proficiency:
             form.instance.met = True
         else:
