@@ -1,3 +1,6 @@
+"""
+Contains forms related to inputting assessments
+"""
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django_summernote.widgets import SummernoteWidget
@@ -5,9 +8,7 @@ from .cleaners import cleanText
 from django.core.exceptions import ValidationError
 from makeReports.choices import FREQUENCY_CHOICES
 from .widgets import SLOChoicesJSWidget
-"""
-Contains forms related to inputting assessments
-"""
+
 class CreateNewAssessment(forms.Form):
     """
     Form to create new assessment

@@ -1,3 +1,6 @@
+"""
+This file contains forms to administer the website
+"""
 from django import forms
 from makeReports.models import *
 from django.contrib.auth.forms import UserCreationForm
@@ -5,9 +8,7 @@ from django.contrib.auth.models import User
 from makeReports.choices import *
 from .cleaners import CleanSummer
 from django_summernote.widgets import SummernoteWidget
-"""
-This file contains forms to administer the website
-"""
+
 class UpdateUserForm(forms.Form):
     """
     Form to update a pre-existing user by the AAC

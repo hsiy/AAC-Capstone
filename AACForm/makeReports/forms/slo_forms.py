@@ -1,12 +1,13 @@
+"""
+Forms relating to inputting and modifying SLOs
+"""
 from django import forms
 from makeReports.models import *
 from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 from .cleaners import CleanSummer
 from django.core.exceptions import ValidationError
-"""
-Forms relating to inputting SLOs
-"""
+
 class CreateNewSLO(CleanSummer,forms.Form):
     """
     Form to create a new SLO

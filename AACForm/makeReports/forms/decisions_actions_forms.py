@@ -1,10 +1,11 @@
+"""
+File contains forms related to inputting decisions/actions
+"""
 from django import forms
 from makeReports.models import *
 from .cleaners import CleanSummer
 from django_summernote.widgets import SummernoteWidget
-"""
-File contains forms related to inputting decisions/actions
-"""
+
 class DecisionsActionsForm(forms.Form):
     """
     Form to add or edit decisions/actions with 5 sub text boxes

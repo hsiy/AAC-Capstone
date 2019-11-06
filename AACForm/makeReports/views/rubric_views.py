@@ -1,3 +1,6 @@
+"""
+This file contains views related to managing rubrics (but not grading with them)
+"""
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import DetailView
@@ -6,9 +9,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
 from makeReports.views.helperFunctions.mixins import *
-"""
-This file contains views related to managing rubrics (but not grading with them)
-"""
+
 class RubricList(AACOnlyMixin,ListView):
     """
     View to list rubrics in reverse chronological order
@@ -38,7 +39,7 @@ class SearchRubricList(AACOnlyMixin,ListView):
         if self.request.GET['name']!="":
             rubs=rubs.filter(name__icontains=self.request.GET['name'])
         if day!="":
-            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
+            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-datetime.timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+datetime.timedelta(days=180)))
         return rubs.order_by("-date")
 class AddRubric(AACOnlyMixin,CreateView):
     """
