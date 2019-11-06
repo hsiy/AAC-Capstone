@@ -31,7 +31,7 @@ def create_suggestions_dict(in_string):
 
     return(sug_dict)
 
-# Returns a string corresponding to a bloom's taxonomy
+# Returns a string corresponding to a Bloom's taxonomy
 def blooms_suggestion(in_string):
     """
     Creates suggestion of Bloom's taxonomy level

@@ -145,4 +145,6 @@ urlpatterns = [
     #Graphing
     re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
     re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),
+    #CSV
+    re_path(r'^csv/dept/(?P<dept>\d+)/$', views.OutputCSVDepartment.as_view(),name="csv-dept"),
 ]
