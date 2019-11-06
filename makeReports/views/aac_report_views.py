@@ -116,7 +116,7 @@ class ReportList(AACOnlyMixin,ListView):
         Gets reports from this year and active degree programs
 
         Returns:
-            QuerySet : reports from this year
+            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) from this year
         """
         qs = Report.objects.filter(year=int(datetime.now().year), degreeProgram__active=True).order_by('submitted','-rubric__complete')
         return qs
@@ -136,7 +136,7 @@ class ReportListSearched(AACOnlyMixin,ListView):
         Gets filtered QuerySet based upon parameters
 
         Returns:
-            QuerySet : reports meeting search criteria
+            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) meeting search criteria
         """
         year = self.request.GET['year']
         submitted = self.request.GET['submitted']
@@ -199,7 +199,7 @@ class ListActiveGradGoals(AACOnlyMixin,ListView):
         Gets only the active grad goals
 
         Returns:
-            QuerySet : GradGoals that are active
+            QuerySet : :class:`~makeReports.models.report_models.GradGoal` objects that are active
         """
         return GradGoal.active_objects.all()
 class ListInactiveGradGoals(AACOnlyMixin,ListView):
@@ -213,6 +213,6 @@ class ListInactiveGradGoals(AACOnlyMixin,ListView):
         Gets inactive grad goals
         
         Returns:
-            QuerySet : GradGoals that are inactive
+            QuerySet : :class:`~makeReports.models.report_models.GradGoal` objects that are inactive
         """
         return GradGoal.objects.filter(active=False)

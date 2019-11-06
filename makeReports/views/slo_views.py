@@ -20,7 +20,7 @@ class SLOSummary(DeptReportMixin,ListView):
         Gets SLOs in report ordered by number
 
         Returns:
-            QuerySet : SLOs in report
+            QuerySet : SLOs (:class:`~makeReports.models.report_models.SLOInReport`) in report
         """
         report = self.report
         objs = SLOInReport.objects.filter(report=report).order_by("number")

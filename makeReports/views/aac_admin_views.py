@@ -122,7 +122,7 @@ class CollegeList(AACOnlyMixin,ListView):
         Returns active colleges in a QuerySet
 
         Returns:
-            QuerySet : queryset of all active colleges
+            QuerySet : queryset of all active colleges (:class:`~makeReports.models.report_models.College`)
         """
         objs = College.active_objects.all()
         return objs
@@ -155,10 +155,11 @@ class DepartmentList(AACOnlyMixin,ListView):
         return context
     def get_queryset(self):
         """
-        Returns QuerySet of :class:`~makeReports.models.report_models.Department` objects meeting search parameters
+        Returns:
+            QuerySet of :class:`~makeReports.models.report_models.Department` objects meeting search parameters
         
         Returns:
-            QuerySet : queryset of active departments meeting search criteria
+            QuerySet : queryset of active departments (:class:`~makeReports.models.report_models.Department`) meeting search criteria
         """
 
         objs = Department.active_objects
@@ -362,7 +363,7 @@ class ArchivedColleges(AACOnlyMixin, ListView):
     def get_queryset(self):
         """
         Returns:
-            QuerySet : only inactive colleges
+            QuerySet : only inactive colleges (:class:`~makeReports.models.report_models.College`)
         """
         return College.objects.filter(active=False)
 class ArchivedDepartments(AACOnlyMixin, ListView):
@@ -374,7 +375,7 @@ class ArchivedDepartments(AACOnlyMixin, ListView):
     def get_queryset(self):
         """
         Returns:
-            QuerySet : only inactive departments
+            QuerySet : only inactive departments (:class:`~makeReports.models.report_models.Department`)
         """
         return Department.objects.filter(active=False)
 class ArchivedDegreePrograms(AACOnlyMixin, ListView):
@@ -407,7 +408,7 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
         Gets QuerySet of degree programs user has access to
 
         Returns:
-            QuerySet : degree programs which are inactive and in the department
+            QuerySet : degree programs (:class:`~makeReports.models.report_models.DegreeProgram`) which are inactive and in the department
         """
         return DegreeProgram.objects.filter(active=False, department=self.dept)
     def get_context_data(self, **kwargs):
@@ -512,6 +513,12 @@ class AccountList(AACOnlyMixin,ListView):
     model = Profile
     template_name = 'makeReports/AACAdmin/account_list.html'
     def get_queryset(self):
+        """
+        Gets all active profiles
+
+        Returns:
+            QuerySet : set of :class:`~makeReports.models.report_models.Profile` that are active
+        """
         return Profile.objects.filter(user__is_active=True)
 class SearchAccountList(AACOnlyMixin,ListView):
     """
@@ -528,7 +535,7 @@ class SearchAccountList(AACOnlyMixin,ListView):
         Filters the queryset based upon the search parameters
 
         Returns:
-        QuerySet : queryset matching search with only active users
+            QuerySet : queryset matching search with only active profiles (:class:`~makeReports.models.report_models.Profile`)
         """
         profs = Profile.objects.filter(user__is_active=True)
         if self.request.GET['f']!="":
@@ -567,7 +574,7 @@ class ListAnnouncements(AACOnlyMixin,ListView):
         Get not-expired announcements
 
         Returns:
-            QuerySet : announcments that are not expired
+            QuerySet : announcements (:class:`~makeReports.models.report_models.Announcement`) that are not expired
         """
         return Announcement.objects.filter(expiration__gte=datetime.now()).order_by("-creation")
 class DeleteAnnouncement(AACOnlyMixin,DeleteView):
