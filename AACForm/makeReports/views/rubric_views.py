@@ -31,7 +31,7 @@ class SearchRubricList(AACOnlyMixin,ListView):
         Gets rubrics within 180 days of date if it exists and containing name if it exists
         
         Returns:
-            QuerySet : rubrics meeting search parameters
+            QuerySet : rubrics (:class:`~makeReports.models.report_models.Rubric`) meeting search parameters
         """
         rubs = Rubric.objects
         day = self.request.GET['date']

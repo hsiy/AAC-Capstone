@@ -155,9 +155,15 @@
 <dl class="method">
 <dt id="makeReports.views.aac_admin_views.AccountList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.AccountList.get_queryset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the list of items for this view.</p>
-<p>The return value must be an iterable and may be an instance of
-<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+<dd><p>Gets all active profiles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>set of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Profile" title="makeReports.models.report_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> that are active</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -224,7 +230,7 @@ Does contain the form to generate all the reports for the year</p>
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.ArchivedColleges.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>only inactive colleges</p>
+<dd class="field-odd"><p>only inactive colleges (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.College" title="makeReports.models.report_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -297,7 +303,7 @@ Does contain the form to generate all the reports for the year</p>
 <dd><p>Gets QuerySet of degree programs user has access to</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>degree programs which are inactive and in the department</p>
+<dd class="field-odd"><p>degree programs (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.DegreeProgram" title="makeReports.models.report_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a>) which are inactive and in the department</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -328,7 +334,7 @@ Does contain the form to generate all the reports for the year</p>
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.ArchivedDepartments.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>only inactive departments</p>
+<dd class="field-odd"><p>only inactive departments (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -360,7 +366,7 @@ Does contain the form to generate all the reports for the year</p>
 <dd><p>Returns active colleges in a QuerySet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>queryset of all active colleges</p>
+<dd class="field-odd"><p>queryset of all active colleges (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.College" title="makeReports.models.report_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -772,13 +778,15 @@ Upon success, goes to college-list page</p>
 <dl class="method">
 <dt id="makeReports.views.aac_admin_views.DepartmentList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.DepartmentList.get_queryset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns QuerySet of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> objects meeting search parameters</p>
-<dl class="field-list simple">
+<dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>queryset of active departments meeting search criteria</p>
+<dd class="field-odd"><p>QuerySet of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> objects meeting search parameters</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QuerySet</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>queryset of active departments (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Department" title="makeReports.models.report_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a>) meeting search criteria</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QuerySet</p>
 </dd>
 </dl>
 </dd></dl>
@@ -852,7 +860,7 @@ Upon success, goes to college-list page</p>
 <dd><p>Get not-expired announcements</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>announcments that are not expired</p>
+<dd class="field-odd"><p>announcements (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Announcement" title="makeReports.models.report_models.Announcement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code></a>) that are not expired</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -1172,8 +1180,14 @@ first name, l for the last name, and e for email</p>
 <dt id="makeReports.views.aac_admin_views.SearchAccountList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.aac_admin_views.SearchAccountList.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filters the queryset based upon the search parameters</p>
-<p>Returns:
-QuerySet : queryset matching search with only active users</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>queryset matching search with only active profiles (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Profile" title="makeReports.models.report_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QuerySet</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">

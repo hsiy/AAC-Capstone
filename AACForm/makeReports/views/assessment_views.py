@@ -18,10 +18,10 @@ class AssessmentSummary(DeptReportMixin,ListView):
     context_object_name = "assessment_list"
     def get_queryset(self):
         """
-        Returns assessments in report ordered by slo
+        Returns assessments in report ordered by SLO
 
         Returns:
-            QuerySet : assessments in report
+            QuerySet : :class:`~makeReports.models.report_models.AssessmentVersion` objects in report
         """
         report = self.report
         objs = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")

@@ -21,7 +21,7 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         Gets QuerySet of data objects that go with the report
 
         Returns:
-            QuerySet : data within the report
+            QuerySet : data (:class:`~makeReports.models.report_models.AssessmentData`) within the report
         """
         report = self.report
         assessments = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")

@@ -431,7 +431,7 @@ class Feedback(DeptAACMixin, ListView):
         Returns all graded rubric items within report
 
         Returns:
-            QuerySet : all graded rubric items in report
+            QuerySet : all graded rubric items (:class:`~makeReports.models.report_models.GradedRubricItem`) in report
         """
 
         return self.GRIs

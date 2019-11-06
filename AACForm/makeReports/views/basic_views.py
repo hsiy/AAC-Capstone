@@ -22,7 +22,7 @@ class HomePage(ListView):
         When logged in, this returns unsubmitted reports within the user's department
 
         Returns:
-            QuerySet : reports that need work
+            QuerySet : :class:`~makeReports.models.report_models.Report` objects that need work
         """
         try:
             objs = Report.objects.filter(
@@ -59,7 +59,7 @@ class FacultyReportList(LoginRequiredMixin,ListView):
         Gets QuerySet of reports within the department
         
         Returns:
-            QuerySet : reports 
+            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) within department 
         """
         objs = Report.objects.filter(
             degreeProgram__department=self.request.user.profile.department, 
@@ -81,7 +81,7 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         Gets QuerySet based upon search parameters
         
         Returns:
-            QuerySet : reports within department matching search
+            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) within department matching search
         """
         year = self.request.GET['year']
         submitted = self.request.GET['submitted']
