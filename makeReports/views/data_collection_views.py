@@ -121,7 +121,7 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
         dataCollection (str): primary key of :class:`~makeReports.models.report_models.AssessmentData` to edit
     """
     template_name = "makeReports/DataCollection/editDataCollection.html"
-    form_class = EditDataCollection
+    form_class = AddDataCollection
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -172,7 +172,7 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
         Saves data collection object with updated values based upon form
 
         Args:
-            form (EditDataCollection): filled out form to process
+            form (AddDataCollection): filled out form to process
                 
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
@@ -616,14 +616,14 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
     View to create assessment aggregate
     """
     model = AssessmentAggregate
-    fields = ['aggregate_proficiency']
+    form_class = AssessmentAggregateForm
     template_name = "makeReports/DataCollection/addAggregate.html"
     def form_valid(self,form):
         """
         Sets whether the target has been met and then create objects based upon the form
         
         Args:
-            form (ModelForm): filled out form to process
+            form (AssessmentAggregateForm): filled out form to process
                 
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
@@ -652,14 +652,14 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
         pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentAggregate` to update
     """
     model = AssessmentAggregate
-    fields = ['aggregate_proficiency']
+    form_class = AssessmentAggregateForm
     template_name = "makeReports/DataCollection/addAggregate.html"
     def form_valid(self,form):
         """
         Updates object, including whether the target has been met 
 
         Args:
-            form (ModelForm): filled out form to process
+            form (AssessmentAggregateForm): filled out form to process
                 
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url

@@ -187,7 +187,7 @@ class AssessmentAggregate(models.Model):
     """
     Aggregates the various assessments on different ranges for an aggregate success rate
     """ 
-    assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE, verbose_name="assessment version")
+    assessmentVersion = models.OneToOneField(AssessmentVersion, on_delete=models.CASCADE, verbose_name="assessment version")
     aggregate_proficiency = models.PositiveIntegerField(verbose_name="aggregate proficiency percentage")
     met = models.BooleanField(verbose_name="target met")
     def __str__(self):

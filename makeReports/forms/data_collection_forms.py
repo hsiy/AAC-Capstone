@@ -14,15 +14,7 @@ class AddDataCollection(forms.Form):
     """
     dataRange = forms.CharField(max_length=500, widget=forms.TextInput(attrs={'class':'form-control col-6'}), label="Data Collection Range")
     numberStudents = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6'}), label="Number of Students Sampled")
-    overallProficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6'}), label="Percentage of Students Met/Exceeded Threshold Proficiency")
-
-class EditDataCollection(forms.Form):
-    """
-    Form to edit pre-existing data
-    """
-    dataRange = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-6'}), max_length=500, label="Data Collection Range")
-    numberStudents = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6'}), label="Number of Students Sampled")
-    overallProficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6','addon_after':'%'}), label="Percentage of Students Met/Exceeded Threshold Proficiency")
+    overallProficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-3','addon_after':'%'}), label="Percentage of Students Met/Exceeded Threshold Proficiency")
 
 class AddSubassessment(forms.Form):
     """
@@ -53,3 +45,10 @@ class ResultCommunicationForm(CleanSummer,forms.Form):
         label="Describe how results are communicated within the program. Address each SLO."
         )
     summer_max_length = 3000
+class AssessmentAggregateForm(forms.ModelForm):
+    class Meta:
+        model = AssessmentAggregate
+        fields = ['aggregate_proficiency']
+        widgets = {
+            'aggregate_proficiency': forms.NumberInput(attrs={'class':'form-control col-3','addon_after':"%"})
+        }
