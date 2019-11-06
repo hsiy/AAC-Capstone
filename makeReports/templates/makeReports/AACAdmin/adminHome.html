@@ -2,9 +2,9 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Administration Home</h3>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:report-list'  %}">Reports</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:announ-list'  %}">Announcements</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:rubric-list'  %}">Rubrics</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:report-list'  %}">Reports</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:announ-list'  %}">Announcements</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:rubric-list'  %}">Rubrics</a>
 <br>
 <br>
 <h5>Generate This Year's Reports:</h5>
@@ -19,12 +19,12 @@ Use create manual report or update report instead if needed.
 </form>
 <br>
 <h5>Report Template Management</h5>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:gg-list'  %}">Graduate Goals</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:gg-list'  %}">Graduate Goals</a>
 <h5>Colleges & Departments</h5>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:college-list'  %}">All Colleges</a>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:dept-list'  %}?college=&name=">All Departments</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:college-list'  %}">All Colleges</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:dept-list'  %}?college=&name=">All Departments</a>
 <h5>Account Management</h5>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:account-list'  %}">Account List</a><a type="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:account-list'  %}">Account List</a><a  role="button" class="btn btn-primary" href="{% url 'makeReports:make-account'  %}">Create New Account</a>
 
 
 {% endblock %}

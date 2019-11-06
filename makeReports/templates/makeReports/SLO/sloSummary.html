@@ -7,8 +7,8 @@
             <div class="col">      
     <div class="row">
         <div class="col">
-                <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
-    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import SLO</a>
+                <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-slo' report=rpt.pk %}">Add SLO</a>
+    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:import-slo' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import SLO</a>
         </div>
     </div>
     <div class="row">
@@ -37,18 +37,18 @@
                 </td>
                 <td>
                     {% if slo.slo.numberOfUses is 1 %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment-slo' report=rpt.pk slo=slo.pk %}">Add New Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo={{slo.pk}}">Import Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-edit-redirect' report=rpt.pk slopk=slo.slo.pk %}">Decisions and Actions</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:edit-new-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:delete-new-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment-slo' report=rpt.pk slo=slo.pk %}">Add New Assessment</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo={{slo.pk}}">Import Assessment</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-edit-redirect' report=rpt.pk slopk=slo.slo.pk %}">Decisions and Actions</a>
 
                     {% else %}
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment-slo' report=rpt.pk slo=slo.pk %}">Add New Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo={{slo.pk}}">Import Assessment</a>
-                    <a type="button" class="btn btn-primary" href="{% url 'makeReports:add-edit-redirect' report=rpt.pk slopk=slo.slo.pk %}">Decisions and Actions</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:edit-impt-slo' report=rpt.pk sloIR=slo.pk %}">Edit SLO</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:delete-impt-slo' report=rpt.pk pk=slo.pk %}">Delete SLO</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment-slo' report=rpt.pk slo=slo.pk %}">Add New Assessment</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment-slo' report=rpt.pk slo=slo.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo={{slo.pk}}">Import Assessment</a>
+                    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-edit-redirect' report=rpt.pk slopk=slo.slo.pk %}">Decisions and Actions</a>
 
 
                     {% endif %}
@@ -73,7 +73,7 @@
         {{stk.text|safe}}
     </div>
     <div class="col-2">
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Edit</a>
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Edit</a>
     </div>
 </div>
 <div class="row mt-5">
@@ -84,12 +84,12 @@
         {{rpt.section1Comment|safe}}
     </div>
     <div class="col-2">
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Edit</a>
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Edit</a>
     </div>
 </div>
 <div class="row mt-5">
         <div class="col">
-        <a type="button" class="btn btn-primary" href="{% url 'makeReports:assessment-summary' report=rpt.pk %}">Next</a>
+        <a  role="button" class="btn btn-primary" href="{% url 'makeReports:assessment-summary' report=rpt.pk %}">Next</a>
         </div>
 </div>
 </div>

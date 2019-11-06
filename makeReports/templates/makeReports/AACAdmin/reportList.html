@@ -40,15 +40,15 @@
 <ul class="list-group">
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for academic year {{rpt.year|add:"-1"}}-{{rpt.year}}
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
             {% if not rpt.submitted %}
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:manual-submit-rpt' pk=rpt.pk %}">Manually Submit</a>
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:manual-submit-rpt' pk=rpt.pk %}">Manually Submit</a>
             {% endif %}
             {% if rpt.rubric.complete %}
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Your Feedback</a>
-            <a type="button" class="btn btn-primary" href="{% url 'makeReports:ret-rept' pk=rpt.pk %}">Return for Revisions</a>
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Your Feedback</a>
+            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:ret-rept' pk=rpt.pk %}">Return for Revisions</a>
             {% endif %}
-            {% if rpt.submitted and not rpt.rubric.complete %}<a type="button" class="btn btn-primary" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
+            {% if rpt.submitted and not rpt.rubric.complete %}<a  role="button" class="btn btn-primary" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
     </li>
     {% empty %}
 No reports matching query.

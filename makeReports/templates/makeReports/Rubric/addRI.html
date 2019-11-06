@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Add Rubric Item</h3>
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:rubric-list' %}">Return to Rubric List</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:rubric-list' %}">Return to Rubric List</a>
 <div>The rubric currently has {{numRIs}} items.</div>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}

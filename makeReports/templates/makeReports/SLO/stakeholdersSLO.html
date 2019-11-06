@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-<a type="button" class="btn btn-primary" href="{% url 'makeReports:slo-stk-import' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:slo-stk-import' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import</a>
 
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
