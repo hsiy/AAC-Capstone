@@ -38,6 +38,8 @@ class SectionRubricForm(forms.Form):
         
         Returns:
             str : cleaned input
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['section_comment']
         max_length = 2000
@@ -73,6 +75,8 @@ class RubricItemForm(forms.ModelForm):
         
         Returns:
             str : cleaned input
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['text']
         max_length = 1000
@@ -86,6 +90,8 @@ class RubricItemForm(forms.ModelForm):
         
         Returns:
             str : cleaned input
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['DMEtext']
         max_length = 1000
@@ -99,6 +105,8 @@ class RubricItemForm(forms.ModelForm):
         
         Returns:
             str : cleaned input
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['MEtext']
         max_length = 1000
@@ -112,6 +120,8 @@ class RubricItemForm(forms.ModelForm):
         
         Returns:
             str : cleaned input
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['EEtext']
         max_length = 1000
@@ -144,7 +154,7 @@ class SubmitGrade(forms.Form):
         Cleans form and raises validation error if not valid
 
         Raises:
-            ValidationError
+            ValidationError : the grading is not complete
         """
         super().clean()
         if not self.valid:

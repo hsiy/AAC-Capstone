@@ -42,6 +42,9 @@ class CreateNewAssessment(forms.Form):
 
         Returns:
             str : cleaned rich text
+        
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['description']
         max_length = 1000
@@ -55,6 +58,8 @@ class CreateNewAssessment(forms.Form):
 
         Returns:
             str : cleaned rich text
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['where']
         max_length = 500
@@ -68,6 +73,8 @@ class CreateNewAssessment(forms.Form):
 
         Returns:
             str : cleaned rich text
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['sampleDescription']
         max_length = 500
@@ -81,6 +88,8 @@ class CreateNewAssessment(forms.Form):
 
         Returns:
             str : cleaned rich text
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['frequency']
         max_length = 100
