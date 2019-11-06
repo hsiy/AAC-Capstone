@@ -23,7 +23,7 @@ class SubmitReportForm(forms.Form):
         Cleans form and checks if valid
 
         Raises:
-            ValidationError
+            ValidationError : Report is not complete
         """
         super().clean()
         if not self.valid:

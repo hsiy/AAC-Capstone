@@ -14,6 +14,8 @@ class CleanSummer():
         
         Returns:
             str : cleaned input
+        Raises:
+            ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['text']
         max_length = self.summer_max_length
