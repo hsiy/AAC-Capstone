@@ -14,7 +14,7 @@ def generateRubricItems(rIs,form,r):
     Generates graded rubric items based on grading form
 
     Args:
-        rIs (list) : list of :class:`~makeReports.models.report-models.RubricItem` in rubric
+        rIs (list) : list of :class:`~makeReports.models.report_models.RubricItem` in rubric
         form (Form) : completed form
         r (Report) : report
     """
@@ -32,7 +32,7 @@ def getInitialRubric(rIs, r, initial):
     Initializes grading form based upon things already graded
 
     Args:
-        rIs (list) : list of :class:`~makeReports.models.report-models.RubricItem` in rubric
+        rIs (list) : list of :class:`~makeReports.models.report_models.RubricItem` in rubric
         form (Form) : completed form
         r (Report) : report
     
@@ -69,19 +69,23 @@ class GradingView(AACOnlyMixin,FormView):
     View to grade one section of a form
 
     Keyword Args:
-        report (str): primary key of current report to grade
+        report (str): primary key of current :class:`~makeReports.models.report_models.Report` to grade
+    
+    Attributes:
+        section (int): section number of section currently being graded
     """
     form_class = SectionRubricForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view, and attaches report and rubric items to instance
+        Dispatches view, and attaches :class:`~makeReports.models.report_models.Report` and 
+        rubric items (:class:`~makeReports.models.report_models.RubricItem`) to instance
 
         Args:
             request (HttpRequest): request to view page
 
         
         Keyword Args:
-            report (str): primary key of current report to grade
+            report (str): primary key of current :class:`~makeReports.models.report_models.Report` to grade
             
         Returns:
             HttpResponse : response of page to request
@@ -231,7 +235,7 @@ class Section4Grading(GradingView):
         Gets URL to go to upon success (comment page)
 
         Returns:
-            str : URL of overall comment page
+            str : URL of overall comment page (:class:`~makeReports.views.grading_views.OverallComment`)
         """
         return reverse_lazy("makeReports:grade-comment", args=[self.report.pk])
     def get_context_data(self, **kwargs):
@@ -264,7 +268,7 @@ class OverallComment(AACReportMixin,FormView):
         Gets URL to go to upon success (review the feedback page)
 
         Returns:
-            str : URL of review the feedback page
+            str : URL of review the feedback page (:class:`~makeReports.views.grading_views.RubricReview`)
         """
         return reverse_lazy("makeReports:rub-review", args=[self.report.pk])
     def get_context_data(self,**kwargs):
@@ -311,7 +315,7 @@ class RubricReview(AACReportMixin, FormView):
     form_class = SubmitGrade
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches the view and attaches the graded rubric items to the instance
+        Dispatches the view and attaches the graded rubric items (:class:`~makeReports.models.report_models.GradedRubricItem`) to the instance
         
         Args:
             request (HttpRequest): request to view page
@@ -351,7 +355,7 @@ class RubricReview(AACReportMixin, FormView):
         Gets URL to go to upon success (return report option page)
 
         Returns:
-            str : URL of return report option page
+            str : URL of return report option page (:class:`~makeReports.views.grading_views.ReturnReport`)
         """
         return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
     def get_context_data(self,**kwargs):
@@ -376,7 +380,7 @@ class ReturnReport(AACOnlyMixin,UpdateView):
     View to return report to department for modification
 
     Keyword Args:
-        pk (str): primary key of report to return
+        pk (str): primary key of :class:`~makeReports.models.report_models.Report` to return
     """
     model = Report
     fields = ['returned']
@@ -401,19 +405,20 @@ class Feedback(DeptAACMixin, ListView):
     View for department to view AAC feedback
 
     Keyword Args:
-        report (str): primary key of report to view feedback for
+        report (str): primary key of :class:`~makeReports.models.report_models.Report` to view feedback for
     """
     model = GradedRubricItem
     template_name = "makeReports/Grading/feedback.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report and graded items to the view
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` and 
+        graded items (:class:`~makeReports.models.report_models.GradedRubricItem`) to the view
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            report (str): primary key of report to view feedback for
+            report (str): primary key of :class:`~makeReports.models.report_models.Report` to view feedback for
             
         Returns:
             HttpResponse : response of page to request
@@ -435,7 +440,7 @@ class Feedback(DeptAACMixin, ListView):
         Gets URL to go to upon success (return report option page)
 
         Returns:
-            str : URL of return report option page
+            str : URL of return report option page (:class:`~makeReports.views.grading_views.ReturnReport`)
         """
         return reverse_lazy('makeReports:ret-rept', args=[self.report.pk])
     def get_context_data(self, **kwargs):

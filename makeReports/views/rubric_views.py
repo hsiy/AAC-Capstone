@@ -65,19 +65,19 @@ class AddRubricItems(AACOnlyMixin, FormView):
     View to add rubric items to rubric
     
     Keyword Args:
-        rubric (str): primary key of rubric
+        rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`
     """
     template_name = "makeReports/Rubric/addRI.html"
     form_class = RubricItemForm
     def dispatch(self, request,*args, **kwargs):
         """
-        Dispatches view and attaches rubric to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Rubric` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            rubric (str): primary key of rubric
+            rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`
             
         Returns:
             HttpResponse : response of page to request
@@ -124,7 +124,7 @@ class AddRubricItems(AACOnlyMixin, FormView):
         Gets URL to go to upon success (add rubric item page)
 
         Returns:
-            str : URL of add rubric item page
+            str : URL of add rubric item page (:class:`~makeReports.views.rubric_views.AddRubricItems`)
         """
         return reverse_lazy('makeReports:add-RI', args=[self.kwargs['rubric']])
 class ViewRubric(AACOnlyMixin,DetailView):
@@ -132,7 +132,7 @@ class ViewRubric(AACOnlyMixin,DetailView):
     View to view a rubric
 
     Keyword Args:
-        pk (str): primary key of rubric to view
+        pk (str): primary key of :class:`~makeReports.models.report_models.Rubric` to view
     """
     model = Rubric
     template_name = "makeReports/Rubric/rubricDetail.html"
@@ -155,7 +155,7 @@ class UpdateRubricItem(AACOnlyMixin,UpdateView):
     View to update rubric item
 
     Keyword Args:
-        pk (str): primary key of rubric item to update
+        pk (str): primary key of :class:`~makeReports.models.report_models.RubricItem` to update
     """
     model = RubricItem
     form_class = RubricItemForm
@@ -165,7 +165,7 @@ class UpdateRubricItem(AACOnlyMixin,UpdateView):
         Gets URL to go to upon success (view rubric)
 
         Returns:
-            str : URL of view rubric page
+            str : URL of view rubric page (:class:`~makeReports.views.rubric_views.ViewRubric`)
         """
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
 class UpdateRubricFile(AACOnlyMixin, UpdateView):
@@ -173,7 +173,7 @@ class UpdateRubricFile(AACOnlyMixin, UpdateView):
     View to update file associated with the rubric
 
     Keyword Args:
-        pk (str): primary key of rubric to update
+        pk (str): primary key of :class:`~makeReports.models.report_models.Rubric` to update
     """
     model = Rubric
     fields = ['name','fullFile']
@@ -183,7 +183,7 @@ class UpdateRubricFile(AACOnlyMixin, UpdateView):
         Gets URL to go to upon success (view rubric)
 
         Returns:
-            str : URL of view rubric page
+            str : URL of view rubric page (:class:`~makeReports.views.rubric_views.ViewRubric`)
         """
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['pk']])
 class DeleteRubricItem(AACOnlyMixin,DeleteView):
@@ -191,7 +191,7 @@ class DeleteRubricItem(AACOnlyMixin,DeleteView):
     View to delete rubric item
 
     Keyword Args:
-        pk (str): primary key of rubric item to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.RubricItem` to delete
     """
     model = RubricItem
     template_name = "makeReports/Rubric/deleteRubricItem.html"
@@ -200,7 +200,7 @@ class DeleteRubricItem(AACOnlyMixin,DeleteView):
         Gets URL to go to upon success (view rubric)
 
         Returns:
-            str : URL of view rubric page
+            str : URL of view rubric page (:class:`~makeReports.views.rubric_views.ViewRubric`)
         """
         return reverse_lazy('makeReports:view-rubric',args=[self.kwargs['rubric']])
 class DuplicateRubric(AACOnlyMixin, FormView):
@@ -208,7 +208,7 @@ class DuplicateRubric(AACOnlyMixin, FormView):
     View to duplicate rubric 
 
     Keyword Args:
-        rubric (str): primary key of rubric to duplicate
+        rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric` to duplicate
     """
     #duplicate -> edit/delete/add intended workflow instead of some kind of import
     form_class = DuplicateRubricForm
@@ -239,7 +239,7 @@ class DeleteRubric(AACOnlyMixin,DeleteView):
     View to delete rubric
 
     Keyword Args:
-        pk (str) : primary key of rubric to delete
+        pk (str) : primary key of :class:`~makeReports.models.report_models.Rubric` to delete
     """
     model = Rubric
     template_name = "makeReports/Rubric/deleteRubric.html"
@@ -248,6 +248,6 @@ class DeleteRubric(AACOnlyMixin,DeleteView):
         Gets URL to go to upon success (rubric list)
 
         Returns:
-            str : URL of rubric list page
+            str : URL of rubric list page (:class:`~makeReports.views.rubric_views.RubricList`)
         """
         return reverse_lazy('makeReports:rubric-list')

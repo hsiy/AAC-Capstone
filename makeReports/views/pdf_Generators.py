@@ -30,7 +30,7 @@ def test_func_x(self,*args,**kwargs):
     Ensures the user accessing the page is in the AAC or right department
 
     Keyword Args:
-        report (str): primary key of report
+        report (str): primary key of :class:`~makeReports.models.report_models.Report`
     Returns:
         boolean : whether user passes test
     """
@@ -88,7 +88,7 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     View to generate a graded rubric PDF
 
     Keyword Args:
-        report (str): primary key of report
+        report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
@@ -100,11 +100,14 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     ]
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report to the view
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the view
 
         Args:
             request (HttpRequest): request to view PDF page
-            
+    
+        Keyword Args:
+            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+                
         Returns:
             HttpResponse : response of page to request
         """
@@ -130,7 +133,7 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     View to generate PDF of report, without supplements
 
     Keyword Args:
-        report (str): primary key of report
+        report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
     template_name = "makeReports/DisplayReport/pdf.html"
     pdf_stylesheets =[
@@ -139,11 +142,13 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     ]
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches report to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to instance
 
         Args:
             request (HttpRequest): request to view page
-            
+        
+        Keyword Args:
+            report (str): primary key of :class:`~makeReports.models.report_models.Report`
         Returns:
             HttpResponse : response of page to request
         """
@@ -173,7 +178,7 @@ def reportPDF(request, report):
 
     Args:
         request (HttpRequest): request to view page
-        report (str): primary key of report 
+        report (str): primary key of :class:`~makeReports.models.report_models.Report` 
 
     Returns:
         HttpResponse : the PDF
@@ -261,7 +266,7 @@ def UngradedRubric(request, rubric):
 
     Args:
         request (HttpRequest): request for page
-        rubric (str): primary key of rubric
+        rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`
     Returns:
         HttpResponse : the PDF
     """

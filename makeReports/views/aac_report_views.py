@@ -16,7 +16,7 @@ class CreateReport(AACOnlyMixin,CreateView):
     View to create report by department
 
     Keyword Args:
-        dept (str): primary key of department to create report for
+        dept (str): primary key of :class:`~makeReports.models.report_models.Department` to create report for
     """
     model = Report
     form_class = CreateReportByDept
@@ -24,7 +24,7 @@ class CreateReport(AACOnlyMixin,CreateView):
     #success_url = reverse_lazy('makeReports:admin-home')
     def get_form_kwargs(self):
         """
-        Returns the keyword arguments for the form, appending the department primary key
+        Returns the keyword arguments for the form, appending the :class:`~makeReports.models.report_models.Department` primary key
 
         Returns:
             dict : form keyword arguments
@@ -40,7 +40,7 @@ class CreateReport(AACOnlyMixin,CreateView):
         Notes:
             The graded rubric was created during form_valid
         Returns:
-            str : success url of the administrative home
+            str : success url of the administrative home (:class:`~makeReports.views.aac_admin_views.AdminHome`)
         """
         self.object.rubric = self.GR
         self.object.save()
@@ -65,7 +65,7 @@ class CreateReportByDP(AACOnlyMixin,CreateView):
     View to create report by degree program
 
     Keyword Args:
-        pk (str): primary key of degree program
+        pk (str): primary key of :class:`~makeReports.models.report_models.DegreeProgram`
     """
     model = Report
     form_class = CreateReportByDPForm
@@ -75,7 +75,7 @@ class CreateReportByDP(AACOnlyMixin,CreateView):
         Uses success_url as hook to attach graded rubric to object, and also gets the success URL
 
         Returns:
-            str : success url of administrative home
+            str : success url of administrative home (:class:`~makeReports.views.aac_admin_views.AdminHome`)
         """
         self.object.rubric = self.GR
         self.object.save()
@@ -100,7 +100,7 @@ class DeleteReport(AACOnlyMixin,DeleteView):
     View to delete report
 
     Keyword Args:
-        pk (str): primary key of report to delete
+        pk (str): primary key of :class:`~makeReports.models.report_models.Report` to delete
     """
     model = Report
     template_name = "makeReports/AACAdmin/deleteReport.html"
@@ -127,7 +127,7 @@ class ReportListSearched(AACOnlyMixin,ListView):
     Notes:
         Search parameters passed through GET request,
         'year','submitted', 'dP' for degree program primary key,
-        'dept' by primary key, and 'college' by primary key
+        'dept' for department by primary key, and 'college' by primary key
     """
     model = Report
     template_name = "makeReports/AACAdmin/reportList.html"
@@ -182,7 +182,7 @@ class UpdateGradGoal(AACOnlyMixin,UpdateView):
     View to change the text of a graduate-level goal
 
     Keyword Args:
-        pk (str): primary key of GradGoal to update
+        pk (str): primary key of :class:`~makeReports.models.report_models.GradGoal` to update
     """
     model = GradGoal
     form_class = GradGoalForm

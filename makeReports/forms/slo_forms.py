@@ -32,13 +32,12 @@ class ImportSLOForm(forms.Form):
     """
     slo = forms.ModelMultipleChoiceField(queryset=None, label="SLOs to Import: ", widget=forms.Select(attrs={'class':'form-control col-5'}))
     importAssessments = forms.BooleanField(required=False,label="Also import assessments?")
-    #of type SLOInReport
     def __init__(self, *args, **kwargs):
         """
         Initializes form, including setting SLO choices
 
         Keyword Args:
-            sloChoices (QuerySet): SLO choices
+            sloChoices (QuerySet): SLO choices (of type :class:`~makeReports.models.report_models.SLOInReport`)
         """
         sloChoices = kwargs.pop('sloChoices',None)
         super(ImportSLOForm, self).__init__(*args, **kwargs)
@@ -56,7 +55,7 @@ class EditNewSLOForm(CleanSummer,forms.Form):
         """
         Initializes form and deletes grad if undergraduate program
 
-        Keyword Args;
+        Keyword Args:
             grad (Boolean): whether graduate level program
         """
         grad = kwargs.pop('grad',None)
