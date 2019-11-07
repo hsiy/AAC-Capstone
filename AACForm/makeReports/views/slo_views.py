@@ -43,7 +43,7 @@ class AddNewSLO(DeptReportMixin,FormView):
     template_name = "makeReports/SLO/addSLO.html"
     form_class = CreateNewSLO
     def get_form_kwargs(self):
-        """"
+        """
         Returns keyword arguments for form, including whether the degree program is graduate level
 
         Returns:
@@ -180,7 +180,7 @@ class ImportSLO(DeptReportMixin,FormView):
                         assess.assessment.numberOfUses += 1
                         assess.assessment.save()
                         for aSup in assess.supplements.all():
-                            newA.supplements.add(a)
+                            newA.supplements.add(aSup)
                         newA.save()
                         newS.numberOfAssess += 1
                         newS.save()

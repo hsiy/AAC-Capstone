@@ -146,7 +146,7 @@ class SubmitGrade(forms.Form):
         Initializes form and sets valid on the instance
 
         Keyword Args:
-            valid (Boolean) : the grading is complete
+            valid (bool) : the grading is complete
         """
         self.valid = kwargs.pop('valid')
         super(SubmitGrade, self).__init__(*args, **kwargs)
