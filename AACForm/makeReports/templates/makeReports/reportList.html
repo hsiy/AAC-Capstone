@@ -2,9 +2,10 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
-<h4>To view past data graphically, click here: </h4>
-<a  role="button" class="btn btn-primary" href="{% url 'makeReports:graphing' %}">Click Here</a>
-<form action="{% url 'makeReports:search-reports-dept' %}" type="get">
+<div class="row"><div class="col">
+
+
+<form action="{% url 'makeReports:search-reports-dept' %}" class="col-6" type="get">
         <h3>Search:</h3>
         You can use as many or few fields as desired<br>
         <div class="form-group"><label for="year">Ending Year of Academic Year (i.e. 2019 for 2018-2019):</label><input id="year" type="text" class="form-control" name="year"></div>
@@ -36,12 +37,17 @@
         </div>
         <div class="form-group"><label for="dP">Degree program:</label><input id="dP" type="text" class="form-control" name="dP"></div>
         <button id="sub" type="submit" class="btn btn-primary" style="margin-top:1em">Search</button><br>
-    </form>
-<ul class="list-group">
+      </form>
+    </div>
+    <div class="col-4">
+      <h5>Data Analysis</h5>
+    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:graphing' %}">Historical Graphs</a>
+  </div></div>
+    <ul class="list-group col-8">
 {% for rpt in object_list %}
     <li class = "list-group-item">{{rpt.degreeProgram}} report for {{rpt.year|add:"-1"}}-{{rpt.year}} academic year
-            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
-            {% if rpt.rubric.complete %}<a  role="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Feedback</a>{% endif %}
+            <a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
+            {% if rpt.rubric.complete %}<a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Feedback</a>{% endif %}
     </li>
 {% endfor %}
 </ul>

@@ -100,6 +100,15 @@ class GradGoalForm(CleanSummer,forms.ModelForm):
     class Meta:
         model = GradGoal
         fields = ['text']
+class GradGoalEditForm(CleanSummer,forms.ModelForm):
+    """
+    Form to create edit graduate goal, including possibly archiving it
+    """
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Goal text: ")
+    summer_max_length = 600
+    class Meta:
+        model = GradGoal
+        fields = ['active','text']
 
 class CreateReportByDept(forms.ModelForm):
     """
