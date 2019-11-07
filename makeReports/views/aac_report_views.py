@@ -186,7 +186,7 @@ class UpdateGradGoal(AACOnlyMixin,UpdateView):
         pk (str): primary key of :class:`~makeReports.models.report_models.GradGoal` to update
     """
     model = GradGoal
-    form_class = GradGoalForm
+    form_class = GradGoalEditForm
     template_name = "makeReports/AACAdmin/GG/updateGG.html"
     success_url = reverse_lazy('makeReports:gg-list')
 class ListActiveGradGoals(AACOnlyMixin,ListView):

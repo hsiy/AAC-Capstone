@@ -11,6 +11,11 @@
                   <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 {% if user and user.profile %}
+                {% if user.profile.department %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'makeReports:rpt-list-dept' %}">Your Reports <span class="sr-only">(current)</span></a>
+                </li>
+                {% endif %}
                 {% if user.profile.aac %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'makeReports:admin-home' %}">Administration Home <span class="sr-only">(current)</span></a>
@@ -22,16 +27,15 @@
                       <a class="nav-link" href="{% url 'makeReports:report-list' %}">AAC Reports <span class="sr-only">(current)</span></a>
                   </li>
                   {% endif %}
-                  {% if user.profile.department %}
-                  <li class="nav-item active">
-                      <a class="nav-link" href="{% url 'makeReports:rpt-list-dept' %}">Your Reports <span class="sr-only">(current)</span></a>
-                  </li>
-                  {% endif %}
-                  <li class="nav=item active">
-                    <a class="nav-link" href="/accounts/logout/">Logout</a>
-                  </li>
-                  <li class="nav=item active">
-                    <a class="nav-link" href="/help/">?</a>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{user.username}}
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="/accounts/logout/">Logout</a>
+                          <a  class="dropdown-item" href="{% url 'makeReports:modify-acct' %}">Update Profile</a>
+                          <a class="dropdown-item" href="/help/">Help</a>
+                      </div>
                   </li>
                 {% endif %}
             </div>

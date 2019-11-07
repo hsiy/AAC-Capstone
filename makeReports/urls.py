@@ -146,5 +146,7 @@ urlpatterns = [
     re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
     re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),
     #CSV
-    re_path(r'^csv/dept/(?P<dept>\d+)/$', views.OutputCSVDepartment.as_view(),name="csv-dept"),
+    re_path(r'^csv/col/(?P<col>\d+)/(?P<gYear>\d+)/(?P<lYear>\d+)/$', views.OutputCSVCollege.as_view(),name="csv-col"),
+    re_path(r'^csv/dept/(?P<dept>\d+)/(?P<gYear>\d+)/(?P<lYear>\d+)/$', views.OutputCSVDepartment.as_view(),name="csv-dept"),
+    re_path(r'^csv/dept/(?P<dept>\d+)/dp/(?P<dP>\d+)/(?P<gYear>\d+)/(?P<lYear>\d+)/$', views.OutputCSVDP.as_view(),name="csv-dp"),
 ]

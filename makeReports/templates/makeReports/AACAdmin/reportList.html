@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
-<form action="{% url 'makeReports:search-reports' %}" type="get">
+<form action="{% url 'makeReports:search-reports' %}" class="col-6" type="get">
         <h3>Search:</h3>
         You can use as many or few fields as desired<br>
         <div class="form-group"><label for="year">Ending Year of Academic Year (e.g. 2019 for 2018-2019 academic year):</label><input id="year" type="text" class="form-control" name="year"></div>
@@ -38,18 +38,27 @@
         <button id="sub" type="submit" class="btn btn-primary" style="margin-top:1em">Search</button><br>
     </form>
 <ul class="list-group">
+  <h4>Reports</h4>
 {% for rpt in object_list %}
-    <li class = "list-group-item">{{rpt.degreeProgram}} report for academic year {{rpt.year|add:"-1"}}-{{rpt.year}}
-            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
+    <li class = "list-group-item col-10">
+      <div class="row">
+      <div class="col">
+      <p style="font-weight:bold;">{{rpt.degreeProgram}}</p> 
+      <p>Report for academic year {{rpt.year|add:"-1"}}-{{rpt.year}}</p>
+    </div>
+    <div class="col">     
+      <a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:view-rpt' pk=rpt.pk %}">View</a>
             {% if not rpt.submitted %}
-            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:manual-submit-rpt' pk=rpt.pk %}">Manually Submit</a>
+            <a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:manual-submit-rpt' pk=rpt.pk %}">Manually Submit</a>
             {% endif %}
             {% if rpt.rubric.complete %}
-            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Your Feedback</a>
-            <a  role="button" class="btn btn-primary" href="{% url 'makeReports:ret-rept' pk=rpt.pk %}">Return for Revisions</a>
+            <a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:rpt-feedback' report=rpt.pk %}">Your Feedback</a>
+            <a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:ret-rept' pk=rpt.pk %}">Return for Revisions</a>
             {% endif %}
-            {% if rpt.submitted and not rpt.rubric.complete %}<a  role="button" class="btn btn-primary" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
-    </li>
+            {% if rpt.submitted and not rpt.rubric.complete %}<a  role="button" class="btn btn-primary float-right" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Grade</a> {% endif %}
+          </div> 
+        </div>
+          </li>
     {% empty %}
 No reports matching query.
 {% endfor %}
