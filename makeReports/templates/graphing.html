@@ -42,39 +42,48 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 {% endif %}
 <h4>Please choose your desired degree program</h4>
 <div class="dd_dprog">
-    <select id="id_prog" v-model="program" v-on:change="updateSLOs" name="program">
+    <select id="id_prog" v-model="program" name="program">
         <template v-for="p in progs">
+            <option value="1">All Programs</option>
             <option v-bind:value="p.pk">[[p.name]] ([[p.level]])</option>
         </template>
     </select>
 </div>
 <h4>Date Range</h4>
 <div class="dd_drange1">
-    <select id="id_range1"></select>
+    <select id="id_range1" v-model="date1"></select>
 </div>
 <h5>to</h5>
 <div class="dd_drange2">
-    <select id="id_range2"></select>
+    <select id="id_range2" v-model="date2"></select>
 </div>
 <h4>What would you like to see graphed?</h4>
-<div class="dd_graph">
-    <select id="id_graph" v-model="graph_opt">
-        <option value="1">Specific SLO: target vs actual</option>
-        <option value="2">Number of SLO's met</option>
-        <option value="3">Number of degree programs meeting target</option>
-    </select>
-</div>
+<template v-if="program == 1">
+    <div class="dd_graph">
+        <select id="id_graph" v-model="graph_opt">
+            <option value="3">Number of degree programs meeting target</option>
+        </select>
+    </div>
+</template>
+<template v-if="program != 1">
+    <div class="dd_graph">
+        <select id="id_graph" v-model="graph_opt" v-on:change="updateSLOs">
+            <option value="1">Specific SLO: target vs actual</option>
+            <option value="2">Number of SLO's met</option>
+        </select>
+    </div>
+</template>
 <template v-if="graph_opt == 1">
     <h4>Pick the SLO you would like to see graphed</h4>
     <div class="specific">
-        <select id="spec">
+        <select id="spec" v-model="slo">
             <template v-for="s in slos">
                 <option v-bind:value="s.pk">[[s.goalText]]</option>
             </template>
         </select>
     </div>
 </template>
-<button onclick="newGraph()">View Graph</button> 
+<button v-on:click="newGraph()">View Graph</button> 
 {% endblock %}
 {% block endscripts %}
     <script>
@@ -83,8 +92,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
     var options = "";
     for (var year = start; year <= end; year++)
     {
-        options += "<option>"+ "Fall " + year + "</option>";
-        options += "<option>"+ "Spring " + year + "</option>";
+        options += "<option>"+ year + "</option>";
     }
     document.getElementById("id_range1").innerHTML = options;
     document.getElementById("id_range2").innerHTML = options;
@@ -98,7 +106,10 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 graph_opt: 1,
                 department: null,
                 college: null,
-                program: null,
+                program: 1,
+                date1: null,
+                date2: null,
+                slo: null
             },
             computed: {
             },
@@ -122,18 +133,28 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                     });
                 },
                 updateSLOs: function() {
-                    fetch("{% url 'makeReports:api-slo-by-dp' %}?program="+this.program)
+                    fetch("{% url 'makeReports:api-slo-by-dp' %}?report__degreeProgram="+this.program
+                    +"&report__year__gte="+this.date1+"&report__year__lte="+this.date2)
                         .then(response => {
                             response.clone().json()
                         .then(json => {
                             this.slos = json;
                         })
                     });
+                },
+                newGraph: function() {
+                    fetch("{% url 'makeReports:api-new-graph' %}?college="+this.college+
+                    "&department="+this.department+"&program="+this.program+"&year__gte="+
+                    this.date1+"&year__lte="+this.date2+"&decision="+this.graph_opt+"&slo"+
+                    this.slo)
+                        .then(repsonse => {
+                            response.clone().json()
+                        .then(json => {
+                            this.url = json;
+                        })
+                    })
                 }
             }
     });
-    function newGraph(){
-        
-    }
     </script>
 {% endblock %}
