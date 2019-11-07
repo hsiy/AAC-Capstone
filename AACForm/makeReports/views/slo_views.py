@@ -610,3 +610,4 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
         for dA in dAs:
             dA.delete()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+
