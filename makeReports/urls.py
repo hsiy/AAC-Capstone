@@ -142,6 +142,7 @@ urlpatterns = [
     re_path(r'^api/SLOSuggestions/$', views.SLOSuggestionsAPI.as_view(), name='api-slo-suggestions'),
     re_path(r'^api/prog/dep/$', views.ProgByDeptListAPI.as_view(),name='api-prog-by-dept'),
     re_path(r'^api/slo/dp/$', views.SloByDPListAPI.as_view(),name='api-slo-by-dp'),
+    re_path(r'^api/graph/$', views.createGraphAPI.as_view(),name='api-new-graph'),
     #Graphing
     re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
     re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),
