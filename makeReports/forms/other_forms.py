@@ -13,7 +13,7 @@ class SubmitReportForm(forms.Form):
         Initializes form and sets the valid and error message on the instance
 
         Keyword Args:
-            valid (Boolean) : if report is valid to be submitted
+            valid (bool) : if report is valid to be submitted
             eMsg (str): error message
         """
         self.valid = kwargs.pop('valid')

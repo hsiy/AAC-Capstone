@@ -98,3 +98,8 @@ class OutputCSVCollege(OutputCSVDepartment):
             )
     def test_func(self):
         return self.request.user.profile.aac
+class CSVManagement(LoginRequiredMixin, TemplateView):
+    template_name = "makeReports/CSV/csvManagement.html"
+    def get_context_data(self, **kwargs):
+        
+        return super(CSVManagement,self).get_context_data(**kwargs)

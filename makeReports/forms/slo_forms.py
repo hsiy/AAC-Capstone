@@ -28,7 +28,7 @@ class CreateNewSLO(CleanSummer,forms.Form):
         Initializes form and deletes grad field if undergraduate level
         
         Keyword Args:
-            grad (Boolean): whether it is a graduate level program
+            grad (bool): whether it is a graduate level program
         """
         grad = kwargs.pop('grad',None)
         super(CreateNewSLO,self).__init__(*args,**kwargs)
@@ -67,7 +67,7 @@ class EditNewSLOForm(CleanSummer,forms.Form):
         Initializes form and deletes grad if undergraduate program
 
         Keyword Args:
-            grad (Boolean): whether graduate level program
+            grad (bool): whether graduate level program
         """
         grad = kwargs.pop('grad',None)
         super(EditNewSLOForm,self).__init__(*args,**kwargs)
