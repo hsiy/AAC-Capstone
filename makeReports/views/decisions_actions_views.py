@@ -29,7 +29,7 @@ class AddDecisionAction(DeptReportMixin,CreateView):
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.SLO` to instance
+        Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -37,7 +37,7 @@ class AddDecisionAction(DeptReportMixin,CreateView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
+        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -47,14 +47,15 @@ class AddDecisionAction(DeptReportMixin,CreateView):
             dict : context for template
         """
         context = super(AddDecisionAction,self).get_context_data(**kwargs)
-        context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
+        context['slo'] = self.slo
         return context
     def form_valid(self,form):
         """
         Sets the SLO and Report appropriately, then creates the object from the form
         """
-        form.instance.SLO = self.slo
+        form.instance.SLO = self.slo.slo
         form.instance.report = self.report
+        form.instance.sloIR = self.slo
         return super(AddDecisionAction,self).form_valid(form)
     def get_success_url(self):
         """
@@ -95,12 +96,12 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
             request (HttpRequest): request to view page
         Keyword Args:
             pk (str): primary key of :class:`~makeReports.models.report_models.DecisionsActions` to update
-            slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
+            slopk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport`
             
         Returns:
             HttpResponse : response of page to request
         """
-        self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
+        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -110,7 +111,7 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
             dict : context for template
         """
         context = super(EditDecisionAction,self).get_context_data(**kwargs)
-        context['slo'] = SLOInReport.objects.get(slo=self.slo, report=self.report)
+        context['slo'] = self.slo
         return context
     def get_success_url(self):
         """
@@ -138,7 +139,7 @@ class AddEditRedirect(DeptReportMixin,RedirectView):
     based upon whether a decision action already exists
 
     Keyword Args:
-        slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
+        slopk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport`
     """
     def get_redirect_url(self, *args,**kwargs):
         """
@@ -147,10 +148,10 @@ class AddEditRedirect(DeptReportMixin,RedirectView):
         Returns:
             str : URL of either add or edit decision action
         """
-        slo = SLO.objects.get(pk=self.kwargs['slopk'])
+        slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
         rpt = self.report
         try:
-            dA = DecisionsActions.objects.get(SLO=slo,report=rpt)
+            dA = DecisionsActions.objects.get(sloIR=slo)
             return reverse_lazy('makeReports:edit-decisions-actions-slo', args=[rpt.pk,slo.pk,dA.pk])
         except:
             return reverse_lazy('makeReports:add-decisions-actions-slo', args=[rpt.pk,slo.pk])

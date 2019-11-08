@@ -23,7 +23,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 {% block content %}
 <h3>CSV Generator</h3>
 {% if user.profile.aac %}
-    <h4>CHoose scope of CSV</h4>
+    <h4>Choose scope of CSV</h4>
     <div class="dd_graph">
         <select id="id_csv_scope" v-model="csv_scope">
             <option value="1">Degree Program</option>
@@ -31,17 +31,15 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
             <option value="3">College</option>
         </select>
     </div>
-    <template v-if="csv_scope==3">
-        <h4>Please choose college</h4>
-        <div class="dd_col">
-            <select id="id_college" v-model="college" v-on:change="updateDept" name="college">
-                {% for c in colleges %}
-                    <option value="{{c.pk}}">{{ c.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </template>
-    <template v-if="csv_scope==2">
+    <h4>Please choose college</h4>
+    <div class="dd_col">
+        <select id="id_college" v-model="college" v-on:change="updateDept" name="college">
+            {% for c in colleges %}
+                <option value="{{c.pk}}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <template v-if="csv_scope<3">
     <h4>Please choose department</h4>
     <div class="dd_dept">
         <select id="id_department" v-model="department" v-on:change="updateProg" name="department">
@@ -64,21 +62,24 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 </template>
 <h4>Date Range</h4>
 <div class="dd_drange1">
-    <select id="id_range1"></select>
+    <select id="id_range1" v-model="date1"></select>
 </div>
 <h5>to</h5>
 <div class="dd_drange2">
-    <select id="id_range2"></select>
+    <select id="id_range2" v-model="date2"></select>
 </div>
+<br><br>
+<template v-if="csvURL.length>0">
+    <a role="button" class="btn btn-primary" :href=csvURL>Generate CSV</button> 
 
-<a role="button" class="btn btn-primary" :href=csvLink>Generate CSV</button> 
+</template>
 {% endblock %}
 {% block endscripts %}
-    <script>
+    <script type="application/javascript">
     var start = 2015;
     var end = new Date().getFullYear();
     var options = "";
-    for (var year = start; year <= end; year++)
+    for (var year = end; year >= start; year--)
     {
         yearMinus = year-1;
         options += "<option value=\""+year+"\">"+ yearMinus+"-" + year + "</option>";
@@ -96,8 +97,43 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 department: null,
                 college: null,
                 program: null,
+                date1: null,
+                date2: null,
             },
             computed: {
+                csvURL: function(){
+                    url = ""
+                    if(this.csv_scope==3){
+                        url = "{% url 'makeReports:csv-col' 0 0 0 %}"
+                        if(this.college!=null && this.date1!=null && this.date2!=null){
+                            url = url.replace("/0/","/"+this.college+"/")
+                            url = url.replace("/0/", "/"+this.date1+"/")
+                            url = url.replace("/0/","/"+this.date2+"/")
+                        }else{
+                            url = ""
+                        }
+                    }else if(this.csv_scope==2){
+                        url = "{% url 'makeReports:csv-dept' 0 0 0  %}"
+                        if(this.department!=null && this.date1!=null && this.date2!=null){
+                            url = url.replace("/0/","/"+this.department+"/")
+                            url = url.replace("/0/", "/"+this.date1+"/")
+                            url = url.replace("/0/","/"+this.date2+"/")
+                        }else{
+                            url = ""
+                        }
+                    }else{
+                        url = "{% url 'makeReports:csv-dp' 0 0 0 0 %}"
+                        if(this.department!=null && this.program!=null && this.date1!=null && this.date2!=null){
+                            url = url.replace("/0/","/"+this.department+"/")
+                            url = url.replace("/0/","/"+this.program+"/")
+                            url = url.replace("/0/", "/"+this.date1+"/")
+                            url = url.replace("/0/","/"+this.date2+"/")
+                        }else{
+                            url = ""
+                        }
+                    }
+                    return url
+                }
             },
             methods: {
                 updateDept: function () {
@@ -119,18 +155,16 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                     });
                 },
                 updateSLOs: function() {
-                    fetch("{% url 'makeReports:api-slo-by-dp' %}?program="+this.program)
+                    fetch("{% url 'makeReports:api-slo-by-dp' %}?report__degreeProgram="+this.program
+                    +"&report__year__gte="+this.date1+"&report__year__lte="+this.date2)
                         .then(response => {
                             response.clone().json()
                         .then(json => {
                             this.slos = json;
                         })
                     });
-                }
+                },
             }
     });
-    function newGraph(){
-        
-    }
     </script>
 {% endblock %}

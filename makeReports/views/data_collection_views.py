@@ -306,8 +306,7 @@ class NewSLOStatus(DeptReportMixin,FormView):
     form_class = SLOStatusForm
     
     def dispatch(self, request, *args, **kwargs):
-        self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-        self.slo_ir = SLOInReport.objects.get(slo=self.slo, report__pk=self.kwargs['report'])
+        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
@@ -319,7 +318,7 @@ class NewSLOStatus(DeptReportMixin,FormView):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
-        slo_status_obj = SLOStatus.objects.create(report = self.report, status = form.cleaned_data['status'], SLO = self.slo)
+        slo_status_obj = SLOStatus.objects.create(report = self.report, status = form.cleaned_data['status'], SLO = self.slo.slo, sloIR=self.slo)
         slo_status_obj.save()
         return super(NewSLOStatus, self).form_valid(form)
 
@@ -346,8 +345,7 @@ class EditSLOStatus(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.slo = SLO.objects.get(pk=self.kwargs['slopk'])
-        self.slo_ir = SLOInReport.objects.get(slo=self.slo,report=self.report)
+        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
         self.slo_status = SLOStatus.objects.get(pk=self.kwargs['statuspk'])
         return super(EditSLOStatus,self).dispatch(request,*args,**kwargs)
 
@@ -381,7 +379,7 @@ class EditSLOStatus(DeptReportMixin,FormView):
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         self.slo_status.report = self.report
-        self.slo_status.SLO = self.slo
+        self.slo_status.SLO = self.slo.slo
         self.slo_status.status = form.cleaned_data['status']
         self.slo_status.save()
         return super(EditSLOStatus, self).form_valid(form)
@@ -595,7 +593,7 @@ def sloStatusUpdate(sloIR):
         if not met and partiallyMet:
             break
     try:
-        sS = SLOStatus.objects.get(report=sloIR.report,SLO=sloIR.slo)
+        sS = SLOStatus.objects.get(sloIR=sloIR)
         if met:
             sS.status = SLO_STATUS_CHOICES[0][0]
         elif partiallyMet:
@@ -605,11 +603,11 @@ def sloStatusUpdate(sloIR):
         sS.save()
     except:
         if met:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],report=sloIR.report,SLO=sloIR.slo)
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
         elif partiallyMet:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],report=sloIR.report,SLO=sloIR.slo)
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
         else:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],report=sloIR.report,SLO=sloIR.slo)
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
     return
 class AssessmentAggregateCreate(DeptReportMixin, CreateView):
     """
