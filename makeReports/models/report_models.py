@@ -1,6 +1,3 @@
-"""
-Includes all models used in application, which act both as Python objects and abstractions for database items
-"""
 from django.db import models
 from makeReports.choices import *
 from django.contrib.auth.models import User
@@ -10,7 +7,9 @@ from gdstorage.storage import GoogleDriveStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os
-
+"""
+Includes all models used in application
+"""
 gd_storage = GoogleDriveStorage()
 class NonArchivedManager(models.Manager):
     """
@@ -98,7 +97,7 @@ class SLOInReport(models.Model):
     number = models.PositiveIntegerField(default=1)
     numberOfAssess = models.PositiveIntegerField(default=0, verbose_name="number of assessments")
     def __str__(self):
-        return self.goalText
+        return mark_safe(self.goalText)
 class GradGoal(models.Model):
     """
     A graduate goal graduate level programs may obtain
@@ -187,7 +186,7 @@ class AssessmentAggregate(models.Model):
     """
     Aggregates the various assessments on different ranges for an aggregate success rate
     """ 
-    assessmentVersion = models.OneToOneField(AssessmentVersion, on_delete=models.CASCADE, verbose_name="assessment version")
+    assessmentVersion = models.ForeignKey(AssessmentVersion, on_delete=models.CASCADE, verbose_name="assessment version")
     aggregate_proficiency = models.PositiveIntegerField(verbose_name="aggregate proficiency percentage")
     met = models.BooleanField(verbose_name="target met")
     def __str__(self):
@@ -211,7 +210,6 @@ class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=SLO_STATUS_CHOICES)
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
-    sloIR = models.OneToOneField(SLOInReport,on_delete=models.CASCADE)
 class ResultCommunicate(models.Model):
     """
     Model holds the text for communicating results
@@ -224,7 +222,6 @@ class DecisionsActions(models.Model):
     """
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    sloIR = models.OneToOneField(SLOInReport, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000, blank=True, default="")
     decisionProcess = models.CharField(max_length=3000, blank=True, default="")
     decisionMakers = models.CharField(max_length=3000, blank=True, default="")
