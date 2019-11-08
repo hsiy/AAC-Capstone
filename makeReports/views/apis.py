@@ -10,9 +10,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from makeReports.models import *
+<<<<<<< HEAD
 from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+=======
+import pandas as pd
+>>>>>>> graphing
 
 class DeptSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -77,10 +81,10 @@ class createGraphAPI(views.APIView):
     and maybe slo to be graphed
     """
     def get(self,request,format=None):
-        queryset = SLOStatus.objects.all()
 
         if 'decision' == 1:
             print('in decision 1')
+            queryset = SLOStatus.objects.all()
             filter_backends = (filters.DjangoFilterBackend,)
             filterset_fields = {
                 'report__degreeProgram':['exact'],
@@ -90,6 +94,7 @@ class createGraphAPI(views.APIView):
             
         elif 'decision' == 2:
             print('in decision 2')
+            queryset = SLOStatus.objects.all()
             filter_backends = (filters.DjangoFilterBackend,)
             filterset_fields = {
                 'report__degreeProgram':['exact'],
@@ -108,7 +113,7 @@ class createGraphAPI(views.APIView):
             index = []
 
             for year in range(begYear,endYear+1):
-                qYear = queryset.filter(year=year)
+                qYear = queryset.filter(report__year=year)
                 overall = qYear.count()
                 met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
                 partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
@@ -126,12 +131,43 @@ class createGraphAPI(views.APIView):
             
             df = pd.DataFrame(dataFrame, index=index)
             lines = df.plot.line()
+
+
             
         else:
             print('in decision 3')
-            dataSource['chart'] = {
-                "caption": "Number of Degree Programs Meeting Target"
+            queryset = SLOStatus.objects.all()
+            filter_backends = (filters.DjangoFilterBackend,)
+            filterset_fields = {
+                'report__year':['gte','lte'],
+                'report__degreeProgram__department':['exact']
             }
+
+            begYear=request.GET['report__year__gte']
+            endYear = request.GET['report__year__lte']
+            thisDep = request.GET['report__degreeProgram__department']
+
+            dpQS = DegreeProgram.active_objects.all()
+            depQS = dpQS.filter(department=thisDep)
+            dataFrame = {}
+            for dep in depQS:
+                dataFrame.update(dep__name = [])
+            index = []
+
+            for year in range(begYear,endYear+1):
+                qYear = queryset.filter(year=year)
+                for i in range(len(dataFrame))
+                    qDP = queryset.filter(report__degreeProgram__name = dataFrame[i])
+                    overall = qDP.count()
+                    met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+                    metP = met/overall
+                    dataFrame[i].append(metP)
+                
+                index.append(year)
+            
+            df = pd.DataFrame(dataFrame, index=index)
+            lines = df.plot.line()
+
         return Response("hello")
 
 

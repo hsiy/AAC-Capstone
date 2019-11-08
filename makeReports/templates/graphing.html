@@ -143,10 +143,9 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                     });
                 },
                 newGraph: function() {
-                    fetch("{% url 'makeReports:api-new-graph' %}?college="+this.college+
-                    "&department="+this.department+"&program="+this.program+"&year__gte="+
-                    this.date1+"&year__lte="+this.date2+"&decision="+this.graph_opt+"&slo"+
-                    this.slo)
+                    fetch("{% url 'makeReports:api-new-graph' %}?repor__degreeProgram__department="
+                    +this.department+"&program="+this.program+"&year__gte="+this.date1+"&year__lte="
+                    +this.date2+"&decision="+this.graph_opt+"&slo"+this.slo)
                         .then(repsonse => {
                             response.clone().json()
                         .then(json => {
