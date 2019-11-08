@@ -25,7 +25,7 @@ class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView)
     model = AssessmentData
     fields = [
         'assessmentVersion__report__year',
-        'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name'
+        'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name',
         'assessmentVersion__report',
         'assessmentVersion__slo', 'assessmentVersion__slo__goalText',
         'assessmentVersion__slo__slo__blooms',
@@ -75,7 +75,7 @@ class OutputCSVCollege(OutputCSVDepartment):
         'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name',
         'assessmentVersion__report',
         'assessmentVersion__slo', 'assessmentVersion__slo__goalText',
-        'assessmentVersion__slo__slo__blooms',
+        'assessmentVersion__slo__slo__blooms', 'assessmentVersion__slo__slo__'
         'assessmentVersion__assessment', 'assessmentVersion__assessment__title',
         'assessmentVersion__assessment__domainExamination', 
         'assessmentVersion__assessment__domainProduct', 
@@ -101,5 +101,6 @@ class OutputCSVCollege(OutputCSVDepartment):
 class CSVManagement(LoginRequiredMixin, TemplateView):
     template_name = "makeReports/CSV/csvManagement.html"
     def get_context_data(self, **kwargs):
-        
-        return super(CSVManagement,self).get_context_data(**kwargs)
+        context = super(CSVManagement, self).get_context_data(**kwargs)
+        context['colleges'] = College.active_objects.all
+        return context

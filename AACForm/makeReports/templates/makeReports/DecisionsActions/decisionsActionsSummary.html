@@ -15,7 +15,7 @@
                             </tr>
                             {% for SLO_decisions in decisions_actions_list %}
                                 <tr>
-                                    <td style="width:47%">{{ SLO_decisions.slo_text|safe }}</td>
+                                    <td style="width:47%">{{ SLO_decisions.slo_text}}</td>
                                     {% if SLO_decisions.decisions_obj == None %}
                                         <td>(No Information)</td>
                                         <td>

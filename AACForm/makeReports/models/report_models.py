@@ -211,6 +211,7 @@ class SLOStatus(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=SLO_STATUS_CHOICES)
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
+    sloIR = models.OneToOneField(SLOInReport,on_delete=models.CASCADE)
 class ResultCommunicate(models.Model):
     """
     Model holds the text for communicating results
@@ -223,6 +224,7 @@ class DecisionsActions(models.Model):
     """
     SLO = models.ForeignKey(SLO, on_delete=models.CASCADE)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    sloIR = models.OneToOneField(SLOInReport, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000, blank=True, default="")
     decisionProcess = models.CharField(max_length=3000, blank=True, default="")
     decisionMakers = models.CharField(max_length=3000, blank=True, default="")

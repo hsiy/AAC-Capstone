@@ -1,8 +1,9 @@
-from django.urls import include, path, re_path
-from makeReports import views
 """
 Holds all the URLs for pages within the makeReports application
 """
+from django.urls import include, path, re_path
+from makeReports import views
+
 app_name = "makeReports"
 urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
@@ -150,4 +151,5 @@ urlpatterns = [
     re_path(r'^csv/col/(?P<col>\d+)/(?P<gYear>\d+)/(?P<lYear>\d+)/$', views.OutputCSVCollege.as_view(),name="csv-col"),
     re_path(r'^csv/dept/(?P<dept>\d+)/(?P<gYear>\d+)/(?P<lYear>\d+)/$', views.OutputCSVDepartment.as_view(),name="csv-dept"),
     re_path(r'^csv/dept/(?P<dept>\d+)/dp/(?P<dP>\d+)/(?P<gYear>\d+)/(?P<lYear>\d+)/$', views.OutputCSVDP.as_view(),name="csv-dp"),
+    re_path(r'^csv/management/$', views.CSVManagement.as_view(),name="csv-mang"),
 ]

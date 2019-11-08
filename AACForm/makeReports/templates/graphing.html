@@ -90,7 +90,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
     var start = 2015;
     var end = new Date().getFullYear();
     var options = "";
-    for (var year = start; year <= end; year++)
+    for (var year = end; year >= start; year--)
     {
         options += "<option>"+ year + "</option>";
     }

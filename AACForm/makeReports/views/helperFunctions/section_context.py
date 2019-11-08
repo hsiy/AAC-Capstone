@@ -109,9 +109,9 @@ def section3Context(self,context):
         temp_dict = dict()
         temp_dict['slo_obj'] = sloir
         temp_dict['slo_text'] = sloir.goalText
-        temp_dict['slo_pk'] = sloir.slo.pk
+        temp_dict['slo_pk'] = sloir.pk
         try:
-            slo_status_obj = SLOStatus.objects.get(SLO=sloir.slo)
+            slo_status_obj = SLOStatus.objects.get(sloIR=sloir)
             temp_dict['slo_status'] = slo_status_obj.status
             temp_dict['slo_status_pk'] = slo_status_obj.pk
         except:
@@ -142,12 +142,11 @@ def section4Context(self,context):
     context_list = []
     for slo_ir in SLOs_ir:
         temp_dict = dict()
-        slo_obj = slo_ir.slo
         temp_dict['slo_obj'] = slo_ir
-        temp_dict['slo_pk'] = slo_obj.pk
+        temp_dict['slo_pk'] = slo_ir.pk
         temp_dict['slo_text'] = slo_ir.goalText
         try:
-            decisions_obj = DecisionsActions.objects.get(SLO=slo_obj, report=self.report)
+            decisions_obj = DecisionsActions.objects.get(sloIR=slo_ir)
             temp_dict['decisions_obj'] = decisions_obj
         except:
             temp_dict['decisions_obj'] = None
