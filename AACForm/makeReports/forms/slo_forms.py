@@ -51,7 +51,6 @@ class ImportSLOForm(forms.Form):
         super(ImportSLOForm, self).__init__(*args, **kwargs)
         self.fields['slo'].queryset = sloChoices
     def clean(self):
-        print(self.fields['slo'])
         return super(ImportSLOForm,self).clean()
 class EditNewSLOForm(CleanSummer,forms.Form):
     """

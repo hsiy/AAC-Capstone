@@ -94,8 +94,6 @@ def blooms_suggestion(in_string):
     if score_dict[suggestion] == 0:
         suggestion = 'none'
 
-    print(score_dict)
-
     return(suggestion)
 
 
