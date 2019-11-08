@@ -17,6 +17,7 @@ class AssessmentSummaryPageTest(ReportSetupTest):
         """
         super(AssessmentSummaryPageTest,self).setUp()
         self.assess = mommy.make("AssessmentVersion",report=self.rpt)
+        print(self.assess)
         self.assess2 = mommy.make("AssessmentVersion",report=self.rpt)
         self.assessNotInRpt = mommy.make("AssessmentVersion")
     def test_view(self):
