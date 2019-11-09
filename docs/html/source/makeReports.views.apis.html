@@ -187,11 +187,11 @@
 <dt id="makeReports.views.apis.ProgByDeptListAPI">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">ProgByDeptListAPI</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.generics.ListAPIView</span></code></p>
+<p>JSON API to gets active degree programs within specified department</p>
 <dl class="attribute">
 <dt id="makeReports.views.apis.ProgByDeptListAPI.filter_backends">
-<code class="sig-name descname">filter_backends</code><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI.filter_backends" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">django_filters.rest_framework.backends.DjangoFilterBackend</span></code></p>
-</dd></dl>
+<code class="sig-name descname">filter_backends</code><em class="property"> = (&lt;class 'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;,)</em><a class="headerlink" href="#makeReports.views.apis.ProgByDeptListAPI.filter_backends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.apis.ProgByDeptListAPI.filterset_fields">
@@ -215,6 +215,7 @@
 <dt id="makeReports.views.apis.ProgSerializer">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">ProgSerializer</code><span class="sig-paren">(</span><em class="sig-param">instance=None</em>, <em class="sig-param">data=&lt;class 'rest_framework.fields.empty'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.ProgSerializer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+<p>Serializes degree programs to JSON with the primary key, name, and level</p>
 </dd></dl>
 
 <dl class="class">
@@ -247,21 +248,22 @@
 <dt id="makeReports.views.apis.SLOserializer">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">SLOserializer</code><span class="sig-paren">(</span><em class="sig-param">instance=None</em>, <em class="sig-param">data=&lt;class 'rest_framework.fields.empty'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.SLOserializer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.serializers.HyperlinkedModelSerializer</span></code></p>
+<p>Serializes SLOs to JSON with the primary key and name</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="makeReports.views.apis.SloByDPListAPI">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">SloByDPListAPI</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.generics.ListAPIView</span></code></p>
+<p>JSON API to gets past slos within specified degree program</p>
 <dl class="attribute">
 <dt id="makeReports.views.apis.SloByDPListAPI.filter_backends">
-<code class="sig-name descname">filter_backends</code><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.filter_backends" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">django_filters.rest_framework.backends.DjangoFilterBackend</span></code></p>
-</dd></dl>
+<code class="sig-name descname">filter_backends</code><em class="property"> = (&lt;class 'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;,)</em><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.filter_backends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.apis.SloByDPListAPI.filterset_fields">
-<code class="sig-name descname">filterset_fields</code><em class="property"> = ['report.degreeProgram']</em><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.filterset_fields" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">filterset_fields</code><em class="property"> = {'report__degreeProgram': ['exact'], 'report__year': ['gte', 'lte']}</em><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.filterset_fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -274,6 +276,20 @@
 <code class="sig-name descname">serializer_class</code><a class="headerlink" href="#makeReports.views.apis.SloByDPListAPI.serializer_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#makeReports.views.apis.SLOserializer" title="makeReports.views.apis.SLOserializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOserializer</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.apis.createGraphAPI">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.apis.</code><code class="sig-name descname">createGraphAPI</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.createGraphAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.views.APIView</span></code></p>
+<p>JSON API to get url of graph on file server with specified college,
+department, degree program, start and end dates, specific graph choice,
+and maybe slo to be graphed</p>
+<dl class="method">
+<dt id="makeReports.views.apis.createGraphAPI.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">format=None</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.apis.createGraphAPI.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

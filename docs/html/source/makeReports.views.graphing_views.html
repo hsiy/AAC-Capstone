@@ -149,6 +149,22 @@
 <span id="makereports-views-graphing-views-module"></span><h1>makeReports.views.graphing_views module<a class="headerlink" href="#module-makeReports.views.graphing_views" title="Permalink to this headline">¶</a></h1>
 <p>This file contains views related to graphing</p>
 <dl class="class">
+<dt id="makeReports.views.graphing_views.CSVManagement">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.graphing_views.</code><code class="sig-name descname">CSVManagement</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.CSVManagement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.mixins.LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
+<dl class="method">
+<dt id="makeReports.views.graphing_views.CSVManagement.get_context_data">
+<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.CSVManagement.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.graphing_views.CSVManagement.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/CSV/csvManagement.html'</em><a class="headerlink" href="#makeReports.views.graphing_views.CSVManagement.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="makeReports.views.graphing_views.GraphingDept">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.graphing_views.</code><code class="sig-name descname">GraphingDept</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.GraphingDept" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.mixins.LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.mixins.UserPassesTestMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
@@ -176,6 +192,80 @@
 <dl class="attribute">
 <dt id="makeReports.views.graphing_views.GraphingHome.template_name">
 <code class="sig-name descname">template_name</code><em class="property"> = 'graphing.html'</em><a class="headerlink" href="#makeReports.views.graphing_views.GraphingHome.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.graphing_views.OutputCSVCollege">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.graphing_views.</code><code class="sig-name descname">OutputCSVCollege</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVCollege" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.views.graphing_views.OutputCSVDepartment" title="makeReports.views.graphing_views.OutputCSVDepartment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.graphing_views.OutputCSVDepartment</span></code></a></p>
+<dl class="attribute">
+<dt id="makeReports.views.graphing_views.OutputCSVCollege.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['assessmentVersion__report__year', 'assessmentVersion__report__degreeProgram__department', 'assessmentVersion__report__degreeProgram__department__name', 'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name', 'assessmentVersion__report', 'assessmentVersion__slo', 'assessmentVersion__slo__goalText', 'assessmentVersion__slo__slo__blooms', 'assessmentVersion__slo__slo__assessmentVersion__assessment', 'assessmentVersion__assessment__title', 'assessmentVersion__assessment__domainExamination', 'assessmentVersion__assessment__domainProduct', 'assessmentVersion__assessment__domainPerformance', 'assessmentVersion__assessment__directMeasure', 'assessmentVersion', 'assessmentVersion__assessmentaggregate__aggregate_proficiency', 'assessmentVersion__assessmentaggregate__met', 'assessmentVersion__date', 'assessmentVersion__description', 'assessmentVersion__finalTerm', 'assessmentVersion__where', 'assessmentVersion__allStudents', 'assessmentVersion__sampleDescription', 'assessmentVersion__frequencyChoice', 'assessmentVersion__frequency', 'assessmentVersion__threshold', 'assessmentVersion__target', 'dataRange', 'numberStudents', 'overallProficient']</em><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVCollege.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.graphing_views.OutputCSVCollege.get_queryset">
+<code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVCollege.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of items for this view.</p>
+<p>The return value must be an iterable and may be an instance of
+<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.graphing_views.OutputCSVCollege.test_func">
+<code class="sig-name descname">test_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVCollege.test_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.graphing_views.OutputCSVDP">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.graphing_views.</code><code class="sig-name descname">OutputCSVDP</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.views.graphing_views.OutputCSVDepartment" title="makeReports.views.graphing_views.OutputCSVDepartment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.graphing_views.OutputCSVDepartment</span></code></a></p>
+<dl class="method">
+<dt id="makeReports.views.graphing_views.OutputCSVDP.get_queryset">
+<code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDP.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of items for this view.</p>
+<p>The return value must be an iterable and may be an instance of
+<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.graphing_views.OutputCSVDepartment">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.graphing_views.</code><code class="sig-name descname">OutputCSVDepartment</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDepartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.mixins.LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.contrib.auth.mixins.UserPassesTestMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">csv_export.views.CSVExportView</span></code></p>
+<dl class="attribute">
+<dt id="makeReports.views.graphing_views.OutputCSVDepartment.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['assessmentVersion__report__year', 'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name', 'assessmentVersion__report', 'assessmentVersion__slo', 'assessmentVersion__slo__goalText', 'assessmentVersion__slo__slo__blooms', 'assessmentVersion__assessment', 'assessmentVersion__assessment__title', 'assessmentVersion__assessment__domainExamination', 'assessmentVersion__assessment__domainProduct', 'assessmentVersion__assessment__domainPerformance', 'assessmentVersion__assessment__directMeasure', 'assessmentVersion', 'assessmentVersion__assessmentaggregate__aggregate_proficiency', 'assessmentVersion__assessmentaggregate__met', 'assessmentVersion__date', 'assessmentVersion__description', 'assessmentVersion__finalTerm', 'assessmentVersion__where', 'assessmentVersion__allStudents', 'assessmentVersion__sampleDescription', 'assessmentVersion__frequencyChoice', 'assessmentVersion__frequency', 'assessmentVersion__threshold', 'assessmentVersion__target', 'dataRange', 'numberStudents', 'overallProficient']</em><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDepartment.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.graphing_views.OutputCSVDepartment.get_field_value">
+<code class="sig-name descname">get_field_value</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDepartment.get_field_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override if a custom value or behaviour is required for specific fields.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.graphing_views.OutputCSVDepartment.get_queryset">
+<code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDepartment.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of items for this view.</p>
+<p>The return value must be an iterable and may be an instance of
+<cite>QuerySet</cite> in which case <cite>QuerySet</cite> specific behavior will be enabled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.graphing_views.OutputCSVDepartment.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDepartment.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.AssessmentData" title="makeReports.models.report_models.AssessmentData"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.AssessmentData</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.graphing_views.OutputCSVDepartment.test_func">
+<code class="sig-name descname">test_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.graphing_views.OutputCSVDepartment.test_func" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

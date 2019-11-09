@@ -156,7 +156,7 @@
 <dl class="method">
 <dt id="makeReports.views.decisions_actions_views.AddDecisionAction.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.decisions_actions_views.AddDecisionAction.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> to instance</p>
+<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> to instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
@@ -246,7 +246,7 @@
 based upon whether a decision action already exists</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>slopk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a></p>
+<dd class="field-odd"><p><strong>slopk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a></p>
 </dd>
 </dl>
 <dl class="method">
@@ -326,7 +326,7 @@ based upon whether a decision action already exists</p>
 <dt class="field-even">Keyword Arguments</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.DecisionsActions" title="makeReports.models.report_models.DecisionsActions"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionsActions</span></code></a> to update</p></li>
-<li><p><strong>slopk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLO" title="makeReports.models.report_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a></p></li>
+<li><p><strong>slopk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns</dt>

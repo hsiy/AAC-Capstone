@@ -147,6 +147,7 @@
             
   <div class="section" id="module-makeReports.forms.data_collection_forms">
 <span id="makereports-forms-data-collection-forms-module"></span><h1>makeReports.forms.data_collection_forms module<a class="headerlink" href="#module-makeReports.forms.data_collection_forms" title="Permalink to this headline">¶</a></h1>
+<p>File contains forms related to inputting data points</p>
 <dl class="class">
 <dt id="makeReports.forms.data_collection_forms.AddDataCollection">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.data_collection_forms.</code><code class="sig-name descname">AddDataCollection</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">field_order=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.data_collection_forms.AddDataCollection" title="Permalink to this definition">¶</a></dt>
@@ -183,19 +184,12 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="makeReports.forms.data_collection_forms.EditDataCollection">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.data_collection_forms.</code><code class="sig-name descname">EditDataCollection</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">field_order=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.data_collection_forms.EditDataCollection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.forms.Form</span></code></p>
-<p>Form to edit pre-existing data</p>
-<p><strong>Form fields:</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dataRange</span></code>: Data Collection Range (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numberStudents</span></code>: Number of Students Sampled (<code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">overallProficient</span></code>: Percentage of Students Met/Exceeded Threshold Proficiency (<code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code>)</p></li>
-</ul>
+<dt id="makeReports.forms.data_collection_forms.AssessmentAggregateForm">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.data_collection_forms.</code><code class="sig-name descname">AssessmentAggregateForm</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">instance=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.data_collection_forms.AssessmentAggregateForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.models.ModelForm</span></code></p>
 <dl class="method">
-<dt id="makeReports.forms.data_collection_forms.EditDataCollection.media">
-<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#makeReports.forms.data_collection_forms.EditDataCollection.media" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.forms.data_collection_forms.AssessmentAggregateForm.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#makeReports.forms.data_collection_forms.AssessmentAggregateForm.media" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

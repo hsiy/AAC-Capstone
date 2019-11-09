@@ -165,7 +165,7 @@
 <dd><p>Initializes form and deletes grad field if undergraduate level</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>grad</strong> (<em>Boolean</em>) – whether it is a graduate level program</p>
+<dd class="field-odd"><p><strong>grad</strong> (<em>bool</em>) – whether it is a graduate level program</p>
 </dd>
 </dl>
 </dd></dl>
@@ -220,7 +220,7 @@
 <dd><p>Initializes form and deletes grad if undergraduate program</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>grad</strong> (<em>Boolean</em>) – whether graduate level program</p>
+<dd class="field-odd"><p><strong>grad</strong> (<em>bool</em>) – whether graduate level program</p>
 </dd>
 </dl>
 </dd></dl>
@@ -245,7 +245,7 @@
 <p><strong>Form fields:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">slo</span></code>: SLOs to Import:  (<code class="xref py py-class docutils literal notranslate"><span class="pre">ModelMultipleChoiceField</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">importAssessments</span></code>: Also import assessments? (<code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">importAssessments</span></code>: Also import assessments with SLO (<code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanField</span></code>)</p></li>
 </ul>
 <dl class="method">
 <dt id="makeReports.forms.slo_forms.ImportSLOForm.__init__">
@@ -256,6 +256,15 @@
 <dd class="field-odd"><p><strong>sloChoices</strong> (<em>QuerySet</em>) – SLO choices (of type <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.SLOInReport" title="makeReports.models.report_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a>)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.forms.slo_forms.ImportSLOForm.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.slo_forms.ImportSLOForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook for doing any extra form-wide cleaning after Field.clean() has been
+called on every field. Any ValidationError raised by this method will
+not be associated with a particular field; it will have a special-case
+association with the field named ‘__all__’.</p>
 </dd></dl>
 
 <dl class="method">
@@ -311,6 +320,12 @@
 <code class="sig-name descname">summer_max_length</code><em class="property"> = 2000</em><a class="headerlink" href="#makeReports.forms.slo_forms.Single2000Textbox.summer_max_length" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.forms.slo_forms.dict_key">
+<code class="sig-prename descclassname">makeReports.forms.slo_forms.</code><code class="sig-name descname">dict_key</code><span class="sig-paren">(</span><em class="sig-param">d</em>, <em class="sig-param">k</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.slo_forms.dict_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the given key from a dictionary.</p>
 </dd></dl>
 
 </div>
