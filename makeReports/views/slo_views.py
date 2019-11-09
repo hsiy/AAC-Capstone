@@ -144,12 +144,10 @@ class ImportSLO(DeptReportMixin,FormView):
         """
         rpt = self.report
         num = rpt.numberOfSLOs
-        print(num)
         x = form.cleaned_data['slo']
         y= form.cleaned_data
         for sloInRpt in form.cleaned_data['slo']:
             num += 1
-            print(num)
             newS = SLOInReport.objects.create(
                 date=datetime.now(),
                 number=num,
@@ -188,7 +186,6 @@ class ImportSLO(DeptReportMixin,FormView):
                         newS.save()
         self.report.numberOfSLOs = num
         self.report.save()
-        print(self.report.pk)
         return super(ImportSLO,self).form_valid(form)
     def get_context_data(self, **kwargs):
         """
