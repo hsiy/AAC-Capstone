@@ -10,13 +10,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from makeReports.models import *
-<<<<<<< HEAD
 from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-=======
+
 import pandas as pd
->>>>>>> graphing
+
 
 class DeptSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -82,17 +81,56 @@ class createGraphAPI(views.APIView):
     """
     def get(self,request,format=None):
 
-        if 'decision' == 1:
+        print(request.GET['decision'])
+        dec = request.GET['decision']
+        if dec == '1':
             print('in decision 1')
             queryset = SLOStatus.objects.all()
-            filter_backends = (filters.DjangoFilterBackend,)
-            filterset_fields = {
-                'report__degreeProgram':['exact'],
-                'report__year':['gte','lte'],
-                'slo':['exact']
-            }
+            dp = request.GET['report__degreeProgram']
+            print(dp)
+            vals = queryset.values('report__degreeProgram')
+            print(vals)
+            qDP = queryset.filter(report__degreeProgram=dp)
+            otherVals = qDP.values('sloIR__slo')
+            print(otherVals)
+            print(qDP)
+            s = request.GET['sloIR__slo']
+            print(s)
+            qSLO = qDP.filter(sloIR__slo=s)
+            print(qSLO)
             
-        elif 'decision' == 2:
+
+            begYear=request.GET['report__year__gte']
+            endYear = request.GET['report__year__lte']
+            bYear=int(begYear)
+            eYear=int(endYear)
+
+            dataFrame = {
+                'Target': [],
+                'Actual': []
+            }
+            index = []
+
+            targ = AssessmentVersion.objects.all()
+            actual = AssessmentData.objects.all()
+
+            for year in range(bYear,eYear+1):
+                qYear = queryset.filter(report__year=year)
+                s = queryset.values('sloIR__slo')
+                pkSLO = s.get('sloIR__slo')
+                print(s)
+                for t in targ:
+                    if t.slo == s.get('sloIR__slo'):
+                        dataFrame['Target'].append(t.target)
+                for a in actual:
+                    pkSLO = s.get('sloIR__slo')
+                    if a.assessmentVersion.slo == pkSLO:
+                        percent = a.overallProficient / a.numberStudents
+                        dataFrame['Actaul'].append(percent)
+                index.append(year)
+
+            
+        elif dec == '2':
             print('in decision 2')
             queryset = SLOStatus.objects.all()
             filter_backends = (filters.DjangoFilterBackend,)
@@ -103,6 +141,8 @@ class createGraphAPI(views.APIView):
             
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
+            bYear=int(begYear)
+            eYear=int(endYear)
             
             dataFrame = {
                 'Met': [],
@@ -112,17 +152,23 @@ class createGraphAPI(views.APIView):
             }
             index = []
 
-            for year in range(begYear,endYear+1):
+            for year in range(bYear,eYear+1):
                 qYear = queryset.filter(report__year=year)
                 overall = qYear.count()
-                met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-                partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
-                notMet = qYear.filter(status=SLO_STATUS_CHOICES[2][0]).count()
-                unknown = qYear.filter(status=SLO_STATUS_CHOICES[3][0]).count()
-                metP = met/overall
-                parP = partiallyMet/overall
-                notP = notMet/overall
-                unkP = unknown/overall
+                if overall != 0:
+                    met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+                    partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
+                    notMet = qYear.filter(status=SLO_STATUS_CHOICES[2][0]).count()
+                    unknown = qYear.filter(status=SLO_STATUS_CHOICES[3][0]).count()
+                    metP = met/overall
+                    parP = partiallyMet/overall
+                    notP = notMet/overall
+                    unkP = unknown/overall
+                else:
+                    metP = 0
+                    parP = 0
+                    notP = 0
+                    unkP = 0
                 dataFrame['Met'].append(metP)
                 dataFrame['Partially Met'].append(parP)
                 dataFrame['Not Met'].append(notP)
@@ -133,7 +179,6 @@ class createGraphAPI(views.APIView):
             lines = df.plot.line()
 
 
-            
         else:
             print('in decision 3')
             queryset = SLOStatus.objects.all()
@@ -145,23 +190,33 @@ class createGraphAPI(views.APIView):
 
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
+            bYear=int(begYear)
+            eYear=int(endYear)
             thisDep = request.GET['report__degreeProgram__department']
 
             dpQS = DegreeProgram.active_objects.all()
             depQS = dpQS.filter(department=thisDep)
             dataFrame = {}
-            for dep in depQS:
-                dataFrame.update(dep__name = [])
             index = []
+            
+            ds = depQS.values('name')
+            
+            for d in ds.iterator():
+                name = d.get('name')
+                new = {name: []}
+                dataFrame.update(new)
 
-            for year in range(begYear,endYear+1):
-                qYear = queryset.filter(year=year)
-                for i in range(len(dataFrame))
-                    qDP = queryset.filter(report__degreeProgram__name = dataFrame[i])
+            for year in range(bYear,eYear+1):
+                qYear = queryset.filter(report__year=year)
+                for name in dataFrame:
+                    qDP = qYear.filter(report__degreeProgram__name = str(name))
                     overall = qDP.count()
-                    met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-                    metP = met/overall
-                    dataFrame[i].append(metP)
+                    if overall != 0:
+                        met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+                        metP = met/overall
+                    else:
+                        metP = 0
+                    dataFrame[name].append(metP)
                 
                 index.append(year)
             

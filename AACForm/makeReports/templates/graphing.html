@@ -43,8 +43,8 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 <h4>Please choose your desired degree program</h4>
 <div class="dd_dprog">
     <select id="id_prog" v-model="program" name="program">
-        <template v-for="p in progs">
             <option value="1">All Programs</option>
+        <template v-for="p in progs">
             <option v-bind:value="p.pk">[[p.name]] ([[p.level]])</option>
         </template>
     </select>
@@ -143,9 +143,9 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                     });
                 },
                 newGraph: function() {
-                    fetch("{% url 'makeReports:api-new-graph' %}?repor__degreeProgram__department="
-                    +this.department+"&program="+this.program+"&year__gte="+this.date1+"&year__lte="
-                    +this.date2+"&decision="+this.graph_opt+"&slo"+this.slo)
+                    fetch("{% url 'makeReports:api-new-graph' %}?report__degreeProgram__department="
+                    +this.department+"&report__degreeProgram="+this.program+"&report__year__gte="+this.date1+
+                    "&report__year__lte="+this.date2+"&decision="+this.graph_opt+"&sloIR__slo="+this.slo)
                         .then(repsonse => {
                             response.clone().json()
                         .then(json => {
