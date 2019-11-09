@@ -158,17 +158,10 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                             this.slos = json;
                         })
                     });
-                    chChoices = []
-                    for(slo in this.slos){
-                        chChoices.push({value: slo.pk,
-                            label: slo.goalTest
-                        })
-                    }
                     if (this.ch == null){
                         this.ch = new Choices(document.getElementById('spec'),{choices:chChoices, shouldSort:false});
-                    }else{
-                        this.ch.setChoices(this.slos,'pk','goalText',true)
                     }
+                    this.ch.setChoices(this.slos,'pk','goalText',true);
                 },
                 newGraph: function() {
                     fetch("{% url 'makeReports:api-new-graph' %}?report__degreeProgram__department="
