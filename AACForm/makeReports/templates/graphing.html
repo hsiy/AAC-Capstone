@@ -4,6 +4,13 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<!-- Include Choices CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+/>
+<!-- Include Choices JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script type='text/javascript'></script>
 <div id="vapp">
 {% endblock %}
@@ -42,7 +49,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 {% endif %}
 <h4>Please choose your desired degree program</h4>
 <div class="dd_dprog">
-    <select id="id_prog" v-model="program" name="program">
+    <select id="id_prog" v-model="program" name="program" v-on:change="updateSLOs">
             <option value="1">All Programs</option>
         <template v-for="p in progs">
             <option v-bind:value="p.pk">[[p.name]] ([[p.level]])</option>
@@ -51,11 +58,11 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 </div>
 <h4>Date Range</h4>
 <div class="dd_drange1">
-    <select id="id_range1" v-model="date1"></select>
+    <select id="id_range1" v-model="date1" v-on:change="updateSLOs"></select>
 </div>
 <h5>to</h5>
 <div class="dd_drange2">
-    <select id="id_range2" v-model="date2"></select>
+    <select id="id_range2" v-model="date2" v-on:change="updateSLOs"></select>
 </div>
 <h4>What would you like to see graphed?</h4>
 <template v-if="program == 1">
@@ -73,7 +80,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
         </select>
     </div>
 </template>
-<template v-if="graph_opt == 1">
+<template v-if="graph_opt == 1 && slos!=null">
     <h4>Pick the SLO you would like to see graphed</h4>
     <div class="specific">
         <select id="spec" v-model="slo">
@@ -83,7 +90,10 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
         </select>
     </div>
 </template>
-<button v-on:click="newGraph()">View Graph</button> 
+<br>
+<template v-if="date1!=null && date2!=null">
+<button class='btn btn-primary' v-on:click="newGraph">View Graph</button> 
+</template>
 {% endblock %}
 {% block endscripts %}
     <script>
@@ -96,6 +106,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
     }
     document.getElementById("id_range1").innerHTML = options;
     document.getElementById("id_range2").innerHTML = options;
+
     var vapp=new Vue({
             el: '#vapp',
             delimiters: ['[[', ']]'],
@@ -109,10 +120,15 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 program: 1,
                 date1: null,
                 date2: null,
-                slo: null
+                slo: null,
+                url: "abc",
+                ch: null
             },
             computed: {
             },
+            //mounted(){
+            //    ch = new Choices(document.getElementById('spec'),{shouldSort:false});
+            //},
             methods: {
                 updateDept: function () {
                     fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
@@ -122,6 +138,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                             this.depts = json;
                         })
                     });
+                    this.updateProg();
                 },
                 updateProg: function() {
                     fetch("{% url 'makeReports:api-prog-by-dept' %}?department="+this.department)
@@ -141,12 +158,23 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                             this.slos = json;
                         })
                     });
+                    chChoices = []
+                    for(slo in this.slos){
+                        chChoices.push({value: slo.pk,
+                            label: slo.goalTest
+                        })
+                    }
+                    if (this.ch == null){
+                        this.ch = new Choices(document.getElementById('spec'),{choices:chChoices, shouldSort:false});
+                    }else{
+                        this.ch.setChoices(this.slos,'pk','goalText',true)
+                    }
                 },
                 newGraph: function() {
                     fetch("{% url 'makeReports:api-new-graph' %}?report__degreeProgram__department="
                     +this.department+"&report__degreeProgram="+this.program+"&report__year__gte="+this.date1+
-                    "&report__year__lte="+this.date2+"&decision="+this.graph_opt+"&sloIR__slo="+this.slo)
-                        .then(repsonse => {
+                    "&report__year__lte="+this.date2+"&decision="+this.graph_opt+"&sloIR="+this.slo)
+                        .then(response => {
                             response.clone().json()
                         .then(json => {
                             this.url = json;
