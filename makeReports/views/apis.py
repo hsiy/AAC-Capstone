@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from makeReports.models import *
+from makeReports.choices import *
 from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -84,26 +85,36 @@ class createGraphAPI(views.APIView):
         print(request.GET['decision'])
         dec = request.GET['decision']
         if dec == '1':
-            print('in decision 1')
-            queryset = SLOStatus.objects.all()
-            dp = request.GET['report__degreeProgram']
-            print(dp)
-            vals = queryset.values('report__degreeProgram')
-            print(vals)
-            qDP = queryset.filter(report__degreeProgram=dp)
-            otherVals = qDP.values('sloIR__slo')
-            print(otherVals)
-            print(qDP)
-            s = request.GET['sloIR__slo']
-            print(s)
-            qSLO = qDP.filter(sloIR__slo=s)
-            print(qSLO)
+            #SLO: target vs actual
+
+
+            # print('in decision 1')
+            # dp = request.GET['report__degreeProgram']
+            # print(dp)
+            # vals = queryset.values('report__degreeProgram')
+            # print(vals)
+            # qDP = queryset.filter(report__degreeProgram=dp)
+            # otherVals = qDP.values('sloIR__slo')
+            # print(otherVals)
+            # print(qDP)
+            # s = request.GET['sloIR__slo']
+            # print(s)
+            # qSLO = qDP.filter(sloIR__slo=s)
+            # print(qSLO)
             
 
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
             bYear=int(begYear)
             eYear=int(endYear)
+            degreeProgram = request.GET['report__degreeProgram']
+            slo = request.GET['sloIR']
+            queryset = AssessmentAggregate.objects.filter(
+                assessmentVersion__report__year__gte=begYear,
+                assessmentVersion__report__year__lte = endYear,
+                assessmentVersion__report__degreeProgram__pk = degreeProgram,
+                assessmentVersion__slo__pk = slo
+                )
 
             dataFrame = {
                 'Target': [],
@@ -111,38 +122,46 @@ class createGraphAPI(views.APIView):
             }
             index = []
 
-            targ = AssessmentVersion.objects.all()
-            actual = AssessmentData.objects.all()
+            #targ = AssessmentVersion.objects.all()
+            #actual = AssessmentData.objects.all()
 
             for year in range(bYear,eYear+1):
-                qYear = queryset.filter(report__year=year)
-                s = queryset.values('sloIR__slo')
-                pkSLO = s.get('sloIR__slo')
-                print(s)
-                for t in targ:
-                    if t.slo == s.get('sloIR__slo'):
-                        dataFrame['Target'].append(t.target)
-                for a in actual:
-                    pkSLO = s.get('sloIR__slo')
-                    if a.assessmentVersion.slo == pkSLO:
-                        percent = a.overallProficient / a.numberStudents
-                        dataFrame['Actaul'].append(percent)
+                qYear = queryset.filter(assessmentVersion__report__year=year)
+                for assessA in qYear:
+                    dataFrame['Target'].append(assessA.assessmentVersion.target)
+                    dataFrame['Actual'].append(assessA.overallProficient/assessA.numberStudents)
+                # s = queryset.values('sloIR__slo')
+                # pkSLO = s.get('sloIR__slo')
+                # print(s)
+                # for t in targ:
+                #     if t.slo == s.get('sloIR__slo'):
+                #         dataFrame['Target'].append(t.target)
+                # for a in actual:
+                #     pkSLO = s.get('sloIR__slo')
+                #     if a.assessmentVersion.slo == pkSLO:
+                #         percent = a.overallProficient / a.numberStudents
+                #         dataFrame['Actaul'].append(percent)
                 index.append(year)
 
             
         elif dec == '2':
+            #Number of SLOs met
             print('in decision 2')
-            queryset = SLOStatus.objects.all()
-            filter_backends = (filters.DjangoFilterBackend,)
-            filterset_fields = {
-                'report__degreeProgram':['exact'],
-                'report__year':['gte','lte']
-            }
-            
+            # filter_backends = (filters.DjangoFilterBackend,)
+            # filterset_fields = {
+            #     'report__degreeProgram':['exact'],
+            #     'report__year':['gte','lte']
+            # }
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
             bYear=int(begYear)
             eYear=int(endYear)
+            degreeProgram = request.GET['report__degreeProgram']
+            queryset = SLOStatus.objects.filter(
+                report__year__gte = begYear,
+                report__year__lte = endYear,
+                report__degreeProgram__pk = degreeProgram
+                )
             
             dataFrame = {
                 'Met': [],
@@ -180,22 +199,27 @@ class createGraphAPI(views.APIView):
 
 
         else:
+            #Number of degree programs meeting target
             print('in decision 3')
-            queryset = SLOStatus.objects.all()
-            filter_backends = (filters.DjangoFilterBackend,)
-            filterset_fields = {
-                'report__year':['gte','lte'],
-                'report__degreeProgram__department':['exact']
-            }
+            #queryset = SLOStatus.objects.all()
+            # filter_backends = (filters.DjangoFilterBackend,)
+            # filterset_fields = {
+            #     'report__year':['gte','lte'],
+            #     'report__degreeProgram__department':['exact']
+            # }
 
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
             bYear=int(begYear)
             eYear=int(endYear)
             thisDep = request.GET['report__degreeProgram__department']
-
-            dpQS = DegreeProgram.active_objects.all()
-            depQS = dpQS.filter(department=thisDep)
+            queryset = SLOStatus.objects.filter(
+                report__year__gte=begYear,
+                report__year__lte = endYear,
+                report__degreeProgram__department__pk = thisDep
+                )
+            #dpQS = DegreeProgram.active_objects.all()
+            depQS = DegreeProgram.active_objects.filter(department=thisDep)
             dataFrame = {}
             index = []
             
