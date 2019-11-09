@@ -141,7 +141,7 @@ class ImportAssessment(DeptReportMixin,FormView):
 
     Notes:
         Through get request URL, the following search parameters are sent:
-        'yearIn','dP': primary key of degree program, 'slo': primary key of SLO (:class:`~makeReports.models.report_models.SLOInReport`)
+        'year','dp: primary key of degree program, 'slo': primary key of SLO (:class:`~makeReports.models.report_models.SLOInReport`)
     """
     template_name = "makeReports/Assessment/importAssessment.html"
     form_class = ImportAssessmentForm

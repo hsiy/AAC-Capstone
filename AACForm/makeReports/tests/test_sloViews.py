@@ -82,8 +82,8 @@ class AddSLOGRTestPage(ReportSetupTest):
         Tests post creates SLO
         """
         form_data = {
-            'goaltext':'text of slo',
-            'blooms': BLOOMS_CHOICES[1]
+            'text':'text of slo',
+            'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo').count()
@@ -113,8 +113,8 @@ class AddSLOUGTestPage(ReportSetupTest):
         Tests post creates SLO
         """
         form_data = {
-            'goaltext':'text of slo2',
-            'blooms': BLOOMS_CHOICES[1]
+            'text':'text of slo2',
+            'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo2').count()
@@ -149,7 +149,6 @@ class ImportSLOTestPage(ReportSetupTest):
         fD = {
             'slo': self.inSLO.pk
         }
-        print(fD)
         response = self.client.post(reverse('makeReports:import-slo',kwargs={"report":self.rpt.pk})+"?dp="+str(self.inDp.pk)+"&year="+str(self.rpt.year),fD)
         self.rpt.refresh_from_db()
         self.assertEquals(num+1,self.rpt.numberOfSLOs)
