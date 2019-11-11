@@ -5,6 +5,32 @@ from unittest import mock
 from django.http import HttpResponse
 import requests
 from model_mommy import mommy
+def getWithReport(name, s, extraKwargs, extraURL):
+    """
+    Gets via Get request the page
+
+    Args:
+        name (str): name of the page to get (no makeReports prefix needed)
+        s (ReportSetupTest): instace to get self.rpt from
+        extraKwargs (dict): extra keyword arguments to pass to reverse
+        extraURL (str): extra string to append to end of URL (for GET parameters)
+    """
+    extraKwargs.update({'report':s.rpt.pk})
+    return s.client.get(reverse('makeReports:'+name,kwargs=extraKwargs)+extraURL)
+def postWithReport(name, s, extraKwargs, extraURL, data):
+    """
+    Gets via Post request the page
+
+    Args:
+        name (str): name of the page to get (no makeReports prefix needed)
+        s (ReportSetupTest): instace to get self.rpt from
+        extraKwargs (dict): extra keyword arguments to pass to reverse
+        extraURL (str): extra string to append to end of URL (for GET parameters)
+        data (dict): data to pass to POST request
+    """
+    extraKwargs.update({'report':s.rpt.pk})
+    return s.client.post(reverse('makeReports:'+name,kwargs=extraKwargs)+extraURL, data)
+
 class NonAACTest(TestCase):
     """
     Creates Non AAC member logged in

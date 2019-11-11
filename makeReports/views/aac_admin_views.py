@@ -140,6 +140,9 @@ class CreateDepartment(AACOnlyMixin,CreateView):
 class DepartmentList(AACOnlyMixin,ListView):
     """
     View that lists all active :class:`~makeReports.models.report_models.Department` objects
+
+    Notes:
+        college and name are the GET request parameters to filter on those respective fields
     """
     model = Department
     template_name = "makeReports/AACAdmin/CollegeDeptDP/deptList.html"

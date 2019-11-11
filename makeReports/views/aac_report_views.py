@@ -127,7 +127,7 @@ class ReportListSearched(AACOnlyMixin,ListView):
 
     Notes:
         Search parameters passed through GET request,
-        'year','submitted', 'dP' for degree program primary key,
+        'year','submitted', 'graded', 'dP' for degree program primary key,
         'dept' for department by primary key, and 'college' by primary key
     """
     model = Report
