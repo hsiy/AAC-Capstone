@@ -14,6 +14,10 @@ from makeReports.choices import *
 from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+import tempfile
+import django.core.files as files
+import io
+from datetime import datetime
 
 import pandas as pd
 
@@ -39,6 +43,13 @@ class SLOserializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SLOInReport
         fields = ['pk', 'goalText']
+class FileSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializes SLOs to JSON with the primary key and name
+    """
+    class Meta:
+        model = Graph
+        fields = "__all__"
 class DeptByColListAPI(generics.ListAPIView):
     """
     JSON API to gets active departments within specified college
@@ -82,27 +93,9 @@ class createGraphAPI(views.APIView):
     """
     def get(self,request,format=None):
 
-        print(request.GET['decision'])
         dec = request.GET['decision']
         if dec == '1':
-            #SLO: target vs actual
-
-
-            # print('in decision 1')
-            # dp = request.GET['report__degreeProgram']
-            # print(dp)
-            # vals = queryset.values('report__degreeProgram')
-            # print(vals)
-            # qDP = queryset.filter(report__degreeProgram=dp)
-            # otherVals = qDP.values('sloIR__slo')
-            # print(otherVals)
-            # print(qDP)
-            # s = request.GET['sloIR__slo']
-            # print(s)
-            # qSLO = qDP.filter(sloIR__slo=s)
-            # print(qSLO)
             
-
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
             bYear=int(begYear)
@@ -122,36 +115,25 @@ class createGraphAPI(views.APIView):
             }
             index = []
 
-            #targ = AssessmentVersion.objects.all()
-            #actual = AssessmentData.objects.all()
 
             for year in range(bYear,eYear+1):
                 qYear = queryset.filter(assessmentVersion__report__year=year)
                 for assessA in qYear:
                     dataFrame['Target'].append(assessA.assessmentVersion.target)
-                    dataFrame['Actual'].append(assessA.overallProficient/assessA.numberStudents)
-                # s = queryset.values('sloIR__slo')
-                # pkSLO = s.get('sloIR__slo')
-                # print(s)
-                # for t in targ:
-                #     if t.slo == s.get('sloIR__slo'):
-                #         dataFrame['Target'].append(t.target)
-                # for a in actual:
-                #     pkSLO = s.get('sloIR__slo')
-                #     if a.assessmentVersion.slo == pkSLO:
-                #         percent = a.overallProficient / a.numberStudents
-                #         dataFrame['Actaul'].append(percent)
+                    dataFrame['Actual'].append(assessA.aggregate_proficiency)
+                
                 index.append(year)
 
+            df = pd.DataFrame(dataFrame, index=index)
+            lines = df.plot.line()
+            figure = lines.get_figure()
+            
+            
             
         elif dec == '2':
             #Number of SLOs met
             print('in decision 2')
-            # filter_backends = (filters.DjangoFilterBackend,)
-            # filterset_fields = {
-            #     'report__degreeProgram':['exact'],
-            #     'report__year':['gte','lte']
-            # }
+           
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
             bYear=int(begYear)
@@ -196,17 +178,13 @@ class createGraphAPI(views.APIView):
             
             df = pd.DataFrame(dataFrame, index=index)
             lines = df.plot.line()
+            figure = lines.get_figure()
+            
 
 
         else:
             #Number of degree programs meeting target
             print('in decision 3')
-            #queryset = SLOStatus.objects.all()
-            # filter_backends = (filters.DjangoFilterBackend,)
-            # filterset_fields = {
-            #     'report__year':['gte','lte'],
-            #     'report__degreeProgram__department':['exact']
-            # }
 
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
@@ -246,7 +224,16 @@ class createGraphAPI(views.APIView):
             
             df = pd.DataFrame(dataFrame, index=index)
             lines = df.plot.line()
-
-        return Response("hello")
+            figure = lines.get_figure()
+        #f1 = tempfile.TemporaryFile()
+        #figure.savefig(f1)
+        #f2 = files.File(f1)
+        print(figure)
+        f1 = io.BytesIO()
+        figure.savefig(f1, format="png")
+        content_file = files.File(f1)
+        print(content_file)
+        graphObj = Graph.objects.create(graph=content_file,dateTime=datetime.now())
+        return Response(graphObj.graph.url)
 
 

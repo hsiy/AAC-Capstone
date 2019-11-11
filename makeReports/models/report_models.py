@@ -325,3 +325,9 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+class Graph(models.Model):
+    dateTime = models.DateTimeField(auto_now_add=True)
+    graph = models.FileField(
+        upload_to='data/graphs', 
+        storage=gd_storage,
+    )
