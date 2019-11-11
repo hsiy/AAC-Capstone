@@ -34,7 +34,7 @@ class CreateDepartmentForm(forms.ModelForm):
         fields = ['name', 'college']
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control col-6'}),
-            'college': forms.TextInput(attrs={'class':'form-control col-6'})
+            'college': forms.Select(attrs={'class':'form-control col-6'})
         }
     def __init__(self,*args,**kwargs):
         super(CreateDepartmentForm,self).__init__(*args,**kwargs)

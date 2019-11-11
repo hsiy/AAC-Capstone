@@ -362,7 +362,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         self.assessVers.where = form.cleaned_data['where']
         self.assessVers.allStudents = form.cleaned_data['allStudents']
         self.assessVers.sampleDescription = form.cleaned_data['sampleDescription']
-        self.assessVers.frequencyChoice = form.clenaed_data['frequencyChoice']
+        self.assessVers.frequencyChoice = form.cleaned_data['frequencyChoice']
         self.assessVers.frequency = form.cleaned_data['frequency']
         self.assessVers.threshold = form.cleaned_data['threshold']
         self.assessVers.target = form.cleaned_data['target']
