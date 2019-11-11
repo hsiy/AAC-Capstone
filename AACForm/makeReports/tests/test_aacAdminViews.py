@@ -7,7 +7,7 @@ from django.http import HttpResponse
 import requests
 from model_mommy import mommy
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
-
+from datetime import datetime
 class AACBasicViewsTest(ReportAACSetupTest):
     """
     Tests the basic AAC admin views, such as home
@@ -112,7 +112,7 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
     Tests that views relating degree program administration
     """
     def setUp(self):
-        super(DegreeProgramAdminTest,self).setUp
+        super(DegreeProgramAdminTest,self).setUp()
         self.dept = mommy.make("Department")
     def test_create(self):
         """
@@ -120,12 +120,11 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         """
         r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
             'name':'dp name',
-            'level':'UG',
-            'cycle': '5',
-            'startingYear': '7'
+            'level':"UG",
+            'cycle': 5,
+            'startingYear': 7
         })
         num = DegreeProgram.objects.filter(department=self.dept,name='dp name',cycle=5, startingYear=7, level="UG").count()
-        num = DegreeProgram.objects.filter(name='dp name').count()
         self.assertGreaterEqual(num, 1)
     def test_create_emptyslots(self):
         """
@@ -134,8 +133,7 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
             'name':'dp name 2',
             'level':'GR',
-            'cycle':'',
-            'startingYear':''
+            'cycle': 0
         })
         num = DegreeProgram.objects.filter(department=self.dept,name='dp name 2', level="GR").count()
         self.assertGreaterEqual(num, 1)
@@ -147,8 +145,6 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         r = self.client.post(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{
             'name':'up dp',
             'level':'GR',
-            'cycle': '',
-            'startingYear': ''
         })
         dp.refresh_from_db()
         self.assertEquals(dp.name,'up dp')
@@ -157,7 +153,7 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         """
         Tests that recovering a DP works and sets it to active
         """
-        dp = mommy.make("DegreeProgram",active=False)
+        dp = mommy.make("DegreeProgram",active=False,department=self.dept)
         self.client.post(reverse('makeReports:recover-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{'active':'on'})
         dp.refresh_from_db()
         self.assertTrue(dp.active)
@@ -165,7 +161,7 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         """
         Tests that deleting a DP sets it to inactive
         """
-        dp = mommy.make("DegreeProgram",active=True)
+        dp = mommy.make("DegreeProgram",active=True,department=self.dept)
         self.client.post(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
         dp.refresh_from_db()
         self.assertFalse(dp.active)
@@ -195,27 +191,27 @@ class ReportAdminViewTests(ReportAACSetupTest):
         Tests that the AAC can manually submit reports
         """
         rep = mommy.make("Report",submitted=False)
-        self.client.post(reverse('makeReports:manual-submit-rpt',kwargs={'pk':self.rpt.pk}),{'submitted':'on'})
+        self.client.post(reverse('makeReports:manual-submit-rpt',kwargs={'pk':rep.pk}),{'submitted':'on'})
         rep.refresh_from_db()
         self.assertTrue(rep.submitted)
     def test_list(self):
         """
         Tests that the report lists reports
         """
-        r = mommy.make("Report",rubric__complete=True)
+        r = mommy.make("Report",rubric__complete=False, year=int(datetime.now().year),degreeProgram__active=True)
         response= self.client.get(reverse('makeReports:report-list'))
         self.assertContains(response,r.degreeProgram.name)
-        self.assertContains(resposne,r.year)
+        self.assertContains(response,r.year)
     def test_search(self):
         """
         Tests the search functionality
         """
-        r = mommy.make("Report",submitted=False, year=2018)
-        r2 = mommy.make("Report",submitted = True, year=2020)
-        response = self.client.get(reverse('makeReports:search-reports')+"?year=&submitted=1&dP=&dept=&college=&graded=")
-        self.assertContains(response,r.degreeProgram.name)
-        self.assertContains(response,2018)
-        self.assertNotContains(response,2020)
+        r = mommy.make("Report",submitted=False, year=2118)
+        r2 = mommy.make("Report",submitted = True, year=2120)
+        response = self.client.get(reverse('makeReports:search-reports')+"?year=2120&submitted=1&dP=&dept=&college=&graded=")
+        self.assertContains(response,r2.degreeProgram.name)
+        self.assertNotContains(response,2118)
+        self.assertContains(response,2120)
 class AccountAdminTests(ReportAACSetupTest):
     """
     Tests views relating to account administration
@@ -231,23 +227,23 @@ class AccountAdminTests(ReportAACSetupTest):
             'college':dept.college.pk,
             'email':'sdkl@ksld.com',
             'username':'sldkjslkfdj',
-            'password1':'slsdfdsfsdfdkjslkfdj',
-            'password2':'slsdfdsfsdfdkjslkfdj',
+            'password1':'slsdfdsfsdfdk',
+            'password2':'slsdfdsfsdfdk',
             'first_name':'sdklfj',
             'last_name':'sdlkfjsadlkfj'
             })
-        num = Profile.objects.filter(isaac=True,department=dept,user__username='sldkjslkfdj',user__first_name='sdklfj').count()
+        num = Profile.objects.filter(aac=True,department=dept,user__first_name='sdklfj').count()
         self.assertEquals(num,1)
     def test_list(self):
         a = mommy.make("User")
         r = self.client.get(reverse('makeReports:account-list'))
-        self.assertContains(r,user.first_name)
-    def test_list_search(self):
-        a = mommy.make("User")
-        b = mommy.make("User")
-        r = self.client.get(reverse('makeReports:search-account-list')+"?f="+a.first_name+"&l="+a.last_name+"&e="+a.email)
         self.assertContains(r,a.first_name)
-        self.assertNotContains(r,b.first_name)
+    def test_list_search(self):
+        a = mommy.make("User",first_name="aboijoie")
+        b = mommy.make("User",first_name="dsasdfbwerwerqrqwejlkjljkl")
+        r = self.client.get(reverse('makeReports:search-account-list')+"?f="+a.first_name+"&l="+a.last_name+"&e=")
+        self.assertContains(r,a.first_name)
+        self.assertNotContains(r,"dsasdfbwerwerqrqwejlkjljkl")
     def test_modify(self):
-
+        pass
     
