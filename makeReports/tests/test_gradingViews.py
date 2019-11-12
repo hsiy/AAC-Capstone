@@ -19,7 +19,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         """
         r = mommy.make("Rubric")
         rub = mommy.make("GradedRubric",rubricVersion=r)
-        rInG = mommy.make("RubricItem",rubricVersion=r)
+        rInG = mommy.make("RubricItem",rubricVersion=r,section=1)
         rI = mommy.make("GradedRubricItem", rubric=rub, item=rInG)
         self.rpt.rubric = rub
         self.rpt.save()
