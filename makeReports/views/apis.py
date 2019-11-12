@@ -16,8 +16,10 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated
 import tempfile
 import django.core.files as files
+import matplotlib.pyplot as plt
 import io
 from datetime import datetime
+from matplotlib.ticker import FuncFormatter
 
 import pandas as pd
 
@@ -95,7 +97,7 @@ class createGraphAPI(views.APIView):
 
         dec = request.GET['decision']
         if dec == '1':
-            
+            #specific SLO
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
             bYear=int(begYear)
@@ -110,6 +112,7 @@ class createGraphAPI(views.APIView):
                 )
 
             dataFrame = {
+                'Year': [],
                 'Target': [],
                 'Actual': []
             }
@@ -119,20 +122,22 @@ class createGraphAPI(views.APIView):
             for year in range(bYear,eYear+1):
                 qYear = queryset.filter(assessmentVersion__report__year=year)
                 for assessA in qYear:
+                    dataFrame['Year'].append(year)
                     dataFrame['Target'].append(assessA.assessmentVersion.target)
                     dataFrame['Actual'].append(assessA.aggregate_proficiency)
                 
                 index.append(year)
-
-            df = pd.DataFrame(dataFrame, index=index)
-            lines = df.plot.line()
+            df = pd.DataFrame(data=dataFrame)
+            #lines = df.plot.line()
+            lines = df.plot(kind='bar',x='Year',y=['Target','Actual'])
+            lines.set(xlabel="Year", ylabel="Percentage")
             figure = lines.get_figure()
             
             
             
         elif dec == '2':
             #Number of SLOs met
-            print('in decision 2')
+
            
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
@@ -146,12 +151,12 @@ class createGraphAPI(views.APIView):
                 )
             
             dataFrame = {
+                'Year':[],
                 'Met': [],
                 'Partially Met': [],
                 'Not Met': [],
                 'Unknown': []
             }
-            index = []
 
             for year in range(bYear,eYear+1):
                 qYear = queryset.filter(report__year=year)
@@ -174,17 +179,20 @@ class createGraphAPI(views.APIView):
                 dataFrame['Partially Met'].append(parP)
                 dataFrame['Not Met'].append(notP)
                 dataFrame['Unknown'].append(unkP)
-                index.append(year)
+                dataFrame['Year'].append(year)
             
-            df = pd.DataFrame(dataFrame, index=index)
-            lines = df.plot.line()
+            df = pd.DataFrame(dataFrame)
+            lines = df.plot(kind='bar',x='Year',y=['Met','Partially Met','Not Met','Unknown'])
+            lines.set(xlabel="Year", ylabel="Percentage")
+            #lines = df.plot(kind='line',x='Year',y='Partially Met',ax=ax)
+            #lines = df.plot(kind='line',x='Year',y='Not Met',ax=ax)
+            #lines = df.plot(kind='line',x='Year',y='Unknown',ax=ax)
             figure = lines.get_figure()
             
 
 
         else:
             #Number of degree programs meeting target
-            print('in decision 3')
 
             begYear=request.GET['report__year__gte']
             endYear = request.GET['report__year__lte']
@@ -198,7 +206,9 @@ class createGraphAPI(views.APIView):
                 )
             #dpQS = DegreeProgram.active_objects.all()
             depQS = DegreeProgram.active_objects.filter(department=thisDep)
-            dataFrame = {}
+            dataFrame = {
+                'Year':[]
+            }
             index = []
             
             ds = depQS.values('name')
@@ -210,30 +220,31 @@ class createGraphAPI(views.APIView):
 
             for year in range(bYear,eYear+1):
                 qYear = queryset.filter(report__year=year)
-                for name in dataFrame:
-                    qDP = qYear.filter(report__degreeProgram__name = str(name))
-                    overall = qDP.count()
-                    if overall != 0:
-                        met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-                        metP = met/overall
-                    else:
-                        metP = 0
-                    dataFrame[name].append(metP)
-                
-                index.append(year)
-            
-            df = pd.DataFrame(dataFrame, index=index)
-            lines = df.plot.line()
+                for name in dataFrame.keys():
+                    if name is not "Year":
+                        qDP = qYear.filter(report__degreeProgram__name = str(name))
+                        overall = qDP.count()
+                        if overall != 0:
+                            met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+                            metP = met/overall
+                        else:
+                            metP = 0
+                        dataFrame[name].append(metP)
+                dataFrame['Year'].append(year)
+            df = pd.DataFrame(dataFrame)
+            yVals = list(dataFrame.keys()).remove('Year')
+            lines = df.plot(kind='bar',x='Year',y=yVals)
+            lines.set(xlabel="Year", ylabel="Percentage")
+            lines.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y))) 
             figure = lines.get_figure()
         #f1 = tempfile.TemporaryFile()
         #figure.savefig(f1)
         #f2 = files.File(f1)
-        print(figure)
         f1 = io.BytesIO()
-        figure.savefig(f1, format="png")
-        content_file = files.File(f1)
-        print(content_file)
-        graphObj = Graph.objects.create(graph=content_file,dateTime=datetime.now())
+        figure.savefig(f1, format="png", bbox_inches='tight')
+        content_file = files.images.ImageFile(f1)
+        graphObj = Graph.objects.create()
+        graphObj.graph.save("graph-"+str(request.user)+"-"+str(datetime.now())+".png",content_file)
         return Response(graphObj.graph.url)
 
 
