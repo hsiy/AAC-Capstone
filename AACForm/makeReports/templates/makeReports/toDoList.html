@@ -1,0 +1,28 @@
+{% if reqTodo > 0 or sugTodo > 0 %}
+<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+        To-Do List
+</button>
+<div class="collapse" style="max-width:600px" id="collapseTodo">
+    
+        {% if reqTodo > 0 %}
+    <div class="card card-body">
+        <h5 class="card-title">Required</h5>
+        <ul class="list-group list-group-flush">
+            {% for item in toDo.r %}
+            <li class="list-group-item">{{item}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if sugTodo > 0 %}
+    <div class="card card-body">
+        <h5 class="card-title">Suggested</h5>
+        <ul class="list-group list-group-flush">
+            {% for item in toDo.s %}
+            <li class="list-group-item">{{item}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endif %}

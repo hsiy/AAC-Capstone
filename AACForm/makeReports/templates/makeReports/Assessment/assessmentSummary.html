@@ -12,9 +12,18 @@
 {% endblock %}
 {% block inner_content %}
 <h3>Assessment Summary</h3>
-<a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
-    <a  role="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>
 <div class="container" style="max-width: 95%">
+        <div class="row">
+                <div class="col">
+                    {% include 'makeReports/toDoList.html' %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                        <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-assessment' report=rpt.pk %}">Add Assessment</a>
+                        <a  role="button" class="btn btn-primary" href="{% url 'makeReports:import-assessment' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}&slo=-1">Import Assessment</a>                    
+                </div>
+            </div>
         <div class="row">
             <div class="col">
             {% for assessment in assessment_list %}
