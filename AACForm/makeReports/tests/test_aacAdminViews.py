@@ -7,7 +7,7 @@ from django.http import HttpResponse
 import requests
 from model_mommy import mommy
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
-from datetime import datetime
+from datetime import datetime, date, timedelta
 class AACBasicViewsTest(ReportAACSetupTest):
     """
     Tests the basic AAC admin views, such as home
@@ -58,6 +58,15 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         response = self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
         col.refresh_from_db()
         self.assertTrue(col.active)
+    def test_arc_cols(self):
+        """
+        Tests that the archived college page contains only archived colleges
+        """
+        c1 = mommy.make("College",active=True)
+        c2 = mommy.make("College",active=False)
+        r = self.client.get(reverse('makeReports:arc-colleges'))
+        self.assertNotContains(r,c1.name)
+        self.assertContains(r,c2.name)
 class DepartmentViewsTest(ReportAACSetupTest):
     """
     Tests the views relating to department administration
@@ -107,6 +116,15 @@ class DepartmentViewsTest(ReportAACSetupTest):
         r = self.client.post(reverse('makeReports:recover-dept',kwargs={'pk':dept.pk}),{'active':'on'})
         dept.refresh_from_db()
         self.assertTrue(dept.active)
+    def test_arc_depts(self):
+        """
+        Tests that the archived department lists contains only inactive departments
+        """
+        d1 = mommy.make("Department",active=True)
+        d2 = mommy.make("Department",active=False)
+        r = self.client.get(reverse('makeReports:arc-depts'))
+        self.assertContains(r,d2.name)
+        self.assertNotContains(r,d1.name)
 class DegreeProgramAdminTest(ReportAACSetupTest):
     """
     Tests that views relating degree program administration
@@ -165,6 +183,19 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         self.client.post(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
         dp.refresh_from_db()
         self.assertFalse(dp.active)
+    def test_arc_dps(self):
+        """
+        Tests that the archived degree program page contains only archived programs
+        """
+        dept = mommy.make("Department")
+        dept2 = mommy.make("Department")
+        dp = mommy.make("DegreeProgram",active=True,department=dept)
+        dp2 = mommy.make("DegreeProgram",active=False,department=dept)
+        dp3 = mommy.make("DegreeProgram",active=False,department=dept2)
+        r = self.client.get(reverse('makeReports:arc-dps',kwargs={'dept':dept.pk}))
+        self.assertContains(r,dp2.name)
+        self.assertNotContains(r,dp.name)
+        self.assertNotContains(r,dp3.name)
 class ReportAdminViewTests(ReportAACSetupTest):
     """
     Tests views relating to administrating reports
@@ -176,7 +207,7 @@ class ReportAdminViewTests(ReportAACSetupTest):
         dp = mommy.make("DegreeProgram")
         rub = mommy.make("Rubric")
         self.client.post(reverse('makeReports:add-rpt-dp',kwargs={'dP':dp.pk}),{'year':2018,'rubric':rub.pk})
-        num = Report.objects.filter(year=2018,degreeProgram=dp,rubric=rub.pk).count()
+        num = Report.objects.filter(year=2018,degreeProgram=dp).count()
         self.assertEquals(num, 1)
     def test_delete(self):
         """
@@ -212,6 +243,12 @@ class ReportAdminViewTests(ReportAACSetupTest):
         self.assertContains(response,r2.degreeProgram.name)
         self.assertNotContains(response,2118)
         self.assertContains(response,2120)
+    def test_success(self):
+        """
+        Ensures that the rubric success page exists
+        """
+        r = self.client.get(reverse('makeReports:gen-rpt-suc'))
+        self.assertEquals(r.status_code,200)
 class AccountAdminTests(ReportAACSetupTest):
     """
     Tests views relating to account administration
@@ -235,15 +272,144 @@ class AccountAdminTests(ReportAACSetupTest):
         num = Profile.objects.filter(aac=True,department=dept,user__first_name='sdklfj').count()
         self.assertEquals(num,1)
     def test_list(self):
+        """
+        Tests the account list
+        """
         a = mommy.make("User")
         r = self.client.get(reverse('makeReports:account-list'))
         self.assertContains(r,a.first_name)
     def test_list_search(self):
+        """
+        Tests the acount list acts as expected
+        """
         a = mommy.make("User",first_name="aboijoie")
         b = mommy.make("User",first_name="dsasdfbwerwerqrqwejlkjljkl")
         r = self.client.get(reverse('makeReports:search-account-list')+"?f="+a.first_name+"&l="+a.last_name+"&e=")
         self.assertContains(r,a.first_name)
         self.assertNotContains(r,"dsasdfbwerwerqrqwejlkjljkl")
     def test_modify(self):
-        pass
+        """
+        Tests the AAC modifying user account page
+        """
+        a = mommy.make("User")
+        a.profile.aac = False
+        a.profile.save()
+        dept = mommy.make("Department")
+        fD = {
+            'aac':'on',
+            'department':dept.pk,
+            'first_name':'changed f_name',
+            'last_name':'changed l_name',
+            'email':'sdlk@g.com'
+        }
+        r = self.client.post(reverse('makeReports:aac-modify-account',kwargs={'pk':a.pk}),fD)
+        a.refresh_from_db()
+        self.assertEquals(a.profile.aac,True)
+        self.assertEquals(a.profile.department,dept)
+        self.assertEquals(a.first_name,'changed f_name')
+        self.assertEquals(a.last_name,'changed l_name')
+        self.assertEquals(a.email,'sdlk@g.com')
+    def test_inactivate(self):
+        """
+        Tests the inactivate user view
+        """
+        a = mommy.make("User", is_active=True)
+        r = self.client.post(reverse('makeReports:inactivate-account',kwargs={'pk':a.pk}))
+        a.refresh_from_db()
+        self.assertEquals(a.is_active,False)
+class GradGoalAdminTests(ReportAACSetupTest):
+    """
+    Tests views relating to graduate goal administration by the AAC
+    """
+    def test_list(self):
+        """
+        Tests the graduate goal list page contains grad goals
+        """
+        r1 = mommy.make("GradGoal",active=True)
+        r2 = mommy.make("GradGoal",active=False)
+        r = self.client.get(reverse('makeReports:gg-list'))
+        self.assertContains(r,r1.text)
+        self.assertNotContains(r,r2.text)
+    def test_old_list(self):
+        """
+        Tests the archived list contains expected goals
+        """
+        r1 = mommy.make("GradGoal",active=True)
+        r2 = mommy.make("GradGoal",active=False)
+        r = self.client.get(reverse('makeReports:old-gg-list'))
+        self.assertContains(r,r2.text)
+        self.assertNotContains(r,r1.text)
+    def test_update(self):
+        """
+        Tests the update function of the graduate goal
+        """
+        r = mommy.make("GradGoal",active=False)
+        res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
+            'active':'on',
+            'text':'new text here'
+        })
+        r.refresh_from_db()
+        self.assertEquals(r.active,True)
+        self.assertEquals(r.text,'new text here')
+    def test_add(self):
+        """
+        Tests that a new graduate goal can be effectively added
+        """
+        r = self.client.post(reverse('makeReports:add-gg'),{
+            'text':'new gg text'
+        })
+        num = GradGoal.objects.filter(text='new gg text', active=True).count()
+        self.assertEquals(num,1)
+class AnnouncementsTest(ReportAACSetupTest):
+    """
+    Tests that announcements can be appropriately created
+    """
+    def test_add(self):
+        """
+        Tests adding an announcement
+        """
+        r = self.client.post(reverse('makeReports:add-announ'),{
+            'text':'ann text',
+            'expiration_month':2,
+            'expiration_day': 17,
+            'expiration_year':2020
+        })
+        num = Announcement.objects.filter(text='ann text',expiration=date(2020,2,17)).count()
+        self.assertEquals(num,1)
+    def test_list(self):
+        """
+        Tests the announcement listing page
+        """
+        an = mommy.make("Announcement", expiration=datetime.now()+timedelta(days=1))
+        an2 = mommy.make("Announcement",expiration=datetime.now()-timedelta(days=2))
+        r = self.client.get(reverse('makeReports:announ-list'))
+        self.assertContains(r,an.text)
+        self.assertContains(r,an2.text)
+    def test_delete(self):
+        """
+        Tests that announcements can be effectively deleted
+        """
+        a = mommy.make("Announcement")
+        pk = a.pk
+        r = self.client.post(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
+        num = Announcement.objects.filter(pk=pk).count()
+        self.assertEquals(num,0)
+    def test_edit(self):
+        """
+        Tests that the edit page effecitvely edits announcements
+        """
+        a = mommy.make("Announcement")
+        r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
+            'text':'ann text 2',
+            'expiration_month':3,
+            'expiration_day': 27,
+            'expiration_year':2021
+        })
+        a.refresh_from_db()
+        self.assertEquals(a.text,'ann text 2')
+        self.assertEquals(a.expiration, date(2021,3,27))
     
+    
+
+    
+
