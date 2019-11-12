@@ -1,3 +1,6 @@
+"""
+Tests relating to the basic shared views
+"""
 from django.test import TestCase
 from django.urls import reverse
 from makeReports.models import *

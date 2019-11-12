@@ -1,3 +1,6 @@
+"""
+This tests views relating to extra views associated with the report but not with sections
+"""
 from django.test import TestCase
 from django.urls import reverse
 from makeReports.models import *
