@@ -1,3 +1,6 @@
+"""
+This file contains tests relating to SLO views
+"""
 from django.test import TestCase
 from django.urls import reverse
 from makeReports.models import *

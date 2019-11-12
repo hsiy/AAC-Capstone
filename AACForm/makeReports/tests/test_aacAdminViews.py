@@ -1,3 +1,6 @@
+"""
+Tests relating to the AAC administration of the website views
+"""
 from django.test import TestCase
 from django.urls import reverse
 from makeReports.models import *
