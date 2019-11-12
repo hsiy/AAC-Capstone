@@ -26,6 +26,14 @@ type="text/css"
 rel="stylesheet"
 href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 /> 
+<style>
+    #hide-sam{
+        display: inherit;
+    }
+    #hide-freq{
+        display: inherit;
+    }
+</style>
 {% endblock %}
 {% block content %}
 <h3>Historical Data</h3>
@@ -83,7 +91,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
         </select>
     </div>
 </template>
-<template v-if="graph_opt == 1 && slos!=null">
+<template v-if="graph_opt == 1">
     <h4>SLO:</h4>
     <div class="specific">
         <select id="spec" v-model="slo">
@@ -94,7 +102,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
     </div>
 </template>
 <br>
-<template v-if="date1!=null && date2!=null">
+<template v-if="date1!=null && date2!=null && graph_opt>0">
 <button class='btn btn-primary' v-on:click="newGraph">View Graph</button> 
 </template>
 <br>
@@ -118,7 +126,6 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
     }
     document.getElementById("id_range1").innerHTML = options;
     document.getElementById("id_range2").innerHTML = options;
-
     var vapp=new Vue({
             el: '#vapp',
             delimiters: ['[[', ']]'],
@@ -140,7 +147,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
             computed: {
             },
             //mounted(){
-            //    ch = new Choices(document.getElementById('spec'),{shouldSort:false});
+            //    this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
             //},
             methods: {
                 updateDept: function () {
@@ -170,12 +177,18 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                                 response.clone().json()
                             .then(json => {
                                 this.slos = json;
+                                this.$nextTick(function () {
+                                    //have to wait for DOM to update so there is a select to be replaced
+                                    if (this.ch == null){
+                                        this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
+                                    }
+                                    if(this.ch != null){
+                                        this.ch.setChoices(this.slos,'pk','goalText',true);
+                                    }
+                                });
                             })
                         });
-                        if (this.ch == null){
-                            this.ch = new Choices(document.getElementById('spec'),{choices:chChoices, shouldSort:false});
-                        }
-                        this.ch.setChoices(this.slos,'pk','goalText',true);
+                        
                     }
                 },
                 newGraph: function() {
