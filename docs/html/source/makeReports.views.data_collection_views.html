@@ -370,85 +370,6 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.data_collection_views.</code><code class="sig-name descname">CreateSubassessmentRow</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.AssessmentVersion" title="makeReports.models.report_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>response of page to request</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow.form_class">
-<code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow.form_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.forms.data_collection_forms.html#makeReports.forms.data_collection_forms.AddSubassessment" title="makeReports.forms.data_collection_forms.AddSubassessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.forms.data_collection_forms.AddSubassessment</span></code></a></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow.form_valid">
-<code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates subassessment object based upon form</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form</strong> (<a class="reference internal" href="makeReports.forms.data_collection_forms.html#makeReports.forms.data_collection_forms.AddSubassessment" title="makeReports.forms.data_collection_forms.AddSubassessment"><em>AddSubassessment</em></a>) – filled out form to process</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>redirects to success URL given by get_success_url</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>HttpResponseRedirect</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow.get_context_data">
-<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets context for the template, including the current assessment</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>context for template</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow.get_success_url">
-<code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets URL to go to upon success (data summary)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>URL of data summary page (<a class="reference internal" href="#makeReports.views.data_collection_views.DataCollectionSummary" title="makeReports.views.data_collection_views.DataCollectionSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataCollectionSummary</span></code></a>)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="makeReports.views.data_collection_views.CreateSubassessmentRow.template_name">
-<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/DataCollection/createSubassessment.html'</em><a class="headerlink" href="#makeReports.views.data_collection_views.CreateSubassessmentRow.template_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="makeReports.views.data_collection_views.DataAssessmentAddInfo">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.data_collection_views.</code><code class="sig-name descname">DataAssessmentAddInfo</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.DataAssessmentAddInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.CreateView</span></code></p>
@@ -665,37 +586,6 @@
 <dl class="attribute">
 <dt id="makeReports.views.data_collection_views.DeleteDataCollectionRow.template_name">
 <code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/DataCollection/deleteDataCollection.html'</em><a class="headerlink" href="#makeReports.views.data_collection_views.DeleteDataCollectionRow.template_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="makeReports.views.data_collection_views.DeleteSubassessmentRow">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.data_collection_views.</code><code class="sig-name descname">DeleteSubassessmentRow</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.DeleteSubassessmentRow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.DeleteView</span></code></p>
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.DeleteSubassessmentRow.get_success_url">
-<code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.DeleteSubassessmentRow.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets URL to go to upon success (data summary)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>URL of data summary page (<a class="reference internal" href="#makeReports.views.data_collection_views.DataCollectionSummary" title="makeReports.views.data_collection_views.DataCollectionSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataCollectionSummary</span></code></a>)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="makeReports.views.data_collection_views.DeleteSubassessmentRow.model">
-<code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.data_collection_views.DeleteSubassessmentRow.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Subassessment" title="makeReports.models.report_models.Subassessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.Subassessment</span></code></a></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="makeReports.views.data_collection_views.DeleteSubassessmentRow.template_name">
-<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/DataCollection/deleteSubassessment.html'</em><a class="headerlink" href="#makeReports.views.data_collection_views.DeleteSubassessmentRow.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -976,84 +866,6 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.data_collection_views.</code><code class="sig-name descname">EditSubassessmentRow</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
-<p>To be deleted</p>
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to the instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request for the page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response with page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.form_class">
-<code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.form_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.forms.data_collection_forms.html#makeReports.forms.data_collection_forms.EditSubassessment" title="makeReports.forms.data_collection_forms.EditSubassessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.forms.data_collection_forms.EditSubassessment</span></code></a></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.form_valid">
-<code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.get_context_data">
-<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets context needed for template, including the report</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>context for template</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.get_initial">
-<code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.get_initial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the initial data to use for forms on this view.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.get_success_url">
-<code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets URL to go to upon success (data summary)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>URL of data summary page (<a class="reference internal" href="#makeReports.views.data_collection_views.DataCollectionSummary" title="makeReports.views.data_collection_views.DataCollectionSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataCollectionSummary</span></code></a>)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="makeReports.views.data_collection_views.EditSubassessmentRow.template_name">
-<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/DataCollection/editSubassessment.html'</em><a class="headerlink" href="#makeReports.views.data_collection_views.EditSubassessmentRow.template_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="makeReports.views.data_collection_views.NewResultCommunication">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.data_collection_views.</code><code class="sig-name descname">NewResultCommunication</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.NewResultCommunication" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
@@ -1106,23 +918,14 @@
 <dt id="makeReports.views.data_collection_views.NewSLOStatus">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.data_collection_views.</code><code class="sig-name descname">NewSLOStatus</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.NewSLOStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
-<p>To be deleted</p>
+<p>Creates a new SLO Status object</p>
 <dl class="method">
 <dt id="makeReports.views.data_collection_views.NewSLOStatus.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.NewSLOStatus.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to the instance</p>
+<dd><p>Attaches the SLO to the instance</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request for the page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response with page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>slopk</strong> (<em>int</em>) – primary key of SLO (<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code>) to create status of</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1136,7 +939,12 @@
 <dl class="method">
 <dt id="makeReports.views.data_collection_views.NewSLOStatus.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.data_collection_views.NewSLOStatus.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the form is valid, redirect to the supplied URL.</p>
+<dd><p>Creates the SLO status object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>form</strong> (<a class="reference internal" href="makeReports.forms.data_collection_forms.html#makeReports.forms.data_collection_forms.SLOStatusForm" title="makeReports.forms.data_collection_forms.SLOStatusForm"><em>SLOStatusForm</em></a>) – completed form to process</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

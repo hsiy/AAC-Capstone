@@ -147,6 +147,7 @@
             
   <div class="section" id="module-makeReports.tests.test_basicViews">
 <span id="makereports-tests-test-basicviews-module"></span><h1>makeReports.tests.test_basicViews module<a class="headerlink" href="#module-makeReports.tests.test_basicViews" title="Permalink to this headline">¶</a></h1>
+<p>Tests relating to the basic shared views</p>
 <dl class="class">
 <dt id="makeReports.tests.test_basicViews.AACTest">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_basicViews.</code><code class="sig-name descname">AACTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_basicViews.AACTest" title="Permalink to this definition">¶</a></dt>
@@ -247,6 +248,39 @@
 <dd><p>Tests the 200 reponse and then 302 reponse after logout</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.tests.test_basicViews.getWithReport">
+<code class="sig-prename descclassname">makeReports.tests.test_basicViews.</code><code class="sig-name descname">getWithReport</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">s</em>, <em class="sig-param">extraKwargs</em>, <em class="sig-param">extraURL</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_basicViews.getWithReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets via Get request the page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of the page to get (no makeReports prefix needed)</p></li>
+<li><p><strong>s</strong> (<a class="reference internal" href="#makeReports.tests.test_basicViews.ReportSetupTest" title="makeReports.tests.test_basicViews.ReportSetupTest"><em>ReportSetupTest</em></a>) – instance to get self.rpt from</p></li>
+<li><p><strong>extraKwargs</strong> (<em>dict</em>) – extra keyword arguments to pass to reverse</p></li>
+<li><p><strong>extraURL</strong> (<em>str</em>) – extra string to append to end of URL (for GET parameters)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.tests.test_basicViews.postWithReport">
+<code class="sig-prename descclassname">makeReports.tests.test_basicViews.</code><code class="sig-name descname">postWithReport</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">s</em>, <em class="sig-param">extraKwargs</em>, <em class="sig-param">extraURL</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_basicViews.postWithReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets via Post request the page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of the page to get (no makeReports prefix needed)</p></li>
+<li><p><strong>s</strong> (<a class="reference internal" href="#makeReports.tests.test_basicViews.ReportSetupTest" title="makeReports.tests.test_basicViews.ReportSetupTest"><em>ReportSetupTest</em></a>) – instance to get self.rpt from</p></li>
+<li><p><strong>extraKwargs</strong> (<em>dict</em>) – extra keyword arguments to pass to reverse</p></li>
+<li><p><strong>extraURL</strong> (<em>str</em>) – extra string to append to end of URL (for GET parameters)</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – data to pass to POST request</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

@@ -18,6 +18,7 @@ Submodules
 .. toctree::
 
    makeReports.choices
+   makeReports.forms
    makeReports.urls
 
 Module contents
