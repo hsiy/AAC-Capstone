@@ -6,8 +6,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
+from .helperFunctions.section_context import *
+from .helperFunctions.mixins import *
+from .helperFunctions.todos import todoGetter
 from makeReports.choices import *
 
 class DataCollectionSummary(DeptReportMixin,ListView):
@@ -40,6 +41,9 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         """
         report = self.report
         context = super(DataCollectionSummary, self).get_context_data(**kwargs)
+        context['toDo'] = todoGetter(3,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return section3Context(self,context)
 
 

@@ -4,6 +4,44 @@
 <h3>Submit Report</h3>
 <div class="container" style="max-width:95%;">
         <div class="row">
+                <div class="col">
+                        {% if reqTodo > 0 or sugTodo > 0 %}
+                        {% if reqTodo > 0 %}
+                        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                                To-Do List
+                        </button>
+                        {% elif sugTodo > 0 %}
+                        <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                                To-Do List
+                        </button>
+                        {% endif %}
+                        <div class="collapse" style="max-width:600px" id="collapseTodo">
+                            
+                                {% if reqTodo > 0 %}
+                            <div class="card card-body">
+                                <h5 class="card-title">Required</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for item in toDo.r %}
+                                    <li class="list-group-item">{{item}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            {% if sugTodo > 0 %}
+                            <div class="card card-body">
+                                <h5 class="card-title">Suggested</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for item in toDo.s %}
+                                    <li class="list-group-item">{{item}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                </div>
+            </div>
+        <div class="row">
             <div class="col-9">
                 <!--showreport column-->
                 <div class="row mb-5"><div class="col">

@@ -7,8 +7,9 @@ from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
+from .helperFunctions.section_context import *
+from .helperFunctions.mixins import *
+from .helperFunctions.todos import todoGetter
 
 class DecisionsActionsSummary(DeptReportMixin,ListView):
     """
@@ -19,6 +20,9 @@ class DecisionsActionsSummary(DeptReportMixin,ListView):
     context_object_name = "decisions_actions_list"
     def get_context_data(self, **kwargs):
         context = super(DecisionsActionsSummary, self).get_context_data()
+        context['toDo'] = todoGetter(4,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return section4Context(self,context)
 
 class AddDecisionAction(DeptReportMixin,CreateView):

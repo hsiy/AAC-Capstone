@@ -7,8 +7,9 @@ from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
+from .helperFunctions.section_context import *
+from .helperFunctions.mixins import *
+from .helperFunctions.todos import todoGetter
 
 class ReportFirstPage(DeptOnlyMixin,UpdateView):
     """
@@ -196,6 +197,9 @@ class SubmitReport(DeptReportMixin, FormView):
         context = section2Context(self,context)
         context = section3Context(self,context)
         context = section4Context(self,context)
+        context['toDo'] = todoGetter(4,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return context
     def form_valid(self,form):
         """
