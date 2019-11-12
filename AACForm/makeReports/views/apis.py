@@ -18,7 +18,7 @@ import tempfile
 import django.core.files as files
 import matplotlib.pyplot as plt
 import io
-from datetime import datetime
+from datetime import datetime, timedelta
 from matplotlib.ticker import FuncFormatter
 
 import pandas as pd
@@ -94,7 +94,11 @@ class createGraphAPI(views.APIView):
     and maybe slo to be graphed
     """
     def get(self,request,format=None):
-
+        #Start by deleting some old graphs
+        graphs = Graph.objects.filter(dateTime__date__lte=datetime.now()-timedelta(minutes=20))
+        for g in graphs:
+            g.graph.delete(save=False)
+            g.delete()
         dec = request.GET['decision']
         if dec == '1':
             #specific SLO
@@ -243,7 +247,7 @@ class createGraphAPI(views.APIView):
         f1 = io.BytesIO()
         figure.savefig(f1, format="png", bbox_inches='tight')
         content_file = files.images.ImageFile(f1)
-        graphObj = Graph.objects.create()
+        graphObj = Graph.objects.create(dateTime=datetime.now())
         graphObj.graph.save("graph-"+str(request.user)+"-"+str(datetime.now())+".png",content_file)
         return Response(graphObj.graph.url)
 
