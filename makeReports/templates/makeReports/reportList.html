@@ -2,10 +2,9 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Report List</h3>
-<div class="row"><div class="col">
+<div class="row"><div class="col-6">
 
-
-<form action="{% url 'makeReports:search-reports-dept' %}" class="col-6" type="get">
+<form action="{% url 'makeReports:search-reports-dept' %}" type="get">
         <h3>Search:</h3>
         You can use as many or few fields as desired<br>
         <div class="form-group"><label for="year">Ending Year of Academic Year (i.e. 2019 for 2018-2019):</label><input id="year" type="text" class="form-control" name="year"></div>
