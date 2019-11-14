@@ -70,9 +70,10 @@ class ProgByDeptListAPI(generics.ListAPIView):
     serializer_class = ProgSerializer
 class SloByDPListAPI(generics.ListAPIView):
     """
-    JSON API to gets past slos within specified degree program
+    JSON API to gets past SLOs :class:`~makeReports.models.SLO` within specified degree program
     """
-    queryset = SLOInReport.objects.all()
+    queryset = SLOInReport.objects.order_by('slo','-report__year').distinct('slo')
+    #Gets the most recent SLOInReport for each SLO
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = {'report__degreeProgram':['exact'],
     'report__year':['gte','lte'],
@@ -108,11 +109,12 @@ class createGraphAPI(views.APIView):
             eYear=int(endYear)
             degreeProgram = request.GET['report__degreeProgram']
             slo = request.GET['sloIR']
+            sloObj = SLOInReport.objects.get(pk=slo)
             queryset = AssessmentAggregate.objects.filter(
                 assessmentVersion__report__year__gte=begYear,
                 assessmentVersion__report__year__lte = endYear,
                 assessmentVersion__report__degreeProgram__pk = degreeProgram,
-                assessmentVersion__slo__pk = slo
+                assessmentVersion__slo__slo = sloObj.slo
                 )
 
             dataFrame = {
@@ -127,14 +129,14 @@ class createGraphAPI(views.APIView):
                 qYear = queryset.filter(assessmentVersion__report__year=year)
                 for assessA in qYear:
                     dataFrame['Year'].append(year)
-                    dataFrame['Target'].append(assessA.assessmentVersion.target)
-                    dataFrame['Actual'].append(assessA.aggregate_proficiency)
-                
+                    dataFrame['Target'].append(assessA.assessmentVersion.target/100)
+                    dataFrame['Actual'].append(assessA.aggregate_proficiency/100)
                 index.append(year)
             df = pd.DataFrame(data=dataFrame)
             #lines = df.plot.line()
             lines = df.plot(kind='bar',x='Year',y=['Target','Actual'])
             lines.set(xlabel="Year", ylabel="Percentage")
+            lines.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y))) 
             figure = lines.get_figure()
             
             
@@ -188,6 +190,7 @@ class createGraphAPI(views.APIView):
             df = pd.DataFrame(dataFrame)
             lines = df.plot(kind='bar',x='Year',y=['Met','Partially Met','Not Met','Unknown'])
             lines.set(xlabel="Year", ylabel="Percentage")
+            lines.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y))) 
             #lines = df.plot(kind='line',x='Year',y='Partially Met',ax=ax)
             #lines = df.plot(kind='line',x='Year',y='Not Met',ax=ax)
             #lines = df.plot(kind='line',x='Year',y='Unknown',ax=ax)
