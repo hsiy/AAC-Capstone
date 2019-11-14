@@ -186,6 +186,11 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                         })
                     });
                 },
+                /**
+                * Creates a new Choices dropdown if the graph type is newly changed to specific SLO
+                *
+                *
+                */
                 changeGraphOpt: function(){
                     if(this.graph_opt==1){
                         this.$nextTick(function(){
