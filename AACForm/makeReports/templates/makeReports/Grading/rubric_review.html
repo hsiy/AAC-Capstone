@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
 {% block styles %}
 <style>
 .italics{
@@ -9,6 +10,7 @@
     margin:2pt;
 }
 </style>
+<link href="{% static 'css/shelves.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
