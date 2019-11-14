@@ -239,7 +239,13 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 * Calls the API to generate the chosen graph based upon selected options
                 */
                 newGraph: function() {
-                    assessHere = this.assesses.find(el => el.pk==this.assess);
+                    if(this.assesses!=null){
+                        assessHere = this.assesses.find(el => el.pk==this.assess);
+                    }else{
+                        assessHere = {
+                            assessment: {pk: -1} 
+                        }
+                    }
                     fetch("{% url 'makeReports:api-new-graph' %}?report__degreeProgram__department="
                     +this.department+"&report__degreeProgram="+this.program+"&report__year__gte="+this.date1+
                     "&report__year__lte="+this.date2+"&decision="+this.graph_opt+"&sloIR="+this.slo+"&assess="+assessHere.assessment.pk)
