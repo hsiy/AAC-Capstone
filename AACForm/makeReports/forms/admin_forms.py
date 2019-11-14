@@ -88,7 +88,7 @@ class AnnouncementForm(CleanSummer,forms.ModelForm):
     class Meta:
         model = Announcement
         widgets = {
-            'expiration': forms.SelectDateWidget(attrs={'class':'form-control col-6'}),
+            'expiration': forms.SelectDateWidget(),
         }
         fields = ['text','expiration']
 class GradGoalForm(CleanSummer,forms.ModelForm):
