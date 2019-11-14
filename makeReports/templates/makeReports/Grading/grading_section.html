@@ -13,6 +13,8 @@
             margin:2pt;
         }
 </style>
+{% block in_styles %}
+{% endblock %}
 {% endblock %}
 {% block content %}
 <nav id="main-nav-bar">
@@ -25,16 +27,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'makeReports:grade-sec1' report=report.pk %}">Section I <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{% url 'makeReports:grade-sec1' report=report.pk %}">Section I. SLOs <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'makeReports:grade-sec2' report=report.pk %}">Section II <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'makeReports:grade-sec2' report=report.pk %}">Section II. Assessments <span class="sr-only">(current)</span></a>
                   </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'makeReports:grade-sec3' report=report.pk %}">Section III <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'makeReports:grade-sec3' report=report.pk %}">Section III. Data <span class="sr-only">(current)</span></a>
                   </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'makeReports:grade-sec4' report=report.pk %}">Section IV <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'makeReports:grade-sec4' report=report.pk %}">Section IV. Decisions & Actions <span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item active">
                       <a class="nav-link" href="{% url 'makeReports:grade-comment' report=report.pk %}">Overall Comments <span class="sr-only">(current)</span></a>

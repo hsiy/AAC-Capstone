@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% block styles %}
+<!--this page use shelves css to make the table, because Bootstrap grid system was insufficient-->
+<link href="{% static 'css/shelves.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">

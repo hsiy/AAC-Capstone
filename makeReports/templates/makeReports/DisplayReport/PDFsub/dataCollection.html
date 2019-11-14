@@ -2,48 +2,54 @@
 <h3>III. Data Collection and Analysis</h3>
 <div class="bT">
     <div class="subsection">A. Results Table</div>
-<table class="table">
-    <tbody>
-        <tr>
-            <td style="width:30%"><b>Measure</b></td>
-            <td style="width:20%"><b>Data Collection Date Range</b></td>
-            <td><b>Number of Students Assessed</b></td>
-            <td style="width: 25%;"><b>Percentage of Students<br> Who Met/Exceeded<br>Threshold Proficiency</b></td>
-            <td><b>Aggregate</b></td>
-        </tr>
-        {% for assessment in assessment_data_dict.assessments %}
-        <tr {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:#E0E0E0;" {% endif %}>
-            <td><b>SLO {{assessment.slo_obj.number}} -
-                Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b></td>
-                <td style="width: 20%">
-                        {% for d in assessment.assess_data %}
-                        <p>
-                            {{d.dataRange}}
-                        </p>
+    <div class="row-sh mb-5">
+            <div class="column-15">
+                <div class="row-sh">
+                    <div class="column-15">
+                        <h4>Data Table</h4>
+                    </div>
+                </div>
+                <div class="row-sh">
+                    <div class="column-15">
+                        <div class="row-sh border-bottom">
+                            <div class="column-6">Measure</div>
+                            <div class="column-3">Date</div>
+                            <div class="column-2">Number of Students</div>
+                            <div class="column-2">Students Meeting Threshold</div>
+                            <div class="column-2">Aggregate</div>
+                        </div>
+                        {% for assessment in assessment_data_dict.assessments %}
+                        <div class="row-sh align-items-center border-bottom pt-5 pb-5" {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:rgb(218, 218, 218);" {% endif %}>
+                            <div class="column-6">
+                                    <b>SLO {{assessment.slo_obj.number}} -
+                                        Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b>
+                            </div>
+                            <div class="column-7">
+                            {% for d in assessment.assess_data %}
+                            <div class="row-sh align-items-center pb-3">
+                                <div class="column-3">
+                                    {{d.dataRange}}
+                                </div>
+                                <div class="column-2">
+                                    {{d.numberStudents}}
+                                </div>
+                                <div class="column-2">
+                                    {{d.overallProficient}}%
+                                </div>
+                            </div>
+                            {% endfor %}
+                            </div>                    
+                            <div class="column-2">
+                                {% if assessment.agg %}
+                                {{assessment.agg}}%
+                                {% endif %}
+                            </div>
+                        </div>
                         {% endfor %}
-                    </td>
-                    <td style="text-align: center;">{% for d in assessment.assess_data %}
-                            <p>
-                                {{d.numberStudents}}
-                            </p>
-                            {% endfor %}
-                    </td>
-                    <td style="text-align: center;">{% for d in assessment.assess_data %}
-                            <p>
-                                {{d.overallProficient}}%
-                            </p>
-                            {% endfor %}
-                        
-                    </td>
-                    <td style="text-align: center;">
-                        {% if assessment.agg %}
-                        {{assessment.agg}}%
-                        {% endif %}
-                    </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 <div class="subsection">B. SLO Status Table
 <div class="bT">
