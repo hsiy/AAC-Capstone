@@ -252,7 +252,7 @@ class EditSLOStatus(DeptReportMixin,FormView):
         slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
         statuspk (str): primary key of :class:`~makeReports.models.report_models.SLOStatus`
     """
-    template_name = "makeReports/Datacollection/SLOStatus.html"
+    template_name = "makeReports/DataCollection/SLOStatus.html"
     form_class = SLOStatusForm
     
     def dispatch(self, request, *args, **kwargs):
