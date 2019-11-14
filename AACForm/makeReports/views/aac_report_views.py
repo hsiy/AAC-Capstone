@@ -45,7 +45,7 @@ class CreateReport(AACOnlyMixin,CreateView):
         """
         self.object.rubric = self.GR
         self.object.save()
-        return reverse_lazy('makeReports:admin-home')
+        return reverse_lazy('makeReports:dept-list')
     def form_valid(self, form):
         """
         Saves model based upon form, along with setting submitted to false,
@@ -105,7 +105,7 @@ class DeleteReport(AACOnlyMixin,DeleteView):
     """
     model = Report
     template_name = "makeReports/AACAdmin/deleteReport.html"
-    success_url = reverse_lazy('makeReports:admin-home')
+    success_url = reverse_lazy('makeReports:report-list')
 class ReportList(AACOnlyMixin,ListView):
     """
     View to list reports of active degree programs from this year
