@@ -22,7 +22,7 @@ def section1ToDo(report):
             's':[]
             #"suggested"
         }
-    slos = SLOInReport.objects.filter(report=report)
+    slos = SLOInReport.objects.filter(report=report).order_by("number")
     if not report.author:
         toDos['r'].append("Add author to report")
     if not report.date_range_of_reported_data:
@@ -45,7 +45,7 @@ def section2ToDo(report):
 
     """
     toDos, slos = section1ToDo(report)
-    assess = AssessmentVersion.objects.filter(report=report)
+    assess = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")
     for slo in slos:
         if assess.filter(slo=slo).count() is 0:
             toDos['r'].append("Add an assessment for SLO "+str(slo.number))
@@ -68,9 +68,9 @@ def section3ToDo(report):
     data = AssessmentData.objects.filter(assessmentVersion__report=report)
     for a in assess:
         if data.filter(assessmentVersion=a).count() is 0:
-            toDos['s'].append("Add data for assessment "+str(a.number))
+            toDos['s'].append("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number))
         elif AssessmentAggregate.objects.filter(assessmentVersion=a).count() is 0:
-            toDos['s'].append("Add an aggregation of data for assessment "+str(a.number))
+            toDos['s'].append("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number))
     if ResultCommunicate.objects.filter(report=report).count() is 0:
         toDos['r'].append("Add description of how results are communicated to stakeholders")
     return toDos, slos, assess, data

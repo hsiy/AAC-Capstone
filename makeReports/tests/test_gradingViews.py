@@ -41,12 +41,12 @@ class GradingSectionsTest(ReportAACSetupTest):
         rI = mommy.make("GradedRubricItem", rubric=rub, item=rInG)
         self.rpt.rubric = rub
         self.rpt.save()
+        self.rpt.refresh_from_db()
+        fieldName = 'rI'+str(rInG.pk)
         resp = self.client.post(reverse('makeReports:grade-sec1',kwargs={'report':self.rpt.pk}),{
-            'rI'+str(rInG.pk):"ME",
+            fieldName:"ME",
             'section_comment':'fsfkjllaskdfls'
         })
-        num = GradedRubricItem.objects.filter(rubric=self.rpt.rubric,item=rInG).count()
-        print(num)
         rI.refresh_from_db()
         self.assertEquals(rI.grade,"ME")
         self.assertEquals(rub.section1Comment,'fsfkjllaskdfls')
@@ -96,5 +96,18 @@ class GradingSectionsTest(ReportAACSetupTest):
         self.assertContains(resp,rI.item.DMEtext)
         self.assertContains(resp,rI.item.MEtext)
         self.assertContains(resp,rI.item.EEtext)
-        
+    def test_comment(self):
+        rub = mommy.make("GradedRubric")
+        self.rpt.rubric = rub
+        self.rpt.save()
+        self.rpt.refresh_from_db()
+        r = self.client.post(reverse('makeReports:grade-comment',kwargs={'report':self.rpt.pk}),{
+            'text':'comm test'
+        })
+        self.assertEquals(self.rpt.rubric.generalComment,'comm test')
+    def test_review_get(self):
+        r = self.client.get(reverse('makeReports:rub-review',kwargs={
+            'report':self.rpt.pk
+        }))
+        self.assertEquals(r.status_code,200)
 

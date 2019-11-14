@@ -126,7 +126,7 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
     }
     document.getElementById("id_range1").innerHTML = options;
     document.getElementById("id_range2").innerHTML = options;
-    var vapp=new Vue({
+    var vapp = new Vue({
             el: '#vapp',
             delimiters: ['[[', ']]'],
             data: { 
@@ -144,12 +144,15 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 ch: null,
                 graphError: false
             },
-            computed: {
-            },
+            //computed: {
+            //},
             //mounted(){
             //    this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
             //},
             methods: {
+                /**
+                * Calls the API to update the department based upon the chosen college
+                */
                 updateDept: function () {
                     fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
                         .then(response => {
@@ -160,6 +163,10 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                     });
                     this.updateProg();
                 },
+                /**
+                * Calls the API to update the degree programs based upon the chosen department
+                *
+                */
                 updateProg: function() {
                     fetch("{% url 'makeReports:api-prog-by-dept' %}?department="+this.department)
                         .then(response => {
@@ -169,6 +176,11 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                         })
                     });
                 },
+                /**
+                * Calls the API to update the SLOs based upon the chosen degree program.
+                * It also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary
+                *
+                */
                 updateSLOs: function() {
                     if(this.graph_opt==1){
                         fetch("{% url 'makeReports:api-slo-by-dp' %}?report__degreeProgram="+this.program
@@ -191,6 +203,9 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                         
                     }
                 },
+                /**
+                * Calls the API to generate the chosen graph based upon selected options
+                */
                 newGraph: function() {
                     fetch("{% url 'makeReports:api-new-graph' %}?report__degreeProgram__department="
                     +this.department+"&report__degreeProgram="+this.program+"&report__year__gte="+this.date1+
