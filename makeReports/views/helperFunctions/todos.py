@@ -72,7 +72,7 @@ def section3ToDo(report):
         elif AssessmentAggregate.objects.filter(assessmentVersion=a).count() is 0:
             toDos['s'].append("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number))
     if ResultCommunicate.objects.filter(report=report).count() is 0:
-        toDos['r'].append("Add description of how results are communicated to stakeholders")
+        toDos['r'].append("Add description of how results are communicated within the program")
     return toDos, slos, assess, data
 def section4ToDo(report):
     """
