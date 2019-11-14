@@ -45,6 +45,30 @@ class SLOserializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SLOInReport
         fields = ['pk', 'goalText']
+class SLOParentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SLO
+        fields = ['pk']
+class SLOSerializerWithParent(serializers.HyperlinkedModelSerializer):
+    """
+    Serializes SLOs to JSON with the primary key and name and primary key of SLO
+    """
+    slo = SLOParentSerializer()
+    class Meta:
+        model = SLOInReport
+        fields = ['pk', 'goalText','slo']
+class AssessmentParentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Assessment
+        fields = ['pk','title']
+class Assessmentserializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializes SLOs to JSON with the primary key and name
+    """
+    assessment =AssessmentParentSerializer()
+    class Meta:
+        model = SLOInReport
+        fields = ['pk', 'assessment']
 class FileSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializes SLOs to JSON with the primary key and name
@@ -78,7 +102,14 @@ class SloByDPListAPI(generics.ListAPIView):
     filterset_fields = {'report__degreeProgram':['exact'],
     'report__year':['gte','lte'],
     }
-    serializer_class = SLOserializer
+    serializer_class = SLOSerializerWithParent
+class AssessmentBySLO(generics.ListAPIView):
+    queryset = AssessmentVersion.objects.order_by('assessment','-report__year').distinct('assessment')
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = {'slo__slo':['exact'],
+    'report__year':['gte','lte'],
+    }
+    serializer_class = Assessmentserializer
 
 class SLOSuggestionsAPI(APIView):
     renderer_classes = [JSONRenderer]
@@ -110,7 +141,9 @@ class createGraphAPI(views.APIView):
             degreeProgram = request.GET['report__degreeProgram']
             slo = request.GET['sloIR']
             sloObj = SLOInReport.objects.get(pk=slo)
+            assess = request.GET['assess']
             queryset = AssessmentAggregate.objects.filter(
+                assessmentVersion__assessment__pk = assess,
                 assessmentVersion__report__year__gte=begYear,
                 assessmentVersion__report__year__lte = endYear,
                 assessmentVersion__report__degreeProgram__pk = degreeProgram,

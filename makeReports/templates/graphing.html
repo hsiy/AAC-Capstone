@@ -85,18 +85,26 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
 </template>
 <template v-if="program != 1">
     <div class="dd_graph">
-        <select id="id_graph" v-model="graph_opt" v-on:change="updateSLOs">
-            <option value="1">Specific SLO: target v. actual</option>
+        <select id="id_graph" v-model="graph_opt" v-on:change="changeGraphOpt">
+            <option value="1">Specific SLO and Assessment: target v. actual</option>
             <option value="2">Number of SLOs met</option>
         </select>
     </div>
 </template>
 <template v-if="graph_opt == 1">
-    <h4>SLO (displayed as-in most recent report):</h4>
+    <h4>SLO (displayed as in most recent report):</h4>
     <div class="specific">
-        <select id="spec" v-model="slo">
+        <select id="spec" v-model="slo" v-on:change="updateAssesses">
             <template v-for="s in slos">
                 <option v-bind:value="s.pk">[[s.goalText]]</option>
+            </template>
+        </select>
+    </div>
+    <h4>Assessment</h4>
+    <div class="specific">
+        <select id="assess" v-model="assess">
+            <template v-for="a in assesses">
+                <option v-bind:value="a.pk">[[a.assessment.title]]</option>
             </template>
         </select>
     </div>
@@ -130,6 +138,8 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
             el: '#vapp',
             delimiters: ['[[', ']]'],
             data: { 
+                assess: null,
+                assesses: null,
                 depts: null,
                 progs: null,
                 slos: null,
@@ -176,6 +186,15 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                         })
                     });
                 },
+                changeGraphOpt: function(){
+                    if(this.graph_opt==1){
+                        this.$nextTick(function(){
+                            //have to wait for DOM to change to attach ChoicesJS to dropdown
+                            this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
+                            this.updateSLOs();
+                        });
+                    }
+                },
                 /**
                 * Calls the API to update the SLOs based upon the chosen degree program.
                 * It also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary
@@ -189,15 +208,28 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                                 response.clone().json()
                             .then(json => {
                                 this.slos = json;
-                                this.$nextTick(function () {
+                                this.ch.setChoices(this.slos,'pk','goalText',true);
+                                //this.$nextTick(function () {
                                     //have to wait for DOM to update so there is a select to be replaced
-                                    if (this.ch == null){
-                                        this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
-                                    }
-                                    if(this.ch != null){
-                                        this.ch.setChoices(this.slos,'pk','goalText',true);
-                                    }
-                                });
+                                    //this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
+                                    //if(this.slos!=undefined && this.ch!=undefined){
+                                 //   this.ch.setChoices(this.slos,'pk','goalText',true);
+                                //});
+                            })
+                        });
+                        
+                    }
+                },
+                updateAssesses: function(){
+                    if(this.graph_opt==1){
+                        sloHere = this.slos.find(el => el.pk==this.slo);
+                        console.log(sloHere)
+                        fetch("{% url 'makeReports:api-assess-by-slo' %}?slo__slo="+sloHere.slo.pk
+                        +"&report__year__gte="+this.date1+"&report__year__lte="+this.date2)
+                            .then(response => {
+                                response.clone().json()
+                            .then(json => {
+                                this.assesses = json;
                             })
                         });
                         
@@ -207,9 +239,10 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 * Calls the API to generate the chosen graph based upon selected options
                 */
                 newGraph: function() {
+                    assessHere = this.assesses.find(el => el.pk==this.assess);
                     fetch("{% url 'makeReports:api-new-graph' %}?report__degreeProgram__department="
                     +this.department+"&report__degreeProgram="+this.program+"&report__year__gte="+this.date1+
-                    "&report__year__lte="+this.date2+"&decision="+this.graph_opt+"&sloIR="+this.slo)
+                    "&report__year__lte="+this.date2+"&decision="+this.graph_opt+"&sloIR="+this.slo+"&assess="+assessHere.assessment.pk)
                         .then(response => {
                             if(response.status == 200){
                                 this.graphError = false
