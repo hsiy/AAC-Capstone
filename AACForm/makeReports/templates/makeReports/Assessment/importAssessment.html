@@ -2,6 +2,11 @@
 {% load bootstrap4 %}
 {% block in_scripts %}
 {{form.media}}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+const ch2 = new Choices(document.getElementById('slo'),{shouldSort:false});
+});
+</script>
 {% endblock %}
 {% block inner_content %}
 <style>
@@ -14,7 +19,7 @@
     </style>
 <h3>Import Assessment</h3>
 <h5>Search For Assessments</h5>
-<form action="{% url 'makeReports:import-assessment' report=rpt.pk %}" type="get">
+<form action="{% url 'makeReports:import-assessment' report=rpt.pk %}" type="get" class="col-6">
         <!--<input id="name" type="text" name="name"></div>-->
         <div><label>Year: </label> 
             <input id="year" name="year" type="number">

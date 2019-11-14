@@ -172,9 +172,9 @@ class SubmitReport(DeptReportMixin, FormView):
         if not self.report.author or self.report.author=="":
             valid = False
             eMsg = eMsg+"There is no report author.\n"
-        if not self.report.date_range_of_reported_data or self.report.date_range_of_reported_data=="":
-            valid = False
-            eMsg = eMsg+"There is no reported data range.\n"
+        # if not self.report.date_range_of_reported_data or self.report.date_range_of_reported_data=="":
+        #     valid = False
+        #     eMsg = eMsg+"There is no reported data range.\n"
         if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
             valid == False
             eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
