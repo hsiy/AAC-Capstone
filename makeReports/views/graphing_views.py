@@ -12,7 +12,7 @@ from makeReports.views.helperFunctions.mixins import *
 from csv_export.views import CSVExportView
 
 class GraphingHome(AACOnlyMixin,TemplateView):
-    template_name = "graphing.html"
+    template_name = "makeReports/Graphing/graphing.html"
     def get_context_data(self, **kwargs):
         context = super(GraphingHome, self).get_context_data(**kwargs)
         context['colleges'] = College.active_objects.all
