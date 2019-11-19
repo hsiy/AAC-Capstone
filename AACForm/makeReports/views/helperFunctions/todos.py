@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 def section1ToDo(report):
     """
-    Generates the ToDo list for section 1, includes things missing from the beginning of the report
+    Generates the ToDo list for section 1 and first page of report, includes things missing from the beginning of the report
 
     Args:
         report (:class:`~makeReports.models.Report`): in-progress report to generate to-do for
@@ -24,13 +24,13 @@ def section1ToDo(report):
         }
     slos = SLOInReport.objects.filter(report=report).order_by("number")
     if not report.author:
-        toDos['r'].append("Add author to report")
+        toDos['r'].append(("Add author to report",0))
     if not report.date_range_of_reported_data:
-        toDos['s'].append("Add date range of reported data")
+        toDos['s'].append(("Add date range of reported data",0))
     if slos.count() is 0:
-        toDos['r'].append("Create an SLO")
+        toDos['r'].append(("Create an SLO",1))
     if SLOsToStakeholder.objects.filter(report=report).count() is 0:
-        toDos['r'].append("Add description of how SLOs are communicated to stakeholders")
+        toDos['r'].append(("Add description of how SLOs are communicated to stakeholders",1))
     return toDos, slos
 def section2ToDo(report):
     """
@@ -48,9 +48,9 @@ def section2ToDo(report):
     assess = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")
     for slo in slos:
         if assess.filter(slo=slo).count() is 0:
-            toDos['r'].append("Add an assessment for SLO "+str(slo.number))
+            toDos['r'].append(("Add an assessment for SLO "+str(slo.number),2))
         elif assess.filter(slo=slo, assessment__directMeasure=True).count() is 0:
-            toDos['s'].append("Add a direct measure for SLO "+str(slo.number))
+            toDos['s'].append(("Add a direct measure for SLO "+str(slo.number),2))
     return toDos, slos, assess
 def section3ToDo(report):
     """
@@ -68,11 +68,11 @@ def section3ToDo(report):
     data = AssessmentData.objects.filter(assessmentVersion__report=report)
     for a in assess:
         if data.filter(assessmentVersion=a).count() is 0:
-            toDos['s'].append("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number))
+            toDos['s'].append(("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number),3))
         elif AssessmentAggregate.objects.filter(assessmentVersion=a).count() is 0:
-            toDos['s'].append("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number))
+            toDos['s'].append(("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number),3))
     if ResultCommunicate.objects.filter(report=report).count() is 0:
-        toDos['r'].append("Add description of how results are communicated within the program")
+        toDos['r'].append(("Add description of how results are communicated within the program",3))
     return toDos, slos, assess, data
 def section4ToDo(report):
     """
@@ -89,7 +89,7 @@ def section4ToDo(report):
     dAs = DecisionsActions.objects.filter(report=report)
     for slo in slos:
         if dAs.filter(sloIR=slo).count() is 0:
-            toDos['r'].append("Add a description of decisions and actions relating to SLO "+str(slo.number))
+            toDos['r'].append(("Add a description of decisions and actions relating to SLO "+str(slo.number),4))
     return toDos
 def todoGetter(section,report):
     """
