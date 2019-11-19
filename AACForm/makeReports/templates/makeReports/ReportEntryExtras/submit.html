@@ -1,10 +1,62 @@
 {% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
+{% load static %}
+{% block in_styles %}
+<!--this page use shelves css to make the table, because Bootstrap grid system was insufficient-->
+<link href="{% static 'css/shelves.css' %}" rel="stylesheet">
+{% endblock %}
 {% block inner_content %}
 <h3>Submit Report</h3>
 <div class="container" style="max-width:95%;">
         <div class="row">
-            <div class="col-9">
+                <div class="col">
+                        {% if reqTodo > 0 or sugTodo > 0 %}
+                        {% if reqTodo > 0 %}
+                        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                                To-Do List
+                        </button>
+                        {% elif sugTodo > 0 %}
+                        <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                                To-Do List
+                        </button>
+                        {% endif %}
+                        <div class="collapse" style="max-width:600px" id="collapseTodo">
+                            
+                                {% if reqTodo > 0 %}
+                            <div class="card card-body">
+                                <h5 class="card-title">Required</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for item in toDo.r %}
+                                    <li class="list-group-item">{{item}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            {% if sugTodo > 0 %}
+                            <div class="card card-body">
+                                <h5 class="card-title">Suggested</h5>
+                                <ul class="list-group list-group-flush">
+                                    {% for item in toDo.s %}
+                                    <li class="list-group-item">{{item}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                </div>
+                <div class="col">
+                        <form method="post" class="form" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            {% buttons %}
+                                <button type="submit" class="btn btn-primary">Submit Report to AAC</button>
+                            {% endbuttons %}
+                        </form>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-12">
                 <!--showreport column-->
                 <div class="row mb-5"><div class="col">
                 {% include 'makeReports/DisplayReport/slos.html' %}
@@ -18,15 +70,6 @@
             <div class="row mb-5"><div class="col">
                 {% include 'makeReports/DisplayReport/dAndAs.html' %}
             </div></div>
-            </div>
-            <div class="col">
-                <form method="post" class="form" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    {% buttons %}
-                        <button type="submit" class="btn btn-primary">Submit Report to AAC</button>
-                    {% endbuttons %}
-                </form>
             </div>
         </div>
 </div>

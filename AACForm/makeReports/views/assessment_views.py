@@ -7,9 +7,9 @@ from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
-
+from .helperFunctions.section_context import *
+from .helperFunctions.mixins import *
+from .helperFunctions.todos import todoGetter
 class AssessmentSummary(DeptReportMixin,ListView):
     """
     View to summarize state of assessment section of form
@@ -37,6 +37,9 @@ class AssessmentSummary(DeptReportMixin,ListView):
             dict : context for template
         """
         context = super(AssessmentSummary, self).get_context_data()
+        context['toDo'] = todoGetter(2,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return section2Context(self,context)
 class AddNewAssessment(DeptReportMixin,FormView):
     """

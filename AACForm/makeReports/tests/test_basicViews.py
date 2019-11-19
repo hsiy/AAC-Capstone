@@ -1,3 +1,6 @@
+"""
+Tests relating to the basic shared views
+"""
 from django.test import TestCase
 from django.urls import reverse
 from makeReports.models import *
@@ -11,7 +14,7 @@ def getWithReport(name, s, extraKwargs, extraURL):
 
     Args:
         name (str): name of the page to get (no makeReports prefix needed)
-        s (ReportSetupTest): instace to get self.rpt from
+        s (ReportSetupTest): instance to get self.rpt from
         extraKwargs (dict): extra keyword arguments to pass to reverse
         extraURL (str): extra string to append to end of URL (for GET parameters)
     """
@@ -23,7 +26,7 @@ def postWithReport(name, s, extraKwargs, extraURL, data):
 
     Args:
         name (str): name of the page to get (no makeReports prefix needed)
-        s (ReportSetupTest): instace to get self.rpt from
+        s (ReportSetupTest): instance to get self.rpt from
         extraKwargs (dict): extra keyword arguments to pass to reverse
         extraURL (str): extra string to append to end of URL (for GET parameters)
         data (dict): data to pass to POST request

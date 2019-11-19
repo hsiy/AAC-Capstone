@@ -84,6 +84,39 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
                 path, resolved_login_url, redirect_field_name)
         return _wrapped_view
     return decorator
+class PDFPreview(TemplateView):
+    template_name = "makeReports/DisplayReport/pdf.html"
+    def dispatch(self,request,*args,**kwargs):
+        """
+        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the view
+
+        Args:
+            request (HttpRequest): request to view PDF page
+    
+        Keyword Args:
+            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+                
+        Returns:
+            HttpResponse : response of page to request
+        """
+        self.report = Report.objects.get(pk=self.kwargs['report'])
+        return super(PDFPreview,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        """
+        Gets the context for the template, including the rubric and graded rubric items for the report,
+        separated by section
+
+        Returns:
+            dict : template context
+        """
+        context = super(PDFPreview,self).get_context_data(**kwargs)
+        context['rubric'] = self.report.rubric
+        context['report'] = self.report
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
+        return context
 class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     """
     View to generate a graded rubric PDF
@@ -139,6 +172,7 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     template_name = "makeReports/DisplayReport/pdf.html"
     pdf_stylesheets =[
         staticfiles_storage.path('css/report.css'),
+        staticfiles_storage.path('css/shelves.css'),
         #settings.BASE_DIR + 'css/main.css',
     ]
     def dispatch(self,request,*args,**kwargs):
@@ -225,7 +259,7 @@ def reportPDF(request, report):
     f4 = tempfile.TemporaryFile()
     #write to those temporary files from the HTML generated
     html1and2.write_pdf(target=f1and2,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
-    html3.write_pdf(target=f3,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
+    html3.write_pdf(target=f3,stylesheets=[CSS(staticfiles_storage.path('css/report.css')),CSS(staticfiles_storage.path('css/shelves.css'))])
     html4.write_pdf(target=f4,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))]) 
     #set-up a merger to merge all PDFs together
     merged = PdfFileMerger()

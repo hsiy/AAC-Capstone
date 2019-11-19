@@ -226,11 +226,6 @@ class DecisionsActions(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     sloIR = models.OneToOneField(SLOInReport, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000, blank=True, default="")
-    decisionProcess = models.CharField(max_length=3000, blank=True, default="")
-    decisionMakers = models.CharField(max_length=3000, blank=True, default="")
-    decisionTimeline = models.CharField(max_length=3000, blank=True, default="")
-    dataUsed = models.CharField(max_length=3000, blank=True, default="")
-    actionTimeline = models.CharField(max_length=3000, blank=True, default="")
 class Rubric(models.Model):
     """
     Model of rubric to collect rubric items and hold a file

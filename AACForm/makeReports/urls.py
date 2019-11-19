@@ -112,9 +112,6 @@ urlpatterns = [
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/assess/$', views.CreateDataCollectionRowAssess.as_view(), name='add-data-collection-assess'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/edit/(?P<dataCollection>\d+)/$', views.EditDataCollectionRow.as_view(), name='edit-data-collection'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/delete/(?P<pk>\d+)/$', views.DeleteDataCollectionRow.as_view(), name='delete-data-collection'),
-    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/addsub/$', views.CreateSubassessmentRow.as_view(), name='add-subassessment'),
-    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/editsub/(?P<pk>\d+)/$', views.EditSubassessmentRow.as_view(), name='edit-subassessment'),
-    re_path(r'^report/(?P<report>\d+)/datacollection/assessment/deletesub/(?P<pk>\d+)/$', views.DeleteSubassessmentRow.as_view(), name='delete-subassessment'),
     re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/$', views.NewSLOStatus.as_view(), name='add-slo-status'),
     re_path(r'^report/(?P<report>\d+)/datacollection/slostatus/(?P<slopk>\d+)/(?P<statuspk>\d+)/$', views.EditSLOStatus.as_view(), name='edit-slo-status'),
     re_path(r'^report/(?P<report>\d+)/datacollection/resultcommunication/$', views.NewResultCommunication.as_view(), name='add-result-communication'),
@@ -136,6 +133,7 @@ urlpatterns = [
     #PDF Generators
     re_path(r'^pdf/report/(?P<report>\d+)/rubric/graded/$',views.GradedRubricPDFGen.as_view(), name='graded-rub-pdf'),
     re_path(r'^pdf/report/(?P<report>\d+)/nosups/$', views.ReportPDFGen.as_view(), name='report-pdf-no-sups'),
+    re_path(r'^pdf/report/(?P<report>\d+)/$', views.PDFPreview.as_view(), name='pdf-preview'),
     re_path(r'^pdf/report/(?P<report>\d+)/sups/$', views.reportPDF,name='report-pdf'),
     re_path(r'^pdf/rubric/(?P<rubric>\d+)/auto/$', views.UngradedRubric,name='rubric-auto-pdf'),
     #APIs
@@ -143,6 +141,7 @@ urlpatterns = [
     re_path(r'^api/SLOSuggestions/$', views.SLOSuggestionsAPI.as_view(), name='api-slo-suggestions'),
     re_path(r'^api/prog/dep/$', views.ProgByDeptListAPI.as_view(),name='api-prog-by-dept'),
     re_path(r'^api/slo/dp/$', views.SloByDPListAPI.as_view(),name='api-slo-by-dp'),
+    re_path(r'^api/assess/slo/$', views.AssessmentBySLO.as_view(),name='api-assess-by-slo'),
     re_path(r'^api/graph/$', views.createGraphAPI.as_view(),name='api-new-graph'),
     #Graphing
     re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),

@@ -90,18 +90,6 @@ def section3Context(self,context):
         except:
             temp_dict['agg'] = None
 
-        try:
-            subassessments = Subassessment.objects.filter(assessmentVersion=assessment)
-            temp_dict['subassessments'] = []
-            for subassessment in subassessments:
-                sub_dict = (subassessment.title, subassessment.proficient, subassessment.pk)
-                temp_dict['subassessments'].append(sub_dict)
-
-            temp_dict['subassessments_len'] = len(temp_dict['subassessments'])
-        except:
-            temp_dict['subassessments'] = []
-            temp_dict['subassessments_len'] = 0
-
         assessment_data_dict['assessments'].append(temp_dict)
 
     SLOs = SLOInReport.objects.filter(report=self.report).order_by("number")

@@ -12,7 +12,11 @@ An AAC member can look at all of the departments past reports and also grade the
 "As a department, to begin or continue filling out the form, click Start next to a report listed under To-Dos on the home page. Click through the pages to fill out the form, following buttons like "Add" and "Import" as appropriate. From home, you can also go to archived reports and click view to see old reports or view past report data in the historical data section ""
 
 "## Basic AAC Operation"
-"To access AAC functionality, click Administrative Home. Follow buttons to add or see departments, colleges, rubrics, and reports. To assign a new report, go to departments, find the right department, then click "Assign Report." The Generate Reports button will also create reports for the year, but does not create new reports for degree programs which have already been assigned one this year."
+"To access AAC functionality, click Administrative Home. Follow buttons to add or see departments, colleges, rubrics, and reports. To assign a new report, go to departments, find the right department, then click "Assign Report." The Generate Reports button will also create reports for the year, but does not create new reports for degree programs which have already been assigned one this year.
+Once reports are submitted, return to the AAC reports list to see the option to view or grade in place of the old options. Click grade and complete each of the sections to grade the report."
+
+"## Data Analysis""
+"To see graphs or download CSV files, navigate to Your Reports or AAC Reports and click the relevant button in the upper-right hand corner. Follow the drop-down prompts and click the generate button to see or download the relevant file"
 
 "## Installation"
 

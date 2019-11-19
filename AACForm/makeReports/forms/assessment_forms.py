@@ -103,7 +103,7 @@ class ImportAssessmentForm(forms.Form):
     Form to import pre-existing assessment
     """
     assessment = forms.ModelMultipleChoiceField(queryset=None, widget=forms.SelectMultiple(attrs={'class':'form-control col-6'}))
-    slo = forms.ModelChoiceField(label="SLO",queryset=None, widget=SLOChoicesJSWidget(attrs={'class':'form-control col-6'}))
+    slo = forms.ModelChoiceField(label="SLO Imported Assessments will Measure",queryset=None, widget=SLOChoicesJSWidget(attrs={'class':'form-control col-6'}))
     def __init__(self, *args, **kwargs):
         """
         Initializes form, sets assessment and SLO choices to passed sets

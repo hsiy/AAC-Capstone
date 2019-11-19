@@ -4,6 +4,11 @@
 <h3>SLO Summary</h3>
 <div class="container" style="max-width:95%">
     <div class="row">
+        <div class="col">
+            {% include 'makeReports/toDoList.html' %}
+        </div>
+    </div>
+    <div class="row">
             <div class="col">      
     <div class="row">
         <div class="col">
@@ -28,11 +33,7 @@
                 </td>
                 <td>
                     {% for gG in slo.slo.gradGoals.all %}
-                        {% if forloop.last %}
-                            {{gG.text|safe}}
-                        {% else %}
-                            {{gG.text|safe}},
-                        {% endif %}
+                        <p>{{gG.text|safe}}</p>
                     {% endfor %}
                 </td>
                 <td>

@@ -1,3 +1,9 @@
+"""
+Code adapted from https://gist.github.com/gregsadetsky/5018173
+
+This allows the test suite to run on a Heroku-based test database 
+(due to restrictions of Heroku, the standard test runner does not work)
+"""
 import os
 import django
 from django.test.runner import DiscoverRunner
@@ -8,7 +14,13 @@ from django.core.management import call_command
 from django.db.utils import ConnectionHandler
 
 class HerokuTestSuiteRunner(DiscoverRunner):
+    """
+    Test suite to run from Heroku database
+    """
     def setup_databases(self, **kwargs):
+        """
+        Sets up the database
+        """
         ###
         # WARNING: NOT handling 'TEST_MIRROR', 'TEST_DEPENDENCIES'
         ###
@@ -42,5 +54,8 @@ class HerokuTestSuiteRunner(DiscoverRunner):
                 database=test_connection.alias)
 
     def teardown_databases(self, *args, **kwargs):
+        """
+        Does nothing, since Heroku database should continue to exist
+        """
         # NOP
         pass

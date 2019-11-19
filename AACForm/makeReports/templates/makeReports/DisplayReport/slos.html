@@ -15,11 +15,7 @@
                 </td>
                 <td>
                     {% for gG in slo.slo.gradGoals.all %}
-                        {% if forloop.last %}
-                            {{gG.text|safe}}
-                        {% else %}
-                            {{gG.text|safe}},
-                        {% endif %}
+                            <p>{{gG.text|safe}}</p>
                     {% endfor %}
                 </td>
             </tr>

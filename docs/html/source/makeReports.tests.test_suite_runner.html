@@ -147,19 +147,24 @@
             
   <div class="section" id="module-makeReports.tests.test_suite_runner">
 <span id="makereports-tests-test-suite-runner-module"></span><h1>makeReports.tests.test_suite_runner module<a class="headerlink" href="#module-makeReports.tests.test_suite_runner" title="Permalink to this headline">¶</a></h1>
+<p>Code adapted from <a class="reference external" href="https://gist.github.com/gregsadetsky/5018173">https://gist.github.com/gregsadetsky/5018173</a></p>
+<p>This allows the test suite to run on a Heroku-based test database
+(due to restrictions of Heroku, the standard test runner does not work)</p>
 <dl class="class">
 <dt id="makeReports.tests.test_suite_runner.HerokuTestSuiteRunner">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_suite_runner.</code><code class="sig-name descname">HerokuTestSuiteRunner</code><span class="sig-paren">(</span><em class="sig-param">pattern=None</em>, <em class="sig-param">top_level=None</em>, <em class="sig-param">verbosity=1</em>, <em class="sig-param">interactive=True</em>, <em class="sig-param">failfast=False</em>, <em class="sig-param">keepdb=False</em>, <em class="sig-param">reverse=False</em>, <em class="sig-param">debug_mode=False</em>, <em class="sig-param">debug_sql=False</em>, <em class="sig-param">parallel=0</em>, <em class="sig-param">tags=None</em>, <em class="sig-param">exclude_tags=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_suite_runner.HerokuTestSuiteRunner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.test.runner.DiscoverRunner</span></code></p>
+<p>Test suite to run from Heroku database</p>
 <dl class="method">
 <dt id="makeReports.tests.test_suite_runner.HerokuTestSuiteRunner.setup_databases">
 <code class="sig-name descname">setup_databases</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_suite_runner.HerokuTestSuiteRunner.setup_databases" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Sets up the database</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="makeReports.tests.test_suite_runner.HerokuTestSuiteRunner.teardown_databases">
 <code class="sig-name descname">teardown_databases</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_suite_runner.HerokuTestSuiteRunner.teardown_databases" title="Permalink to this definition">¶</a></dt>
-<dd><p>Destroy all the non-mirror databases.</p>
+<dd><p>Does nothing, since Heroku database should continue to exist</p>
 </dd></dl>
 
 </dd></dl>

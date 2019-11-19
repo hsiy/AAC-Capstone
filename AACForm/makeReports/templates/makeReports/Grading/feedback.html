@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static %}
+{% block styles %}
+<!--this page use shelves css to make the table, because Bootstrap grid system was insufficient-->
+<link href="{% static 'css/shelves.css' %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
 <h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
 <div class="container">
@@ -25,12 +30,13 @@
                   {% for GRI in obj_list %}
                     <tr>
                       <td>
-                        {{GRI.item.text|safe}} <br><b>{{GRI.get_grade_display}}</b>
+                        {{GRI.item.text|safe}} 
+                        <p><b>{{GRI.get_grade_display}}</b></p>
                       </td>
                     </tr>
                     <tr>
                         <td>
-                        <button class="btn btn-primary"  role="button" data-toggle="collapse" data-target="#col{{GRI.pk}}" aria-expanded="false" aria-controls="col{{GRI.pk}}">
+                        <button class="btn btn-primary"  role="button" type="button" data-toggle="collapse" data-target="#col{{GRI.pk}}" aria-expanded="false" aria-controls="col{{GRI.pk}}">
                                         More Details
                         </button>
                         <div class="collapse" id="col{{GRI.pk}}">
@@ -42,6 +48,7 @@
                                         </ul>
                                 </div>
                         </div>
+                        <br><br>
                     </td>
                     </tr>
                   {% endfor %}

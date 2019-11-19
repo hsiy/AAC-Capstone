@@ -4,24 +4,24 @@
 {% block in_styles %}
 <!--this page use shelves css to make the table, because Bootstrap grid system was insufficient-->
 <link href="{% static 'css/shelves.css' %}" rel="stylesheet">
-<style>
-.row {
-    display: inherit
-}
-</style>
 {% endblock %}
 {% block inner_content %}
 <h3>Data Collection and Analysis Summary</h3>
-<div class="row mb-5">
+<div class="row-sh">
+        <div class="col">
+            {% include 'makeReports/toDoList.html' %}
+        </div>
+    </div>
+<div class="row-sh mb-5">
     <div class="column-15">
-        <div class="row">
+        <div class="row-sh">
             <div class="column-15">
                 <h4>Data Table</h4>
             </div>
         </div>
-        <div class="row">
+        <div class="row-sh">
             <div class="column-15">
-                <div class="row border-bottom">
+                <div class="row-sh border-bottom">
                     <div class="column-5">Measure</div>
                     <div class="column-2">Date</div>
                     <div class="column-1">Number of Students</div>
@@ -31,14 +31,14 @@
                     <div class="column-2">Overall Options</div>
                 </div>
                 {% for assessment in assessment_data_dict.assessments %}
-                <div class="row align-items-center border-bottom mt-3 pb-3">
+                <div class="row-sh align-items-center border-bottom pt-3 pb-3" {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:rgb(228, 238, 253);" {% endif %}>
                     <div class="column-5">
                         <b>SLO {{assessment.slo_obj.number}}: </b>{{assessment.slo_text}}<br>
                         <b>Measure {{assessment.assessment_obj.number}}: </b>{{assessment.assessment_text}}
                     </div>
                     <div class="column-6">
                     {% for d in assessment.assess_data %}
-                    <div class="row align-items-center">
+                    <div class="row-sh align-items-center">
                         <div class="column-2">
                             {{d.dataRange}}
                         </div>
@@ -51,7 +51,7 @@
                             {{d.overallProficient}}%
                         </div>
                         <div class="column-2">
-                            <div class="row">
+                            <div class="row-sh">
                             <a role="button" title="Edit data for measure" class="btn btn-primary"
                                 href="{% url 'makeReports:edit-data-collection' report=rpt.pk dataCollection=d.pk%}">Edit</a>
                             <a role="button" title="Delete data for measure" class="btn btn-primary"
@@ -89,7 +89,7 @@
         </div>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row-sh mt-5">
     <div class="column">
         <h4>Supplements</h4>
         <a role="button" title="Continue" class="btn btn-primary"
@@ -123,7 +123,7 @@
         </table>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row-sh mt-5">
     <div class="column">
 
         <table class="table">
@@ -158,7 +158,7 @@
         </table>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row-sh mt-5">
     <div class="column">
 
         <table class='table'>
@@ -195,7 +195,7 @@
         2. <a href="{% url 'makeReports:data-comment' report=rpt.pk %}">Additional Comments</a>
     </div>
 </div>-->
-<div class="row mt-5">
+<div class="row-sh mt-5">
     <div class="col-7">
         <h4>Additional Comments</h4>
         {{rpt.section3Comment|safe}}
@@ -204,7 +204,7 @@
         <a role="button" class="btn btn-primary" href="{% url 'makeReports:data-comment' report=rpt.pk %}">Edit</a>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row-sh mt-5">
     <div class="column">
         <a role="button" title="Continue" class="btn btn-primary"
             href="{% url 'makeReports:decisions-actions-summary' report=rpt.pk %}">Next</a>

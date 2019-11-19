@@ -400,6 +400,7 @@ class ReturnReport(AACOnlyMixin,UpdateView):
         if form.cleaned_data['returned']:
             self.object.submitted = False
             self.object.rubric.complete = False
+            self.object.rubric.save()
         return super(ReturnReport,self).form_valid(form)
 class Feedback(DeptAACMixin, ListView):
     """

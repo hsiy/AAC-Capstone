@@ -6,8 +6,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
+from .helperFunctions.section_context import *
+from .helperFunctions.mixins import *
+from .helperFunctions.todos import todoGetter
 from makeReports.choices import *
 
 class DataCollectionSummary(DeptReportMixin,ListView):
@@ -40,6 +41,9 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         """
         report = self.report
         context = super(DataCollectionSummary, self).get_context_data(**kwargs)
+        context['toDo'] = todoGetter(3,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return section3Context(self,context)
 
 
@@ -202,110 +206,21 @@ class DeleteDataCollectionRow(DeptReportMixin,DeleteView):
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
-class CreateSubassessmentRow(DeptReportMixin,FormView):
-    form_class = AddSubassessment
-    template_name = "makeReports/DataCollection/createSubassessment.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to instance
-
-        Args:
-            request (HttpRequest): request to view page
-            
-        Returns:
-            HttpResponse : response of page to request
-        """
-        self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
-        return super(CreateSubassessmentRow,self).dispatch(request,*args,**kwargs)
-    def get_context_data(self, **kwargs):
-        """
-        Gets context for the template, including the current assessment
-
-        Returns:
-            dict : context for template
-        """
-        context = super(CreateSubassessmentRow,self).get_context_data(**kwargs)
-        context["assess"] = self.assessment
-        return context
-    def get_success_url(self):
-        """
-        Gets URL to go to upon success (data summary)
-
-        Returns:
-            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
-        """
-        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
-
-    def form_valid(self, form):
-        """
-        Creates subassessment object based upon form
-
-        Args:
-            form (AddSubassessment): filled out form to process
-                
-        Returns:
-            HttpResponseRedirect : redirects to success URL given by get_success_url
-        """
-        subassessmentDataObj = Subassessment.objects.create(assessmentVersion=self.assessment, title=form.cleaned_data['title'], proficient=form.cleaned_data['proficient'])
-        subassessmentDataObj.save()
-        return super(CreateSubassessmentRow, self).form_valid(form)
-
-class EditSubassessmentRow(DeptReportMixin,FormView):
-    """
-    To be deleted
-    """
-    template_name = "makeReports/DataCollection/editSubassessment.html"
-    form_class = EditSubassessment
-
-    def dispatch(self, request, *args, **kwargs):
-        self.subassessment = Subassessment.objects.get(pk=self.kwargs['pk'])
-        return super(EditSubassessmentRow,self).dispatch(request,*args,**kwargs)
-    def get_initial(self):
-        initial = super(EditSubassessmentRow, self).get_initial()
-        initial['title'] = self.subassessment.title
-        initial['proficient'] = self.subassessment.proficient
-        return initial
-    def get_context_data(self, **kwargs):
-        context = super(CreateSubassessmentRow,self).get_context_data(**kwargs)
-        context["assess"] = self.subassessment.assessmentVersion
-        return context
-    def get_success_url(self):
-        """
-        Gets URL to go to upon success (data summary)
-
-        Returns:
-            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
-        """
-        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
-
-    def form_valid(self, form):
-        self.subassessment.title = form.cleaned_data['title']
-        self.subassessment.proficient = form.cleaned_data['proficient']
-        self.subassessment.save()
-        return super(EditSubassessmentRow, self).form_valid(form)
-
-
-class DeleteSubassessmentRow(DeptReportMixin,DeleteView):
-    model = Subassessment
-    template_name = "makeReports/DataCollection/deleteSubassessment.html"
-    def get_success_url(self):
-        """
-        Gets URL to go to upon success (data summary)
-
-        Returns:
-            str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
-        """
-        return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
 class NewSLOStatus(DeptReportMixin,FormView):
     """
-    To be deleted
+    Creates a new SLO Status object
     """
     template_name = "makeReports/DataCollection/SLOStatus.html"
     form_class = SLOStatusForm
     
     def dispatch(self, request, *args, **kwargs):
+        """
+        Attaches the SLO to the instance
+
+        Keyword Args:
+            slopk (int): primary key of SLO (:class:`~makeReports.models.SLOInReport`) to create status of 
+        """
         self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
@@ -318,6 +233,12 @@ class NewSLOStatus(DeptReportMixin,FormView):
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 
     def form_valid(self, form):
+        """
+        Creates the SLO status object
+
+        Args:
+            form (SLOStatusForm): completed form to process
+        """
         slo_status_obj = SLOStatus.objects.create(report = self.report, status = form.cleaned_data['status'], SLO = self.slo.slo, sloIR=self.slo)
         slo_status_obj.save()
         return super(NewSLOStatus, self).form_valid(form)
@@ -331,7 +252,7 @@ class EditSLOStatus(DeptReportMixin,FormView):
         slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
         statuspk (str): primary key of :class:`~makeReports.models.report_models.SLOStatus`
     """
-    template_name = "makeReports/Datacollection/SLOStatus.html"
+    template_name = "makeReports/DataCollection/SLOStatus.html"
     form_class = SLOStatusForm
     
     def dispatch(self, request, *args, **kwargs):

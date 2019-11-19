@@ -147,6 +147,7 @@
             
   <div class="section" id="module-makeReports.tests.test_assessViews">
 <span id="makereports-tests-test-assessviews-module"></span><h1>makeReports.tests.test_assessViews module<a class="headerlink" href="#module-makeReports.tests.test_assessViews" title="Permalink to this headline">¶</a></h1>
+<p>Tests relating to the Assessment Views</p>
 <dl class="class">
 <dt id="makeReports.tests.test_assessViews.AddNewAssessmentTest">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_assessViews.</code><code class="sig-name descname">AddNewAssessmentTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AddNewAssessmentTest" title="Permalink to this definition">¶</a></dt>
@@ -170,7 +171,7 @@
 <dt id="makeReports.tests.test_assessViews.AssessmentSummaryPageTest">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_assessViews.</code><code class="sig-name descname">AssessmentSummaryPageTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSummaryPageTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.tests.test_basicViews.html#makeReports.tests.test_basicViews.ReportSetupTest" title="makeReports.tests.test_basicViews.ReportSetupTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_basicViews.ReportSetupTest</span></code></a></p>
-<p>Tests Assessment summary page</p>
+<p>Tests Assessment summary page and comment page</p>
 <dl class="method">
 <dt id="makeReports.tests.test_assessViews.AssessmentSummaryPageTest.setUp">
 <code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSummaryPageTest.setUp" title="Permalink to this definition">¶</a></dt>
@@ -178,9 +179,106 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_assessViews.AssessmentSummaryPageTest.test_comment_page">
+<code class="sig-name descname">test_comment_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSummaryPageTest.test_comment_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_assessViews.AssessmentSummaryPageTest.test_view">
 <code class="sig-name descname">test_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSummaryPageTest.test_view" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test view exists with assessments on it</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_assessViews.AssessmentSupplementTest">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_assessViews.</code><code class="sig-name descname">AssessmentSupplementTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSupplementTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="makeReports.tests.test_basicViews.html#makeReports.tests.test_basicViews.ReportSetupTest" title="makeReports.tests.test_basicViews.ReportSetupTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_basicViews.ReportSetupTest</span></code></a></p>
+<p>Tests that supplement pages all exist</p>
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.AssessmentSupplementTest.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSupplementTest.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an assessment and supplement</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.AssessmentSupplementTest.test_delete">
+<code class="sig-name descname">test_delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSupplementTest.test_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the delete supplement page exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.AssessmentSupplementTest.test_delete_post">
+<code class="sig-name descname">test_delete_post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSupplementTest.test_delete_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that posting to delete works</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.AssessmentSupplementTest.test_import">
+<code class="sig-name descname">test_import</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSupplementTest.test_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the import supplement page exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.AssessmentSupplementTest.test_upload">
+<code class="sig-name descname">test_upload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.AssessmentSupplementTest.test_upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the upload assessment page exists</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_assessViews.</code><code class="sig-name descname">EditAssessmentTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="makeReports.tests.test_basicViews.html#makeReports.tests.test_basicViews.ReportSetupTest" title="makeReports.tests.test_basicViews.ReportSetupTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_basicViews.ReportSetupTest</span></code></a></p>
+<p>Tests the edit and delete assessment pages</p>
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up assessments to edit</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_delete_new">
+<code class="sig-name descname">test_delete_new</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_delete_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that deleting a new assessment deletes the in-report and overarching version</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_delete_old">
+<code class="sig-name descname">test_delete_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_delete_old" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that deleting an imported assessment deletes only the in-report version</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_post_impt">
+<code class="sig-name descname">test_post_impt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_post_impt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that posting the correct information to the edit imported assessment page works</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_post_impt_fails">
+<code class="sig-name descname">test_post_impt_fails</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_post_impt_fails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that posting too much information to the edit imported assessment page fails</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_post_new">
+<code class="sig-name descname">test_post_new</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_post_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that posting information to the edit new assessment page work</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_view_new">
+<code class="sig-name descname">test_view_new</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_view_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the edit new assessment page exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_assessViews.EditAssessmentTest.test_view_old">
+<code class="sig-name descname">test_view_old</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_assessViews.EditAssessmentTest.test_view_old" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the edit imported assessment page exists</p>
 </dd></dl>
 
 </dd></dl>

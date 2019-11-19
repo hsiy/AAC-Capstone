@@ -13,6 +13,21 @@ table.print-friendly tr td, table.print-friendly tr th {
     font-style: italic; 
 }
 
+.border-bottom{
+    border-bottom:1px solid black;
+}
+
+.pt-5 {
+    padding-top: 5pt;
+}
+
+.pb-5 {
+    padding-bottom: 5pt;
+}
+
+.pb-3{
+    padding-bottom: 3pt;
+}
 div.bT p{
     margin: 2pt;
     padding: 1pt;

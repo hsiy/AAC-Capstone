@@ -8,6 +8,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
 from makeReports.views.helperFunctions.mixins import *
+from .helperFunctions.todos import todoGetter
 
 class SLOSummary(DeptReportMixin,ListView):
     """
@@ -35,6 +36,9 @@ class SLOSummary(DeptReportMixin,ListView):
         """
         context = super(SLOSummary, self).get_context_data()
         context['stk'] = SLOsToStakeholder.objects.filter(report=self.report).last()
+        context['toDo'] = todoGetter(1,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return context
 class AddNewSLO(DeptReportMixin,FormView):
     """
