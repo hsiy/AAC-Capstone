@@ -14,21 +14,7 @@ class AddDataCollection(forms.Form):
     """
     dataRange = forms.CharField(max_length=500, widget=forms.TextInput(attrs={'class':'form-control col-6'}), label="Data Collection Range")
     numberStudents = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6'}), label="Number of Students Sampled")
-    overallProficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-3','addon_after':'%','placeholder':'Percentage'}), label="Percentage of Students Met/Exceeded Threshold Proficiency")
-
-class AddSubassessment(forms.Form):
-    """
-    Form to add sub-assessment
-    """
-    title = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-6'}), max_length=500, label="Subassessment Title")
-    proficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6'}), label="Subassessment Percentage of Students Met/Exceeded Threshold Proficiency")
-
-class EditSubassessment(forms.Form):
-    """
-    Form to edit sub-assessment
-    """
-    title = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control col-6'}), max_length=500, label="Subassessment Title")
-    proficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-6'}), label="Subassessment Percentage of Students Met/Exceeded Threshold Proficiency")
+    overallProficient = forms.IntegerField(widget= forms.NumberInput(attrs={'class':'form-control col-3','addon_after':'%','placeholder':'Percentage'}), label="Percentage of Students who Met/Exceeded Threshold Proficiency")
 
 class SLOStatusForm(forms.Form):
     """

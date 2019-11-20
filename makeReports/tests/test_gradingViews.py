@@ -47,6 +47,7 @@ class GradingSectionsTest(ReportAACSetupTest):
             fieldName:"ME",
             'section_comment':'fsfkjllaskdfls'
         })
+        self.assertEquals(resp.status_code,200)
         rI.refresh_from_db()
         self.assertEquals(rI.grade,"ME")
         self.assertEquals(rub.section1Comment,'fsfkjllaskdfls')
