@@ -104,6 +104,9 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
             computed: {
             },
             methods: {
+                /**
+                 * Calls the API to get the departments within the college
+                 */
                 updateDept: function () {
                     fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
                         .then(response => {
