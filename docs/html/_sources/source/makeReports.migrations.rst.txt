@@ -61,6 +61,7 @@ Submodules
    makeReports.migrations.0049_auto_20191107_1928
    makeReports.migrations.0050_graph
    makeReports.migrations.0051_auto_20191111_1922
+   makeReports.migrations.0052_auto_20191115_1303
 
 Module contents
 ---------------

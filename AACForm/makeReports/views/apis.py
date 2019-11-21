@@ -131,15 +131,6 @@ class SloByDPListAPI(generics.ListAPIView):
         qS = super(SloByDPListAPI,self).get_queryset()
         qS = qS.order_by('slo','-report__year').distinct('slo')
         return qS
-# class AssessmentSLOFilterClass(filters.FilterSet):
-#     class Meta:
-#         model = AssessmentVersion
-#         fields = {
-#             'slo__slo':['exact'],
-#             'report__year':['gte','lte'],
-#         }
-#     def get_filterset(self,request,queryset,view):
-#         querys
 class AssessmentBySLO(generics.ListAPIView):
     """
     Filters AssessmentVersion to get the most recent assessment version for each parent assessment
@@ -187,6 +178,23 @@ class SLOSuggestionsAPI(APIView):
         slo_text = request.data['slo_text']
         response = text_processing.create_suggestions_dict(slo_text)
         return(Response(response))
+class BloomsSuggestionsAPI(APIView):
+    """
+    Returns suggested words based upon Bloom's level
+    """
+    renderer_classes = [JSONRenderer]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        """
+        When API is posted to return dictonary of suggestions
+
+        Returns:
+            dict : dictionary of suggestions relating to SLO
+        """
+        level = request.data['level']
+        response = text_processing.blooms_words(level)
+        return(Response(response))
 def get_specificSLO_graph(request):
     """
     Graphs a specific SLO/Assessment combo performance over time
@@ -196,18 +204,18 @@ def get_specificSLO_graph(request):
     Returns:
         matplotlib.figure.Figure : figure, i.e. the graph
     Notes:
-        Uses GET parameters 'report__year__gte' (min year), 'report__year__lte' (max year),
+        Uses POST data 'report__year__gte' (min year), 'report__year__lte' (max year),
         'report__degreeProgram' (degree program pk), 'sloIR' (SLOInReport primary key),
         'assess' (Assessment primary key)
     """
-    begYear=request.GET['report__year__gte']
-    endYear = request.GET['report__year__lte']
+    begYear=request.data['report__year__gte']
+    endYear = request.data['report__year__lte']
     bYear=int(begYear)
     eYear=int(endYear)
-    degreeProgram = request.GET['report__degreeProgram']
-    slo = request.GET['sloIR']
+    degreeProgram = request.data['report__degreeProgram']
+    slo = request.data['sloIR']
     sloObj = SLOInReport.objects.get(pk=slo)
-    assess = request.GET['assess']
+    assess = request.data['assess']
     queryset = AssessmentAggregate.objects.filter(
         assessmentVersion__assessment__pk = assess,
         assessmentVersion__report__year__gte=begYear,
@@ -246,14 +254,15 @@ def get_numberSLOs_graph(request):
     Returns:
         matplotlib.figure.Figure : figure, i.e. the graph
     Notes:
-        Uses GET parameters 'report__year__gte' (min year), 'report__year__lte' (max year),
-        'report__degreeProgram' (degree program pk)
+        Uses POST parameters 'report__year__gte' (min year), 'report__year__lte' (max year),
+        'report__degreeProgram' (degree program pk), and sloWeights (weights of SLOs)
     """
-    begYear=request.GET['report__year__gte']
-    endYear = request.GET['report__year__lte']
+    begYear=request.data['report__year__gte']
+    endYear = request.data['report__year__lte']
+    sloWeights = request.data['sloWeights']
     bYear=int(begYear)
     eYear=int(endYear)
-    degreeProgram = request.GET['report__degreeProgram']
+    degreeProgram = request.data['report__degreeProgram']
     queryset = SLOStatus.objects.filter(
         report__year__gte = begYear,
         report__year__lte = endYear,
@@ -272,14 +281,32 @@ def get_numberSLOs_graph(request):
         qYear = queryset.filter(report__year=year)
         overall = qYear.count()
         if overall != 0:
-            met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-            partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
-            notMet = qYear.filter(status=SLO_STATUS_CHOICES[2][0]).count()
-            unknown = qYear.filter(status=SLO_STATUS_CHOICES[3][0]).count()
-            metP = met/overall
-            parP = partiallyMet/overall
-            notP = notMet/overall
-            unkP = unknown/overall
+            met = 0
+            partiallyMet = 0
+            notMet = 0
+            unknown = 0
+            for weightPk in sloWeights.keys():
+                met += qYear.filter(
+                    status=SLO_STATUS_CHOICES[0][0],
+                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                partiallyMet += qYear.filter(
+                    status=SLO_STATUS_CHOICES[1][0],
+                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                notMet += qYear.filter(
+                    status=SLO_STATUS_CHOICES[2][0],
+                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                unknown += qYear.filter(
+                    status=SLO_STATUS_CHOICES[3][0],
+                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+            # met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+            # partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
+            # notMet = qYear.filter(status=SLO_STATUS_CHOICES[2][0]).count()
+            # unknown = qYear.filter(status=SLO_STATUS_CHOICES[3][0]).count()
+            sumWithWeights = met+partiallyMet+notMet+unknown
+            metP = met/sumWithWeights
+            parP = partiallyMet/sumWithWeights
+            notP = notMet/sumWithWeights
+            unkP = unknown/sumWithWeights
         else:
             metP = 0
             parP = 0
@@ -307,14 +334,14 @@ def get_degreeProgramSuccess_graph(request):
     Returns:
         matplotlib.figure.Figure : figure, i.e. the graph
     Notes:
-        Uses GET parameters 'report__year__gte' (min year), 'report__year__lte' (max year),
+        Uses POST data 'report__year__gte' (min year), 'report__year__lte' (max year),
         'report__degreeProgram__department' (department pk)
     """
-    begYear = request.GET['report__year__gte']
-    endYear = request.GET['report__year__lte']
+    begYear = request.data['report__year__gte']
+    endYear = request.data['report__year__lte']
     bYear=int(begYear)
     eYear=int(endYear)
-    thisDep = request.GET['report__degreeProgram__department']
+    thisDep = request.data['report__degreeProgram__department']
     queryset = SLOStatus.objects.filter(
         report__year__gte=begYear,
         report__year__lte = endYear,
@@ -327,25 +354,39 @@ def get_degreeProgramSuccess_graph(request):
     }
     index = []
     
-    ds = depQS.values('name')
+    # ds = depQS.values('name')
     
-    for d in ds.iterator():
-        name = d.get('name')
-        new = {name: []}
-        dataFrame.update(new)
+    # for d in ds.iterator():
+    #     name = d.get('name')+" ("+d.get('level')+")"
+    #     new = {name: []}
+    #     dataFrame.update(new)
 
     for year in range(bYear,eYear+1):
         qYear = queryset.filter(report__year=year)
-        for name in dataFrame.keys():
-            if name is not "Year":
-                qDP = qYear.filter(report__degreeProgram__name = str(name))
-                overall = qDP.count()
-                if overall != 0:
-                    met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-                    metP = met/overall
-                else:
-                    metP = 0
+        for d in depQS:
+            qDP = qYear.filter(report__degreeProgram = d)
+            overall = qDP.count()
+            if overall != 0:
+                met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+                metP = met/overall
+            else:
+                metP = 0 
+            name = d.name+" ("+d.level+")"
+            try:
                 dataFrame[name].append(metP)
+            except:
+                new = {name:[metP]}
+                dataFrame.update(new)
+        # for name in dataFrame.keys():
+        #     if name is not "Year":
+        #         qDP = qYear.filter(report__degreeProgram__name = str(name))
+        #         overall = qDP.count()
+        #         if overall != 0:
+        #             met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+        #             metP = met/overall
+        #         else:
+        #             metP = 0
+        #         dataFrame[name].append(metP)
         dataFrame['Year'].append(year)
     df = pd.DataFrame(dataFrame)
     yVals = list(dataFrame.keys()).remove('Year')
@@ -353,18 +394,20 @@ def get_degreeProgramSuccess_graph(request):
     lines.set(xlabel="Year", ylabel="Percentage")
     lines.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y))) 
     figure = lines.get_figure()
+    return figure
 class createGraphAPI(views.APIView):
     """
     JSON API to get url of graph on file server with specified college,
     department, degree program, start and end dates, specific graph choice,
-    and maybe slo to be graphed
+    and maybe SLO to be graphed
     """
-    def get(self,request,format=None):
+    
+    def post(self,request,format=None):
         """
         Returns URL to graph on file server upon get request to API
 
         Args:
-            request (HttpRequest): GET request to API
+            request (HttpRequest): POST request to API
             format (None): format of request (not used here)
         """
         #Start by deleting some old graphs
@@ -372,7 +415,7 @@ class createGraphAPI(views.APIView):
         for g in graphs:
             g.graph.delete(save=False)
             g.delete()
-        dec = request.GET['decision']
+        dec = request.data['decision']
         if dec == '1':
             #specific SLO
             figure = get_specificSLO_graph(request)

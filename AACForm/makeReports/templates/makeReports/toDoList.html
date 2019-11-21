@@ -1,3 +1,4 @@
+<!--requires rpt object in context-->
 {% if reqTodo > 0 or sugTodo > 0 %}
 <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
         To-Do List
@@ -8,8 +9,20 @@
     <div class="card card-body">
         <h5 class="card-title">Required</h5>
         <ul class="list-group list-group-flush">
-            {% for item in toDo.r %}
-            <li class="list-group-item">{{item}}</li>
+            {% for item,idx in toDo.r %}
+            <li class="list-group-item">
+                {% if idx is 0 %}
+                <a style="color:black" href="{% url 'makeReports:rpt-first-page' rpt.pk %}">{{item}}</a>
+                {% elif idx is 1 %}
+                <a style="color:black" href="{% url 'makeReports:slo-summary' rpt.pk %}">{{item}}</a>
+                {% elif idx is 2 %}
+                <a style="color:black" href="{% url 'makeReports:assessment-summary' rpt.pk %}">{{item}}</a>
+                {% elif idx is 3 %}
+                <a style="color:black" href="{% url 'makeReports:data-summary' rpt.pk %}">{{item}}</a>
+                {% elif idx is 4 %}
+                <a style="color:black" href="{% url 'makeReports:decisions-actions-summary' rpt.pk %}">{{item}}</a>
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
     </div>
@@ -18,9 +31,21 @@
     <div class="card card-body">
         <h5 class="card-title">Suggested</h5>
         <ul class="list-group list-group-flush">
-            {% for item in toDo.s %}
-            <li class="list-group-item">{{item}}</li>
-            {% endfor %}
+                {% for item,idx in toDo.s %}
+                <li class="list-group-item">
+                    {% if idx is 0 %}
+                    <a style="color:black" href="{% url 'makeReports:rpt-first-page' rpt.pk %}">{{item}}</a>
+                    {% elif idx is 1 %}
+                    <a style="color:black" href="{% url 'makeReports:slo-summary' rpt.pk %}">{{item}}</a>
+                    {% elif idx is 2 %}
+                    <a style="color:black" href="{% url 'makeReports:assessment-summary' rpt.pk %}">{{item}}</a>
+                    {% elif idx is 3 %}
+                    <a style="color:black" href="{% url 'makeReports:data-summary' rpt.pk %}">{{item}}</a>
+                    {% elif idx is 4 %}
+                    <a style="color:black" href="{% url 'makeReports:decisions-actions-summary' rpt.pk %}">{{item}}</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
         </ul>
     </div>
     {% endif %}

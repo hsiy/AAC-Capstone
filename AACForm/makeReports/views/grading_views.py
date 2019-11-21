@@ -23,7 +23,8 @@ def generateRubricItems(rIs,form,r):
         if form.cleaned_data["rI"+str(ri.pk)]:
             try:
                 GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
-                GRI.grade=form.cleaned_data["rI"+str(ri.pk)]
+                GRI.grade = form.cleaned_data["rI"+str(ri.pk)]
+                GRI.save()
             except:
                 gr = form.cleaned_data["rI"+str(ri.pk)]
                 if gr and (gr != ""):

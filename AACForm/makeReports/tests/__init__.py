@@ -3,3 +3,8 @@ from .test_reportExtraViews import *
 from .test_assessViews import *
 from .test_aacAdminViews import *
 from .test_gradingViews import *
+from .test_rubricViews import *
+from .test_dataCollection import *
+from .test_DecActsViews import *
+from .test_APIs import *
+from .test_graphingCSV import *

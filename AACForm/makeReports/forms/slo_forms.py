@@ -7,7 +7,7 @@ from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 from .cleaners import CleanSummer
 from django.core.exceptions import ValidationError
-from .widgets import SLOChoicesJSWidget, SLOMultipleChoicesJSWidget
+from .widgets import SLOChoicesJSWidget, SLOMultipleChoicesJSWidget, StkChoicesJSWidget
 from django.template.defaultfilters import register
 
 @register.filter(name='dict_key')
@@ -89,7 +89,7 @@ class ImportStakeholderForm(forms.Form):
     """
     Form to import pre-existing stakeholder communication text
     """
-    stk = forms.ModelChoiceField(queryset=None, label="Stakeholder Communication Methods", widget=forms.Select(attrs={'class':'form-control col-7'}))
+    stk = forms.ModelChoiceField(queryset=None, label="Stakeholder Communication Methods", widget=StkChoicesJSWidget(attrs={'class':'form-control col-7'}))
     def __init__(self, *args, **kwargs):
         """
         Initializes form, including setting choices for stakeholder communication

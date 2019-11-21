@@ -108,6 +108,42 @@ def add_other_tenses(words):
             allTenses.extend(newWords)
     return allTenses
         
+def blooms_words(level):
+    create_words = ['design', 'assemble', 'construct', 'conjecture', 'develop',
+                    'formulate', 'author', 'investigate', 'create', 'adapt', 'plan',
+                    'produce', 'build', 'solve', 'compose', 'think', 'theorize', 'modify',
+                    'improve']
+    evaluate_words = ['appraise', 'argue', 'defend', 'judge', 'select', 'support',
+                      'value', 'critique', 'weigh', 'evaluate', 'assess', 'compare', 'conclude',
+                      'debate', 'decide', 'measure', 'opinion', 'prove', 'support', 'test', 
+                      'validate', 'interpret']
+    analyze_words = ['differentiate', 'organize', 'relate', 'compare', 'contrast',
+                     'distinguish', 'examine', 'experiment', 'question', 'test',
+                     'analyze', 'arrange', 'breakdown', 'categorize', 'differences',
+                     'dissect', 'inspect', 'research', 'highlight', 'find', 'question']
+    apply_words = ['execute', 'implement', 'solve', 'use', 
+                   'interpret', 'operate', 'schedule', 'sketch', 'apply',
+                   'act', 'administer', 'build', 'choose', 'connect', 'construct', 'develop',
+                   'teach', 'plan', 'employ', 'demonstrate', 'show']
+    understand_words = ['describe', 'explain', 'identify', 'locate', 'recognize', 'report', 
+                        'select', 'translate', 'understand', 'ask', 'cite', 'classify', 
+                        'compare', 'contrast', 'discuss', 'rephrase', 'infer', 'summarize', 
+                        'purpose', 'show', 'demonstrate', 'express', 'examples']
+    remember_words = ['define', 'duplicate', 'list', 'memorize', 'repeat', 'state',
+                      'remember', 'copy', 'recognize', 'tell', 'reproduce', 'retell',
+                      'recite', 'read', 'knowledge']
+    if(level=="KN"):
+        return remember_words
+    elif(level=="CO"):
+        return understand_words
+    elif(level=="AP"):
+        return apply_words
+    elif(level=="AN"):
+        return analyze_words
+    elif(level=="SN"):
+        return create_words
+    elif(level=="EV"):
+        return evaluate_words
 
 
 # Returns a string corresponding to a Bloom's taxonomy

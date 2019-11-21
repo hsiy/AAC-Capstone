@@ -206,6 +206,52 @@ separated by section</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="makeReports.views.pdf_Generators.PDFPreview">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">PDFPreview</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
+<dl class="method">
+<dt id="makeReports.views.pdf_Generators.PDFPreview.dispatch">
+<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to the view</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view PDF page</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>response of page to request</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.pdf_Generators.PDFPreview.get_context_data">
+<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the context for the template, including the rubric and graded rubric items for the report,
+separated by section</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>template context</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.pdf_Generators.PDFPreview.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/DisplayReport/pdf.html'</em><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="makeReports.views.pdf_Generators.ReportPDFGen">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">ReportPDFGen</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django_weasyprint.views.WeasyTemplateView</span></code>, <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptAACMixin" title="makeReports.views.helperFunctions.mixins.DeptAACMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptAACMixin</span></code></a></p>
@@ -252,7 +298,7 @@ needed for each section</p>
 
 <dl class="attribute">
 <dt id="makeReports.views.pdf_Generators.ReportPDFGen.pdf_stylesheets">
-<code class="sig-name descname">pdf_stylesheets</code><em class="property"> = ['D:\\School Work\\Senior\\Capstone\\Project\\AACForm\\staticfiles\\css\\report.css']</em><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen.pdf_stylesheets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pdf_stylesheets</code><em class="property"> = ['D:\\School Work\\Senior\\Capstone\\Project\\AACForm\\staticfiles\\css\\report.css', 'D:\\School Work\\Senior\\Capstone\\Project\\AACForm\\staticfiles\\css\\shelves.css']</em><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen.pdf_stylesheets" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
