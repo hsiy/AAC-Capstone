@@ -7,7 +7,7 @@ from django.views.generic import DetailView
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from makeReports.views.helperFunctions.mixins import *
 
 class RubricList(AACOnlyMixin,ListView):
@@ -39,7 +39,7 @@ class SearchRubricList(AACOnlyMixin,ListView):
         if self.request.GET['name']!="":
             rubs=rubs.filter(name__icontains=self.request.GET['name'])
         if day!="":
-            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-datetime.timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+datetime.timedelta(days=180)))
+            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
         return rubs.order_by("-date")
 class AddRubric(AACOnlyMixin,CreateView):
     """

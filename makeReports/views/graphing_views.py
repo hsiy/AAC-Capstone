@@ -18,7 +18,7 @@ class GraphingHome(AACOnlyMixin,TemplateView):
         context['colleges'] = College.active_objects.all
         return context
 class GraphingDept(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
-    template_name = "graphing_dept.html"
+    template_name = "makeReports/Graphing/graphing_dept.html"
     def test_func(self):
         return self.request.user.profile.department.pk == int(self.kwargs['dept'])
 class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView):
@@ -75,7 +75,7 @@ class OutputCSVCollege(OutputCSVDepartment):
         'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name',
         'assessmentVersion__report',
         'assessmentVersion__slo', 'assessmentVersion__slo__goalText',
-        'assessmentVersion__slo__slo__blooms', 'assessmentVersion__slo__slo__'
+        'assessmentVersion__slo__slo__blooms', 'assessmentVersion__slo__slo',
         'assessmentVersion__assessment', 'assessmentVersion__assessment__title',
         'assessmentVersion__assessment__domainExamination', 
         'assessmentVersion__assessment__domainProduct', 

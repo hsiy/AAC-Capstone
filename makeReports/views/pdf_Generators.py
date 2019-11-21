@@ -9,7 +9,7 @@ from makeReports.forms import *
 from django.contrib.auth.models import User
 from django.conf import settings 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from makeReports.views.helperFunctions.section_context import *
 from django_weasyprint import WeasyTemplateView
 from PyPDF2 import PdfFileMerger, PdfFileReader
@@ -25,6 +25,10 @@ from django.shortcuts import resolve_url
 from django.utils.decorators import available_attrs
 from makeReports.views.helperFunctions.mixins import *
 from urllib.parse import urlparse
+import io
+import django.core.files as files
+from datetime import datetime
+
 
 def test_func_x(self,*args,**kwargs):
     """
@@ -316,7 +320,14 @@ def UngradedRubric(request, rubric):
     context['RIs4'] = RubricItem.objects.filter(rubricVersion=rubric, section=4)
     rend = template.render(context).encode()
     html = HTML(string=rend)
-    html.write_pdf(target=rubric.fullFile,stylesheets=[CSS(staticfiles_storage.path('css/report.css')),CSS(staticfiles_storage.path('css/landscape.css'))])
-    http_response = FileResponse(rubric.fullFile.open(),content_type="application/pdf")
+    f1 = io.BytesIO()
+    html.write_pdf(target=f1,stylesheets=[CSS(staticfiles_storage.path('css/report.css')),CSS(staticfiles_storage.path('css/landscape.css'))])
+    content_file = files.File(f1)
+    try:
+        rubric.fullFile.delete()
+    except:
+        pass
+    rubric.fullFile.save(rubric.name+"-"+str(datetime.now())+".pdf",content_file)
     rubric.save()
+    http_response = HttpResponseRedirect(rubric.fullFile.url)
     return http_response
