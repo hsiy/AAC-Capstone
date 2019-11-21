@@ -121,10 +121,10 @@ class SloByDPListAPI(generics.ListAPIView):
     serializer_class = SLOSerializerWithParent
     def get_queryset(self):
         """
-        Gets the filtered queryset, and picks the most recent SLOInReport for each parent SLO
+        Gets the filtered QuerySet, and picks the most recent SLOInReport for each parent SLO
 
         Returns:
-            QuerySet : queryset of SLOs that match parameters
+            QuerySet : QuerySet of SLOs (:class:`~makeReports.models.SLOInReport`) that match parameters
         Notes:
             .order_by(...).distinct(...) is only supported by PostgreSQL
         """

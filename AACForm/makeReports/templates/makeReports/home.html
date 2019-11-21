@@ -26,7 +26,7 @@
     {% endfor %}
     </ul>
     <br><br>
-    <h3>Department Reports Graded</h3>
+    <h3>Department Reports Reviewed</h3>
     <ul class="list-group">
     {% for r in gReps %}
     <li class = "list-group-item"><b>{{r.degreeProgram.name}}</b> ({{r.degreeProgram.level}}) report for {{r.year|add:"-1"}}-{{r.year}}
@@ -35,7 +35,7 @@
     </li>
 
     {% empty %}
-        Your department does not have any graded reports from this year.
+        Your department does not have any reviewed reports from this year.
     {% endfor %}
     </ul>
     {% endif %}

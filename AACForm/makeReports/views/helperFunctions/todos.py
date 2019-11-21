@@ -4,7 +4,7 @@ Generates the to-do list for each section
 from makeReports.models import *
 from makeReports.forms import *
 from django.contrib.auth.models import User
-
+from .text_processing import blooms_suggestion, is_complex
 def section1ToDo(report):
     """
     Generates the ToDo list for section 1 and first page of report, includes things missing from the beginning of the report
@@ -31,6 +31,12 @@ def section1ToDo(report):
         toDos['r'].append(("Create an SLO",1))
     if SLOsToStakeholder.objects.filter(report=report).count() is 0:
         toDos['r'].append(("Add description of how SLOs are communicated to stakeholders",1))
+    for slo in slos:
+        b = blooms_suggestion(slo.goalText)
+        if b != slo.slo.get_blooms_display:
+            toDos['s'].append(("Set the Bloom's level of SLO "+str(slo.number)+" to "+b,1))
+        if is_complex(slo.goalText):
+            toDos['s'].append(("Simplify or split SLO "+str(slo.number)+" into multiple, focused SLOs",1))
     return toDos, slos
 def section2ToDo(report):
     """

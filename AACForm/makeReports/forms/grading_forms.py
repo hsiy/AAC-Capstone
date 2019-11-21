@@ -7,6 +7,8 @@ from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
 from .cleaners import cleanText
 from django.core.exceptions import ValidationError
+from .cleaners import CleanSummer
+
 
 class SectionRubricForm(forms.Form):
     """
@@ -160,3 +162,9 @@ class SubmitGrade(forms.Form):
         super().clean()
         if not self.valid:
             raise forms.ValidationError("Not all rubric items have been graded.")
+class OverallCommentForm(CleanSummer,forms.Form):
+    """
+    Form for the overall comment
+    """
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:445px','summernote': {'width' : '415px'}}),label="")
+    summer_max_length = 2000
