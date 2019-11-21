@@ -25,7 +25,7 @@ class CreateNewAssessment(forms.Form):
     frequencyChoice = forms.ChoiceField(label="Frequency of Data Collection", choices=FREQUENCY_CHOICES, widget=forms.Select(attrs={'class':'form-control col-4'}))
     frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(attrs={'style':'width:750px'}),required=False)
     threshold = forms.CharField(max_length=500,label="Proficiency Threshold", widget=forms.TextInput(attrs={'class':'form-control col-6'}))
-    target = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'class':'form-control col-3','addon_after':'%','placeholder':'Target'}), label="Program Proficiency Target: Percentage of students that achieve the proficiency threshold")
+    target = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'class':'form-control col-2','addon_after':'%','placeholder':'Target'}), label="Program Proficiency Target: Percentage of students that achieve the proficiency threshold")
     
     def __init__(self,*args,**kwargs):
         """

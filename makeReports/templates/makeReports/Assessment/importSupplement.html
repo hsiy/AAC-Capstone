@@ -21,7 +21,7 @@
         {% endbuttons %}
 </form>
 <h5>Select Supplement to Import</h5>
-<form method="post" class="form" enctype="multipart/form-data">
+<form method="post" class="form col-6" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
