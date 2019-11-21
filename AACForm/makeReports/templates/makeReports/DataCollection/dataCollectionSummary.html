@@ -17,6 +17,10 @@
         <div class="row-sh">
             <div class="column-15">
                 <h4>Data Table</h4>
+                <p>
+                    Aggregate values and SLO statuses in bold have been manually changed and will not update automatically.
+                </p>
+                <br>
             </div>
         </div>
         <div class="row-sh">
@@ -65,7 +69,9 @@
 
                     <div class="column-1">
                         {% if assessment.agg %}
-                        {{assessment.agg}}%
+                        <div {% if assessment.agg.override %} style="font-weight: bold;" {% endif %}>
+                            {{assessment.agg}}%
+                        </div>
                         {% endif %}
                     </div>
 
@@ -146,7 +152,9 @@
                             href="{% url 'makeReports:add-slo-status' report=rpt.pk slopk=slo_status.slo_pk %}">Edit</a>
                     </td>
                     {% else %}
-                    <td>{{ slo_status.slo_status }}</td>
+                    <td {% if slo_status.slo_status_ovr %} style="font-weight:bold" {% endif %}>
+                        {{ slo_status.slo_status }}
+                    </td>
                     <td>
                         <a role="button" title="Edit Status" class="btn btn-primary"
                             href="{% url 'makeReports:edit-slo-status' report=rpt.pk slopk=slo_status.slo_pk statuspk=slo_status.slo_status_pk %}">Edit</a>

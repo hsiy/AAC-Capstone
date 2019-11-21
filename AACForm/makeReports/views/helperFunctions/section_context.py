@@ -101,6 +101,7 @@ def section3Context(self,context):
         try:
             slo_status_obj = SLOStatus.objects.get(sloIR=sloir)
             temp_dict['slo_status'] = slo_status_obj.status
+            temp_dict['slo_status_ovr'] = slo_status_obj.override
             temp_dict['slo_status_pk'] = slo_status_obj.pk
         except:
             temp_dict['slo_status'] = None
