@@ -60,6 +60,13 @@
               Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
             {% endif %}
             <h5>Rubric</h5>
+              <form method="post" class="form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% endbuttons %}
+              </form>
                 <table>
                   {% for GRI in object_list %}
                     <tr>

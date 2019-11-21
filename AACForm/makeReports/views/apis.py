@@ -131,15 +131,6 @@ class SloByDPListAPI(generics.ListAPIView):
         qS = super(SloByDPListAPI,self).get_queryset()
         qS = qS.order_by('slo','-report__year').distinct('slo')
         return qS
-# class AssessmentSLOFilterClass(filters.FilterSet):
-#     class Meta:
-#         model = AssessmentVersion
-#         fields = {
-#             'slo__slo':['exact'],
-#             'report__year':['gte','lte'],
-#         }
-#     def get_filterset(self,request,queryset,view):
-#         querys
 class AssessmentBySLO(generics.ListAPIView):
     """
     Filters AssessmentVersion to get the most recent assessment version for each parent assessment
@@ -363,25 +354,39 @@ def get_degreeProgramSuccess_graph(request):
     }
     index = []
     
-    ds = depQS.values('name')
+    # ds = depQS.values('name')
     
-    for d in ds.iterator():
-        name = d.get('name')
-        new = {name: []}
-        dataFrame.update(new)
+    # for d in ds.iterator():
+    #     name = d.get('name')+" ("+d.get('level')+")"
+    #     new = {name: []}
+    #     dataFrame.update(new)
 
     for year in range(bYear,eYear+1):
         qYear = queryset.filter(report__year=year)
-        for name in dataFrame.keys():
-            if name is not "Year":
-                qDP = qYear.filter(report__degreeProgram__name = str(name))
-                overall = qDP.count()
-                if overall != 0:
-                    met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-                    metP = met/overall
-                else:
-                    metP = 0
+        for d in depQS:
+            qDP = qYear.filter(report__degreeProgram = d)
+            overall = qDP.count()
+            if overall != 0:
+                met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+                metP = met/overall
+            else:
+                metP = 0 
+            name = d.name+" ("+d.level+")"
+            try:
                 dataFrame[name].append(metP)
+            except:
+                new = {name:[metP]}
+                dataFrame.update(new)
+        # for name in dataFrame.keys():
+        #     if name is not "Year":
+        #         qDP = qYear.filter(report__degreeProgram__name = str(name))
+        #         overall = qDP.count()
+        #         if overall != 0:
+        #             met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
+        #             metP = met/overall
+        #         else:
+        #             metP = 0
+        #         dataFrame[name].append(metP)
         dataFrame['Year'].append(year)
     df = pd.DataFrame(dataFrame)
     yVals = list(dataFrame.keys()).remove('Year')
@@ -389,6 +394,7 @@ def get_degreeProgramSuccess_graph(request):
     lines.set(xlabel="Year", ylabel="Percentage")
     lines.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y))) 
     figure = lines.get_figure()
+    return figure
 class createGraphAPI(views.APIView):
     """
     JSON API to get url of graph on file server with specified college,

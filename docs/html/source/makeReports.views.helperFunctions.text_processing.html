@@ -149,6 +149,31 @@
 <span id="makereports-views-helperfunctions-text-processing-module"></span><h1>makeReports.views.helperFunctions.text_processing module<a class="headerlink" href="#module-makeReports.views.helperFunctions.text_processing" title="Permalink to this headline">¶</a></h1>
 <p>This file contains helper functions for text processing.</p>
 <dl class="function">
+<dt id="makeReports.views.helperFunctions.text_processing.add_other_tenses">
+<code class="sig-prename descclassname">makeReports.views.helperFunctions.text_processing.</code><code class="sig-name descname">add_other_tenses</code><span class="sig-paren">(</span><em class="sig-param">words</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.helperFunctions.text_processing.add_other_tenses" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Naively (i.e. sometimes wrongly) adds additional tenses of words to list of words</div>
+</div>
+<div class="line-block">
+<div class="line">Assumes all words in list are the roots of verb</div>
+</div>
+<div class="line-block">
+<div class="line">Specifically adds simple and progressive past and present (which encompasses most tenses for semi-regular verbs)</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>words</strong> (<em>list</em>) – list of words (assumed to be verbs) to add additional tenses for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>words appended with other tenses</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="makeReports.views.helperFunctions.text_processing.blooms_suggestion">
 <code class="sig-prename descclassname">makeReports.views.helperFunctions.text_processing.</code><code class="sig-name descname">blooms_suggestion</code><span class="sig-paren">(</span><em class="sig-param">in_string</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.helperFunctions.text_processing.blooms_suggestion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates suggestion of Bloom’s taxonomy level</p>
@@ -164,6 +189,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="function">
+<dt id="makeReports.views.helperFunctions.text_processing.blooms_words">
+<code class="sig-prename descclassname">makeReports.views.helperFunctions.text_processing.</code><code class="sig-name descname">blooms_words</code><span class="sig-paren">(</span><em class="sig-param">level</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.helperFunctions.text_processing.blooms_words" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="makeReports.views.helperFunctions.text_processing.create_suggestions_dict">

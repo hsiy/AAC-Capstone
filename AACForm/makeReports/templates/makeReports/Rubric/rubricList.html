@@ -12,10 +12,10 @@
 
 <ul class="list-group">
 {% for rb in object_list %}
-    <li class = "list-group-item">Rubric {{rb.name}} from year {{rb.date.year}}
+    <li class = "list-group-item"><p>Rubric {{rb.name}} from year {{rb.date.year}}</p>
             <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-RI' rubric=rb.pk %}">Add Rubric Items</a>
             <a  role="button" class="btn btn-primary" href="{% url 'makeReports:view-rubric' pk=rb.pk %}">View Rubric</a>
-            <a class="btn btn-primary"  role="button" href="{% url 'makeReports:rubric-auto-pdf' rubric=rb.pk %}">Auto-generate and Set Rubric PDF </a>
+            <a class="btn btn-primary"  role="button" href="{% url 'makeReports:rubric-auto-pdf' rubric=rb.pk %}">Auto-Generate and Set Rubric PDF </a>
             <a  role="button" class="btn btn-primary" href="{% url 'makeReports:update-rubric' pk=rb.pk %}">Update Name or Rubric File</a>
             <a  role="button" class="btn btn-primary" href="{% url 'makeReports:dup-rub' rubric=rb.pk %}">Duplicate Rubric</a>
             <a  role="button" class="btn btn-danger" href="{% url 'makeReports:delete-rubric' pk=rb.pk %}">Delete Rubric</a>
