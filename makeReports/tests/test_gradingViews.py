@@ -33,6 +33,14 @@ class GradingSectionsTest(ReportAACSetupTest):
         self.rI4 = mommy.make("GradedRubricItem", rubric=self.rub, item=self.rInG4)
         self.rpt.rubric = self.rub
         self.rpt.save()
+    def test_entry(self):
+        """
+        Tests the grading entry page exists
+        """
+        resp = self.client.get(reverse('makeReports:grade-entry',kwargs={
+            'report':self.rpt.pk
+        }))
+        self.assertEquals(resp.status_code,200)
     def test_sec1_get(self):
         """
         Tests that the section 1 grading page works as expected
