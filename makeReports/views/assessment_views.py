@@ -236,7 +236,6 @@ class ImportAssessment(DeptReportMixin,FormView):
         r = self.report
         context['currentDPpk'] = r.degreeProgram.pk
         context['degPro_list'] = DegreeProgram.objects.filter(department=r.degreeProgram.department)
-        context['slo_list'] = SLOInReport.objects.filter(report=r).order_by("number").union(SLOInReport.objects.filter(report__degreeProgram__department=r.degreeProgram.department).exclude(report=r).order_by("number"),all=True)
         return context
 class ImportAssessmentSLO(ImportAssessment):
     """
