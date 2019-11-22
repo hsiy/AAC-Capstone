@@ -82,6 +82,7 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Graph
         fields = "__all__"
+
 class DeptByColListAPI(generics.ListAPIView):
     """
     JSON API to gets active departments within specified college
@@ -160,6 +161,41 @@ class AssessmentBySLO(generics.ListAPIView):
         qS = super(AssessmentBySLO,self).get_queryset()
         qS = qS.order_by('assessment','-report__year').distinct('assessment')
         return qS
+class ImportYearsAPI(APIView):
+    """
+    Generates list of years a degree program submitted a report
+    """
+    renderer_classes = [JSONRenderer]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request,format=None):
+        """
+        Returns years in reverse chronological order where degree program submitted a report
+
+        Args:
+            request (HttpRequest): the request to the API
+            format (None): not used
+        Returns:
+            list : list of years formatted in JSON
+        Notes:
+            Expects 'pk' GET parameter, that is the primary key of the degree program of interest
+        """
+        pk = int(request.query_params['pk'])
+        if pk>=0:
+            years = Report.objects.filter(
+                degreeProgram__pk=pk
+                ).order_by("-year").distinct('year').values('year')
+        else:
+            years = Report.objects.filter(
+                degreeProgram__department=request.user.profile.department
+                ).order_by("-year").distinct('year').values('year')
+        yearsFormatted = []
+        for year in years:
+            yearsFormatted.append({
+                "value": year["year"],
+                "label": str(int(year["year"])-1)+"-"+str(year["year"])
+            })
+        return Response(yearsFormatted)
 
 class SLOSuggestionsAPI(APIView):
     """
@@ -171,6 +207,10 @@ class SLOSuggestionsAPI(APIView):
     def post(self, request, format=None):
         """
         When API is posted to return dictonary of suggestions
+
+        Args:
+            request (HttpRequest): request to API
+            format (None): not used
 
         Returns:
             dict : dictionary of suggestions relating to SLO
@@ -188,6 +228,10 @@ class BloomsSuggestionsAPI(APIView):
     def post(self, request, format=None):
         """
         When API is posted to return dictonary of suggestions
+
+        Args:
+            request (HttpRequest): request to API
+            format (None): not used
 
         Returns:
             dict : dictionary of suggestions relating to SLO

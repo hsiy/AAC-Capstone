@@ -282,7 +282,6 @@ href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
                 updateAssesses: function(){
                     if(this.graph_opt==1){
                         sloHere = this.slos.find(el => el.pk==this.slo);
-                        console.log(sloHere)
                         fetch("{% url 'makeReports:api-assess-by-slo' %}?slo__slo="+sloHere.slo.pk
                         +"&report__year__gte="+this.date1+"&report__year__lte="+this.date2)
                             .then(response => {
