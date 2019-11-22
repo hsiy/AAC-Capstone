@@ -190,6 +190,7 @@ urlpatterns = [
     re_path(r'^api/graph/$', views.createGraphAPI.as_view(),name='api-new-graph'),
     re_path(r'^api/blooms/$', views.BloomsSuggestionsAPI.as_view(), name='api-bloom-words'),
     re_path(r'^api/import/years/$', views.ImportYearsAPI.as_view(), name='api-impt-years'),
+    re_path(r'^api/override/clear/$', views.ClearOverrideAPI.as_view(), name='api-clear-ovr'),
     #Graphing
     re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
     re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),

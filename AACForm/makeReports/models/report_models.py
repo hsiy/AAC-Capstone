@@ -234,7 +234,7 @@ def calcWeightedAgg(assessment, sigType, pk):
     Args:
         assessment (~makeReports.models.AssessmentVersion) : the assessment to calculate the aggregate for
         sigType (int): signal type - 0 is post-save, 1 is pre-delete
-        pk (int): primary key of instance that changed
+        pk (int): primary key of instance that changed (only needed if pre-delete)
 
     Returns:
         int : the weighted aggregate

@@ -19,6 +19,7 @@
                 <h4>Data Table</h4>
                 <p>
                     Aggregate values and SLO statuses in bold have been manually changed and will not update automatically.
+                    <button type="submit" class="btn btn-primary" onclick="clearOver()">Clear Overrides</button>
                 </p>
                 <br>
             </div>
@@ -218,4 +219,16 @@
             href="{% url 'makeReports:decisions-actions-summary' report=rpt.pk %}">Next</a>
     </div>
 </div>
+{% endblock %}
+{% block in_endscripts %}
+<script type='text/javascript'>
+/**
+ * Calls API to clear overrides on statuses and aggregates, 
+ * then refreshes page
+ */
+ const clearOver = async() =>{
+    const response = await fetch("{% url 'makeReports:api-clear-ovr' %}?pk={{rpt.pk}}");
+    window.location.reload();
+}
+</script>
 {% endblock %}
