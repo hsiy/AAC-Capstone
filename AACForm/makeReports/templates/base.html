@@ -7,17 +7,18 @@
 	<title>Academic Assessment Reports</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	{# Load the tag library #}
-	{% load bootstrap4 %}
 
 	{# Load CSS and JavaScript #}
-	{% bootstrap_css %}
-	{% bootstrap_javascript jquery='full' %}
+	{% load bootstrap4 %}
+	
 	<style>
 	.btn {
 		margin: 5px 5px 5px 5px;
 	}
 	</style>
 	{% block styles %}{% endblock %}
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.27/bootstrap-native-v4.min.js"></script>
+	{% bootstrap_css %}
 </head>
 <body>
 	<div id="header-wrapper">
