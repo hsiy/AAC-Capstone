@@ -8,3 +8,4 @@ from .test_dataCollection import *
 from .test_DecActsViews import *
 from .test_APIs import *
 from .test_graphingCSV import *
+from .test_mixins import *

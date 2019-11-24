@@ -38,7 +38,7 @@ class ClearOverrideAPI(APIView):
         rpt = Report.objects.get(pk=pk)
         if((rpt.degreeProgram.department==request.user.profile.department) or request.user.profile.aac):
             #only proceed if the person truly has the right to modify the report
-            statuses = SLOStatus.objects.filter(report__pk=pk, override=True)
+            statuses = SLOStatus.objects.filter(sloIR__report__pk=pk, override=True)
             for status in statuses:
                 status.override = False
                 aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=status.sloIR)

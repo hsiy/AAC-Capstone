@@ -92,7 +92,7 @@ def section4ToDo(report):
         Last section, so extra return values are unneeded
     """
     toDos, slos, assess, data = section3ToDo(report)
-    dAs = DecisionsActions.objects.filter(report=report)
+    dAs = DecisionsActions.objects.filter(sloIR__report=report)
     for slo in slos:
         if dAs.filter(sloIR=slo).count() is 0:
             toDos['r'].append(("Add a description of decisions and actions relating to SLO "+str(slo.number),4))

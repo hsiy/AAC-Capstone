@@ -84,6 +84,8 @@ def calcWeightedAgg(assessment, sigType, pk):
     for dat in data:
         totalStudents += dat.numberStudents
         totalProf += dat.numberStudents*dat.overallProficient
+    if totalStudents==0:
+        return 0
     return round(totalProf/totalStudents)
 class AssessmentAggregate(models.Model):
     """
@@ -155,11 +157,11 @@ def update_status_by_agg(sender, instance, sigType):
             sS.save()
         else:
             if met:
-                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
+                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sloIR)
             elif partiallyMet:
-                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
+                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sloIR)
             else:
-                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
+                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sloIR)
 class DataAdditionalInformation(models.Model):
     """
     Model to hold additional information about the data, possibly with a PDF supplement
@@ -176,9 +178,7 @@ class SLOStatus(models.Model):
     """
     Status of whether the target was met for an SLO
     """
-    report = models.ForeignKey('Report', on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=SLO_STATUS_CHOICES)
-    SLO = models.ForeignKey('SLO', on_delete=models.CASCADE)
     sloIR = models.OneToOneField('SLOInReport',on_delete=models.CASCADE)
     override = models.BooleanField(default=False)
 class ResultCommunicate(models.Model):
