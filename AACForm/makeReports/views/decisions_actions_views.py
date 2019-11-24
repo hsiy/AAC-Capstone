@@ -57,8 +57,6 @@ class AddDecisionAction(DeptReportMixin,CreateView):
         """
         Sets the SLO and Report appropriately, then creates the object from the form
         """
-        form.instance.SLO = self.slo.slo
-        form.instance.report = self.report
         form.instance.sloIR = self.slo
         return super(AddDecisionAction,self).form_valid(form)
     def get_success_url(self):

@@ -16,8 +16,6 @@ class DecisionsActions(models.Model):
     """
     Model of decisions/actions for a report
     """
-    SLO = models.ForeignKey('SLO', on_delete=models.CASCADE)
-    report = models.ForeignKey('Report', on_delete=models.CASCADE)
     sloIR = models.OneToOneField('SLOInReport', on_delete=models.CASCADE)
     text = models.CharField(max_length=3000, blank=True, default="")
 

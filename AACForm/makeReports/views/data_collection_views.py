@@ -241,9 +241,7 @@ class NewSLOStatus(DeptReportMixin,FormView):
             form (SLOStatusForm): completed form to process
         """
         slo_status_obj = SLOStatus.objects.create(
-            report = self.report, 
             status = form.cleaned_data['status'], 
-            SLO = self.slo.slo, 
             sloIR=self.slo,
             override = True)
         slo_status_obj.save()
@@ -305,8 +303,6 @@ class EditSLOStatus(DeptReportMixin,FormView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        self.slo_status.report = self.report
-        self.slo_status.SLO = self.slo.slo
         self.slo_status.status = form.cleaned_data['status']
         self.slo_status.override = True
         self.slo_status.save()

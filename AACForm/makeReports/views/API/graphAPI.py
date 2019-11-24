@@ -21,6 +21,7 @@ import io
 from datetime import datetime, timedelta
 from matplotlib.ticker import FuncFormatter
 import pandas as pd
+import json
 
 def get_specificSLO_graph(request):
     """
@@ -86,16 +87,15 @@ def get_numberSLOs_graph(request):
     """
     begYear=request.data['report__year__gte']
     endYear = request.data['report__year__lte']
-    sloWeights = request.data['sloWeights']
+    sloWeights = json.loads(request.data['sloWeights'])
     bYear=int(begYear)
     eYear=int(endYear)
     degreeProgram = request.data['report__degreeProgram']
     queryset = SLOStatus.objects.filter(
-        report__year__gte = begYear,
-        report__year__lte = endYear,
-        report__degreeProgram__pk = degreeProgram
+        sloIR__report__year__gte = begYear,
+        sloIR__report__year__lte = endYear,
+        sloIR__report__degreeProgram__pk = degreeProgram
         )
-    
     dataFrame = {
         'Year':[],
         'Met': [],
@@ -105,7 +105,7 @@ def get_numberSLOs_graph(request):
     }
 
     for year in range(bYear,eYear+1):
-        qYear = queryset.filter(report__year=year)
+        qYear = queryset.filter(sloIR__report__year=year)
         overall = qYear.count()
         if overall != 0:
             met = 0
@@ -115,16 +115,16 @@ def get_numberSLOs_graph(request):
             for weightPk in sloWeights.keys():
                 met += qYear.filter(
                     status=SLO_STATUS_CHOICES[0][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
                 partiallyMet += qYear.filter(
                     status=SLO_STATUS_CHOICES[1][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
                 notMet += qYear.filter(
                     status=SLO_STATUS_CHOICES[2][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
                 unknown += qYear.filter(
                     status=SLO_STATUS_CHOICES[3][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
             # met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
             # partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
             # notMet = qYear.filter(status=SLO_STATUS_CHOICES[2][0]).count()
@@ -170,9 +170,9 @@ def get_degreeProgramSuccess_graph(request):
     eYear=int(endYear)
     thisDep = request.data['report__degreeProgram__department']
     queryset = SLOStatus.objects.filter(
-        report__year__gte=begYear,
-        report__year__lte = endYear,
-        report__degreeProgram__department__pk = thisDep
+        sloIR__report__year__gte=begYear,
+        sloIR__report__year__lte = endYear,
+        sloIR__report__degreeProgram__department__pk = thisDep
         )
     #dpQS = DegreeProgram.active_objects.all()
     depQS = DegreeProgram.active_objects.filter(department=thisDep)
@@ -189,9 +189,9 @@ def get_degreeProgramSuccess_graph(request):
     #     dataFrame.update(new)
 
     for year in range(bYear,eYear+1):
-        qYear = queryset.filter(report__year=year)
+        qYear = queryset.filter(sloIR__report__year=year)
         for d in depQS:
-            qDP = qYear.filter(report__degreeProgram = d)
+            qDP = qYear.filter(sloIR__report__degreeProgram = d)
             overall = qDP.count()
             if overall != 0:
                 met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()

@@ -554,9 +554,6 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
             else:
                 a.numberOfUses -= 1
                 a.save()
-        dAs = DecisionsActions.objects.filter(report=self.report, SLO=self.slo)
-        for dA in dAs:
-            dA.delete()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class DeleteNewSLO(DeptReportMixin,DeleteView):
     """
@@ -610,8 +607,5 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
             else:
                 a.numberOfUses -= 1
                 a.save()
-        dAs = DecisionsActions.objects.filter(report=self.report, SLO=self.slo)
-        for dA in dAs:
-            dA.delete()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 
