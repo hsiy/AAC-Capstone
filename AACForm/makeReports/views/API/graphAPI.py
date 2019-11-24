@@ -1,5 +1,5 @@
 """
-This file contains the JSON APIs used
+This file contains the APIs to return graphs
 """
 from rest_framework import generics
 from rest_framework import views, status
@@ -20,181 +20,9 @@ import matplotlib.pyplot as plt
 import io
 from datetime import datetime, timedelta
 from matplotlib.ticker import FuncFormatter
-
 import pandas as pd
+import json
 
-
-class DeptSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes departments to JSON with the primary key and name
-    """
-    class Meta:
-        model = Department
-        fields = ['pk','name']
-class ProgSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes degree programs to JSON with the primary key, name, and level
-    """
-    class Meta:
-        model = DegreeProgram
-        fields = ['pk', 'name', 'level']
-class SLOserializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes SLOs to JSON with the primary key and name
-    """
-    class Meta:
-        model = SLOInReport
-        fields = ['pk', 'goalText']
-class SLOParentSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes :class:`~makeReports.models.SLO` into just its primary key
-    """
-    class Meta:
-        model = SLO
-        fields = ['pk']
-class SLOSerializerWithParent(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes SLOs (:class:`~makeReports.models.SLOInReport`) to JSON with the primary key and name and primary key of SLO
-    """
-    slo = SLOParentSerializer()
-    class Meta:
-        model = SLOInReport
-        fields = ['pk', 'goalText','slo']
-class AssessmentParentSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes parent assessments (:class:`~makeReports.models.Assessment`) into its primary key and title
-    """
-    class Meta:
-        model = Assessment
-        fields = ['pk','title']
-class Assessmentserializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes assessments (:class:`~makeReports.models.AssessmentVersion`) to JSON with the primary key and and title
-    """
-    assessment =AssessmentParentSerializer()
-    class Meta:
-        model = SLOInReport
-        fields = ['pk', 'assessment']
-class FileSerializer(serializers.HyperlinkedModelSerializer):
-    """
-    Serializes graphs to JSON with all fields 
-    """
-    class Meta:
-        model = Graph
-        fields = "__all__"
-class DeptByColListAPI(generics.ListAPIView):
-    """
-    JSON API to gets active departments within specified college
-
-    Notes:
-        'college' is GET parameter to filter college primary key
-    """
-    queryset = Department.active_objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = (['college'])
-    serializer_class = DeptSerializer
-class ProgByDeptListAPI(generics.ListAPIView):
-    """
-    JSON API to gets active degree programs within specified department
-
-    Notes:
-        'department' is GET parameter to filter by department primary key
-    """
-    queryset = DegreeProgram.active_objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = (['department'])
-    serializer_class = ProgSerializer
-class SloByDPListAPI(generics.ListAPIView):
-    """
-    JSON API to gets past SLOs :class:`~makeReports.models.SLO` within specified degree program
-    
-    Notes:
-        'report__degreeProgram' (degreeProgram primary key), 'report__year__gte' (min year),
-        'report__year__lte' (max year) are the GET request parameters
-    """
-    queryset = SLOInReport.objects.all()
-    #Gets the most recent SLOInReport for each SLO
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = {'report__degreeProgram':['exact'],
-    'report__year':['gte','lte'],
-    }
-    serializer_class = SLOSerializerWithParent
-    def get_queryset(self):
-        """
-        Gets the filtered queryset, and picks the most recent SLOInReport for each parent SLO
-
-        Returns:
-            QuerySet : queryset of SLOs that match parameters
-        Notes:
-            .order_by(...).distinct(...) is only supported by PostgreSQL
-        """
-        qS = super(SloByDPListAPI,self).get_queryset()
-        qS = qS.order_by('slo','-report__year').distinct('slo')
-        return qS
-class AssessmentBySLO(generics.ListAPIView):
-    """
-    Filters AssessmentVersion to get the most recent assessment version for each parent assessment
-
-    Notes:
-        'slo__slo' (parent SLO pk), 'report__year__gte' (min year), 'report__year__lte' (max year)
-        are the GET parameters
-    """
-    #queryset = AssessmentVersion.objects.order_by('assessment','-report__year').distinct('assessment')
-    queryset = AssessmentVersion.objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = {
-        'slo__slo':['exact'],
-        'report__year':['gte','lte'],
-    }
-    serializer_class = Assessmentserializer
-    #filterset_class = AssessmentSLOFilterClass
-    def get_queryset(self):
-        """
-        Gets the filtered queryset, and picks the most recent AssessmentVersion for each parent Assessment
-
-        Returns:
-            QuerySet : queryset of assessments that match parameters
-        Notes:
-            .order_by(...).distinct(...) is only supported by PostgreSQL
-        """
-        qS = super(AssessmentBySLO,self).get_queryset()
-        qS = qS.order_by('assessment','-report__year').distinct('assessment')
-        return qS
-
-class SLOSuggestionsAPI(APIView):
-    """
-    Generates suggestions for SLOs based upon goal text
-    """
-    renderer_classes = [JSONRenderer]
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-    def post(self, request, format=None):
-        """
-        When API is posted to return dictonary of suggestions
-
-        Returns:
-            dict : dictionary of suggestions relating to SLO
-        """
-        slo_text = request.data['slo_text']
-        response = text_processing.create_suggestions_dict(slo_text)
-        return(Response(response))
-class BloomsSuggestionsAPI(APIView):
-    """
-    Returns suggested words based upon Bloom's level
-    """
-    renderer_classes = [JSONRenderer]
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-    def post(self, request, format=None):
-        """
-        When API is posted to return dictonary of suggestions
-
-        Returns:
-            dict : dictionary of suggestions relating to SLO
-        """
-        level = request.data['level']
-        response = text_processing.blooms_words(level)
-        return(Response(response))
 def get_specificSLO_graph(request):
     """
     Graphs a specific SLO/Assessment combo performance over time
@@ -259,16 +87,15 @@ def get_numberSLOs_graph(request):
     """
     begYear=request.data['report__year__gte']
     endYear = request.data['report__year__lte']
-    sloWeights = request.data['sloWeights']
+    sloWeights = json.loads(request.data['sloWeights'])
     bYear=int(begYear)
     eYear=int(endYear)
     degreeProgram = request.data['report__degreeProgram']
     queryset = SLOStatus.objects.filter(
-        report__year__gte = begYear,
-        report__year__lte = endYear,
-        report__degreeProgram__pk = degreeProgram
+        sloIR__report__year__gte = begYear,
+        sloIR__report__year__lte = endYear,
+        sloIR__report__degreeProgram__pk = degreeProgram
         )
-    
     dataFrame = {
         'Year':[],
         'Met': [],
@@ -278,7 +105,7 @@ def get_numberSLOs_graph(request):
     }
 
     for year in range(bYear,eYear+1):
-        qYear = queryset.filter(report__year=year)
+        qYear = queryset.filter(sloIR__report__year=year)
         overall = qYear.count()
         if overall != 0:
             met = 0
@@ -288,16 +115,16 @@ def get_numberSLOs_graph(request):
             for weightPk in sloWeights.keys():
                 met += qYear.filter(
                     status=SLO_STATUS_CHOICES[0][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
                 partiallyMet += qYear.filter(
                     status=SLO_STATUS_CHOICES[1][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
                 notMet += qYear.filter(
                     status=SLO_STATUS_CHOICES[2][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
                 unknown += qYear.filter(
                     status=SLO_STATUS_CHOICES[3][0],
-                    SLO__pk=weightPk).count()*int(sloWeights[weightPk])
+                    sloIR__slo__pk=weightPk).count()*int(sloWeights[weightPk])
             # met = qYear.filter(status=SLO_STATUS_CHOICES[0][0]).count()
             # partiallyMet = qYear.filter(status=SLO_STATUS_CHOICES[1][0]).count()
             # notMet = qYear.filter(status=SLO_STATUS_CHOICES[2][0]).count()
@@ -343,9 +170,9 @@ def get_degreeProgramSuccess_graph(request):
     eYear=int(endYear)
     thisDep = request.data['report__degreeProgram__department']
     queryset = SLOStatus.objects.filter(
-        report__year__gte=begYear,
-        report__year__lte = endYear,
-        report__degreeProgram__department__pk = thisDep
+        sloIR__report__year__gte=begYear,
+        sloIR__report__year__lte = endYear,
+        sloIR__report__degreeProgram__department__pk = thisDep
         )
     #dpQS = DegreeProgram.active_objects.all()
     depQS = DegreeProgram.active_objects.filter(department=thisDep)
@@ -362,9 +189,9 @@ def get_degreeProgramSuccess_graph(request):
     #     dataFrame.update(new)
 
     for year in range(bYear,eYear+1):
-        qYear = queryset.filter(report__year=year)
+        qYear = queryset.filter(sloIR__report__year=year)
         for d in depQS:
-            qDP = qYear.filter(report__degreeProgram = d)
+            qDP = qYear.filter(sloIR__report__degreeProgram = d)
             overall = qDP.count()
             if overall != 0:
                 met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
@@ -434,5 +261,3 @@ class createGraphAPI(views.APIView):
             return Response(graphObj.graph.url)
         else:
             return Response("error",status.HTTP_404_NOT_FOUND)
-
-

@@ -94,8 +94,6 @@ class APITesting(NonAACTest):
         slo = mommy.make("SLOInReport",report=r)
         assessHere = mommy.make("AssessmentVersion",report=r,slo=slo)
         mommy.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
-        mommy.make("AssessmentAggregate",assessmentVersion=assessHere,aggregate_proficiency=83)
-        mommy.make("SLOStatus",SLO=slo.slo,sloIR=slo,status=SLO_STATUS_CHOICES[0][0])
         data = {
             'report__degreeProgram__department': department.pk,
             'report__degreeProgram': program.pk,
@@ -104,7 +102,7 @@ class APITesting(NonAACTest):
             'decision': 1,
             'sloIR': slo.pk,
             'assess': assessHere.assessment.pk,
-            'sloWeights': {slo.pk: 1}
+            'sloWeights': "{\""+str(slo.pk)+"\": 1}"
         }
         resp = self.client.post(reverse('makeReports:api-new-graph'),data)
         self.assertEquals(resp.status_code,200)
@@ -118,8 +116,6 @@ class APITesting(NonAACTest):
         slo = mommy.make("SLOInReport",report=r)
         assessHere = mommy.make("AssessmentVersion",report=r,slo=slo)
         mommy.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
-        mommy.make("AssessmentAggregate",assessmentVersion=assessHere,aggregate_proficiency=83)
-        mommy.make("SLOStatus",SLO=slo.slo,sloIR=slo,status=SLO_STATUS_CHOICES[0][0])
         data = {
             'report__degreeProgram__department': department.pk,
             'report__degreeProgram': program.pk,
@@ -128,7 +124,7 @@ class APITesting(NonAACTest):
             'decision': 2,
             'sloIR': slo.pk,
             'assess': assessHere.assessment.pk,
-            'sloWeights': {slo.pk: 1}
+            'sloWeights': "{\""+str(slo.pk)+"\": 1}"
         }
         resp = self.client.post(reverse('makeReports:api-new-graph'),data)
         self.assertEquals(resp.status_code,200)
@@ -142,8 +138,6 @@ class APITesting(NonAACTest):
         slo = mommy.make("SLOInReport",report=r)
         assessHere = mommy.make("AssessmentVersion",report=r,slo=slo)
         mommy.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
-        mommy.make("AssessmentAggregate",assessmentVersion=assessHere,aggregate_proficiency=83)
-        mommy.make("SLOStatus",SLO=slo.slo,sloIR=slo,status=SLO_STATUS_CHOICES[0][0])
         data = {
             'report__degreeProgram__department': department.pk,
             'report__degreeProgram': program.pk,
@@ -152,7 +146,7 @@ class APITesting(NonAACTest):
             'decision': 3,
             'sloIR': slo.pk,
             'assess': assessHere.assessment.pk,
-            'sloWeights': {slo.pk: 1}
+            'sloWeights': "{\""+str(slo.pk)+"\": 1}"
         }
         resp = self.client.post(reverse('makeReports:api-new-graph'),data)
         self.assertEquals(resp.status_code,200)

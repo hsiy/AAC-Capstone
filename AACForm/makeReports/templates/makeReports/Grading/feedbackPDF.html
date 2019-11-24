@@ -9,16 +9,22 @@
                 {% load bootstrap4 %}
             
                 {# Load CSS and JavaScript #}
-                {% block styles %}{% endblock %}
+                {% block styles %}
+                <style>
+                p{
+                    display: inline;
+                }
+                </style>
+                {% endblock %}
             </head>
     <body>
 <div class="padd bT">
 <table class="table" style="border: 1px solid black;width:100%">
     <thead>
-        <th scope="col" colspan="2">Category</th>
-        <th scope="col" class="table-danger" style="width:13%;text-align:center;">Red<br>(Does not meet/<br>Did not include)</th>
-        <th scope="col" class="table-warning" style="width:13%;text-align:center;">Yellow<br>(Meets with Concerns)</th>
-        <th scope="col" class="table-success" style="width:13%;text-align:center">Green<br>(Meets)</th>
+        <th scope="col">Category</th>
+        <th scope="col" class="table-danger" style="width:24%;text-align:center;">Red<br>(Did not meet/<br>Did not include)</th>
+        <th scope="col" class="table-warning" style="width:24%;text-align:center;">Yellow<br>(Meets with Concerns)</th>
+        <th scope="col" class="table-success" style="width:24%;text-align:center">Green<br>(Meets)</th>
     </thead>
     <tr class="table-secondary" style="background-color:E0E0E0;">
         <td colspan="5">
@@ -30,17 +36,14 @@
         <td>
             {{r.item.text|safe}}
         </td>
-        <td style="width:4%">
-            {{r.item.abbreviation}}
+        <td class="table-danger ">
+                {% if r.grade == 'DNM' %}☒{% else %}☐{% endif %} {{r.item.DMEtext|safe}}
         </td>
-        <td class="table-danger" style="text-align: center;">
-            {% if r.grade == 'DNM' %}X{% endif %}
+        <td class="table-warning" >
+            {% if r.grade == 'MC' %}☒{% else %}☐{% endif %} {{r.item.MEtext|safe}}
         </td>
-        <td class="table-warning" style="text-align: center;">
-            {% if r.grade == 'MC' %}X{% endif %}
-        </td>
-        <td class="table-success" style="text-align: center;">
-            {% if r.grade == 'ME' %}X{% endif %}
+        <td class="table-success">
+            {% if r.grade == 'ME' %}☒{% else %}☐{% endif %} {{r.item.EEtext|safe}}
         </td>
     </tr>
     {% endfor %}
@@ -54,17 +57,14 @@
         <td>
             {{r.item.text|safe}}
         </td>
-        <td>
-            {{r.item.abbreviation}}
+        <td class="table-danger ">
+                {% if r.grade == 'DNM' %}☒{% else %}☐{% endif %} {{r.item.DMEtext|safe}}
         </td>
-        <td class="table-danger" style="text-align: center;">
-            {% if r.grade == 'DNM' %}X{% endif %}
+        <td class="table-warning" >
+            {% if r.grade == 'MC' %}☒{% else %}☐{% endif %} {{r.item.MEtext|safe}}
         </td>
-        <td class="table-warning" style="text-align: center;">
-            {% if r.grade == 'MC' %}X{% endif %}
-        </td>
-        <td class="table-success" style="text-align: center;">
-            {% if r.grade == 'ME' %}X{% endif %}
+        <td class="table-success">
+            {% if r.grade == 'ME' %}☒{% else %}☐{% endif %} {{r.item.EEtext|safe}}
         </td>
     </tr>
     {% endfor %}
@@ -78,17 +78,14 @@
             <td>
                 {{r.item.text|safe}}
             </td>
-            <td>
-                {{r.item.abbreviation}}
+            <td class="table-danger ">
+                    {% if r.grade == 'DNM' %}☒{% else %}☐{% endif %} {{r.item.DMEtext|safe}}
             </td>
-            <td class="table-danger" style="text-align: center;">
-                {% if r.grade == 'DNM' %}X{% endif %}
+            <td class="table-warning" >
+                {% if r.grade == 'MC' %}☒{% else %}☐{% endif %} {{r.item.MEtext|safe}}
             </td>
-            <td class="table-warning" style="text-align: center;">
-                {% if r.grade == 'MC' %}X{% endif %}
-            </td>
-            <td class="table-success" style="text-align: center;">
-                {% if r.grade == 'ME' %}X{% endif %}
+            <td class="table-success">
+                {% if r.grade == 'ME' %}☒{% else %}☐{% endif %} {{r.item.EEtext|safe}}
             </td>
         </tr>
         {% endfor %}
@@ -102,47 +99,44 @@
         <td>
             {{r.item.text|safe}}
         </td>
-        <td>
-            {{r.item.abbreviation}}
+        <td class="table-danger ">
+                {% if r.grade == 'DNM' %}☒{% else %}☐{% endif %} {{r.item.DMEtext|safe}}
         </td>
-        <td class="table-danger" style="text-align: center;">
-            {% if r.grade == 'DNM' %}X{% endif %}
+        <td class="table-warning" >
+            {% if r.grade == 'MC' %}☒{% else %}☐{% endif %} {{r.item.MEtext|safe}}
         </td>
-        <td class="table-warning" style="text-align: center;">
-            {% if r.grade == 'MC' %}X{% endif %}
-        </td>
-        <td class="table-success" style="text-align: center;">
-            {% if r.grade == 'ME' %}X{% endif %}
+        <td class="table-success">
+            {% if r.grade == 'ME' %}☒{% else %}☐{% endif %} {{r.item.EEtext|safe}}
         </td>
     </tr>
     {% endfor %}
 </table>
 <table style="border: 1px solid black;width:100%">
     <tr class='table-secondary'>
-        <td colspan="5" ><b>Comments</b></td>
+        <td colspan="4" ><b>Comments</b></td>
     </tr>
     <tr>
-        <td colspan="5">
+        <td colspan="4">
             <b>Student Learning Outcomes (SLOs): </b> {{rubric.section1Comment|safe}}
         </td>
     </tr>
     <tr>
-        <td colspan="5">
+        <td colspan="4">
             <b>Measures: </b>{{rubric.section2Comment|safe}}
         </td>
     </tr>
     <tr>
-        <td colspan="5">
+        <td colspan="4">
             <b>Results Reported / Data Collection and Analysis: </b> {{rubric.section3Comment|safe}}
         </td>
     </tr>
     <tr>
-        <td colspan="5">
+        <td colspan="4">
             <b>Decisions and Actions: </b>{{rubric.section4Comment|safe}}
         </td>
     </tr>
     <tr>
-        <td colspan="5">
+        <td colspan="4">
             <b>Overall: </b>{{rubric.generalComment|safe}}
         </td>
     </tr>

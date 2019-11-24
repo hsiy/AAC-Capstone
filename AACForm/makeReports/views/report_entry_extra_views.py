@@ -158,7 +158,7 @@ class SubmitReport(DeptReportMixin, FormView):
             if slo.numberOfAssess==0:
                 valid = False
                 eMsg = eMsg+"There is not an assessment for SLO "+str(slo.number)+".\n"
-            if DecisionsActions.objects.filter(report=self.report, SLO=slo.slo).count()==0:
+            if DecisionsActions.objects.filter(sloIR=slo).count()==0:
                 valid = False
                 eMsg = eMsg+"There are no decisions or actions for SLO "+str(slo.number)+".\n"
         assesses = AssessmentVersion.objects.filter(report=self.report)

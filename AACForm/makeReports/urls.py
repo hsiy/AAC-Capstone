@@ -111,6 +111,7 @@ urlpatterns = [
     re_path(r'^aac/ann/(?P<pk>\d+)/delete/$', views.DeleteAnnouncement.as_view(),name='delete-announ'),
     re_path(r'^aac/ann/(?P<pk>\d+)/modify/$', views.ModifyAnnouncement.as_view(),name='edit-announ'),
     #Grading urls
+    re_path(r'^aac/report/(?P<report>\d+)/grading/entry/$',views.GradingEntry.as_view() ,name='grade-entry'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section2/$', views.Section2Grading.as_view(), name='grade-sec2'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section3/$', views.Section3Grading.as_view(), name='grade-sec3'),
@@ -188,6 +189,8 @@ urlpatterns = [
     re_path(r'^api/assess/slo/$', views.AssessmentBySLO.as_view(),name='api-assess-by-slo'),
     re_path(r'^api/graph/$', views.createGraphAPI.as_view(),name='api-new-graph'),
     re_path(r'^api/blooms/$', views.BloomsSuggestionsAPI.as_view(), name='api-bloom-words'),
+    re_path(r'^api/import/years/$', views.ImportYearsAPI.as_view(), name='api-impt-years'),
+    re_path(r'^api/override/clear/$', views.ClearOverrideAPI.as_view(), name='api-clear-ovr'),
     #Graphing
     re_path(r'^aac/list/graphing/$', views.GraphingHome.as_view(), name='graphing'),
     re_path(r'^dept/(?P<dept>\d+)/list/graphing/$', views.GraphingDept.as_view(), name='graphing-dept'),

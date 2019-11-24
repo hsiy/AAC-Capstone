@@ -1,37 +1,33 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-<nav id="grade-nav-bar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Grading</a>
-                <button class="navbar-toggler"  role="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-              
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="{% url 'makeReports:grade-sec1' report=report.pk %}">Section I. SLOs <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'makeReports:grade-sec2' report=report.pk %}">Section II. Assessments <span class="sr-only">(current)</span></a>
-                      </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'makeReports:grade-sec3' report=report.pk %}">Section III. Data <span class="sr-only">(current)</span></a>
-                      </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'makeReports:grade-sec4' report=report.pk %}">Section IV. Decisions & Actions <span class="sr-only">(current)</span></a>
-                      </li>
-                      <li class="nav-item active">
-                          <a class="nav-link" href="{% url 'makeReports:grade-comment' report=report.pk %}">Overall Comments <span class="sr-only">(current)</span></a>
-                        </li>
-                      <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'makeReports:rub-review' report=report.pk %}">Preview & Submit <span class="sr-only">(current)</span></a>
-                        </li>
-                </div>
-              </nav>
-    </nav>
-<h3>Comments on the Report as a whole</h3>
+{% include 'makeReports/Grading/grading_navbar.html' %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            {% if reqTodo > 0 %}
+            <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                    Needs Attention
+            </button>
+            {% elif sugTodo > 0 %}
+            <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                    Needs Attention
+            </button>
+            {% endif %}
+            {% include 'makeReports/todoSansButton.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <!--showreport column-->
+            {% include 'makeReports/DisplayReport/reportIncluding.html' %}
+        </div>
+        <div class="col-4 please-scroll">
+            <!--grading column-->
+            {% if report.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% endif %}
+<h3>Comments on the Report as a Whole</h3>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
@@ -39,4 +35,7 @@
         <button type="submit" class="btn btn-primary">Next</button>
     {% endbuttons %}
 </form>
+</div>
+</div>
+</div>
 {% endblock %}

@@ -10,7 +10,7 @@
 <h5>Generate This Year's Reports:</h5>
 Note, if a report for a degree program this year already exists, this will not assign anotther or change the assignment for that degree program.
 Use create manual report or update report instead if needed.
-<form method="post" class="form" enctype="multipart/form-data">
+<form method="post" class="form col-6" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}

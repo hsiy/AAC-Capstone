@@ -191,9 +191,6 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         self.slo = mommy.make("SLOInReport", report=self.rpt)
         self.assess = mommy.make("AssessmentVersion", report=self.rpt, slo=self.slo)
         self.assess2 = mommy.make("AssessmentVersion",report=self.rpt, slo=self.slo)
-        self.d11 = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=84)
-        self.d12 = mommy.make("AssessmentData", assessmentVersion=self.assess,overallProficient=87)
-        self.d21 = mommy.make("AssessmentData", assessmentVersion=self.assess2,overallProficient=89)
     def test_NewSLOStatus(self):
         """
         Tests the creation of a new SLO Status
@@ -205,16 +202,14 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
             'status':SLO_STATUS_CHOICES[0][0]
         })
         num = SLOStatus.objects.filter(
-            report=self.rpt,
             status=SLO_STATUS_CHOICES[0][0],
-            SLO=self.slo.slo,
             sloIR=self.slo).count()
         self.assertEquals(num,1)
     def test_editSLOStatus(self):
         """
         Tests the editing of an SLO Status
         """
-        stat = mommy.make("SLOStatus",report=self.rpt,sloIR=self.slo,SLO=self.slo.slo,status=SLO_STATUS_CHOICES[1][0])
+        stat = mommy.make("SLOStatus",sloIR=self.slo,status=SLO_STATUS_CHOICES[1][0])
         resp = self.client.post(reverse('makeReports:edit-slo-status',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,

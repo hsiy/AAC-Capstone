@@ -39,7 +39,7 @@ class DecActViewsTest(ReportSetupTest):
         }),{
             'text':'testingtestingtest'
         })
-        num = DecisionsActions.objects.filter(text='testingtestingtest',SLO=self.slo.slo,sloIR=self.slo,report=self.rpt).count()
+        num = DecisionsActions.objects.filter(text='testingtestingtest',sloIR=self.slo).count()
         self.assertEquals(num,1)
     def test_addDecActSLO(self):
         """
@@ -51,7 +51,7 @@ class DecActViewsTest(ReportSetupTest):
         }),{
             'text':'testingtestingtes334t'
         })
-        num = DecisionsActions.objects.filter(text='testingtestingtes334t',SLO=self.slo.slo,sloIR=self.slo,report=self.rpt).count()
+        num = DecisionsActions.objects.filter(text='testingtestingtes334t',sloIR=self.slo).count()
         self.assertEquals(num,1)
         self.assertRedirects(resp,reverse('makeReports:slo-summary',kwargs={
             'report':self.rpt.pk
@@ -60,7 +60,7 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests that posting to view edits the decision/action text
         """
-        dA = mommy.make("DecisionsActions",SLO=self.slo.slo,sloIR=self.slo,report=self.rpt)
+        dA = mommy.make("DecisionsActions",sloIR=self.slo)
         resp = self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -74,7 +74,7 @@ class DecActViewsTest(ReportSetupTest):
         """
         Testing that the view edits the decision/action works and redirects as expected
         """
-        dA = mommy.make("DecisionsActions",SLO=self.slo.slo,sloIR=self.slo,report=self.rpt)
+        dA = mommy.make("DecisionsActions",sloIR=self.slo)
         resp = self.client.post(reverse('makeReports:edit-decisions-actions-slo',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -105,7 +105,7 @@ class DecActViewsTest(ReportSetupTest):
         Tests the add/edit redirect redirect to edit there is already one
         """
         slo2 = mommy.make("SLOInReport",report=self.rpt)
-        dA = mommy.make("DecisionsActions",SLO=slo2.slo,sloIR=slo2,report=self.rpt)
+        dA = mommy.make("DecisionsActions",sloIR=slo2)
         resp = self.client.get(reverse('makeReports:add-edit-redirect',kwargs={
             'report':self.rpt.pk,
             'slopk':slo2.pk

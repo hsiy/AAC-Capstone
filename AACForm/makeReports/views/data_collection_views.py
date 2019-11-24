@@ -46,7 +46,6 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         context['sugTodo'] = len(context['toDo']['s'])
         return section3Context(self,context)
 
-
 class CreateDataCollectionRow(DeptReportMixin,FormView):
     """
     View to add new data
@@ -89,6 +88,8 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
     def form_valid(self, form):
         """
         Processes form and creates new AssessmentData object
+
+        Also, attempts to set the aggregate field
 
         Args:
             form (AddDataCollection): filled out form to be processed
@@ -239,7 +240,10 @@ class NewSLOStatus(DeptReportMixin,FormView):
         Args:
             form (SLOStatusForm): completed form to process
         """
-        slo_status_obj = SLOStatus.objects.create(report = self.report, status = form.cleaned_data['status'], SLO = self.slo.slo, sloIR=self.slo)
+        slo_status_obj = SLOStatus.objects.create(
+            status = form.cleaned_data['status'], 
+            sloIR=self.slo,
+            override = True)
         slo_status_obj.save()
         return super(NewSLOStatus, self).form_valid(form)
 
@@ -299,9 +303,8 @@ class EditSLOStatus(DeptReportMixin,FormView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        self.slo_status.report = self.report
-        self.slo_status.SLO = self.slo.slo
         self.slo_status.status = form.cleaned_data['status']
+        self.slo_status.override = True
         self.slo_status.save()
         return super(EditSLOStatus, self).form_valid(form)
 
@@ -496,40 +499,7 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
             str : URL of data summary page (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
-def sloStatusUpdate(sloIR):
-    """
-    Updates the SLO status based upon the assessment aggregate data points
 
-    Args:
-        sloIR (int): primary key of :class:`~makeReports.models.report_models.SLOInReport` to update the status of
-    """
-    aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sloIR)
-    met = True
-    partiallyMet = False
-    for a in aggs:
-        if a.met is False:
-            met = False
-        if a.met is True:
-            partiallyMet=True
-        if not met and partiallyMet:
-            break
-    try:
-        sS = SLOStatus.objects.get(sloIR=sloIR)
-        if met:
-            sS.status = SLO_STATUS_CHOICES[0][0]
-        elif partiallyMet:
-            sS.status = SLO_STATUS_CHOICES[1][0]
-        else:
-            sS.status = SLO_STATUS_CHOICES[2][0]
-        sS.save()
-    except:
-        if met:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
-        elif partiallyMet:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
-        else:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sloIR,report=sloIR.report,SLO=sloIR.slo)
-    return
 class AssessmentAggregateCreate(DeptReportMixin, CreateView):
     """
     View to create assessment aggregate
@@ -553,15 +523,14 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
             form.instance.met = True
         else:
             form.instance.met = False
+        form.instance.override = True
         return super(AssessmentAggregateCreate,self).form_valid(form)
     def get_success_url(self):
         """
-        Gets the success url and used as hook to update the SLO status based upon target
-
+        Gets the success url
         Returns:
             str : URL of data summary (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
-        sloStatusUpdate(self.assess.slo)
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
     """
@@ -588,14 +557,13 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
             form.instance.met = True
         else:
             form.instance.met = False
+        form.instance.override = True
         return super(AssessmentAggregateEdit,self).form_valid(form)
     def get_success_url(self):
         """
-        Gets success url and used as hook to update the SLO status automatically
-
+        Gets the success url 
         Returns:
-            str : URL of data collection summary (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
+            str : URL of data summary (:class:`~makeReports.views.data_collection_views.DataCollectionSummary`)
         """
-        sloStatusUpdate(self.assess.slo)
         return reverse_lazy('makeReports:data-summary', args=[self.report.pk])
 

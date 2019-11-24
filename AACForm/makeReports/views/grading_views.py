@@ -3,12 +3,14 @@ This file contains views related to the AAC grading completed reports
 """
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView, FormView
+from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
 from django.template.defaulttags import register
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
+from makeReports.views.helperFunctions.todos import todoGetter
 
 def generateRubricItems(rIs,form,r):
     """
@@ -66,6 +68,14 @@ def get_item(dictionary, key1, key2):
         return mark_safe(s[key2])
     else:
         return ""
+class GradingEntry(AACOnlyMixin,TemplateView):
+    template_name = 'makeReports/Grading/grading_entry.html'
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        report = Report.objects.get(pk=self.kwargs['report'])
+        context['report'] = report
+        context['reportSups'] = ReportSupplement.objects.filter(report=report)
+        return context
 class GradingView(AACOnlyMixin,FormView):
     """
     View to grade one section of a form
@@ -144,6 +154,9 @@ class GradingView(AACOnlyMixin,FormView):
         context['section'] = self.section
         context['report'] = self.report
         context['rpt'] = self.report
+        context['toDo'] = todoGetter(self.section,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return context
     def get_initial(self):
         initial = super().get_initial()
@@ -263,7 +276,7 @@ class OverallComment(AACReportMixin,FormView):
     """
     View to add an overall comment to the report
     """
-    form_class = Single2000Textbox
+    form_class = OverallCommentForm
     template_name = "makeReports/Grading/overall_comment.html"
     def get_success_url(self):
         """
@@ -282,6 +295,13 @@ class OverallComment(AACReportMixin,FormView):
         """
         context = super(OverallComment,self).get_context_data(**kwargs)
         context['report'] = self.report
+        context = section1Context(self,context)
+        context = section2Context(self,context)
+        context = section3Context(self,context)
+        context = section4Context(self,context)
+        context['toDo'] = todoGetter(4,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return context
     def form_valid(self, form):
         """
@@ -376,6 +396,9 @@ class RubricReview(AACReportMixin, FormView):
         context = section2Context(self,context)
         context = section3Context(self,context)
         context = section4Context(self,context)
+        context['toDo'] = todoGetter(4,self.report)
+        context['reqTodo'] = len(context['toDo']['r'])
+        context['sugTodo'] = len(context['toDo']['s'])
         return context
 class ReturnReport(AACOnlyMixin,UpdateView):
     """

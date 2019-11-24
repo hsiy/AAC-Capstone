@@ -17,16 +17,17 @@
 <h5>Search For SLOs</h5>
 <form action="{% url 'makeReports:import-slo' report=rpt.pk %}" type="get">
         <!--<input id="name" type="text" name="name"></div>-->
-        <div><label>Year</label> 
-            <input id="year" name="year" type="number" required>
-        </div>
         <div> 
             <label>Degree Program: </label>
-             <select id = "dp" name="dp" required>
+             <select id = "dp" name="dp" required onchange="updateYears()">
                 {% for degPro in degPro_list %}
                     <option value = "{{degPro.pk}}" {% if degPro.pk == currentDPpk %}selected{% endif %}>{{degPro.name}}</option>
                {% endfor %}
              </select>
+        </div>
+        <div style="max-width:200px"><label>Year:</label> 
+            <select id="year" name="year" required>
+            </select>
         </div>
         {% buttons %}
         <button type="submit" class="btn btn-primary">Search for SLOs</button>
@@ -40,4 +41,33 @@
         <button type="submit" class="btn btn-primary">Add SLOs</button>
     {% endbuttons %}
 </form>
+{% endblock %}
+{% block in_endscripts %}
+<script type='text/javascript'>
+    /**
+     * Creates the drop-down for the year
+     */
+    var chYear = null;
+    document.addEventListener("DOMContentLoaded", function() {
+        chYear = new Choices(document.getElementById('year'),{shouldSort:false, removeItemButton:true});
+        updateYears();    
+    });
+    /**
+     * Calls the API to update the year choices for the search,
+     * based upon the currently selected degree program
+     */
+    function updateYears(){
+        chYear.clearChoices()
+        chYear.setChoices(async () => {
+        try {
+            var e = document.getElementById("dp");
+            var dP = e.options[e.selectedIndex].value;
+            const items = await fetch('{% url 'makeReports:api-impt-years' %}'+'?pk='+dP);
+            return items.json();
+        } catch (err) {
+            console.error(err);
+        }
+        });
+    }
+</script>
 {% endblock %}
