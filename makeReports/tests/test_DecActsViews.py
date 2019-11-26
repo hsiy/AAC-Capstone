@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 
@@ -20,7 +20,7 @@ class DecActViewsTest(ReportSetupTest):
         Create an SLO to input decisions/actions for
         """
         super().setUp()
-        self.slo = mommy.make("SLOInReport",report=self.rpt)
+        self.slo = baker.make("SLOInReport",report=self.rpt)
     def test_summary(self):
         """
         Tests that the summary page exists
@@ -60,7 +60,7 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests that posting to view edits the decision/action text
         """
-        dA = mommy.make("DecisionsActions",sloIR=self.slo)
+        dA = baker.make("DecisionsActions",sloIR=self.slo)
         resp = self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -74,7 +74,7 @@ class DecActViewsTest(ReportSetupTest):
         """
         Testing that the view edits the decision/action works and redirects as expected
         """
-        dA = mommy.make("DecisionsActions",sloIR=self.slo)
+        dA = baker.make("DecisionsActions",sloIR=self.slo)
         resp = self.client.post(reverse('makeReports:edit-decisions-actions-slo',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -91,7 +91,7 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests the add/edit redirect redirects to add when there is not one already
         """
-        slo2 = mommy.make("SLOInReport",report=self.rpt)
+        slo2 = baker.make("SLOInReport",report=self.rpt)
         resp = self.client.get(reverse('makeReports:add-edit-redirect',kwargs={
             'report':self.rpt.pk,
             'slopk':slo2.pk
@@ -104,8 +104,8 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests the add/edit redirect redirect to edit there is already one
         """
-        slo2 = mommy.make("SLOInReport",report=self.rpt)
-        dA = mommy.make("DecisionsActions",sloIR=slo2)
+        slo2 = baker.make("SLOInReport",report=self.rpt)
+        dA = baker.make("DecisionsActions",sloIR=slo2)
         resp = self.client.get(reverse('makeReports:add-edit-redirect',kwargs={
             'report':self.rpt.pk,
             'slopk':slo2.pk

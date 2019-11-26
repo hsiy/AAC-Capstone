@@ -119,11 +119,17 @@
 {% endblock %}
 {% block endscripts %}
 <script>
-    /*
+    /**
+     * Set of functions and Vue instance to handle the graphing page for departments
+     * 
+     * @class graphingDept
+     */
+
+    /**
     * Gets cookies: included to retrieve the CSRF token
-    *
-    * @param {string} name - the name of the cookie
-    * @returns {string} - the value of the cookie
+    * @method getCookie
+    * @param {String} name - the name of the cookie
+    * @returns {String} - the value of the cookie
     */
     function getCookie(name) {
         var cookieValue = null;
@@ -153,28 +159,109 @@
     var vapp = new Vue({
             el: '#vapp',
             delimiters: ['[[', ']]'],
-            data: { 
+            data: {
+                /**
+                 * Primary key of currently selected assessment 
+                 * @property assess
+                 * @type integer
+                 */
                 assess: null,
+                /**
+                 * Dictionary of assessments and properties meeting parameters
+                 * @property assesses
+                 * @type dictionary
+                 */
                 assesses: null,
-                depts: null,
+                /**
+                 * Dictionary of departments meeting parameters
+                 * @property depts
+                 * @type dictionary
+                 */
+                 depts: null,
+                /**
+                 * List of degree programs meeting parameters
+                 * @property progs
+                 * @type dictionary
+                 */
                 progs: null,
+                /**
+                 * List of SLOs meeting parameters
+                 * @property slos
+                 * @type dictionary
+                 */
                 slos: null,
+                /**
+                 * List of weights for each SLO
+                 * @property sloWeights
+                 * @type dictionary
+                 */
                 sloWeights: {},
+                /**
+                 * Currently chosen graph type
+                 * @property graph_opt
+                 * @type integer
+                 */
                 graph_opt: 0,
+                /**
+                 * Primary key of the user's department
+                 * @property department
+                 * @type integer
+                 */
                 department: {{user.profile.department.pk}},
+                /**
+                 * Primary key of currently chosen degree program
+                 * @proeprty program
+                 * @type integer
+                 */
                 program: 1,
+                /**
+                 * Lower year bound
+                 * @property date1
+                 * @type integer
+                 */
                 date1: null,
+                /**
+                 * Upper year bound
+                 * @property date2
+                 * @type integer
+                 */
                 date2: null,
+                /**
+                 * Primary key of currently chosen SLO
+                 * @property slo
+                 * @type integer
+                 */
                 slo: null,
+                /**
+                 * Current URL of API for generating the graph 
+                 * @property url
+                 * @type String
+                 */
                 url: null,
+                /**
+                 * The drop down for SLOs
+                 * @property ch
+                 * @type ch
+                 */
                 ch: null,
+                /**
+                 * Whether there was an error retrieving the graph
+                 * @property graphError
+                 * @type Boolean
+                 */
                 graphError: false,
+                /**
+                 * Whether to show the weighing the SLOs portion of the site
+                 * @property showWeighing
+                 * @type Boolean
+                 */
                 showWeighing: false
             },
             //computed: {
             //},
             /**
              * Upon mounting, update the degree programs for user's department
+             * @method mounted
              */
             mounted(){
             //    this.ch = new Choices(document.getElementById('spec'),{shouldSort:false});
@@ -183,6 +270,7 @@
             methods: {
                 /**
                 * Calls the API to update the department based upon the chosen college
+                * @method updateProg
                 */
                 updateDept: function () {
                     fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
@@ -196,7 +284,7 @@
                 },
                 /**
                 * Calls the API to update the degree programs based upon the chosen department
-                *
+                * @method updateProg
                 */
                 updateProg: function() {
                     fetch("{% url 'makeReports:api-prog-by-dept' %}?department="+this.department)
@@ -210,7 +298,7 @@
                 /**
                 * Creates a new Choices dropdown if the graph type is newly changed to specific SLO
                 *
-                *
+                *@method changeGraphOpt
                 */
                 changeGraphOpt: function(){
                     if(this.graph_opt==1){
@@ -226,7 +314,7 @@
                 /**
                 * Calls the API to update the SLOs based upon the chosen degree program.
                 * It also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary
-                *
+                * @method updateSLOs
                 */
                 updateSLOs: function() {
                     if(this.graph_opt==1){
@@ -266,7 +354,7 @@
                 },
                 /**
                  * Calls the API to update assessments
-                 * 
+                 * @method updateAssesses
                  */
                 updateAssesses: function(){
                     if(this.graph_opt==1){
@@ -284,6 +372,7 @@
                 },
                 /**
                 * Calls the API to generate the chosen graph based upon selected options
+                * @method newGraph
                 */
                 newGraph: function() {
                     if(this.assesses!=null){

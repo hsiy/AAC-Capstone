@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 class RubricMgmt(ReportAACSetupTest):
     """
@@ -18,7 +18,7 @@ class RubricMgmt(ReportAACSetupTest):
         Sets-up a rubric to be used for testing
         """
         super().setUp()
-        self.rubric = mommy.make("Rubric",name="testytesttest")
+        self.rubric = baker.make("Rubric",name="testytesttest")
     def test_rubriclist(self):
         """
         Tests the rubric list page exists
@@ -30,7 +30,7 @@ class RubricMgmt(ReportAACSetupTest):
         """
         Tests the rubric list page returns expected results
         """
-        rub2 = mommy.make("Rubric",name="nonono")
+        rub2 = baker.make("Rubric",name="nonono")
         resp = self.client.get(reverse('makeReports:search-rubric-list')+"?date=&name=testytesttest")
         self.assertContains(resp,"testytesttest")
         self.assertNotContains(resp,"nonono")
@@ -47,7 +47,7 @@ class RubricMgmt(ReportAACSetupTest):
         """
         Tests the viewing of a rubric
         """
-        rI = mommy.make("RubricItem",rubricVersion=self.rubric)  
+        rI = baker.make("RubricItem",rubricVersion=self.rubric)  
         resp = self.client.get(reverse('makeReports:view-rubric',kwargs={'pk':self.rubric.pk}))
         self.assertContains(resp,self.rubric.name)
         self.assertContains(resp,rI.text)
@@ -80,9 +80,9 @@ class RubricMgmt(ReportAACSetupTest):
         """
         Tests deleting rubrics
         """
-        rub = mommy.make("Rubric")
+        rub = baker.make("Rubric")
         pk = rub.pk
-        rI = mommy.make("RubricItem", rubricVersion = rub)
+        rI = baker.make("RubricItem", rubricVersion = rub)
         ipk = rI.pk
         resp = self.client.post(reverse('makeReports:delete-rubric',kwargs={'pk':rub.pk}))
         num = Rubric.objects.filter(pk=pk).count()
@@ -93,7 +93,7 @@ class RubricMgmt(ReportAACSetupTest):
         """
         Tests view to update rubric items via post
         """
-        rI = mommy.make("RubricItem",rubricVersion = self.rubric)
+        rI = baker.make("RubricItem",rubricVersion = self.rubric)
         pk = rI.pk
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
             'text':'text7',
@@ -120,7 +120,7 @@ class RubricMgmt(ReportAACSetupTest):
         Tests duplicating a rubric
         """
         preName = self.rubric.name
-        rI = mommy.make("RubricItem", rubricVersion=self.rubric)
+        rI = baker.make("RubricItem", rubricVersion=self.rubric)
         resp = self.client.post(reverse('makeReports:dup-rub',kwargs={
             'rubric':self.rubric.pk,
         }),{
@@ -139,7 +139,7 @@ class RubricMgmt(ReportAACSetupTest):
         """
         Tests the deletion of rubric items
         """
-        rI = mommy.make("RubricItem", rubricVersion=self.rubric)
+        rI = baker.make("RubricItem", rubricVersion=self.rubric)
         pk = rI.pk
         resp = self.client.post(reverse('makeReports:delete-RI',kwargs={
             'rubric':self.rubric.pk,

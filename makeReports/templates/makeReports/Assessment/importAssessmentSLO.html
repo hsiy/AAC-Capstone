@@ -44,9 +44,14 @@
 <script type='text/javascript'>
     /**
      * Creates the drop-down for the year and the SLO in the search
+     * @class importAssessmentSLO
      */
     var chYear = null;
     var ch2 = null;
+    /**
+     * Upon DOM being loaded, create the drop downs and update years
+     * @method onLoad
+     */
     document.addEventListener("DOMContentLoaded", function() {
         ch2 = new Choices(document.getElementById('slo'),{shouldSort:false});
 
@@ -56,6 +61,8 @@
     /**
      * Calls the API to update the year choices for the search,
      * based upon the currently selected degree program
+     * 
+     * @method updateYears
      */
     function updateYears(){
         chYear.clearChoices()
@@ -73,6 +80,8 @@
     }
     /**
      * Calls the API to update the list of SLOs that match the year and degree program
+     * 
+     * @method updateSLOs
      */
      function updateSLOs(){
         ch2.clearChoices()

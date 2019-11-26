@@ -43,8 +43,15 @@
 <script type='text/javascript'>
     /**
      * Creates the drop-down for the year
+     * 
+     * @class importAssessmentSupplement
      */
+
     var chYear = null;
+    /**
+     * On load create the year drop-down and update the year options
+     * @method onLoad
+     */
     document.addEventListener("DOMContentLoaded", function() {
         chYear = new Choices(document.getElementById('year'),{shouldSort:false, removeItemButton:true});
         updateYears();    
@@ -52,6 +59,7 @@
     /**
      * Calls the API to update the year choices for the search,
      * based upon the currently selected degree program
+     * @method updateYears
      */
     function updateYears(){
         chYear.clearChoices()

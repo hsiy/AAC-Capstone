@@ -131,6 +131,7 @@ urlpatterns = [
     re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/edit/$', views.UpdateRubricItem.as_view(), name='update-RI'),
     re_path(r'^aac/rubric/(?P<rubric>\d+)/duplicate/$', views.DuplicateRubric.as_view(), name='dup-rub'),
     re_path(r'^aac/rubric/(?P<rubric>\d+)/item/(?P<pk>\d+)/delete/$', views.DeleteRubricItem.as_view(), name='delete-RI'),
+    re_path(r'^report/(?P<report>\d+)/rubric/(?P<pk>\d+)/$', views.DeptViewRubric.as_view(), name='dept-view-rubric'),
     #Data Collection URLS
     re_path(r'^report/(?P<report>\d+)/datacollection/summary/$', views.DataCollectionSummary.as_view(), name='data-summary'),
     re_path(r'^report/(?P<report>\d+)/datacollection/assessment/(?P<assessment>\d+)/add/$', 

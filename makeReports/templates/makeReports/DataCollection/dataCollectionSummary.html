@@ -223,8 +223,14 @@
 {% block in_endscripts %}
 <script type='text/javascript'>
 /**
+ * Handles calling the API to clear overrides
+ * @class dataCollectionSummary
+ */
+
+/**
  * Calls API to clear overrides on statuses and aggregates, 
  * then refreshes page
+ * @method clearOver
  */
  const clearOver = async() =>{
     const response = await fetch("{% url 'makeReports:api-clear-ovr' %}?pk={{rpt.pk}}");

@@ -16,8 +16,19 @@
 <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js">
 </script> 
 <script>
+    /**
+     * Handles calling for SLO suggestions API while on page
+     * @class addSLO
+     */
+
     $('#id_text').blur(function() {
         // Method to get cookie
+        /**
+         * Gets the CSRF cookie needed for post requests
+         * @method getCookie
+         * @param {String} name - the name of the cookie
+         * @return {String} cookie value
+         */
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -35,12 +46,22 @@
         }
         var csrftoken = getCookie('csrftoken');
         // Method to check if HTTP method needs cookie
+        /**
+         * Method to check if HTTP method needs cookie
+         * @method csrfSafeMethod
+         * @return {Boolean} whether cookie is required
+         */
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
         // Ensure cookie is sent in ajax request
+        
         $.ajaxSetup({
+            /**
+             * Ensures cookie is sent in the ajax request
+             * @method beforeSend
+             */
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -48,6 +69,10 @@
             }
         });
         // actual ajax request
+        /**
+         * Sends the ajax request to get SLO suggestions
+         * @method ajax
+         */
         $.ajax({
             url: '{% url 'makeReports:api-slo-suggestions' %}',
             type: 'post', 
@@ -55,6 +80,11 @@
                 "slo_text": $('#id_text').val()
             },
             // If the request goes through, do the following
+            /**
+             * Upon succesfully getting a response, show the results to the user
+             * 
+             * @method success
+             */
             success: function(msg, status, jqXHR){
                 var label_str = "Highest Bloom's Taxonomy Level:";
                 if(msg.blooms == "none"){

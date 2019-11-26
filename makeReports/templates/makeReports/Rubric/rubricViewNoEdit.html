@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
 {% block content %}
 <h5>Rubric {{object.name}}</h5>
@@ -19,10 +19,6 @@
                         <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{RI.DMEtext|safe}}</li>
                         <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{RI.MEtext|safe}}</li>
                         <li class="list-group-item"><b>Met Expectations Established: </b>{{RI.EEtext|safe}}</li>
-                        <li class="list-group-item">
-                            <a class="btn btn-primary" href="{% url 'makeReports:update-RI' rubric=object.pk pk=RI.pk %}">Edit Item</a>
-                            <a class="btn btn-primary" href="{% url 'makeReports:delete-RI' rubric=object.pk pk=RI.pk %}">Delete Item</a>
-                        </li>
                     </ul>
             </div>
         </div>
@@ -45,10 +41,6 @@
                             <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{RI.DMEtext|safe}}</li>
                             <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{RI.MEtext|safe}}</li>
                             <li class="list-group-item"><b>Met Expectations Established: </b>{{RI.EEtext|safe}}</li>
-                            <li class="list-group-item">
-                                    <a class="btn btn-primary" href="{% url 'makeReports:update-RI' rubric=object.pk pk=RI.pk %}">Edit Item</a>
-                                    <a class="btn btn-primary" href="{% url 'makeReports:delete-RI' rubric=object.pk pk=RI.pk %}">Delete Item</a>
-                                </li>
                         </ul>
                 </div>
             </div>
@@ -71,10 +63,6 @@
                                 <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{RI.DMEtext|safe}}</li>
                                 <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{RI.MEtext|safe}}</li>
                                 <li class="list-group-item"><b>Met Expectations Established: </b>{{RI.EEtext|safe}}</li>
-                                <li class="list-group-item">
-                                        <a class="btn btn-primary" href="{% url 'makeReports:update-RI' rubric=object.pk pk=RI.pk %}">Edit Item</a>
-                                        <a class="btn btn-primary" href="{% url 'makeReports:delete-RI' rubric=object.pk pk=RI.pk %}">Delete Item</a>
-                                    </li>
                             </ul>
                     </div>
                 </div>
@@ -97,10 +85,6 @@
                                     <li class="list-group-item"><b>Did Not Meet Expecations: </b>{{RI.DMEtext|safe}}</li>
                                     <li class="list-group-item"><b>Met Expecations with Concerns: </b>{{RI.MEtext|safe}}</li>
                                     <li class="list-group-item"><b>Met Expectations Established: </b>{{RI.EEtext|safe}}</li>
-                                    <li class="list-group-item">
-                                            <a class="btn btn-primary" href="{% url 'makeReports:update-RI' rubric=object.pk pk=RI.pk %}">Edit Item</a>
-                                            <a class="btn btn-primary" href="{% url 'makeReports:delete-RI' rubric=object.pk pk=RI.pk %}">Delete Item</a>
-                                        </li>
                                 </ul>
                         </div>
                     </div>
