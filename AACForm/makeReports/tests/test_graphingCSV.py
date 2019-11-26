@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 

@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 
@@ -20,9 +20,9 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         Creates an assessment to test with
         """
         super().setUp()
-        self.slo = mommy.make("SLOInReport", report=self.rpt)
-        self.assess = mommy.make("AssessmentVersion", report=self.rpt, slo=self.slo)
-        self.assess2 = mommy.make("AssessmentVersion",report=self.rpt, slo=self.slo)
+        self.slo = baker.make("SLOInReport", report=self.rpt)
+        self.assess = baker.make("AssessmentVersion", report=self.rpt, slo=self.slo)
+        self.assess2 = baker.make("AssessmentVersion",report=self.rpt, slo=self.slo)
     def test_datasummary(self):
         """
         Tests the summary page exists with expected content
@@ -55,8 +55,8 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         Tests that mutliple measures for an SLO both appear in the table
         """
-        d1 = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
-        d2 = mommy.make("AssessmentData", assessmentVersion = self.assess2,overallProficient=34)
+        d1 = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
+        d2 = baker.make("AssessmentData", assessmentVersion = self.assess2,overallProficient=34)
         resp = self.client.get(reverse('makeReports:data-summary',kwargs={
             'report':self.rpt.pk
         }))
@@ -90,7 +90,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         Test that posting to edit data row actually edits the data row
         """
-        d = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
+        d = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
         pk = d.pk
         resp = self.client.post(reverse('makeReports:edit-data-collection',kwargs={
             'report':self.rpt.pk,
@@ -112,7 +112,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         Tests that posting to the delete page actually deletes the data row
         """
-        d = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
+        d = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
         pk = d.pk
         resp = self.client.post(reverse('makeReports:delete-data-collection',kwargs={
             'report':self.rpt.pk,
@@ -168,7 +168,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         self.assess.target = 80
         self.assess.save()
-        agg = mommy.make("AssessmentAggregate",assessmentVersion=self.assess, aggregate_proficiency=60, met=False)
+        agg = baker.make("AssessmentAggregate",assessmentVersion=self.assess, aggregate_proficiency=60, met=False)
         resp = self.client.post(reverse('makeReports:data-agg-edit',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk,
@@ -188,9 +188,9 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         Creates assessments and data to test with
         """
         super().setUp()
-        self.slo = mommy.make("SLOInReport", report=self.rpt)
-        self.assess = mommy.make("AssessmentVersion", report=self.rpt, slo=self.slo)
-        self.assess2 = mommy.make("AssessmentVersion",report=self.rpt, slo=self.slo)
+        self.slo = baker.make("SLOInReport", report=self.rpt)
+        self.assess = baker.make("AssessmentVersion", report=self.rpt, slo=self.slo)
+        self.assess2 = baker.make("AssessmentVersion",report=self.rpt, slo=self.slo)
     def test_NewSLOStatus(self):
         """
         Tests the creation of a new SLO Status
@@ -209,7 +209,7 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         """
         Tests the editing of an SLO Status
         """
-        stat = mommy.make("SLOStatus",sloIR=self.slo,status=SLO_STATUS_CHOICES[1][0])
+        stat = baker.make("SLOStatus",sloIR=self.slo,status=SLO_STATUS_CHOICES[1][0])
         resp = self.client.post(reverse('makeReports:edit-slo-status',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -237,7 +237,7 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         """
         Tests that editing result communication description via posting works
         """
-        rc = mommy.make("ResultCommunicate",report=self.rpt)
+        rc = baker.make("ResultCommunicate",report=self.rpt)
         resp = self.client.post(reverse('makeReports:edit-result-communication',kwargs={
             'report':self.rpt.pk,
             'resultpk':rc.pk

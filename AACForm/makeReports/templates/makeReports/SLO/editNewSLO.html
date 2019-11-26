@@ -16,8 +16,18 @@
 <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js">
 </script> 
 <script>
+    /**
+     * Handles getting SLO suggestions from API
+     * @class editNewSLO
+     */
     $('#id_text').blur(function() {
         // Method to get cookie
+        /**
+         * Gets CSRF cookie needed to do POST requests
+         * @method getCookie
+         * @param {String} name - the name of the cookie
+         * @return {String} cookie value
+         */
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -35,11 +45,20 @@
         }
         var csrftoken = getCookie('csrftoken');
         // Method to check if HTTP method needs cookie
+        /**
+         * Checks is CSRF is needed
+         * @method csrfSafeMethod
+         * @return {Boolean} if cookie is needed
+         */ 
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
         // Ensure cookie is sent in ajax request
+        /**
+         * Ensures the cookie is included in ajax request
+         * @method beforeSend
+         */
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -48,6 +67,10 @@
             }
         });
         // actual ajax request
+        /**
+         * Sends the ajax request
+         * @method ajax
+         */
         $.ajax({
             url: '{% url 'makeReports:api-slo-suggestions' %}',
             type: 'post', 
@@ -55,6 +78,10 @@
                 "slo_text": $('#id_text').val()
             },
             // If the request goes through, do the following
+            /**
+             * Upon success of sending request, display suggestions to the user
+             * @method success
+             */
             success: function(msg, status, jqXHR){
                 var label_str = "Highest Bloom's Taxonomy Level:";
                 if(msg.blooms == "none"){

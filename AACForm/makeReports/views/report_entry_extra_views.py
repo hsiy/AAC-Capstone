@@ -3,7 +3,7 @@ This file contains extra views needed during the form input process
 """
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.urls import reverse_lazy
 from makeReports.models import *
 from makeReports.forms import *
@@ -219,3 +219,26 @@ class SuccessSubmit(TemplateView):
     View to show after successfully submitting report
     """
     template_name = "makeReports/ReportEntryExtras/success.html"
+class DeptViewRubric(DeptReportMixin,DetailView):
+    """
+    View to view a rubric as a department
+
+    Keyword Args:
+        pk (str): primary key of :class:`~makeReports.models.report_models.Rubric` to view
+    """
+    model = Rubric
+    template_name = "makeReports/Rubric/rubricViewNoEdit.html"
+    def get_context_data(self,**kwargs):
+        """
+        Gets template context, including rubric items separated out by section
+
+        Returns:
+            dict : template context
+        """
+        context = super().get_context_data(**kwargs)
+        context['rI1'] = RubricItem.objects.filter(rubricVersion=self.object, section=1).order_by("order","pk")
+        context['rI2'] = RubricItem.objects.filter(rubricVersion=self.object,section=2).order_by("order","pk")
+        context['rI3'] = RubricItem.objects.filter(rubricVersion=self.object,section=3).order_by("order","pk")
+        context['rI4'] = RubricItem.objects.filter(rubricVersion=self.object,section=4).order_by("order","pk")           
+        context['obj'] = self.object
+        return context

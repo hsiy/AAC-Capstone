@@ -155,20 +155,20 @@
 <p>View for department to view AAC feedback</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to view feedback for</p>
+<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to view feedback for</p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="makeReports.views.grading_views.Feedback.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.Feedback.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> and
-graded items (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.GradedRubricItem" title="makeReports.models.report_models.GradedRubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code></a>) to the view</p>
+<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> and
+graded items (<code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code>) to the view</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to view feedback for</p>
+<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to view feedback for</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>
@@ -200,7 +200,7 @@ context needed to display the report</p>
 <dd><p>Returns all graded rubric items within report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>all graded rubric items (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.GradedRubricItem" title="makeReports.models.report_models.GradedRubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code></a>) in report</p>
+<dd class="field-odd"><p>all graded rubric items (<code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code>) in report</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -225,12 +225,28 @@ context needed to display the report</p>
 <dl class="attribute">
 <dt id="makeReports.views.grading_views.Feedback.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.grading_views.Feedback.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.GradedRubricItem" title="makeReports.models.report_models.GradedRubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.GradedRubricItem</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.grading_models.html#makeReports.models.grading_models.GradedRubricItem" title="makeReports.models.grading_models.GradedRubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.grading_models.GradedRubricItem</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.grading_views.Feedback.template_name">
 <code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/Grading/feedback.html'</em><a class="headerlink" href="#makeReports.views.grading_views.Feedback.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.grading_views.GradingEntry">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.grading_views.</code><code class="sig-name descname">GradingEntry</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.GradingEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
+<dl class="method">
+<dt id="makeReports.views.grading_views.GradingEntry.get_context_data">
+<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.GradingEntry.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.grading_views.GradingEntry.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/Grading/grading_entry.html'</em><a class="headerlink" href="#makeReports.views.grading_views.GradingEntry.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -242,7 +258,7 @@ context needed to display the report</p>
 <p>View to grade one section of a form</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of current <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to grade</p>
+<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of current <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to grade</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -259,14 +275,14 @@ context needed to display the report</p>
 <dl class="method">
 <dt id="makeReports.views.grading_views.GradingView.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.GradingView.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view, and attaches <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> and
-rubric items (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.RubricItem" title="makeReports.models.report_models.RubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code></a>) to instance</p>
+<dd><p>Dispatches view, and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> and
+rubric items (<code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code>) to instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of current <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to grade</p>
+<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of current <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to grade</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>
@@ -358,7 +374,7 @@ rubric items (<a class="reference internal" href="makeReports.models.report_mode
 <dl class="attribute">
 <dt id="makeReports.views.grading_views.OverallComment.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.grading_views.OverallComment.form_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.forms.slo_forms.html#makeReports.forms.slo_forms.Single2000Textbox" title="makeReports.forms.slo_forms.Single2000Textbox"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.forms.slo_forms.Single2000Textbox</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.forms.grading_forms.html#makeReports.forms.grading_forms.OverallCommentForm" title="makeReports.forms.grading_forms.OverallCommentForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.forms.grading_forms.OverallCommentForm</span></code></a></p>
 </dd></dl>
 
 <dl class="method">
@@ -434,7 +450,7 @@ rubric items (<a class="reference internal" href="makeReports.models.report_mode
 <p>View to return report to department for modification</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></a> to return</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to return</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -462,7 +478,7 @@ rubric items (<a class="reference internal" href="makeReports.models.report_mode
 <dl class="attribute">
 <dt id="makeReports.views.grading_views.ReturnReport.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.grading_views.ReturnReport.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.Report</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Report" title="makeReports.models.basic_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.basic_models.Report</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -485,7 +501,7 @@ rubric items (<a class="reference internal" href="makeReports.models.report_mode
 <dl class="method">
 <dt id="makeReports.views.grading_views.RubricReview.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.RubricReview.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view and attaches the graded rubric items (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.GradedRubricItem" title="makeReports.models.report_models.GradedRubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code></a>) to the instance</p>
+<dd><p>Dispatches the view and attaches the graded rubric items (<code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code>) to the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
@@ -778,9 +794,9 @@ context needed to display the report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rIs</strong> (<em>list</em>) – list of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.RubricItem" title="makeReports.models.report_models.RubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code></a> in rubric</p></li>
+<li><p><strong>rIs</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code> in rubric</p></li>
 <li><p><strong>form</strong> (<em>Form</em>) – completed form</p></li>
-<li><p><strong>r</strong> (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><em>Report</em></a>) – report</p></li>
+<li><p><strong>r</strong> (<a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Report" title="makeReports.models.basic_models.Report"><em>Report</em></a>) – report</p></li>
 </ul>
 </dd>
 </dl>
@@ -793,9 +809,9 @@ context needed to display the report</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rIs</strong> (<em>list</em>) – list of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.RubricItem" title="makeReports.models.report_models.RubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code></a> in rubric</p></li>
+<li><p><strong>rIs</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code> in rubric</p></li>
 <li><p><strong>form</strong> (<em>Form</em>) – completed form</p></li>
-<li><p><strong>r</strong> (<a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><em>Report</em></a>) – report</p></li>
+<li><p><strong>r</strong> (<a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Report" title="makeReports.models.basic_models.Report"><em>Report</em></a>) – report</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

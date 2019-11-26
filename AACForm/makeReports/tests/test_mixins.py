@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 from makeReports.views.helperFunctions.mixins import *
@@ -33,7 +33,7 @@ class AACOnlyMixin(TestCase):
                 email='megan@example.com',
                 password = 'passywordy',
             )
-        self.col = mommy.make("College")
+        self.col = baker.make("College")
         self.dept = Department.objects.create(name="Dept",college=self.col)
         self.user.profile.department = self.dept
         self.user.profile.save()
@@ -74,7 +74,7 @@ class DeptOnlyMixin(TestCase):
         template_name = 'makeReports/help.html'
         def dispatch(self,request,*args,**kwargs):
             dept = Department.objects.get(name="Dept43")
-            self.report = mommy.make("Report",degreeProgram__department=dept)
+            self.report = baker.make("Report",degreeProgram__department=dept)
             return super().dispatch(request,*args,**kwargs)
 
     def setUp(self):
@@ -87,7 +87,7 @@ class DeptOnlyMixin(TestCase):
                 email='megan@example.com',
                 password = 'passywordy',
             )
-        self.col = mommy.make("College")
+        self.col = baker.make("College")
         self.dept = Department.objects.create(name="Dept43",college=self.col)
         self.client.login(username='Megan', password='passywordy')
         self.factory = RequestFactory()
@@ -97,7 +97,7 @@ class DeptOnlyMixin(TestCase):
         Tests the AAC member not in department cannot access the page
         """
         self.user.profile.aac = True
-        self.user.profile.department = mommy.make("Department")
+        self.user.profile.department = baker.make("Department")
         self.user.profile.save()
         request = self.factory.get('/dummy')
         request.user = self.user
@@ -139,7 +139,7 @@ class DeptAACMixinTests(TestCase):
         template_name = 'makeReports/help.html'
         def dispatch(self,request,*args,**kwargs):
             dept = Department.objects.get(name="Dept432")
-            self.report = mommy.make("Report",degreeProgram__department=dept)
+            self.report = baker.make("Report",degreeProgram__department=dept)
             return super().dispatch(request,*args,**kwargs)
 
     def setUp(self):
@@ -152,7 +152,7 @@ class DeptAACMixinTests(TestCase):
                 email='megan@example.com',
                 password = 'passywordy',
             )
-        self.col = mommy.make("College")
+        self.col = baker.make("College")
         self.dept = Department.objects.create(name="Dept432",college=self.col)
         self.client.login(username='Megan', password='passywordy')
         self.factory = RequestFactory()
@@ -161,7 +161,7 @@ class DeptAACMixinTests(TestCase):
         Tests that AAC members can access the page
         """
         self.user.profile.aac = True
-        self.user.profile.department = mommy.make("Department")
+        self.user.profile.department = baker.make("Department")
         self.user.profile.save()
         request = self.factory.get('/dummy')
         request.user = self.user
@@ -194,7 +194,7 @@ class DeptAACMixinTests(TestCase):
         Tests non-AAC person not in department cannot access the page
         """
         self.user.profile.aac = False
-        self.user.profile.department = mommy.make("Department", name="NotDept")
+        self.user.profile.department = baker.make("Department", name="NotDept")
         self.user.profile.save()
         self.user.refresh_from_db()
         request = self.factory.get('/dummy')

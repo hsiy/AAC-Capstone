@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 
@@ -19,11 +19,11 @@ class APITesting(NonAACTest):
         """
         Tests that the API returns all departments within a college
         """
-        col = mommy.make("College")
-        col2 = mommy.make("College")
-        dep1 = mommy.make("Department",college=col)
-        dep2 = mommy.make("Department",college=col)
-        depNo = mommy.make("Department",college=col2)
+        col = baker.make("College")
+        col2 = baker.make("College")
+        dep1 = baker.make("Department",college=col)
+        dep2 = baker.make("Department",college=col)
+        depNo = baker.make("Department",college=col2)
         resp = self.client.get(reverse('makeReports:api-dept-by-col')+"?college="+str(col.pk))
         self.assertContains(resp,dep1.pk)
         self.assertContains(resp,dep1.name)
@@ -42,11 +42,11 @@ class APITesting(NonAACTest):
         """
         Tests the API returns programs within the department
         """
-        dep = mommy.make("Department")
-        dep2 = mommy.make("Department")
-        prog = mommy.make("DegreeProgram",department=dep)
-        prog2 = mommy.make("DegreeProgram",department=dep)
-        progNo = mommy.make("DegreeProgram",department=dep2)
+        dep = baker.make("Department")
+        dep2 = baker.make("Department")
+        prog = baker.make("DegreeProgram",department=dep)
+        prog2 = baker.make("DegreeProgram",department=dep)
+        progNo = baker.make("DegreeProgram",department=dep2)
         resp = self.client.get(reverse('makeReports:api-prog-by-dept')+"?department="+str(dep.pk))
         self.assertContains(resp,prog.name)
         self.assertContains(resp,prog.pk)
@@ -57,10 +57,10 @@ class APITesting(NonAACTest):
         """
         Tests that the API returns SLOs within the degree program
         """
-        dp = mommy.make("DegreeProgram")
-        dp2 = mommy.make("DegreeProgram")
-        slo = mommy.make("SLOInReport",report__degreeProgram=dp, report__year=2018)
-        slo2 = mommy.make("SLOInReport",report__degreeProgram=dp2,report__year=2018)
+        dp = baker.make("DegreeProgram")
+        dp2 = baker.make("DegreeProgram")
+        slo = baker.make("SLOInReport",report__degreeProgram=dp, report__year=2018)
+        slo2 = baker.make("SLOInReport",report__degreeProgram=dp2,report__year=2018)
         resp = self.client.get(
             reverse('makeReports:api-slo-by-dp')+"?report__degreeProgram="+str(dp.pk)+"&report__year__gte=2016&report__year__lte=2019")
         self.assertContains(resp,slo.pk)
@@ -69,17 +69,17 @@ class APITesting(NonAACTest):
         """
         Tests the API collects assessments within the SLO, and that the results are unique by assessment
         """
-        rept = mommy.make("Report",year=2018)
-        r2 = mommy.make("Report",year=2016)
-        slo = mommy.make("SLO")
-        sloIR = mommy.make("SLOInReport",report=rept,slo=slo)
-        sloIR2 = mommy.make("SLOInReport",report=r2,slo=slo)
-        slo2 = mommy.make("SLO")
-        sloIRNo = mommy.make("SLOInReport",report__year=2019,slo=slo2)
-        a = mommy.make("Assessment")
-        assess = mommy.make("AssessmentVersion",assessment=a,report=rept,slo=sloIR)
-        assess2 = mommy.make("AssessmentVersion",assessment=a,report=r2,slo=sloIR2)
-        assessNo = mommy.make("AssessmentVersion",slo=sloIRNo)
+        rept = baker.make("Report",year=2018)
+        r2 = baker.make("Report",year=2016)
+        slo = baker.make("SLO")
+        sloIR = baker.make("SLOInReport",report=rept,slo=slo)
+        sloIR2 = baker.make("SLOInReport",report=r2,slo=slo)
+        slo2 = baker.make("SLO")
+        sloIRNo = baker.make("SLOInReport",report__year=2019,slo=slo2)
+        a = baker.make("Assessment")
+        assess = baker.make("AssessmentVersion",assessment=a,report=rept,slo=sloIR)
+        assess2 = baker.make("AssessmentVersion",assessment=a,report=r2,slo=sloIR2)
+        assessNo = baker.make("AssessmentVersion",slo=sloIRNo)
         resp = self.client.get(reverse('makeReports:api-assess-by-slo')+"?slo__slo="+str(slo.pk)+"&report__year__gte=2015&report__year__lte=2019")
         self.assertContains(resp,assess.pk)
         self.assertNotContains(resp,assess2.pk)
@@ -88,12 +88,12 @@ class APITesting(NonAACTest):
         """
         Tests the status code the new graph API for type 1
         """
-        department = mommy.make("Department")
-        program = mommy.make("DegreeProgram",department=department)
-        r = mommy.make("Report", degreeProgram=program, year=2017)
-        slo = mommy.make("SLOInReport",report=r)
-        assessHere = mommy.make("AssessmentVersion",report=r,slo=slo)
-        mommy.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
+        department = baker.make("Department")
+        program = baker.make("DegreeProgram",department=department)
+        r = baker.make("Report", degreeProgram=program, year=2017)
+        slo = baker.make("SLOInReport",report=r)
+        assessHere = baker.make("AssessmentVersion",report=r,slo=slo)
+        baker.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
         data = {
             'report__degreeProgram__department': department.pk,
             'report__degreeProgram': program.pk,
@@ -110,12 +110,12 @@ class APITesting(NonAACTest):
         """
         Tests the status code the new graph API for type 2
         """
-        department = mommy.make("Department")
-        program = mommy.make("DegreeProgram",department=department)
-        r = mommy.make("Report", degreeProgram=program, year=2018)
-        slo = mommy.make("SLOInReport",report=r)
-        assessHere = mommy.make("AssessmentVersion",report=r,slo=slo)
-        mommy.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
+        department = baker.make("Department")
+        program = baker.make("DegreeProgram",department=department)
+        r = baker.make("Report", degreeProgram=program, year=2018)
+        slo = baker.make("SLOInReport",report=r)
+        assessHere = baker.make("AssessmentVersion",report=r,slo=slo)
+        baker.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
         data = {
             'report__degreeProgram__department': department.pk,
             'report__degreeProgram': program.pk,
@@ -132,12 +132,12 @@ class APITesting(NonAACTest):
         """
         Tests the status code the new graph API for type 3
         """
-        department = mommy.make("Department")
-        program = mommy.make("DegreeProgram",department=department)
-        r = mommy.make("Report", degreeProgram=program, year=2016)
-        slo = mommy.make("SLOInReport",report=r)
-        assessHere = mommy.make("AssessmentVersion",report=r,slo=slo)
-        mommy.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
+        department = baker.make("Department")
+        program = baker.make("DegreeProgram",department=department)
+        r = baker.make("Report", degreeProgram=program, year=2016)
+        slo = baker.make("SLOInReport",report=r)
+        assessHere = baker.make("AssessmentVersion",report=r,slo=slo)
+        baker.make("AssessmentData",assessmentVersion=assessHere,overallProficient=93)
         data = {
             'report__degreeProgram__department': department.pk,
             'report__degreeProgram': program.pk,

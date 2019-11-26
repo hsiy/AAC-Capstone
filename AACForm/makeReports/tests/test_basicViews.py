@@ -7,7 +7,8 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
+
 def getWithReport(name, s, extraKwargs, extraURL):
     """
     Gets via Get request the page
@@ -48,7 +49,7 @@ class NonAACTest(TestCase):
                 email='megan@example.com',
                 password = 'passywordy',
             )
-        self.col = mommy.make("College")
+        self.col = baker.make("College")
         self.dept = Department.objects.create(name="Dept",college=self.col)
         self.user.profile.department = self.dept
         self.user.profile.save()
@@ -65,7 +66,7 @@ class AACTest(TestCase):
                 email='megan@example.com',
                 password = 'passywordy',
             )
-        self.col = mommy.make("College")
+        self.col = baker.make("College")
         self.dept = Department.objects.create(name="Dept",college=self.col)
         self.user.profile.department = self.dept
         self.user.profile.aac = True
@@ -110,10 +111,11 @@ class ReportAACSetupTest(AACTest):
         Sets up user and creates report to search
         """
         super(ReportAACSetupTest,self).setUp()
-        self.degProg = mommy.make('DegreeProgram')
+        self.degProg = baker.make('DegreeProgram')
         self.degProg.department = self.dept
         self.degProg.save()
-        self.rpt = mommy.make('Report')
+        gR = baker.make("GradedRubric")
+        self.rpt = baker.make_recipe('makeReports.report',rubric=gR)
         self.rpt.submitted = True
         self.rpt.degreeProgram = self.degProg
         self.rpt.save()
@@ -123,10 +125,11 @@ class ReportSetupTest(NonAACTest):
         Sets up user and creates report to search
         """
         super(ReportSetupTest,self).setUp()
-        self.degProg = mommy.make('DegreeProgram')
+        self.degProg = baker.make('DegreeProgram')
         self.degProg.department = self.dept
         self.degProg.save()
-        self.rpt = mommy.make('Report')
+        gR = baker.make("GradedRubric")
+        self.rpt = baker.make_recipe('makeReports.report',rubric=gR)
         self.rpt.submitted = True
         self.rpt.degreeProgram = self.degProg
         self.rpt.save()

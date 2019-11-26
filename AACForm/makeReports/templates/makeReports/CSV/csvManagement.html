@@ -62,6 +62,10 @@
 {% endblock %}
 {% block endscripts %}
     <script type="application/javascript">
+    /**
+     * A Vue instance to handle CSV generator page
+     * @class csvManagement
+     */
     var start = 2015;
     var end = new Date().getFullYear();
     var options = "";
@@ -76,17 +80,67 @@
             el: '#vapp',
             delimiters: ['[[', ']]'],
             data: { 
+                /**
+                 * Departments with properties meeting parameters
+                 * @property depts
+                 * @type dictionary
+                 */
                 depts: null,
+                /**
+                 * Degree programs with properties meeting parameters
+                 * @property progs
+                 * @type dictionary
+                 */
                 progs: null,
+                /**
+                 * SLOs meeting parameters
+                 * @property slos
+                 * @type dictionary
+                 */
                 slos: null,
+                /**
+                 * The scope of the CSV
+                 * @property csv_scope
+                 * @type integer
+                 */
                 csv_scope: 1,
+                /**
+                 * Currently selected department primary key
+                 * @property department
+                 * @type integer
+                 */
                 department: null,
+                /**
+                 * Currently selected college primary key
+                 * @property college
+                 * @type integer
+                 */
                 college: null,
+                /**
+                 * Currently selected program primary key
+                 * @property program
+                 * @type integer
+                 */
                 program: null,
+                /**
+                 * Currently selected lower bound year
+                 * @property date1
+                 * @type integer
+                 */
                 date1: null,
+                /**
+                 * Currently selected upper bound year
+                 * @property date2
+                 * @type integer
+                 */
                 date2: null,
             },
             computed: {
+                /**
+                 * Computes the proper URL to get CSV from current parameters
+                 * @method csvURL
+                 * @return {String} the URL of CSV API with parameters
+                 */
                 csvURL: function(){
                     url = ""
                     if(this.csv_scope==3){
@@ -122,6 +176,10 @@
                 }
             },
             methods: {
+                /**
+                 * Calls the API to update list of departments by selected college
+                 * @method updateDept
+                 */
                 updateDept: function () {
                     fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
                         .then(response => {
@@ -131,6 +189,10 @@
                         })
                     });
                 },
+                /**
+                 * Calls the API to update the list of degree programs by selected department
+                 * @method updateProg
+                 */
                 updateProg: function() {
                     fetch("{% url 'makeReports:api-prog-by-dept' %}?department="+this.department)
                         .then(response => {

@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 
 class ReportFirstPageTest(ReportSetupTest):
@@ -29,7 +29,7 @@ class FinalReportSupplementsTest(ReportSetupTest):
     """
     def setUp(self):
         super(FinalReportSupplementsTest,self).setUp()
-        self.supp = mommy.make('ReportSupplement')
+        self.supp = baker.make('ReportSupplement')
     def test_view(self):
         """
         Tests response code and basic text expected
@@ -55,7 +55,7 @@ class DeleteEndSupplementsTest(ReportSetupTest):
     """
     def setUp(self):
         super(DeleteEndSupplementsTest,self).setUp()
-        self.supp = mommy.make('ReportSupplement')
+        self.supp = baker.make('ReportSupplement')
     def test_view(self):
         """
         Tests response code and basic text expected

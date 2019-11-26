@@ -8,7 +8,7 @@ from makeReports.forms import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
 
 class AssessmentSummaryPageTest(ReportSetupTest):
@@ -20,9 +20,9 @@ class AssessmentSummaryPageTest(ReportSetupTest):
         Sets up assessments to be on the page
         """
         super(AssessmentSummaryPageTest,self).setUp()
-        self.assess = mommy.make("AssessmentVersion",report=self.rpt)
-        self.assess2 = mommy.make("AssessmentVersion",report=self.rpt)
-        self.assessNotInRpt = mommy.make("AssessmentVersion")
+        self.assess = baker.make("AssessmentVersion",report=self.rpt)
+        self.assess2 = baker.make("AssessmentVersion",report=self.rpt)
+        self.assessNotInRpt = baker.make("AssessmentVersion")
     def test_view(self):
         """
         Test view exists with assessments on it
@@ -50,7 +50,7 @@ class AddNewAssessmentTest(ReportSetupTest):
         """
         Tests that the assessment is added
         """
-        slo = mommy.make("SLOInReport", report=self.rpt)
+        slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
             'title': 'title of assess',
@@ -89,10 +89,10 @@ class ImportAssessmentPage(ReportSetupTest):
         Creates an assessment to import and SLO to import to
         """
         super(ImportAssessmentPage,self).setUp()
-        self.slo = mommy.make("SLOInReport",report=self.rpt)
-        self.rpt2 = mommy.make("Report", degreeProgram=self.rpt.degreeProgram,year=2019)
-        self.slo2 = mommy.make("SLOInReport",report=self.rpt2)
-        self.assess = mommy.make("AssessmentVersion",slo=self.slo2,report=self.rpt2)
+        self.slo = baker.make("SLOInReport",report=self.rpt)
+        self.rpt2 = baker.make("Report", degreeProgram=self.rpt.degreeProgram,year=2019)
+        self.slo2 = baker.make("SLOInReport",report=self.rpt2)
+        self.assess = baker.make("AssessmentVersion",slo=self.slo2,report=self.rpt2)
     def test_view(self):
         """
         Test that the page exists
@@ -121,10 +121,10 @@ class EditAssessmentTest(ReportSetupTest):
         Sets up assessments to edit
         """
         super(EditAssessmentTest,self).setUp()
-        self.assessN = mommy.make("AssessmentVersion",report=self.rpt, assessment__numberOfUses=1)
-        self.shareAssess = mommy.make("Assessment", numberOfUses = 2)
-        self.assessO = mommy.make("AssessmentVersion",report=self.rpt, assessment=self.shareAssess)
-        self.assessO2 = mommy.make("AssessmentVersion",report=self.rpt, assessment=self.shareAssess)
+        self.assessN = baker.make("AssessmentVersion",report=self.rpt, assessment__numberOfUses=1)
+        self.shareAssess = baker.make("Assessment", numberOfUses = 2)
+        self.assessO = baker.make("AssessmentVersion",report=self.rpt, assessment=self.shareAssess)
+        self.assessO2 = baker.make("AssessmentVersion",report=self.rpt, assessment=self.shareAssess)
     def test_view_new(self):
         """
         Tests that the edit new assessment page exists
@@ -141,7 +141,7 @@ class EditAssessmentTest(ReportSetupTest):
         """
         Tests that posting information to the edit new assessment page work
         """
-        slo = mommy.make("SLOInReport", report=self.rpt)
+        slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
             'title': 'title of assess',
@@ -166,7 +166,7 @@ class EditAssessmentTest(ReportSetupTest):
         """
         Tests that posting too much information to the edit imported assessment page fails
         """
-        slo = mommy.make("SLOInReport", report=self.rpt)
+        slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
             'title': 'title of assess23',
@@ -190,7 +190,7 @@ class EditAssessmentTest(ReportSetupTest):
         """
         Tests that posting the correct information to the edit imported assessment page works
         """
-        slo = mommy.make("SLOInReport", report=self.rpt)
+        slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
             'description': 'desc things',
@@ -241,11 +241,11 @@ class AssessmentSupplementTest(ReportSetupTest):
         Creates an assessment and supplement
         """
         super(AssessmentSupplementTest,self).setUp()
-        self.a = mommy.make("AssessmentVersion", report=self.rpt)
-        self.a2 = mommy.make("AssessmentVersion",report=self.rpt)
-        self.sup = mommy.make("AssessmentSupplement")
+        self.a = baker.make("AssessmentVersion", report=self.rpt)
+        self.a2 = baker.make("AssessmentVersion",report=self.rpt)
+        self.sup = baker.make("AssessmentSupplement")
         self.a.supplements.add(self.sup)
-        self.sup2 = mommy.make("AssessmentSupplement")
+        self.sup2 = baker.make("AssessmentSupplement")
         self.a2.supplements.add(self.sup2)
 
     def test_upload(self):

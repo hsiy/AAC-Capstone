@@ -13,9 +13,6 @@ Submodules
 
 .. toctree::
 
-   makeReports.views.aac_admin_views
-   makeReports.views.aac_report_views
-   makeReports.views.apis
    makeReports.views.assessment_views
    makeReports.views.basic_views
    makeReports.views.data_collection_views
