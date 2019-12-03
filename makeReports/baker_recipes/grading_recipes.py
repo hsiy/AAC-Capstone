@@ -72,7 +72,7 @@ abbrevs = ["MO","NS","SA","STA","LS","PR","TQ"]
 
 rubricItem = Recipe(RubricItem,
     text = cycle(rIs),
-    abbrevation = cycle(abbrevs),
+    abbreviation = cycle(abbrevs),
     DMEtext = cycle(DNMs),
     MEtext = cycle(MCs),
     EEtext = cycle(MEs)
