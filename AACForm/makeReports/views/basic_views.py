@@ -84,23 +84,26 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         Returns:
             QuerySet : reports (:class:`~makeReports.models.report_models.Report`) within department matching search
         """
-        year = self.request.GET['year']
-        submitted = self.request.GET['submitted']
-        graded = self.request.GET['graded']
-        dP = self.request.GET['dP']
+        keys = self.request.GET.keys()
         objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, degreeProgram__active=True).order_by('submitted','-rubric__complete')
-        if year!="":
-            objs=objs.filter(year=year)
-        if submitted == "S":
-            objs=objs.filter(submitted=True)
-        elif submitted == "nS":
-            objs=objs.filter(submitted=False)
-        if graded=="S":
-            objs=objs.filter(rubric__complete=True)
-        elif graded=="nS":
-            objs=objs.filter(rubric__complete=False)
-        if dP!="":
-            objs=objs.filter(degreeProgram__name__icontains=dP)
+        if 'year' in keys:
+            year = self.request.GET['year']
+            if year!="":
+                objs=objs.filter(year=year)
+        if 'submitted' in keys:
+            submitted = self.request.GET['submitted']
+            if submitted == "S":
+                objs=objs.filter(submitted=True)
+            elif submitted == "nS":
+                objs=objs.filter(submitted=False)
+        if 'graded' in keys:
+            graded = self.request.GET['graded']
+            if graded=="S":
+                objs=objs.filter(rubric__complete=True)
+            elif graded=="nS":
+                objs=objs.filter(rubric__complete=False)
+        if 'dP' in keys:
+            objs=objs.filter(degreeProgram__name__icontains=self.request.GET['dP'])
         return objs
 class DisplayReport(DeptAACMixin,TemplateView):
     """

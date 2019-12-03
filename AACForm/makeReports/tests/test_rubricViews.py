@@ -9,7 +9,7 @@ from django.http import HttpResponse
 import requests
 from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
-class RubricMgmt(ReportAACSetupTest):
+class RubricMgmtTest(ReportAACSetupTest):
     """
     Tests relating to rubric management
     """
@@ -41,8 +41,18 @@ class RubricMgmt(ReportAACSetupTest):
         resp = self.client.post(reverse('makeReports:add-rubric'),{
             'name':'test3'
         })
+        self.assertEquals(resp.status_code,302)
         num = Rubric.objects.filter(name="test3").count()
         self.assertEquals(num,1)
+    def test_rubricadd_name_toolong(self):
+        """
+        Tests adding too long of a name prevents form submission
+        """
+        reallyLong = "abcd"*250+"x"
+        resp = self.client.post(reverse('makeReports:add-rubric'),{
+            'name':reallyLong
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_rubricview(self):
         """
         Tests the viewing of a rubric
@@ -51,6 +61,14 @@ class RubricMgmt(ReportAACSetupTest):
         resp = self.client.get(reverse('makeReports:view-rubric',kwargs={'pk':self.rubric.pk}))
         self.assertContains(resp,self.rubric.name)
         self.assertContains(resp,rI.text)
+    def test_rubricview_recipe(self):
+        """
+        Tests the viewing of rubric with item from recipe
+        """
+        rI = baker.make_recipe("makeReports.rubricItem",rubricVersion=self.rubric)  
+        resp = self.client.get(reverse('makeReports:view-rubric',kwargs={'pk':self.rubric.pk}))
+        self.assertContains(resp,self.rubric.name)
+        self.assertContains(resp,rI.text) 
     def test_rubricItemAdd(self):
         """
         Tests posting to add rubric item
@@ -76,6 +94,40 @@ class RubricMgmt(ReportAACSetupTest):
             EEtext='cccs'
         ).count()
         self.assertEquals(num,1)
+        self.assertEquals(resp.status_code,302)
+    def test_rubricItemAdd_toolong(self):
+        """
+        Tests posting to add rubric item with too long of text fails
+        """
+        reallyLong = "xydksdfa I want    "*1000
+        resp = self.client.post(reverse('makeReports:add-RI',kwargs={
+            'rubric':self.rubric.pk
+        }),{
+            'text':reallyLong,
+            'abbreviation':'EX',
+            'section':2,
+            'order':3,
+            'DMEtext':'dsds',
+            'MEtext':'abab',
+            'EEtext':'cccs'
+        })
+        self.assertNotEquals(resp.status_code,302)
+    def test_rubricItemAdd_missingText(self):
+        """
+        Tests posting to add rubric item without text fails
+        """
+        reallyLong = "xydksdfa I want    "*1000
+        resp = self.client.post(reverse('makeReports:add-RI',kwargs={
+            'rubric':self.rubric.pk
+        }),{
+            'abbreviation':'EX',
+            'section':2,
+            'order':3,
+            'DMEtext':'dsds',
+            'MEtext':'abab',
+            'EEtext':'cccs'
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_deleteRubric(self):
         """
         Tests deleting rubrics
@@ -94,6 +146,50 @@ class RubricMgmt(ReportAACSetupTest):
         Tests view to update rubric items via post
         """
         rI = baker.make("RubricItem",rubricVersion = self.rubric)
+        pk = rI.pk
+        resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
+            'text':'text7',
+            'abbreviation':'EZ',
+            'section':1,
+            'order':5,
+            'DMEtext':'ddsds',
+            'MEtext':'abaab',
+            'EEtext':'cccss'
+        })
+        num = RubricItem.objects.filter(
+            text='text7',
+            abbreviation ='EZ',
+            section=1,
+            order=5,
+            DMEtext='ddsds',
+            MEtext='abaab',
+            EEtext='cccss',
+            pk=pk
+        ).count()
+        self.assertEquals(num,1)
+        self.assertEquals(resp.status_code,302)
+    def test_updateRI_toolong(self):
+        """
+        Tests view to update rubric items via post with too long of DMEtext fails
+        """
+        rI = baker.make("RubricItem",rubricVersion = self.rubric)
+        pk = rI.pk
+        reallyLong = "text of rubric"*500
+        resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
+            'text':'text',
+            'abbreviation':'EZ',
+            'section':1,
+            'order':5,
+            'DMEtext': reallyLong,
+            'MEtext':'abaab',
+            'EEtext':'cccss'
+        })
+        self.assertNotEquals(resp.status_code,302)
+    def test_updateRI_recipe(self):
+        """
+        Tests view to update rubric items via post with recipe based item
+        """
+        rI = baker.make_recipe("makeReports.rubricItem",rubricVersion = self.rubric)
         pk = rI.pk
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
             'text':'text7',
@@ -135,6 +231,18 @@ class RubricMgmt(ReportAACSetupTest):
         rub = Rubric.objects.get(name="newName33")
         num = RubricItem.objects.filter(rubricVersion=rub,text=rI.text).count()
         self.assertEquals(num, 1)
+        self.assertEquals(resp.status_code,302)
+    def test_duplicateRubric_missingName(self):
+        """
+        Tests duplicating a rubric without a name fails
+        """
+        preName = self.rubric.name
+        rI = baker.make("RubricItem", rubricVersion=self.rubric)
+        resp = self.client.post(reverse('makeReports:dup-rub',kwargs={
+            'rubric':self.rubric.pk,
+        }),{
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_deleteRI(self):
         """
         Tests the deletion of rubric items
@@ -147,7 +255,18 @@ class RubricMgmt(ReportAACSetupTest):
         }))
         num=RubricItem.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
-
+    def test_deleteRI_recipe(self):
+        """
+        Tests the deletion of rubric items with recipe based item
+        """
+        rI = baker.make_recipe("makeReports.rubricItem", rubricVersion=self.rubric)
+        pk = rI.pk
+        resp = self.client.post(reverse('makeReports:delete-RI',kwargs={
+            'rubric':self.rubric.pk,
+            'pk':rI.pk
+        }))
+        num=RubricItem.objects.filter(pk=pk).count()
+        self.assertEquals(num,0)
 
 
     

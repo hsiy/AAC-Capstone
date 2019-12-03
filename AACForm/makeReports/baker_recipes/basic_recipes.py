@@ -2,8 +2,8 @@
 This file contains recipes to create basic models
 
 Attributes:
-    report (Recipe): recipe to create Report model
-    profile (Recipe): recipe to create Profile model
+    report (Recipe): recipe to create :class:`~makeReports.models.Report` model
+    profile (Recipe): recipe to create :class:`~makeReports.models.Profile` model
 
 """
 from itertools import cycle, product

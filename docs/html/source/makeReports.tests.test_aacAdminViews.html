@@ -173,6 +173,12 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_arc_cols_recipe">
+<code class="sig-name descname">test_arc_cols_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_arc_cols_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the archived college page contains only archived colleges using recipe based model</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_create">
 <code class="sig-name descname">test_create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests that the create college page exists and works</p>
@@ -185,15 +191,33 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_delete_recipe">
+<code class="sig-name descname">test_delete_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_delete_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the delete page deletes the college using recipe based model</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_list">
 <code class="sig-name descname">test_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the list page contains a college made and not an inactive college</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_list_recipe">
+<code class="sig-name descname">test_list_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_list_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the list page contains a college made and not an inactive college using recipe based colleges</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_recover">
 <code class="sig-name descname">test_recover</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_recover" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the recover page in fact re-marks the college as active</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_recover_recipe">
+<code class="sig-name descname">test_recover_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AACCollegeViewsTest.test_recover_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the recover page in fact re-marks the college as active using recipe based model</p>
 </dd></dl>
 
 </dd></dl>
@@ -253,15 +277,45 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_delete_recipe">
+<code class="sig-name descname">test_delete_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_delete_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that announcements can be effectively deleted with recipe based models</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit">
 <code class="sig-name descname">test_edit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tests that the edit page effecitvely edits announcements</p>
+<dd><p>Tests that the edit page effectively edits announcements</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit_missingyear">
+<code class="sig-name descname">test_edit_missingyear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit_missingyear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the edit page fails when the posted data is missing the year</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit_notday">
+<code class="sig-name descname">test_edit_notday</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit_notday" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the edit page fails when the date is not a valid day</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit_recipe">
+<code class="sig-name descname">test_edit_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_edit_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the edit page effectively edits announcements using recipe based announcement</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_list">
 <code class="sig-name descname">test_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the announcement listing page</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_list_recipe">
+<code class="sig-name descname">test_list_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_list_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the announcement listing page with recipe based models</p>
 </dd></dl>
 
 </dd></dl>
@@ -311,6 +365,31 @@
 <dt id="makeReports.tests.test_aacAdminViews.DegreeProgramAdminTest.test_update">
 <code class="sig-name descname">test_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.DegreeProgramAdminTest.test_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests that a degree program is effectively updated</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_aacAdminViews.</code><code class="sig-name descname">DegreeProgramAdminTestRecipe</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.tests.test_aacAdminViews.DegreeProgramAdminTest" title="makeReports.tests.test_aacAdminViews.DegreeProgramAdminTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_aacAdminViews.DegreeProgramAdminTest</span></code></a></p>
+<p>Tests views relating to degree program administration with recipe based models</p>
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the department from a recipe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe.test_delete">
+<code class="sig-name descname">test_delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe.test_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the delete page using recipe based degree program</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe.test_update">
+<code class="sig-name descname">test_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.DegreeProgramAdminTestRecipe.test_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the update page using a recipe</p>
 </dd></dl>
 
 </dd></dl>
@@ -376,15 +455,33 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_list_recipe">
+<code class="sig-name descname">test_list_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_list_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the graduate goal list page contains grad goals using recipe based model</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_old_list">
 <code class="sig-name descname">test_old_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_old_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the archived list contains expected goals</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_old_list_recipe">
+<code class="sig-name descname">test_old_list_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_old_list_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the archived list contains expected goals using recipe based grad goals</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_update">
 <code class="sig-name descname">test_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the update function of the graduate goal</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_update_recipe">
+<code class="sig-name descname">test_update_recipe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_aacAdminViews.GradGoalAdminTests.test_update_recipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the update function of the graduate goal with recipe based model</p>
 </dd></dl>
 
 </dd></dl>

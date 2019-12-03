@@ -149,38 +149,115 @@
 <span id="makereports-tests-test-mixins-module"></span><h1>makeReports.tests.test_mixins module<a class="headerlink" href="#module-makeReports.tests.test_mixins" title="Permalink to this headline">¶</a></h1>
 <p>Tests related to testing mixins authenticate users correctly</p>
 <dl class="class">
-<dt id="makeReports.tests.test_mixins.AACOnlyMixin">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">AACOnlyMixin</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixin" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTest">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">AACOnlyMixinTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.test.testcases.TestCase</span></code></p>
 <p>Tests only AAC members can access pages with the AAC mixin</p>
 <dl class="class">
-<dt id="makeReports.tests.test_mixins.AACOnlyMixin.DummyView">
-<em class="property">class </em><code class="sig-name descname">DummyView</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixin.DummyView" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTest.DummyView">
+<em class="property">class </em><code class="sig-name descname">DummyView</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTest.DummyView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
 <p>Dummy view to attach mix-in to</p>
 <dl class="attribute">
-<dt id="makeReports.tests.test_mixins.AACOnlyMixin.DummyView.template_name">
-<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/help.html'</em><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixin.DummyView.template_name" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTest.DummyView.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/help.html'</em><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTest.DummyView.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.AACOnlyMixin.setUp">
-<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixin.setUp" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTest.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTest.setUp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up an instance of the dummy view and a user</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.AACOnlyMixin.test_aac">
-<code class="sig-name descname">test_aac</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixin.test_aac" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTest.test_aac">
+<code class="sig-name descname">test_aac</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTest.test_aac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the AAC member can access the page</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.AACOnlyMixin.test_notaac">
-<code class="sig-name descname">test_notaac</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixin.test_notaac" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTest.test_notaac">
+<code class="sig-name descname">test_notaac</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTest.test_notaac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests non-AAC members cannot access the page</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTestRecipe">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">AACOnlyMixinTestRecipe</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTestRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.tests.test_mixins.AACOnlyMixinTest" title="makeReports.tests.test_mixins.AACOnlyMixinTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_mixins.AACOnlyMixinTest</span></code></a></p>
+<p>Tests only AAC members can access pages with AAC Mixin when model are made from recipes</p>
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.AACOnlyMixinTestRecipe.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.AACOnlyMixinTestRecipe.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the dummy view and a user using the recipes</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">CleanSummerTests</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.test.testcases.TestCase</span></code></p>
+<p>Tests that the CleanSummer class works as expected</p>
+<dl class="class">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.DummyForm">
+<em class="property">class </em><code class="sig-name descname">DummyForm</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">field_order=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.DummyForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="makeReports.forms.cleaners.html#makeReports.forms.cleaners.CleanSummer" title="makeReports.forms.cleaners.CleanSummer"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.forms.cleaners.CleanSummer</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.forms.Form</span></code></p>
+<p><strong>Form fields:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code>: Text (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+</ul>
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.DummyForm.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.DummyForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.DummyForm.summer_max_length">
+<code class="sig-name descname">summer_max_length</code><em class="property"> = 1000</em><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.DummyForm.summer_max_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.test_invalid_isnt_valid">
+<code class="sig-name descname">test_invalid_isnt_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.test_invalid_isnt_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that too long of length is not accepted as valid</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.test_not_scripts_arent_stripped">
+<code class="sig-name descname">test_not_scripts_arent_stripped</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.test_not_scripts_arent_stripped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that things not in script tags and okay HTML tags are not stripped</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.test_scripts_arestripped">
+<code class="sig-name descname">test_scripts_arestripped</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.test_scripts_arestripped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that script tags and intermediate text is stripped</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.CleanSummerTests.test_valid_is_valid">
+<code class="sig-name descname">test_valid_is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.CleanSummerTests.test_valid_is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests valid length is accepted as valid</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_mixins.DeptAACMixinTestRecipe">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">DeptAACMixinTestRecipe</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptAACMixinTestRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.tests.test_mixins.DeptAACMixinTests" title="makeReports.tests.test_mixins.DeptAACMixinTests"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_mixins.DeptAACMixinTests</span></code></a></p>
+<p>Tests the department or AAC mixin using recipe based models</p>
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.DeptAACMixinTestRecipe.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptAACMixinTestRecipe.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up an instance of the dummy view and the user using recipes</p>
 </dd></dl>
 
 </dd></dl>
@@ -214,8 +291,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.DeptAACMixinTests.test_acc_indept">
-<code class="sig-name descname">test_acc_indept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptAACMixinTests.test_acc_indept" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptAACMixinTests.test_aac_indept">
+<code class="sig-name descname">test_aac_indept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptAACMixinTests.test_aac_indept" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests AAC member in department can access page</p>
 </dd></dl>
 
@@ -240,49 +317,62 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">DeptOnlyMixin</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">DeptOnlyMixinTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.test.testcases.TestCase</span></code></p>
 <p>Tests only department members can access pages with the DeptOnly mixin</p>
 <dl class="class">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.DummyView">
-<em class="property">class </em><code class="sig-name descname">DummyView</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.DummyView" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.DummyView">
+<em class="property">class </em><code class="sig-name descname">DummyView</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.DummyView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptOnlyMixin" title="makeReports.views.helperFunctions.mixins.DeptOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
 <p>Dummy view to attach mix-in to</p>
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.DummyView.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.DummyView.dispatch" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.DummyView.dispatch">
+<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.DummyView.dispatch" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.DummyView.template_name">
-<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/help.html'</em><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.DummyView.template_name" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.DummyView.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/help.html'</em><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.DummyView.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.setUp">
-<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.setUp" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.setUp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up an instance of the dummy view and a user</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.test_aac">
-<code class="sig-name descname">test_aac</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.test_aac" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.test_aac">
+<code class="sig-name descname">test_aac</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.test_aac" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the AAC member not in department cannot access the page</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.test_acc_indept">
-<code class="sig-name descname">test_acc_indept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.test_acc_indept" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.test_aac_indept">
+<code class="sig-name descname">test_aac_indept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.test_aac_indept" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests AAC member in department can access page</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.tests.test_mixins.DeptOnlyMixin.test_notaac_indept">
-<code class="sig-name descname">test_notaac_indept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixin.test_notaac_indept" title="Permalink to this definition">¶</a></dt>
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTest.test_notaac_indept">
+<code class="sig-name descname">test_notaac_indept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest.test_notaac_indept" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests non-AAC member in department can access page</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTestRecipe">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_mixins.</code><code class="sig-name descname">DeptOnlyMixinTestRecipe</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTestRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.tests.test_mixins.DeptOnlyMixinTest" title="makeReports.tests.test_mixins.DeptOnlyMixinTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_mixins.DeptOnlyMixinTest</span></code></a></p>
+<p>Tests the Department only mixin using recipe based models</p>
+<dl class="method">
+<dt id="makeReports.tests.test_mixins.DeptOnlyMixinTestRecipe.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_mixins.DeptOnlyMixinTestRecipe.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up an instance of the dummy view and a user</p>
 </dd></dl>
 
 </dd></dl>
