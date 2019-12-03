@@ -1,6 +1,13 @@
 makeReports.tests package
 =========================
 
+Subpackages
+-----------
+
+.. toctree::
+
+   makeReports.tests.forms
+
 Submodules
 ----------
 
