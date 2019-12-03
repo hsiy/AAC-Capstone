@@ -165,18 +165,22 @@ class ImportAssessment(DeptReportMixin,FormView):
             dict : keyword arguments of the form
         """
         kwargs = super(ImportAssessment,self).get_form_kwargs()
-        yearIn = self.request.GET['year']
-        dP = self.request.GET['dp']
+        keys = self.request.GET.keys()
         aCs = AssessmentVersion.objects
-        if yearIn!="":
-            aCs=aCs.filter(report__year=yearIn)
-        if dP!="" and dP!="-1":
-            try:
-                aCs=aCs.filter(report__degreeProgram=DegreeProgram.objects.get(pk=dP))
-            except:
-                pass
-        if self.request.GET['slo']!="" and self.request.GET['slo']!="-1":
-            aCs=aCs.filter(slo=SLOInReport.objects.get(pk=self.request.GET['slo']))
+        if 'year' in keys:
+            yearIn = self.request.GET['year']
+            if yearIn!="":
+                aCs=aCs.filter(report__year=yearIn)
+        if 'dp' in keys:
+            dP = self.request.GET['dp']
+            if dP!="" and dP!="-1":
+                try:
+                    aCs=aCs.filter(report__degreeProgram=DegreeProgram.objects.get(pk=dP))
+                except:
+                    pass
+        if 'slo' in keys:
+            if self.request.GET['slo']!="" and self.request.GET['slo']!="-1":
+                aCs=aCs.filter(slo=SLOInReport.objects.get(pk=self.request.GET['slo']))
         aCsInRpt = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
         #for a in aCsInRpt:
         #    aCs=aCs.exclude(assessment=a.assessment)

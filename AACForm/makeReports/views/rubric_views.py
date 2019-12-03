@@ -35,11 +35,13 @@ class SearchRubricList(AACOnlyMixin,ListView):
             QuerySet : rubrics (:class:`~makeReports.models.report_models.Rubric`) meeting search parameters
         """
         rubs = Rubric.objects
-        day = self.request.GET['date']
-        if self.request.GET['name']!="":
-            rubs=rubs.filter(name__icontains=self.request.GET['name'])
-        if day!="":
-            rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
+        keys = self.request.GET.keys()
+        if 'name' in keys:
+                rubs=rubs.filter(name__icontains=self.request.GET['name'])
+        if 'date' in keys:
+            day = self.request.GET['date']
+            if day!="":
+                rubs=rubs.filter(date__range=(datetime.strptime(day,"%Y-%m-%d")-timedelta(days=180),datetime.strptime(day,"%Y-%m-%d")+timedelta(days=180)))
         return rubs.order_by("-date")
 class AddRubric(AACOnlyMixin,CreateView):
     """
