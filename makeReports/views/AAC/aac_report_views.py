@@ -139,29 +139,34 @@ class ReportListSearched(AACOnlyMixin,ListView):
         Returns:
             QuerySet : reports (:class:`~makeReports.models.report_models.Report`) meeting search criteria
         """
-        year = self.request.GET['year']
-        submitted = self.request.GET['submitted']
-        graded = self.request.GET['graded']
-        dP = self.request.GET['dP']
-        dept = self.request.GET['dept']
-        college = self.request.GET['college']
+        keys = self.request.GET.keys()
         objs = Report.objects.filter(degreeProgram__active=True).order_by('submitted','-rubric__complete')
-        if year!="":
-            objs=objs.filter(year=year)
-        if submitted == "S":
-            objs=objs.filter(submitted=True)
-        elif submitted == "nS":
-            objs=objs.filter(submitted=False)
-        if graded=="S":
-            objs=objs.filter(rubric__complete=True)
-        elif graded=="nS":
-            objs=objs.filter(rubric__complete=False)
-        if dP!="":
-            objs=objs.filter(degreeProgram__name__icontains=dP)
-        if dept!="":
-            objs=objs.filter(degreeProgram__department__name__icontains=dept)
-        if college!="":
-            objs=objs.filter(degreeProgram__department__college__name__icontains=college)
+        if 'year' in keys:
+            year = self.request.GET['year']
+            if year!= "":
+                objs=objs.filter(year=year)
+        if 'submitted' in keys:
+            submitted = self.request.GET['submitted']
+            if submitted == "S":
+                objs=objs.filter(submitted=True)
+            elif submitted == "nS":
+                objs=objs.filter(submitted=False)
+        if 'graded' in keys:
+            graded = self.request.GET['graded']
+            if graded=="S":
+                objs=objs.filter(rubric__complete=True)
+            elif graded=="nS":
+                objs=objs.filter(rubric__complete=False)
+        if 'dP' in keys:
+            objs=objs.filter(degreeProgram__name__icontains=self.request.GET['dP'])
+        if 'dept' in keys:
+            dept = self.request.GET['dept']
+            if dept!="":
+                objs=objs.filter(degreeProgram__department__name__icontains=dept)
+        if 'college' in keys:
+            college = self.request.GET['college']
+            if college!="":
+                objs=objs.filter(degreeProgram__department__college__name__icontains=college)
         return objs
 class ManualReportSubmit(AACOnlyMixin,UpdateView):
     """
