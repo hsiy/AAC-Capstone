@@ -55,6 +55,10 @@ class RubricItemForm(forms.ModelForm):
     Form to create a new rubric item
     """
     class Meta:
+        """
+        Defines the model type, fields, labels, and widgets for the ModelForm superclass to
+        use to build the form
+        """
         model = RubricItem
         fields = ['text','abbreviation','section','order','DMEtext','MEtext','EEtext']
         labels = {

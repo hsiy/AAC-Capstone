@@ -12,16 +12,42 @@ from makeReports.views.helperFunctions.mixins import *
 from csv_export.views import CSVExportView
 
 class GraphingHome(AACOnlyMixin,TemplateView):
+    """
+    View of page to generate graphs for the AAC
+    """
     template_name = "makeReports/Graphing/graphing.html"
     def get_context_data(self, **kwargs):
+        """
+        Returns the currently active colleges needed to display the page
+
+        Returns:
+            context (dict): dictionary of context including active colleges
+        """
         context = super(GraphingHome, self).get_context_data(**kwargs)
         context['colleges'] = College.active_objects.all
         return context
 class GraphingDept(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """
+    View of page for users to create graphs within the department
+    """
     template_name = "makeReports/Graphing/graphing_dept.html"
     def test_func(self):
+        """
+        Ensures user is part of the department for requested page
+
+        Returns:
+            bool : whether user is part of the department and can access page
+        """
         return self.request.user.profile.department.pk == int(self.kwargs['dept'])
 class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView):
+    """
+    CSV generating page for within the department
+
+    Keyword Args:
+        gYear (str): the minimum year for data
+        lYear (str): the maximum year for data
+        dept (str): the primary key of the desired department
+    """
     model = AssessmentData
     fields = [
         'assessmentVersion__report__year',
@@ -44,6 +70,13 @@ class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView)
         'dataRange','numberStudents','overallProficient',
         ]
     def get_field_value(self,obj, field_name):
+        """
+        Generally gets field value. Since not all assessment versions have assessment aggregates,
+        this ensures the application does not fail
+
+        Returns:
+            value : value of the field (many types possible)
+        """
         if "assessmentVersion__assessmentaggregate" in field_name:
             #following code is taken from the source code for CSVExportView
             try:
@@ -56,19 +89,55 @@ class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView)
         else:
             return super(OutputCSVDepartment,self).get_field_value(obj, field_name)
     def get_queryset(self):
+        """
+        Gets the QuerySet of AssessmentData to generate the CSV for.
+        In particular, it limits to assessments within the year within the department.
+        
+        Returns:
+            QuerySet : set of AssessmentData within parameters
+        """
         return AssessmentData.objects.filter(
             assessmentVersion__report__year__gte=self.kwargs['gYear'],
             assessmentVersion__report__year__lte=self.kwargs['lYear'],
             assessmentVersion__report__degreeProgram__department__pk=self.kwargs['dept'])
     def test_func(self):
+        """
+        Ensures the user is in the department or the AAC
+
+        Returns:
+            bool : whether user can access the page
+        """
         return (self.request.user.profile.department.pk == int(self.kwargs['dept'])) or self.request.user.profile.aac
 class OutputCSVDP(OutputCSVDepartment):
+    """
+    View to generate CSV for a specific degree program within given years
+
+    Keyword Args:
+        gYear (str): the minimum year for data
+        lYear (str): the maximum year for data
+        dept (str): the primary key of the desired department
+        dP (str): the primary key of the desired degree program
+    """
     def get_queryset(self):
+        """
+        Gets the QuerySet to generate CSV for, filtering based upon year and degree program
+        
+        Returns:
+            QuerySet : set of AssessmentData within parameters
+        """
         return AssessmentData.objects.filter(
             assessmentVersion__report__year__gte=self.kwargs['gYear'],
             assessmentVersion__report__year__lte=self.kwargs['lYear'],
             assessmentVersion__report__degreeProgram__pk=self.kwargs['dP'])
 class OutputCSVCollege(OutputCSVDepartment):
+    """
+    View to output CSV for data within a specific college
+
+    Keyword Args:
+        gYear (str): the minimum year for data
+        lYear (str): the maximum year for data
+        col (str): the primary key of the desired college
+    """
     fields = [
         'assessmentVersion__report__year',
         'assessmentVersion__report__degreeProgram__department', 'assessmentVersion__report__degreeProgram__department__name',
@@ -91,16 +160,37 @@ class OutputCSVCollege(OutputCSVDepartment):
         'dataRange','numberStudents','overallProficient',
         ]
     def get_queryset(self):
+        """
+        Gets the QuerySet to generate CSV for, filtering based upon year and college
+        
+        Returns:
+            QuerySet : set of AssessmentData within parameters
+        """
         return AssessmentData.objects.filter(
             assessmentVersion__report__year__gte=self.kwargs['gYear'],
             assessmentVersion__report__year__lte=self.kwargs['lYear'],
             assessmentVersion__report__degreeProgram__department__college__pk=self.kwargs['col']
             )
     def test_func(self):
+        """
+        Ensures the user is within the AAC
+
+        Returns:
+            bool : whether the user is in the AAC and therefore can access the page
+        """
         return self.request.user.profile.aac
 class CSVManagement(LoginRequiredMixin, TemplateView):
+    """
+    View to set parameters to generate CSV from one of the other views
+    """
     template_name = "makeReports/CSV/csvManagement.html"
     def get_context_data(self, **kwargs):
+        """
+        Gets active colleges needed to display page
+
+        Returns:
+            context (dict): dictionary of context for template, including active colleges
+        """
         context = super(CSVManagement, self).get_context_data(**kwargs)
         context['colleges'] = College.active_objects.all
         return context

@@ -243,6 +243,9 @@ class CleanSummerTests(TestCase):
     Tests that the CleanSummer class works as expected
     """
     class DummyForm(CleanSummer,forms.Form):
+        """
+        DummyForm to test CleanSummer mixin
+        """
         text = forms.CharField(widget=SummernoteWidget(),label="")
         summer_max_length=1000
     def test_valid_is_valid(self):
