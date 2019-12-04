@@ -24,6 +24,10 @@ class DeptSerializer(serializers.HyperlinkedModelSerializer):
     Serializes departments to JSON with the primary key and name
     """
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer.
+        """
         model = Department
         fields = ['pk','name']
 class ProgSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,6 +35,10 @@ class ProgSerializer(serializers.HyperlinkedModelSerializer):
     Serializes degree programs to JSON with the primary key, name, and level
     """
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = DegreeProgram
         fields = ['pk', 'name', 'level']
 class SLOserializer(serializers.HyperlinkedModelSerializer):
@@ -38,6 +46,10 @@ class SLOserializer(serializers.HyperlinkedModelSerializer):
     Serializes SLOs to JSON with the primary key and name
     """
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = SLOInReport
         fields = ['pk', 'goalText']
 class SLOParentSerializer(serializers.HyperlinkedModelSerializer):
@@ -45,6 +57,10 @@ class SLOParentSerializer(serializers.HyperlinkedModelSerializer):
     Serializes :class:`~makeReports.models.SLO` into just its primary key
     """
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = SLO
         fields = ['pk']
 class SLOSerializerWithParent(serializers.HyperlinkedModelSerializer):
@@ -53,6 +69,10 @@ class SLOSerializerWithParent(serializers.HyperlinkedModelSerializer):
     """
     slo = SLOParentSerializer()
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = SLOInReport
         fields = ['pk', 'goalText','slo']
 class AssessmentParentSerializer(serializers.HyperlinkedModelSerializer):
@@ -60,6 +80,10 @@ class AssessmentParentSerializer(serializers.HyperlinkedModelSerializer):
     Serializes parent assessments (:class:`~makeReports.models.Assessment`) into its primary key and title
     """
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = Assessment
         fields = ['pk','title']
 class Assessmentserializer(serializers.HyperlinkedModelSerializer):
@@ -68,6 +92,10 @@ class Assessmentserializer(serializers.HyperlinkedModelSerializer):
     """
     assessment =AssessmentParentSerializer()
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = SLOInReport
         fields = ['pk', 'assessment']
 class FileSerializer(serializers.HyperlinkedModelSerializer):
@@ -75,5 +103,9 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
     Serializes graphs to JSON with all fields 
     """
     class Meta:
+        """
+        Defines the model type and fields for the superclass
+        to use to build the serializer
+        """
         model = Graph
         fields = "__all__"

@@ -30,6 +30,9 @@ class CreateDepartmentForm(forms.ModelForm):
     Form to create new department
     """
     class Meta:
+        """
+        Defines the model type, fields, and widgets for use by the ModelForm superclass
+        """
         model = Department
         fields = ['name', 'college']
         widgets = {
@@ -37,6 +40,9 @@ class CreateDepartmentForm(forms.ModelForm):
             'college': forms.Select(attrs={'class':'form-control col-6'})
         }
     def __init__(self,*args,**kwargs):
+        """
+        Initializes the form and sets possible colleges to only those which are active
+        """
         super(CreateDepartmentForm,self).__init__(*args,**kwargs)
         self.fields['college'].queryset=College.active_objects.all()
 class GenerateReports(forms.Form):
@@ -46,12 +52,16 @@ class GenerateReports(forms.Form):
     rubric = forms.ModelChoiceField(queryset=Rubric.objects.order_by('-date'), widget=forms.Select(attrs={'class':'form-control col-6'}))
 class MakeNewAccount(UserCreationForm):
     """
-    Form for AAC to make new account
+    Form for the AAC to make a new account
     """
     isaac = forms.BooleanField(required=False, label="Account for AAC member?")
     department = forms.ModelChoiceField(queryset=Department.active_objects, label="Department", required=False,widget=forms.Select(attrs={'class':'form-control col-6'}))
     college = forms.ModelChoiceField(queryset=College.active_objects, label="College",required=False,widget=forms.Select(attrs={'class':'form-control col-6'}))
     class Meta:
+        """
+        Defines the model type, fields, and widgets for use by the superclass ModelForm when
+        creating the form
+        """
         model = User
         fields = ['email','username','password1','password2','isaac','first_name','last_name']
         widgets = {
@@ -86,6 +96,9 @@ class AnnouncementForm(CleanSummer,forms.ModelForm):
     text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Announcement")
     summer_max_length = 2000
     class Meta:
+        """
+        Defines the model type, widgets, and fields for use by the ModelForm superclass to build the form
+        """
         model = Announcement
         widgets = {
             'expiration': forms.SelectDateWidget(),
@@ -98,6 +111,9 @@ class GradGoalForm(CleanSummer,forms.ModelForm):
     text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Goal text: ")
     summer_max_length = 600
     class Meta:
+        """
+        Defines the model type and fields for the ModelForm superclass to use to build the form
+        """
         model = GradGoal
         fields = ['text']
 class GradGoalEditForm(CleanSummer,forms.ModelForm):
@@ -107,6 +123,9 @@ class GradGoalEditForm(CleanSummer,forms.ModelForm):
     text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="Goal text: ")
     summer_max_length = 600
     class Meta:
+        """
+        Defines the model type and fields for the ModelForm superclass to use to build the form
+        """
         model = GradGoal
         fields = ['active','text']
 
@@ -115,6 +134,10 @@ class CreateReportByDept(forms.ModelForm):
     Form to create new report via a link that already gives department (but not degree program)
     """
     class Meta:
+        """
+        Defines the model type, fields, labels, and widgets for the superclass ModelForm
+        to use to build the form.
+        """
         model = Report
         fields = ['year', 'degreeProgram'] 
         labels = {
@@ -140,6 +163,10 @@ class CreateReportByDPForm(forms.ModelForm):
     Form to create report where degree program is already picked
     """
     class Meta:
+        """
+        Defines the model type, fields and widgets for the ModelForm superclass to
+        use to build the form
+        """
         model = Report
         fields = ['year']
         widgets = {
@@ -154,8 +181,12 @@ class CreateReportByDPForm(forms.ModelForm):
 class CreateDPByDept(forms.ModelForm):
     """
     Form to create degree program where department is given
-    """   
+    """ 
     class Meta:
+        """
+        Defines the model, fields, labels, and widgets for the ModelForm superclass
+        to use to make a form
+        """
         model = DegreeProgram
         fields = ['name','level','cycle','startingYear']
         labels = {

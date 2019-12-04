@@ -25,7 +25,7 @@ import json
 
 def get_specificSLO_graph(request):
     """
-    Graphs a specific SLO/Assessment combo performance over time
+    Graphs a specific SLO/Assessment combination performance over time
 
     Args:
         request (HttpRequest): contains GET parameters

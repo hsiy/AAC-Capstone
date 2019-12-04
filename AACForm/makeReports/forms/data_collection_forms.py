@@ -33,6 +33,10 @@ class ResultCommunicationForm(CleanSummer,forms.Form):
     summer_max_length = 3000
 class AssessmentAggregateForm(forms.ModelForm):
     class Meta:
+        """
+        Defines the model, fields, and widgets for the ModelForm superclass
+        to use to build the form
+        """
         model = AssessmentAggregate
         fields = ['aggregate_proficiency']
         widgets = {
