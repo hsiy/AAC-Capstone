@@ -39,6 +39,11 @@
                   <li class="nav-item active">
                     <a class="nav-link" href="{% url 'makeReports:submit-report' report=rpt.pk %}">Preview & Submit </a>
                   </li>
+                  {% if rpt.rubric %}
+                  <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'makeReports:dept-view-rubric' report=rpt.pk pk=rpt.rubric.rubricVersion.pk %}">View Rubric </a>
+                    </li>
+                  {% endif %}
             </div>
           </nav>
 </nav>

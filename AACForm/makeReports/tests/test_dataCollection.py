@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 
@@ -20,9 +20,9 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         Creates an assessment to test with
         """
         super().setUp()
-        self.slo = mommy.make("SLOInReport", report=self.rpt)
-        self.assess = mommy.make("AssessmentVersion", report=self.rpt, slo=self.slo)
-        self.assess2 = mommy.make("AssessmentVersion",report=self.rpt, slo=self.slo)
+        self.slo = baker.make("SLOInReport", report=self.rpt)
+        self.assess = baker.make("AssessmentVersion", report=self.rpt, slo=self.slo)
+        self.assess2 = baker.make("AssessmentVersion",report=self.rpt, slo=self.slo)
     def test_datasummary(self):
         """
         Tests the summary page exists with expected content
@@ -51,12 +51,49 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
             overallProficient = 75
         ).count()
         self.assertEquals(num,1)
+        self.assertEquals(resp.status_code,302)
+    def test_createDataRow_noDataRange(self):
+        """
+        Tests the form fails when there is not a data range
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'numberStudents':20,
+            'overallProficient':75
+        })
+        self.assertNotEquals(resp.status_code,302)
+    def test_createDataRow_negativeInteger(self):
+        """
+        Tests the form fails when a negative number of students is entered
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'numberStudents':-20,
+            'overallProficient':75
+        })
+        self.assertNotEquals(resp.status_code,302)
+    def test_createDataRow_nonIntegerProficient(self):
+        """
+        Tests the form fails when a fractional percentage is entered
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'numberStudents':20,
+            'overallProficient':75.34
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_multipleMeasuresData(self):
         """
         Tests that mutliple measures for an SLO both appear in the table
         """
-        d1 = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
-        d2 = mommy.make("AssessmentData", assessmentVersion = self.assess2,overallProficient=34)
+        d1 = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
+        d2 = baker.make("AssessmentData", assessmentVersion = self.assess2,overallProficient=34)
         resp = self.client.get(reverse('makeReports:data-summary',kwargs={
             'report':self.rpt.pk
         }))
@@ -86,11 +123,23 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         ).count()
         self.assertEquals(num,1)
         self.assertRedirects(resp,reverse('makeReports:assessment-summary',kwargs={'report':self.rpt.pk}))
+    def test_datarowFromAssess_noproficient(self):
+        """
+        Tests the create data row page from assessment fails there is not a proficiency number
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection-assess',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'dataRange':'Fall 2019',
+            'numberStudents':21,
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_editDataRow(self):
         """
         Test that posting to edit data row actually edits the data row
         """
-        d = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
+        d = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
         pk = d.pk
         resp = self.client.post(reverse('makeReports:edit-data-collection',kwargs={
             'report':self.rpt.pk,
@@ -112,7 +161,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         Tests that posting to the delete page actually deletes the data row
         """
-        d = mommy.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
+        d = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
         pk = d.pk
         resp = self.client.post(reverse('makeReports:delete-data-collection',kwargs={
             'report':self.rpt.pk,
@@ -168,7 +217,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         self.assess.target = 80
         self.assess.save()
-        agg = mommy.make("AssessmentAggregate",assessmentVersion=self.assess, aggregate_proficiency=60, met=False)
+        agg = baker.make("AssessmentAggregate",assessmentVersion=self.assess, aggregate_proficiency=60, met=False)
         resp = self.client.post(reverse('makeReports:data-agg-edit',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk,
@@ -178,7 +227,18 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         })
         num = AssessmentAggregate.objects.filter(aggregate_proficiency=85,pk=agg.pk,met=True).count()
         self.assertEquals(num,1)    
-
+class DataCollectionMainTableTestsRecipe(DataCollectionMainTableTests):
+    """
+    Collection of tests that directly interact with the main data table using recipes
+    """
+    def setUp(self):
+        """
+        Creates an assessment to test with
+        """
+        super().setUp()
+        self.slo = baker.make_recipe("makeReports.sloInReport", report=self.rpt)
+        self.assess = baker.make_recipe("makeReports.assessmentVersion", report=self.rpt, slo=self.slo)
+        self.assess2 = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, slo=self.slo)
 class DataCollectionExtrasTests(ReportAACSetupTest):
     """
     Tests views auxillary to the main table, but part of data collection
@@ -188,9 +248,9 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         Creates assessments and data to test with
         """
         super().setUp()
-        self.slo = mommy.make("SLOInReport", report=self.rpt)
-        self.assess = mommy.make("AssessmentVersion", report=self.rpt, slo=self.slo)
-        self.assess2 = mommy.make("AssessmentVersion",report=self.rpt, slo=self.slo)
+        self.slo = baker.make("SLOInReport", report=self.rpt)
+        self.assess = baker.make("AssessmentVersion", report=self.rpt, slo=self.slo)
+        self.assess2 = baker.make("AssessmentVersion",report=self.rpt, slo=self.slo)
     def test_NewSLOStatus(self):
         """
         Tests the creation of a new SLO Status
@@ -209,7 +269,7 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         """
         Tests the editing of an SLO Status
         """
-        stat = mommy.make("SLOStatus",sloIR=self.slo,status=SLO_STATUS_CHOICES[1][0])
+        stat = baker.make("SLOStatus",sloIR=self.slo,status=SLO_STATUS_CHOICES[1][0])
         resp = self.client.post(reverse('makeReports:edit-slo-status',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -237,7 +297,7 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         """
         Tests that editing result communication description via posting works
         """
-        rc = mommy.make("ResultCommunicate",report=self.rpt)
+        rc = baker.make("ResultCommunicate",report=self.rpt)
         resp = self.client.post(reverse('makeReports:edit-result-communication',kwargs={
             'report':self.rpt.pk,
             'resultpk':rc.pk

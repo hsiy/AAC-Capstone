@@ -11,6 +11,7 @@ from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os
 from .basic_models import gd_storage, NonArchivedManager
+from .data_models import AssessmentAggregate
 
 class Assessment(models.Model):
     """

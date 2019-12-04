@@ -166,5 +166,5 @@ class OverallCommentForm(CleanSummer,forms.Form):
     """
     Form for the overall comment
     """
-    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:445px','summernote': {'width' : '415px'}}),label="")
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:445px','summernote': {'width' : '415px'}}),label="",max_length=2000)
     summer_max_length = 2000

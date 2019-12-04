@@ -30,6 +30,8 @@ class ClearOverrideAPI(APIView):
         Args:
             request (HttpRequest): the request to the API
             format (None): not used
+        Returns:
+            response (Response): empty response
 
         Notes:
             Expects primary key of report to be passed in GET request as 'pk'
@@ -63,4 +65,5 @@ class ClearOverrideAPI(APIView):
                 agg.override = False
                 agg.aggregate_proficiency = calcWeightedAgg(agg.assessmentVersion,0,0)
                 agg.save()
+        return Response()
 

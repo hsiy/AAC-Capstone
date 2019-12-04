@@ -15,13 +15,13 @@ def dict_key(d, k):
     '''Returns the given key from a dictionary.'''
     return d[k]
 
-class CreateNewSLO(CleanSummer,forms.Form):
+class CreateNewSLO(forms.Form):
     """
     Form to create a new SLO
     """
-    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO: ") 
-    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level: ", widget=forms.Select(attrs={'class':'form-control col-5'}))
-    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals: ")
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO") 
+    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level", widget=forms.Select(attrs={'class':'form-control col-5'}))
+    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals")
     summer_max_length = 1000
     def __init__(self,*args,**kwargs):
         """
@@ -52,15 +52,14 @@ class ImportSLOForm(forms.Form):
         self.fields['slo'].queryset = sloChoices
     def clean(self):
         return super(ImportSLOForm,self).clean()
-class EditNewSLOForm(CleanSummer,forms.Form):
+class EditNewSLOForm(forms.Form):
     """
     Form to edit a new SLO (no restrictions)
     """
-    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO: ")
-    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level: ",widget=forms.Select(attrs={'class':'form-control col-5'}))
-    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple(), label="Graduate-level Goals: ")
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO")
+    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level",widget=forms.Select(attrs={'class':'form-control col-5'}))
+    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple(), label="Graduate-level Goals")
     
-    summer_max_length = 1000
     def __init__(self,*args,**kwargs):
         """
         Initializes form and deletes grad if undergraduate program
@@ -82,7 +81,7 @@ class Single2000Textbox(CleanSummer,forms.Form):
     """
     Form for a single 2000 character textbox
     """
-    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="")
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="",max_length=2000)
     summer_max_length = 2000
 
 class ImportStakeholderForm(forms.Form):

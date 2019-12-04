@@ -206,7 +206,7 @@
 <dl class="attribute">
 <dt id="makeReports.views.report_entry_extra_views.AddEndSupplements.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.report_entry_extra_views.AddEndSupplements.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.ReportSupplement" title="makeReports.models.report_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.ReportSupplement</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.decisionsActions_models.html#makeReports.models.decisionsActions_models.ReportSupplement" title="makeReports.models.decisionsActions_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.decisionsActions_models.ReportSupplement</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -223,7 +223,7 @@
 <p>Delete a report supplement</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.ReportSupplement" title="makeReports.models.report_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReportSupplement</span></code></a> to be deleted</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">ReportSupplement</span></code> to be deleted</p>
 </dd>
 </dl>
 <dl class="method">
@@ -257,12 +257,49 @@
 <dl class="attribute">
 <dt id="makeReports.views.report_entry_extra_views.DeleteEndSupplements.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.report_entry_extra_views.DeleteEndSupplements.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.ReportSupplement" title="makeReports.models.report_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.ReportSupplement</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.decisionsActions_models.html#makeReports.models.decisionsActions_models.ReportSupplement" title="makeReports.models.decisionsActions_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.decisionsActions_models.ReportSupplement</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.report_entry_extra_views.DeleteEndSupplements.template_name">
 <code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/ReportEntryExtras/deleteSupplement.html'</em><a class="headerlink" href="#makeReports.views.report_entry_extra_views.DeleteEndSupplements.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.report_entry_extra_views.DeptViewRubric">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.report_entry_extra_views.</code><code class="sig-name descname">DeptViewRubric</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.report_entry_extra_views.DeptViewRubric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.detail.DetailView</span></code></p>
+<p>View to view a rubric as a department</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code> to view</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="makeReports.views.report_entry_extra_views.DeptViewRubric.get_context_data">
+<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.report_entry_extra_views.DeptViewRubric.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets template context, including rubric items separated out by section</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>template context</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.report_entry_extra_views.DeptViewRubric.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.report_entry_extra_views.DeptViewRubric.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.grading_models.html#makeReports.models.grading_models.Rubric" title="makeReports.models.grading_models.Rubric"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.grading_models.Rubric</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.report_entry_extra_views.DeptViewRubric.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/Rubric/rubricViewNoEdit.html'</em><a class="headerlink" href="#makeReports.views.report_entry_extra_views.DeptViewRubric.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -297,7 +334,7 @@
 <dl class="attribute">
 <dt id="makeReports.views.report_entry_extra_views.FinalReportSupplements.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.report_entry_extra_views.FinalReportSupplements.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.ReportSupplement" title="makeReports.models.report_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.ReportSupplement</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.decisionsActions_models.html#makeReports.models.decisionsActions_models.ReportSupplement" title="makeReports.models.decisionsActions_models.ReportSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.decisionsActions_models.ReportSupplement</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -370,7 +407,7 @@
 <dl class="attribute">
 <dt id="makeReports.views.report_entry_extra_views.ReportFirstPage.model">
 <code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.views.report_entry_extra_views.ReportFirstPage.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.models.report_models.html#makeReports.models.report_models.Report" title="makeReports.models.report_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.report_models.Report</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Report" title="makeReports.models.basic_models.Report"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.basic_models.Report</span></code></a></p>
 </dd></dl>
 
 <dl class="attribute">

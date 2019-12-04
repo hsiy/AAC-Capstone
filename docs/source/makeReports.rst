@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+   makeReports.baker_recipes
    makeReports.forms
    makeReports.migrations
    makeReports.models
@@ -18,7 +19,6 @@ Submodules
 .. toctree::
 
    makeReports.choices
-   makeReports.forms
    makeReports.urls
 
 Module contents

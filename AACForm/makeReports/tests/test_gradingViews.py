@@ -8,7 +8,7 @@ from makeReports.choices import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
 from datetime import datetime, date, timedelta
 from django.core.files import File
@@ -21,16 +21,16 @@ class GradingSectionsTest(ReportAACSetupTest):
         Sets-up a rubric and rubric item in each section
         """
         super().setUp()
-        self.r = mommy.make("Rubric")
-        self.rub = mommy.make("GradedRubric",rubricVersion=self.r)
-        self.rInG = mommy.make("RubricItem",rubricVersion=self.r,section=1)
-        self.rInG2 = mommy.make("RubricItem",rubricVersion=self.r,section=2)
-        self.rInG3 = mommy.make("RubricItem",rubricVersion=self.r,section=3)
-        self.rInG4 = mommy.make("RubricItem",rubricVersion=self.r,section=4)
-        self.rI = mommy.make("GradedRubricItem", rubric=self.rub, item=self.rInG)
-        self.rI2 = mommy.make("GradedRubricItem", rubric=self.rub, item=self.rInG2)
-        self.rI3 = mommy.make("GradedRubricItem", rubric=self.rub, item=self.rInG3)
-        self.rI4 = mommy.make("GradedRubricItem", rubric=self.rub, item=self.rInG4)
+        self.r = baker.make("Rubric")
+        self.rub = baker.make("GradedRubric",rubricVersion=self.r)
+        self.rInG = baker.make("RubricItem",rubricVersion=self.r,section=1)
+        self.rInG2 = baker.make("RubricItem",rubricVersion=self.r,section=2)
+        self.rInG3 = baker.make("RubricItem",rubricVersion=self.r,section=3)
+        self.rInG4 = baker.make("RubricItem",rubricVersion=self.r,section=4)
+        self.rI = baker.make("GradedRubricItem", rubric=self.rub, item=self.rInG)
+        self.rI2 = baker.make("GradedRubricItem", rubric=self.rub, item=self.rInG2)
+        self.rI3 = baker.make("GradedRubricItem", rubric=self.rub, item=self.rInG3)
+        self.rI4 = baker.make("GradedRubricItem", rubric=self.rub, item=self.rInG4)
         self.rpt.rubric = self.rub
         self.rpt.save()
     def test_entry(self):
@@ -59,11 +59,22 @@ class GradingSectionsTest(ReportAACSetupTest):
             fieldName:"ME",
             'section_comment':'fsfkjllaskdfls'
         })
+        self.assertEquals(resp.status_code,302)
         self.rI.refresh_from_db()
         self.rub.refresh_from_db()
         self.assertEquals(self.rI.grade,"ME")
         self.assertEquals(self.rub.section1Comment,'fsfkjllaskdfls')
-        
+    def test_sec1_post_tooLong(self):
+        """
+        Tests that section 1 grading fails with too long of comment
+        """
+        fieldName = 'rI'+str(self.rInG.pk)
+        reallyLong = "xyz"*1000
+        resp = self.client.post(reverse('makeReports:grade-sec1',kwargs={'report':self.rpt.pk}),{
+            fieldName:"ME",
+            'section_comment':reallyLong
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_sec2_get(self):
         """
         Tests that the section 2 grading page works as expected
@@ -86,6 +97,17 @@ class GradingSectionsTest(ReportAACSetupTest):
         self.rub.refresh_from_db()
         self.assertEquals(self.rI2.grade,"DNM")
         self.assertEquals(self.rub.section2Comment,'fsfkjllaskdfls2')
+    def test_sec2_post_missingComment(self):
+        """
+        Tests that the section 2 grading page works as expected when optional section comment is empty
+        """
+        fieldName = 'rI'+str(self.rInG2.pk)
+        resp = self.client.post(reverse('makeReports:grade-sec2',kwargs={'report':self.rpt.pk}),{
+            fieldName:"DNM",
+            'section_comment':''
+        })
+        self.rI2.refresh_from_db()
+        self.assertEquals(self.rI2.grade,"DNM")
     def test_sec3_get(self):
         """
         Tests that the section 1 grading page works as expected
@@ -134,7 +156,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         """
         Tests that the overall comment posts to the database as expected
         """
-        rub = mommy.make("GradedRubric")
+        rub = baker.make("GradedRubric")
         self.rpt.rubric = rub
         self.rpt.save()
         self.rpt.refresh_from_db()
@@ -142,6 +164,7 @@ class GradingSectionsTest(ReportAACSetupTest):
             'text':'comm test'
         })
         self.assertEquals(self.rpt.rubric.generalComment,'comm test')
+    
     def test_review_get(self):
         """
         Ensures that the the grading preview page exists
@@ -150,4 +173,23 @@ class GradingSectionsTest(ReportAACSetupTest):
             'report':self.rpt.pk
         }))
         self.assertEquals(r.status_code,200)
-
+class GradingSectionsTestRecipe(GradingSectionsTest):
+    """
+    Tests the grading sections using recipe based models
+    """
+    def setUp(self):
+        """
+        Sets-up a rubric and rubric item in each section using recipes
+        """
+        super().setUp()
+        self.rub = baker.make_recipe("makeReports.gradedRubric",rubricVersion=self.r)
+        self.rInG = baker.make_recipe("makeReports.rubricItem",rubricVersion=self.r,section=1)
+        self.rInG2 = baker.make_recipe("makeReports.rubricItem",rubricVersion=self.r,section=2)
+        self.rInG3 = baker.make_recipe("makeReports.rubricItem",rubricVersion=self.r,section=3)
+        self.rInG4 = baker.make_recipe("makeReports.rubricItem",rubricVersion=self.r,section=4)
+        self.rI = baker.make_recipe("makeReports.gradedRubricItem", rubric=self.rub, item=self.rInG)
+        self.rI2 = baker.make_recipe("makeReports.gradedRubricItem", rubric=self.rub, item=self.rInG2)
+        self.rI3 = baker.make_recipe("makeReports.gradedRubricItem", rubric=self.rub, item=self.rInG3)
+        self.rI4 = baker.make_recipe("makeReports.gradedRubricItem", rubric=self.rub, item=self.rInG4)
+        self.rpt.rubric = self.rub
+        self.rpt.save()

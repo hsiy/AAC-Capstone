@@ -7,7 +7,7 @@ from makeReports.models import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
 from makeReports.choices import *
 
@@ -19,8 +19,8 @@ class TestingPDFs(ReportAACSetupTest):
         """
         Tests the graded rubric PDf page exists
         """
-        rub = mommy.make("GradedRubric")
-        rI = mommy.make("GradedRubricItem",rubric=rub)
+        rub = baker.make("GradedRubric")
+        rI = baker.make("GradedRubricItem",rubric=rub)
         self.rpt.rubric = rub
         self.rpt.save()
         resp = self.client.get(reverse('makeReports:graded-rub-pdf',kwargs={
@@ -47,8 +47,8 @@ class TestingPDFs(ReportAACSetupTest):
         """
         Tests the the ungraded rubric generation page exists
         """
-        rub = mommy.make("Rubric")
-        rI = mommy.make("RubricItem", rubricVersion=rub)
+        rub = baker.make("Rubric")
+        rI = baker.make("RubricItem", rubricVersion=rub)
         resp = self.client.get(reverse('makeReports:rubric-auto-pdf',kwargs={
             'rubric':rub.pk
         }))

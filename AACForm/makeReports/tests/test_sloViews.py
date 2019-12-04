@@ -8,8 +8,9 @@ from makeReports.choices import *
 from unittest import mock
 from django.http import HttpResponse
 import requests
-from model_mommy import mommy
+from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
+
 
 class SLOSummaryGRTest(ReportSetupTest):
     """
@@ -22,8 +23,8 @@ class SLOSummaryGRTest(ReportSetupTest):
         super(SLOSummaryGRTest,self).setUp()
         self.rpt.degreeProgram.level = "GR"
         self.rpt.degreeProgram.save()
-        self.slo = mommy.make('SLOInReport', make_m2m=True, report=self.rpt)
-        self.slo2 = mommy.make('SLOInReport',make_m2m=True, report=self.rpt)
+        self.slo = baker.make('SLOInReport', make_m2m=True, report=self.rpt)
+        self.slo2 = baker.make('SLOInReport',make_m2m=True, report=self.rpt)
     def test_view(self):
         """
         Tests response code and existence of SLO
@@ -37,6 +38,17 @@ class SLOSummaryGRTest(ReportSetupTest):
             self.assertContains(response, gg.text)
         for gg in self.slo2.slo.gradGoals.all():
             self.assertContains(response, gg.text)
+class SLOSummaryGRTestRecipes(SLOSummaryGRTest):
+    """
+    Tests summary for graduate programs using recipes instead of random
+    """
+    def setUp(self):
+        """
+        Set-ups SLOs using the recipes
+        """
+        super().setUp()
+        self.slo = baker.make_recipe('makeReports.sloInReport',report=self.rpt)
+        self.slo2 = baker.make_recipe('makeReports.sloInReport',report=self.rpt)
 class SLOSummaryUGTest(ReportSetupTest):
     """
     Tests SLO summary page for undergraduate programs
@@ -48,8 +60,8 @@ class SLOSummaryUGTest(ReportSetupTest):
         super(SLOSummaryUGTest,self).setUp()
         self.rpt.degreeProgram.level = "UG"
         self.rpt.degreeProgram.save()
-        self.slo = mommy.make('SLOInReport', make_m2m=False, report=self.rpt)
-        self.slo2 = mommy.make('SLOInReport',make_m2m=False, report=self.rpt)
+        self.slo = baker.make('SLOInReport', make_m2m=False, report=self.rpt)
+        self.slo2 = baker.make('SLOInReport',make_m2m=False, report=self.rpt)
     def test_view(self):
         """
         Tests response code and existence of SLO
@@ -60,6 +72,17 @@ class SLOSummaryUGTest(ReportSetupTest):
         self.assertContains(response, self.slo.goalText)
         self.assertContains(response, self.slo2.goalText)
         self.assertNotContains(response,"Grad")
+class SLOSummaryUGTestRecipe(SLOSummaryUGTest):
+    """
+    Tests SLO summary for UG programs using recipes
+    """
+    def setUp(self):
+        """
+        Sets up SLOs using recipes
+        """
+        super().setUp()
+        self.slo = baker.make_recipe('makeReports.sloInReport', report=self.rpt)
+        self.slo2 = baker.make_recipe('makeReports.sloInReport', report=self.rpt)
 class AddSLOGRTestPage(ReportSetupTest):
     """
     Tests add SLO page exists for graduate programs
@@ -91,6 +114,29 @@ class AddSLOGRTestPage(ReportSetupTest):
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo').count()
         self.assertTrue(s)
+    def test_post_bloom_fail(self):
+        """
+        Tests that posting invalid Bloom option fails
+        """
+        form_data = {
+            'text':'text of slo 2',
+            'blooms': "not a blooms choice"
+        }
+        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        s = SLOInReport.objects.filter(goalText='text of slo 2').count()
+        self.assertFalse(s>0)
+    def test_post_too_long_fail(self):
+        """
+        Tests that posting too long of text fails
+        """
+        reallyLong = "xy"*501
+        form_data = {
+            'text':reallyLong,
+            'blooms': BLOOMS_CHOICES[1][0]
+        }
+        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        s = SLOInReport.objects.filter(goalText='text of slo 3').count()
+        self.assertFalse(s>0)
 class AddSLOUGTestPage(ReportSetupTest):
     """
     Test add SLO page exists for undergraduate programs
@@ -122,6 +168,18 @@ class AddSLOUGTestPage(ReportSetupTest):
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo2').count()
         self.assertTrue(s)
+    def test_post_too_long_fail(self):
+        """
+        Tests that posting too long of text fails
+        """
+        reallyLong = "xy"*501
+        form_data = {
+            'text':reallyLong,
+            'blooms': BLOOMS_CHOICES[1][0]
+        }
+        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        s = SLOInReport.objects.filter(goalText='text of slo 3').count()
+        self.assertFalse(s>0)
 class ImportSLOTestPage(ReportSetupTest):
     """
     Test import SLO page exists
@@ -131,10 +189,10 @@ class ImportSLOTestPage(ReportSetupTest):
         Creates SLO within and out of the department
         """
         super(ImportSLOTestPage,self).setUp()
-        self.inDp = mommy.make('DegreeProgram',department=self.dept)
-        self.oRpt = mommy.make("Report",degreeProgram=self.inDp, year=self.rpt.year)
-        self.inSLO = mommy.make("SLOInReport",report=self.oRpt)
-        self.outSLO = mommy.make("SLOInReport", report__year=self.rpt.year)
+        self.inDp = baker.make('DegreeProgram',department=self.dept)
+        self.oRpt = baker.make("Report",degreeProgram=self.inDp, year=self.rpt.year)
+        self.inSLO = baker.make("SLOInReport",report=self.oRpt)
+        self.outSLO = baker.make("SLOInReport", report__year=self.rpt.year)
     def test_view(self):
         """
         Tests response and that expected SLO shows up from search
@@ -156,6 +214,19 @@ class ImportSLOTestPage(ReportSetupTest):
         self.rpt.refresh_from_db()
         self.assertEquals(num+1,self.rpt.numberOfSLOs)
         self.assertEquals(1,SLOInReport.objects.filter(report=self.rpt).count())
+class ImportSLOTestRecipe(ImportSLOTestPage):
+    """
+    Tests importing SLOs using recipe created SLOs
+    """
+    def setUp(self):
+        """
+        Sets up the SLOs in and out of department
+        """
+        super().setUp()
+        self.inDp = baker.make_recipe('makeReports.degreeProgram',department=self.dept)
+        self.oRpt = baker.make_recipe('makeReports.report', degreeProgram=self.inDp, year=self.rpt.year)
+        self.inSLO = baker.make_recipe('makeReports.sloInReport',report=self.oRpt)
+        self.outSLO = baker.make_recipe('makeReports.sloInReport', report__year=self.rpt.year)
 class EditNewSLOPageTest(ReportSetupTest):
     """
     Tests edit new SLO page
@@ -165,7 +236,7 @@ class EditNewSLOPageTest(ReportSetupTest):
         Creates new SLO
         """
         super(EditNewSLOPageTest,self).setUp()
-        self.slo = mommy.make("SLOInReport",slo__numberOfUses=1)
+        self.slo = baker.make("SLOInReport",slo__numberOfUses=1)
     def test_view(self):
         """
         Tests response and basic expected text
@@ -174,6 +245,16 @@ class EditNewSLOPageTest(ReportSetupTest):
         self.assertEquals(response.status_code,200)
         self.assertContains(response,"SLO")
         self.assertContains(response,"Bloom")
+class EditNewSLOPageTestRecipe(EditNewSLOPageTest):
+    """
+    Tests editing new SLO using fixtures made with recipes
+    """
+    def setUp(self):
+        """
+        Sets up the SLO
+        """
+        super().setUp()
+        self.slo = baker.make_recipe('makeReports.sloInReport',slo__numberOfUses=1)
 class EditImptedSLOPageTest(ReportSetupTest):
     """
     Tests edit imported SLO page
@@ -183,7 +264,7 @@ class EditImptedSLOPageTest(ReportSetupTest):
         Creates new SLO
         """
         super(EditImptedSLOPageTest,self).setUp()
-        self.slo = mommy.make("SLOInReport",slo__numberOfUses=3)
+        self.slo = baker.make("SLOInReport",slo__numberOfUses=3)
     def test_view(self):
         """
         Tests response and basic expected text
@@ -193,6 +274,16 @@ class EditImptedSLOPageTest(ReportSetupTest):
         self.assertContains(response,"SLO")
         self.assertNotContains(response,"Bloom")
         self.assertNotContains(response,"Graduate Goal")
+class EditImptedSLOPageTestRecipe(EditImptedSLOPageTest):
+    """
+    Tests the editing of imported SLOs with recipe made fixtures
+    """
+    def setUp(self):
+        """
+        Creates the SLO from a recipe
+        """
+        super().setUp()
+        self.slo = baker.make_recipe('makeReports.sloInReport',slo__numberOfUses=3)
 class SLOStakeholderTest(ReportSetupTest):
     """
     Tests SLO stakeholder page
@@ -213,11 +304,11 @@ class SLOStakeImportTest(ReportSetupTest):
         Create stakeholder to check importing
         """
         super(SLOStakeImportTest,self).setUp()
-        self.dPI = mommy.make('DegreeProgram',department=self.dept)
-        self.stkToImpt = mommy.make('SLOsToStakeholder',report__degreeProgram=self.dPI, report__year=self.rpt.year)
-        self.stkNotImpt = mommy.make("SLOsToStakeholder",report__degreeProgram=self.dPI,report__year=self.rpt.year-1)
-        dept2 = mommy.make("Department")
-        self.stkNotImpt2 = mommy.make("SLOsToStakeholder",report__degreeProgram__department=dept2,report__year=self.rpt.year)
+        self.dPI = baker.make('DegreeProgram',department=self.dept)
+        self.stkToImpt = baker.make('SLOsToStakeholder',report__degreeProgram=self.dPI, report__year=self.rpt.year)
+        self.stkNotImpt = baker.make("SLOsToStakeholder",report__degreeProgram=self.dPI,report__year=self.rpt.year-1)
+        dept2 = baker.make("Department")
+        self.stkNotImpt2 = baker.make("SLOsToStakeholder",report__degreeProgram__department=dept2,report__year=self.rpt.year)
     def test_view(self):
         """
         Tests response code and that the stakeholder to import was found
@@ -227,7 +318,21 @@ class SLOStakeImportTest(ReportSetupTest):
         self.assertContains(response, "takeholder")
         self.assertContains(response, self.stkToImpt.text)
         self.assertNotContains(response, self.stkNotImpt.text)
-        self.assertNotContains(response, self.stkNotImpt2.text)    
+        self.assertNotContains(response, self.stkNotImpt2.text) 
+class SLOStakeImportTestRecipe(SLOStakeImportTest):
+    """
+    Tests the SLO stakeholder page using recipes
+    """
+    def setUp(self):
+        """
+        Creates stakeholder to check while importing using recipes
+        """
+        super().setUp()
+        self.dPI = baker.make_recipe('makeReports.degreeProgram',department=self.dept)
+        self.stkToImpt = baker.make_recipe('makeReports.slosToStakeholder',report__degreeProgram=self.dPI,report__year=self.rpt.year)
+        self.stkNotImpt = baker.make_recipe('makeReports.slosToStakeholder',report__degreeProgram=self.dPI,report__year=self.rpt.year-1)
+        dept2 = baker.make_recipe('makeReports.department')
+        self.stkNotImpt2 = baker.make_recipe('makeReports.slosToStakeholder',report__degreeProgram__department=dept2,report__year=self.rpt.year)   
 class SLOCommentTest(ReportSetupTest):
     """
     Test SLO section comment page
@@ -248,8 +353,8 @@ class DeleteNewSLOPageTest(ReportSetupTest):
         Creates an SLO to delete
         """
         super(DeleteNewSLOPageTest,self).setUp()
-        self.sSLO = mommy.make("SLO",numberOfUses=1)
-        self.slo = mommy.make("SLOInReport",report=self.rpt, slo=self.sSLO)
+        self.sSLO = baker.make("SLO",numberOfUses=1)
+        self.slo = baker.make("SLOInReport",report=self.rpt, slo=self.sSLO)
     def test_view(self):
         """
         Checks the page exists
@@ -270,8 +375,8 @@ class DeleteImportedSLOPageTest(ReportSetupTest):
         super(DeleteImportedSLOPageTest,self).setUp()
         self.rpt.numberOfSLOs = 3
         self.rpt.save()
-        self.sSLO = mommy.make("SLO",numberOfUses=3)
-        self.slo = mommy.make("SLOInReport",report=self.rpt, slo=self.sSLO)
+        self.sSLO = baker.make("SLO",numberOfUses=3)
+        self.slo = baker.make("SLOInReport",report=self.rpt, slo=self.sSLO)
     def test_view(self):
         """
         Checks page exists

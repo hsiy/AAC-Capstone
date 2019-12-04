@@ -167,9 +167,10 @@ class DepartmentList(AACOnlyMixin,ListView):
 
         objs = Department.active_objects
         get = self.request.GET
-        if(get["college"]!=""):
+        keys = get.keys()
+        if("college" in keys):
             objs=objs.filter(college__name__icontains=get["college"])
-        if(get["name"]!=""):
+        if("name" in keys):
             objs=objs.filter(name__icontains=get["name"])
         return objs.order_by('college__name')
 class UpdateDepartment(AACOnlyMixin,UpdateView):
@@ -536,11 +537,12 @@ class SearchAccountList(AACOnlyMixin,ListView):
             QuerySet : QuerySet matching search with only active profiles (:class:`~makeReports.models.report_models.Profile`)
         """
         profs = Profile.objects.filter(user__is_active=True)
-        if self.request.GET['f']!="":
+        keys = self.request.GET.keys()
+        if 'f' in keys:
             profs = profs.filter(user__first_name__icontains=self.request.GET['f'])
-        if self.request.GET['l']!="":
+        if 'l' in keys:
             profs = profs.filter(user__last_name__icontains=self.request.GET['l'])
-        if self.request.GET['e']!="":
+        if 'e' in keys:
             profs = profs.filter(user__email__icontains=self.request.GET['e'])
         return profs
 class MakeAnnouncement(AACOnlyMixin,CreateView):

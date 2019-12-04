@@ -36,7 +36,12 @@
 {% block in_endscripts %}
 <script type='text/javascript'>
     /**
+     * Handles creating and managing the drop-downs
+     * @class importStakeholderComm
+     */
+    /**
      * Creates the drop-down for the year
+     * @method onLoad
      */
      var chYear = null;
     document.addEventListener("DOMContentLoaded", function() {
@@ -46,6 +51,7 @@
     /**
      * Calls the API to update the year choices for the search,
      * based upon the currently selected degree program
+     * @method updateYears
      */
     function updateYears(){
         chYear.clearChoices()

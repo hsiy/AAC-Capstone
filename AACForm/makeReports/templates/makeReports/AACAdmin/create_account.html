@@ -83,11 +83,27 @@
 {% endblock %}
 {% block endscripts %}
     <script>
-    var vapp=new Vue({
+    /**
+     * Vue instance to control create account page
+     * 
+     * @class create_account
+     * 
+     */
+    var create_account=new Vue({
             el: '#vapp',
             delimiters: ['[[', ']]'],
             data: { 
+                /**
+                 * List of departments with properties to choose within college
+                 * @property depts
+                 * @type dictionary
+                 */
                 depts: null,
+                /**
+                 * Primary key of college chosen
+                 * @property college
+                 * @type integer
+                 */
                 college: null
             },
             computed: {
@@ -95,6 +111,7 @@
             methods: {
                 /**
                  * Calls the API to get the departments within the college
+                 * @method updateDept
                  */
                 updateDept: function () {
                     fetch("{% url 'makeReports:api-dept-by-col' %}?college="+this.college)
