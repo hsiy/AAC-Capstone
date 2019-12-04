@@ -51,6 +51,43 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
             overallProficient = 75
         ).count()
         self.assertEquals(num,1)
+        self.assertEquals(resp.status_code,302)
+    def test_createDataRow_noDataRange(self):
+        """
+        Tests the form fails when there is not a data range
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'numberStudents':20,
+            'overallProficient':75
+        })
+        self.assertNotEquals(resp.status_code,302)
+    def test_createDataRow_negativeInteger(self):
+        """
+        Tests the form fails when a negative number of students is entered
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'numberStudents':-20,
+            'overallProficient':75
+        })
+        self.assertNotEquals(resp.status_code,302)
+    def test_createDataRow_nonIntegerProficient(self):
+        """
+        Tests the form fails when a fractional percentage is entered
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'numberStudents':20,
+            'overallProficient':75.34
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_multipleMeasuresData(self):
         """
         Tests that mutliple measures for an SLO both appear in the table
@@ -86,6 +123,18 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         ).count()
         self.assertEquals(num,1)
         self.assertRedirects(resp,reverse('makeReports:assessment-summary',kwargs={'report':self.rpt.pk}))
+    def test_datarowFromAssess_noproficient(self):
+        """
+        Tests the create data row page from assessment fails there is not a proficiency number
+        """
+        resp = self.client.post(reverse('makeReports:add-data-collection-assess',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }),{
+            'dataRange':'Fall 2019',
+            'numberStudents':21,
+        })
+        self.assertNotEquals(resp.status_code,302)
     def test_editDataRow(self):
         """
         Test that posting to edit data row actually edits the data row
@@ -178,7 +227,18 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         })
         num = AssessmentAggregate.objects.filter(aggregate_proficiency=85,pk=agg.pk,met=True).count()
         self.assertEquals(num,1)    
-
+class DataCollectionMainTableTestsRecipe(DataCollectionMainTableTests):
+    """
+    Collection of tests that directly interact with the main data table using recipes
+    """
+    def setUp(self):
+        """
+        Creates an assessment to test with
+        """
+        super().setUp()
+        self.slo = baker.make_recipe("makeReports.sloInReport", report=self.rpt)
+        self.assess = baker.make_recipe("makeReports.assessmentVersion", report=self.rpt, slo=self.slo)
+        self.assess2 = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, slo=self.slo)
 class DataCollectionExtrasTests(ReportAACSetupTest):
     """
     Tests views auxillary to the main table, but part of data collection
