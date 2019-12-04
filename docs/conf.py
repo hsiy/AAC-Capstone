@@ -12,8 +12,11 @@
 #
 import os
 import sys
+import inspect
+import re
+from django.utils.html import strip_tags
 sys.path.insert(0, os.path.abspath('../AACForm'))
-
+sys.path.append(os.path.abspath('./processing'))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AACForm.settings')
 
 # Setup Django
@@ -38,7 +41,8 @@ release = '1.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
-    'sphinxcontrib_django',
+    'django_enhance',
+    #'sphinxcontrib_django',
     "sphinx_rtd_theme",
 ]
 

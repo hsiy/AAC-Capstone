@@ -190,6 +190,45 @@
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.grading_forms.</code><code class="sig-name descname">RubricItemForm</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">instance=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.models.ModelForm</span></code></p>
 <p>Form to create a new rubric item</p>
+<p><strong>Form fields:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code>: Category text (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abbreviation</span></code>: Abbreviation (optional) (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">section</span></code>: Section number (<code class="xref py py-class docutils literal notranslate"><span class="pre">TypedChoiceField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order</span></code>: Order position of item (lower numbers will be displayed first) (optional) (<code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DMEtext</span></code>: Did not meet expectations text (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MEtext</span></code>: Met expectations with concerns text (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EEtext</span></code>: Met expectations text (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+</ul>
+<dl class="class">
+<dt id="makeReports.forms.grading_forms.RubricItemForm.Meta">
+<em class="property">class </em><code class="sig-name descname">Meta</code><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines the model type, fields, labels, and widgets for the ModelForm superclass to
+use to build the form</p>
+<dl class="attribute">
+<dt id="makeReports.forms.grading_forms.RubricItemForm.Meta.fields">
+<code class="sig-name descname">fields</code><em class="property"> = ['text', 'abbreviation', 'section', 'order', 'DMEtext', 'MEtext', 'EEtext']</em><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.forms.grading_forms.RubricItemForm.Meta.labels">
+<code class="sig-name descname">labels</code><em class="property"> = {'DMEtext': 'Did not meet expectations text', 'EEtext': 'Met expectations text', 'MEtext': 'Met expectations with concerns text', 'abbreviation': 'Abbreviation (optional)', 'order': 'Order position of item (lower numbers will be displayed first) (optional)', 'section': 'Section number', 'text': 'Category text'}</em><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm.Meta.labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.forms.grading_forms.RubricItemForm.Meta.model">
+<code class="sig-name descname">model</code><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="makeReports.models.grading_models.html#makeReports.models.grading_models.RubricItem" title="makeReports.models.grading_models.RubricItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.models.grading_models.RubricItem</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.forms.grading_forms.RubricItemForm.Meta.widgets">
+<code class="sig-name descname">widgets</code><em class="property"> = {'DMEtext': &lt;django_summernote.widgets.SummernoteWidget object&gt;, 'EEtext': &lt;django_summernote.widgets.SummernoteWidget object&gt;, 'MEtext': &lt;django_summernote.widgets.SummernoteWidget object&gt;, 'text': &lt;django_summernote.widgets.SummernoteWidget object&gt;}</em><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm.Meta.widgets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="method">
 <dt id="makeReports.forms.grading_forms.RubricItemForm.clean_DMEtext">
 <code class="sig-name descname">clean_DMEtext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.grading_forms.RubricItemForm.clean_DMEtext" title="Permalink to this definition">¶</a></dt>
