@@ -152,7 +152,7 @@
 <dt id="makeReports.tests.test_DecActsViews.DecActViewsTest">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_DecActsViews.</code><code class="sig-name descname">DecActViewsTest</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.tests.test_basicViews.html#makeReports.tests.test_basicViews.ReportSetupTest" title="makeReports.tests.test_basicViews.ReportSetupTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_basicViews.ReportSetupTest</span></code></a></p>
-<p>Collects all views relating to decisions and actions</p>
+<p>Tests all views relating to decisions and actions</p>
 <dl class="method">
 <dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.setUp">
 <code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.setUp" title="Permalink to this definition">¶</a></dt>
@@ -169,6 +169,24 @@
 <dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecActSLO">
 <code class="sig-name descname">test_addDecActSLO</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecActSLO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests that adding a decision action from SLO page redirects to SLO page</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecActSLO_missingtext">
+<code class="sig-name descname">test_addDecActSLO_missingtext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecActSLO_missingtext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that missing the text when adding the decision/action fails</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecActSLO_toolong">
+<code class="sig-name descname">test_addDecActSLO_toolong</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecActSLO_toolong" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that too long of text fails</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecAct_toolong">
+<code class="sig-name descname">test_addDecAct_toolong</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_addDecAct_toolong" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that adding a decision/action with too long of text fails</p>
 </dd></dl>
 
 <dl class="method">
@@ -196,6 +214,12 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_editDecAct_toolong">
+<code class="sig-name descname">test_editDecAct_toolong</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_editDecAct_toolong" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that too long of text does not change the decision/action text</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_section4comment">
 <code class="sig-name descname">test_section4comment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_section4comment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests the section 4 comment works as expected when posted to</p>
@@ -205,6 +229,49 @@
 <dt id="makeReports.tests.test_DecActsViews.DecActViewsTest.test_summary">
 <code class="sig-name descname">test_summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTest.test_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests that the summary page exists</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.tests.test_DecActsViews.</code><code class="sig-name descname">DecActViewsTestRecipe</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.tests.test_DecActsViews.DecActViewsTest" title="makeReports.tests.test_DecActsViews.DecActViewsTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.tests.test_DecActsViews.DecActViewsTest</span></code></a></p>
+<p>Tests views relating to decisions and actions with recipe based SLO</p>
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an SLO to input decisions/actions for with recipe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_addEditRedirect_add">
+<code class="sig-name descname">test_addEditRedirect_add</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_addEditRedirect_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the add/edit redirect redirects to add when there is not one already with recipe based SLO</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_addEditRedirect_edit">
+<code class="sig-name descname">test_addEditRedirect_edit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_addEditRedirect_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the add/edit redirect redirect to edit there is already one with recipe based model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_editDecAct">
+<code class="sig-name descname">test_editDecAct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_editDecAct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that posting to view edits the decision/action text with recipe based model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_editDecActSLO">
+<code class="sig-name descname">test_editDecActSLO</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_editDecActSLO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Testing that the view edits the decision/action works and redirects as expected with recipe base decision/action</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_editDecAct_toolong">
+<code class="sig-name descname">test_editDecAct_toolong</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.tests.test_DecActsViews.DecActViewsTestRecipe.test_editDecAct_toolong" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the decision/action does not update when the text is too long</p>
 </dd></dl>
 
 </dd></dl>

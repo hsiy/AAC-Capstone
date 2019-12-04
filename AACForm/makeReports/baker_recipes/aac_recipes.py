@@ -36,5 +36,5 @@ degreeProgram = Recipe(DegreeProgram,
     cycle = cycle(cyclelength)
 )
 announcement = Recipe(Announcement,
-    name = cycle(announcements)
+    text = cycle(announcements)
 )

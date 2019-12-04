@@ -35,6 +35,19 @@ class AssessmentSummaryPageTest(ReportSetupTest):
     def test_comment_page(self):
         response = getWithReport('assessment-comment',self,{},"")
         self.assertEquals(response.status_code,200)
+class AssessmentSummaryPageTestRecipe(AssessmentSummaryPageTest):
+    """
+    Tests Assessment summary page and comment page using recipes instead of random
+    """
+    def setUp(self):
+        """
+        Sets up the assessments from recipes to be used on the page
+        """
+        super().setUp()
+        self.assess = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt)
+        self.assess2 = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt)
+        r2 = baker.make("Report")
+        self.assessNotInRpt = baker.make_recipe("makeReports.assessmentVersion",report=r2)
 class AddNewAssessmentTest(ReportSetupTest):
     """
     Tests the Add New Assessment Page
@@ -70,17 +83,9 @@ class AddNewAssessmentTest(ReportSetupTest):
         response = self.client.post(reverse('makeReports:add-assessment',kwargs={'report':self.rpt.pk}),fD)
         num = AssessmentVersion.objects.filter(
             slo=slo,
-            # assessment__title='title of assess',
-            # description='desc things',
-            # where = 'a place',
-            # sampleDescription = 'dsd',
-            # frequencyChoice = FREQUENCY_CHOICES[0][0],
-            # frequency = 'freq desc',
-            # threshold ='thresholding',
-            # target = 34
             ).count()
         self.assertGreaterEqual(num,1)
-class ImportAssessmentPage(ReportSetupTest):
+class ImportAssessmentPageTest(ReportSetupTest):
     """
     Tests the import assessment page
     """
@@ -88,7 +93,7 @@ class ImportAssessmentPage(ReportSetupTest):
         """
         Creates an assessment to import and SLO to import to
         """
-        super(ImportAssessmentPage,self).setUp()
+        super().setUp()
         self.slo = baker.make("SLOInReport",report=self.rpt)
         self.rpt2 = baker.make("Report", degreeProgram=self.rpt.degreeProgram,year=2019)
         self.slo2 = baker.make("SLOInReport",report=self.rpt2)
@@ -111,7 +116,19 @@ class ImportAssessmentPage(ReportSetupTest):
         response = self.client.post(reverse('makeReports:import-assessment',kwargs={'report':self.rpt.pk})+"?year=2019&dp="+str(self.slo2.report.degreeProgram.pk)+"&slo="+str(self.slo2.pk),fD)
         num = AssessmentVersion.objects.filter(report=self.rpt).count()
         self.assertGreaterEqual(num, 1)
-
+class ImportAssessmentPageTestRecipe(ImportAssessmentPageTest):
+    """
+    Tests the import assessment page with recipe based models
+    """
+    def setUp(self):
+        """
+        Creates an assessment to import and SLO to import to from recipes
+        """
+        super().setUp()
+        self.slo = baker.make_recipe("makeReports.sloInReport",report=self.rpt)
+        self.rpt2 = baker.make_recipe("makeReports.report", degreeProgram=self.rpt.degreeProgram,year=2019)
+        self.slo2 = baker.make_recipe("makeReports.sloInReport",report=self.rpt2)
+        self.assess = baker.make_recipe("makeReports.assessmentVersion",slo=self.slo2,report=self.rpt2)
 class EditAssessmentTest(ReportSetupTest):
     """
     Tests the edit and delete assessment pages
@@ -162,6 +179,32 @@ class EditAssessmentTest(ReportSetupTest):
         self.assessN.refresh_from_db()
         self.assertEquals(self.assessN.assessment.title, 'title of assess')
         self.assertEquals(self.assessN.target,34)
+    def test_post_new_frequency_choice_fail(self):
+        """
+        Tests that posting that is not a valid frequency choice fails
+        """
+        slo = baker.make_recipe("makeReports.sloInReport", report=self.rpt)
+        fD = {
+            'slo': slo.pk,
+            'title': 'title of assess',
+            'description': 'desc things',
+            'domain': "Pe",
+            'domain': 'Pr',
+            'directMeasure':True,
+            'finalTerm':True,
+            'where': 'a place',
+            'allStudents': True,
+            'sampleDescription':'dsd',
+            'frequencyChoice': 'this is not a valid choice',
+            'frequency':'freq desc',
+            'threshold':'thresholding',
+            'target':34
+        }
+        response = postWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"",fD)
+        self.assessN.refresh_from_db()
+        self.assertNotEqual(self.assessN.assessment.title, 'title of assess')
+        self.assertNotEqual(self.assessN.target,34)
+        self.assertNotEqual(response.status_code,302)
     def test_post_impt_fails(self):
         """
         Tests that posting too much information to the edit imported assessment page fails
@@ -232,6 +275,19 @@ class EditAssessmentTest(ReportSetupTest):
         self.assertEquals(num,0)
         num = Assessment.objects.filter(pk=aPk).count()
         self.assertEquals(num,1)
+class EditAssessmentRecipeTest(EditAssessmentTest):
+    """
+    Tests the edit assessment pages with recipe based models
+    """
+    def setUp(self):
+        """
+        Sets up the assessments from recipes
+        """
+        super().setUp()
+        self.assessN = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, assessment__numberOfUses=1)
+        self.shareAssess = baker.make_recipe("makeReports.assessment", numberOfUses = 2)
+        self.assessO = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, assessment=self.shareAssess)
+        self.assessO2 = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, assessment=self.shareAssess)
 class AssessmentSupplementTest(ReportSetupTest):
     """
     Tests that supplement pages all exist
@@ -274,7 +330,21 @@ class AssessmentSupplementTest(ReportSetupTest):
         response = postWithReport('delete-supplement',self,{'assessIR':self.a.pk,'pk':self.sup.pk},"", {})
         num = AssessmentSupplement.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
-    
+class AssessmentSupplementTestRecipe(AssessmentSupplementTest):
+    """
+    Tests that the supplement pages all exist using recipe-based models
+    """
+    def setUp(self):
+        """
+        Creates an assessment from the recipe and creates supplements
+        """
+        super().setUp()
+        self.a = baker.make_recipe("makeReports.assessmentVersion", report=self.rpt)
+        self.a2 = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt)
+        self.sup = baker.make("AssessmentSupplement")
+        self.a.supplements.add(self.sup)
+        self.sup2 = baker.make("AssessmentSupplement")
+        self.a2.supplements.add(self.sup2)    
 
 
 

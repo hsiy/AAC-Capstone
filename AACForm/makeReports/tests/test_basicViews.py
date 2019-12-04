@@ -86,9 +86,6 @@ class UserModifyUserTest(NonAACTest):
         self.client.logout()
         response = self.client.get(reverse('makeReports:modify-acct'))
         self.assertEquals(response.status_code,302)
-        #self.assertContains(response, "Work Week by Gary S.")
-        #self.assertContains(response, "Cat Fact")
-        #self.assertTemplateUsed(response,"books.html")
 class FacultyReportList(NonAACTest):
     """
     Tests Faculty Report List page

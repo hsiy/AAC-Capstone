@@ -45,11 +45,29 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         response = self.client.get(reverse('makeReports:college-list'))
         self.assertContains(response,col.name)
         self.assertNotContains(response,colI.name)
+    def test_list_recipe(self):
+        """
+        Tests the list page contains a college made and not an inactive college using recipe based colleges
+        """
+        col = baker.make_recipe("makeReports.college", active=True)
+        colI = baker.make_recipe("makeReports.college",active=False)
+        response = self.client.get(reverse('makeReports:college-list'))
+        self.assertContains(response,col.name)
+        self.assertNotContains(response,colI.name)
     def test_delete(self):
         """
         Tests the delete page deletes the college
         """
         col = baker.make("College")
+        pk = col.pk
+        response = self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
+        num = College.active_objects.filter(pk=pk).count()
+        self.assertEquals(num,0)
+    def test_delete_recipe(self):
+        """
+        Tests the delete page deletes the college using recipe based model
+        """
+        col = baker.make_recipe("makeReports.college")
         pk = col.pk
         response = self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
         num = College.active_objects.filter(pk=pk).count()
@@ -62,12 +80,29 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         response = self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
         col.refresh_from_db()
         self.assertTrue(col.active)
+    def test_recover_recipe(self):
+        """
+        Tests the recover page in fact re-marks the college as active using recipe based model
+        """
+        col = baker.make_recipe("makeReports.college",active=False)
+        response = self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
+        col.refresh_from_db()
+        self.assertTrue(col.active)
     def test_arc_cols(self):
         """
         Tests that the archived college page contains only archived colleges
         """
         c1 = baker.make("College",active=True)
         c2 = baker.make("College",active=False)
+        r = self.client.get(reverse('makeReports:arc-colleges'))
+        self.assertNotContains(r,c1.name)
+        self.assertContains(r,c2.name)
+    def test_arc_cols_recipe(self):
+        """
+        Tests that the archived college page contains only archived colleges using recipe based model
+        """
+        c1 = baker.make_recipe("makeReports.college",active=True)
+        c2 = baker.make_recipe("makeReports.college",active=False)
         r = self.client.get(reverse('makeReports:arc-colleges'))
         self.assertNotContains(r,c1.name)
         self.assertContains(r,c2.name)
@@ -200,6 +235,37 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         self.assertContains(r,dp2.name)
         self.assertNotContains(r,dp.name)
         self.assertNotContains(r,dp3.name)
+class DegreeProgramAdminTestRecipe(DegreeProgramAdminTest):
+    """
+    Tests views relating to degree program administration with recipe based models
+    """
+    def setUp(self):
+        """
+        Sets up the department from a recipe
+        """
+        super().setUp()
+        self.dept = baker.make_recipe("makeReports.department")
+    def test_update(self):
+        """
+        Tests the update page using a recipe
+        """
+        dp = baker.make_recipe("makeReports.degreeProgram",department=self.dept)
+        r = self.client.post(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{
+            'name':'up dp',
+            'level':'GR',
+        })
+        dp.refresh_from_db()
+        self.assertEquals(dp.name,'up dp')
+        self.assertEquals(dp.level,'GR')
+    def test_delete(self):
+        """
+        Tests the delete page using recipe based degree program
+        """
+        dp = baker.make_recipe("makeReports.degreeProgram",active=True,department=self.dept)
+        self.client.post(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
+        dp.refresh_from_db()
+        self.assertFalse(dp.active)
+
 class ReportAdminViewTests(ReportAACSetupTest):
     """
     Tests views relating to administrating reports
@@ -334,6 +400,15 @@ class GradGoalAdminTests(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:gg-list'))
         self.assertContains(r,r1.text)
         self.assertNotContains(r,r2.text)
+    def test_list_recipe(self):
+        """
+        Tests the graduate goal list page contains grad goals using recipe based model
+        """
+        r1 = baker.make_recipe("makeReports.gradGoal",active=True)
+        r2 = baker.make_recipe("makeReports.gradGoal",active=False)
+        r = self.client.get(reverse('makeReports:gg-list'))
+        self.assertContains(r,r1.text)
+        self.assertNotContains(r,r2.text)
     def test_old_list(self):
         """
         Tests the archived list contains expected goals
@@ -343,11 +418,32 @@ class GradGoalAdminTests(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:old-gg-list'))
         self.assertContains(r,r2.text)
         self.assertNotContains(r,r1.text)
+    def test_old_list_recipe(self):
+        """
+        Tests the archived list contains expected goals using recipe based grad goals
+        """
+        r1 = baker.make_recipe("makeReports.gradGoal",active=True)
+        r2 = baker.make_recipe("makeReports.gradGoal",active=False)
+        r = self.client.get(reverse('makeReports:old-gg-list'))
+        self.assertContains(r,r2.text)
+        self.assertNotContains(r,r1.text)
     def test_update(self):
         """
         Tests the update function of the graduate goal
         """
         r = baker.make("GradGoal",active=False)
+        res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
+            'active':'on',
+            'text':'new text here'
+        })
+        r.refresh_from_db()
+        self.assertEquals(r.active,True)
+        self.assertEquals(r.text,'new text here')
+    def test_update_recipe(self):
+        """
+        Tests the update function of the graduate goal with recipe based model
+        """
+        r = baker.make_recipe("makeReports.gradGoal",active=False)
         res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
             'active':'on',
             'text':'new text here'
@@ -389,6 +485,15 @@ class AnnouncementsTest(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:announ-list'))
         self.assertContains(r,an.text)
         self.assertContains(r,an2.text)
+    def test_list_recipe(self):
+        """
+        Tests the announcement listing page with recipe based models
+        """
+        an = baker.make_recipe("makeReports.announcement", expiration=datetime.now()+timedelta(days=1))
+        an2 = baker.make_recipe("makeReports.announcement",expiration=datetime.now()-timedelta(days=2))
+        r = self.client.get(reverse('makeReports:announ-list'))
+        self.assertContains(r,an.text)
+        self.assertNotContains(r,an2.text)    
     def test_delete(self):
         """
         Tests that announcements can be effectively deleted
@@ -398,11 +503,58 @@ class AnnouncementsTest(ReportAACSetupTest):
         r = self.client.post(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
         num = Announcement.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
+    def test_delete_recipe(self):
+        """
+        Tests that announcements can be effectively deleted with recipe based models
+        """
+        a = baker.make_recipe("makeReports.announcement")
+        pk = a.pk
+        r = self.client.post(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
+        num = Announcement.objects.filter(pk=pk).count()
+        self.assertEquals(num,0)
     def test_edit(self):
         """
-        Tests that the edit page effecitvely edits announcements
+        Tests that the edit page effectively edits announcements
         """
         a = baker.make("Announcement")
+        r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
+            'text':'ann text 2',
+            'expiration_month':3,
+            'expiration_day': 27,
+            'expiration_year':2021
+        })
+        a.refresh_from_db()
+        self.assertEquals(a.text,'ann text 2')
+        self.assertEquals(a.expiration, date(2021,3,27))
+        self.assertEquals(r.status_code,302)
+    def test_edit_notday(self):
+        """
+        Tests the edit page fails when the date is not a valid day
+        """
+        a = baker.make("Announcement")
+        r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
+            'text':'ann text 2',
+            'expiration_month':3,
+            'expiration_day': 272,
+            'expiration_year':2021
+        })
+        self.assertNotEquals(r.status_code,302)
+    def test_edit_missingyear(self):
+        """
+        Tests the edit page fails when the posted data is missing the year
+        """
+        a = baker.make_recipe("makeReports.announcement")
+        r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
+            'text':'ann text 2',
+            'expiration_month':3,
+            'expiration_day': 27,
+        })
+        self.assertNotEquals(r.status_code,302)
+    def test_edit_recipe(self):
+        """
+        Tests that the edit page effectively edits announcements using recipe based announcement
+        """
+        a = baker.make_recipe("makeReports.announcement")
         r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
             'text':'ann text 2',
             'expiration_month':3,

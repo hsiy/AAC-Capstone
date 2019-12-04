@@ -114,6 +114,29 @@ class AddSLOGRTestPage(ReportSetupTest):
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo').count()
         self.assertTrue(s)
+    def test_post_bloom_fail(self):
+        """
+        Tests that posting invalid Bloom option fails
+        """
+        form_data = {
+            'text':'text of slo 2',
+            'blooms': "not a blooms choice"
+        }
+        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        s = SLOInReport.objects.filter(goalText='text of slo 2').count()
+        self.assertFalse(s>0)
+    def test_post_too_long_fail(self):
+        """
+        Tests that posting too long of text fails
+        """
+        reallyLong = "xy"*501
+        form_data = {
+            'text':reallyLong,
+            'blooms': BLOOMS_CHOICES[1][0]
+        }
+        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        s = SLOInReport.objects.filter(goalText='text of slo 3').count()
+        self.assertFalse(s>0)
 class AddSLOUGTestPage(ReportSetupTest):
     """
     Test add SLO page exists for undergraduate programs
@@ -145,6 +168,18 @@ class AddSLOUGTestPage(ReportSetupTest):
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='text of slo2').count()
         self.assertTrue(s)
+    def test_post_too_long_fail(self):
+        """
+        Tests that posting too long of text fails
+        """
+        reallyLong = "xy"*501
+        form_data = {
+            'text':reallyLong,
+            'blooms': BLOOMS_CHOICES[1][0]
+        }
+        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        s = SLOInReport.objects.filter(goalText='text of slo 3').count()
+        self.assertFalse(s>0)
 class ImportSLOTestPage(ReportSetupTest):
     """
     Test import SLO page exists

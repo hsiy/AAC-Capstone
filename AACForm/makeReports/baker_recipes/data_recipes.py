@@ -22,7 +22,7 @@ assessmentData = Recipe(AssessmentData,
     assessmentVersion = foreign_key(assessmentVersion),
     dataRange = cycle(semesterDates),
     overallProficient = cycle(percentages),
-    students = cycle(students)
+    numberStudents = cycle(students)
 )
 
 assessmentAggregate = Recipe(AssessmentAggregate,
