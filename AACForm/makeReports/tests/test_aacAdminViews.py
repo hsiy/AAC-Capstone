@@ -11,6 +11,9 @@ import requests
 from model_mommy import mommy
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
 from datetime import datetime, date, timedelta
+
+string_invalid = " this is really long " * 55
+
 class AACBasicViewsTest(ReportAACSetupTest):
     """
     Tests the basic AAC admin views, such as home
@@ -86,6 +89,19 @@ class DepartmentViewsTest(ReportAACSetupTest):
         r = self.client.post(reverse('makeReports:add-dept'),data)
         num = Department.objects.filter(name='dept name',college=col).count()
         self.assertGreaterEqual(num,1)
+    def test_create_invalid(self):
+        """
+        Tests that posting invalid data to the create department page works as expected
+        """
+        col = mommy.make("College")
+        data = {
+            'name':'dept name is very long it is for sure over one hundred characters long so it should not be included at all',
+            'college': col.pk
+        }
+        r = self.client.post(reverse('makeReports:add-dept'),data)
+        self.assertEquals(r.status_code,200)
+        num = Department.objects.filter(name__icontains='dept name is very long',college=col).count()
+        self.assertGreaterEqual(num,0)
     def test_list(self):
         """
         Tests that list of department contains active departments
@@ -147,6 +163,19 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         })
         num = DegreeProgram.objects.filter(department=self.dept,name='dp name',cycle=5, startingYear=7, level="UG").count()
         self.assertGreaterEqual(num, 1)
+    def test_create_invalid(self):
+        """
+        Tests that an invalid degree program is not created
+        """
+        r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
+            'name':string_invalid,
+            'level':"UG",
+            'cycle': 5,
+            'startingYear': 7
+        })
+        self.assertEquals(r.status_code,200)
+        num = DegreeProgram.objects.filter(department=self.dept,name=string_invalid,cycle=5, startingYear=7, level="UG").count()
+        self.assertGreaterEqual(num, 0)
     def test_create_emptyslots(self):
         """
         Tests that a degree program is created when cycle and starting year are left blank
@@ -312,6 +341,20 @@ class AccountAdminTests(ReportAACSetupTest):
         self.assertEquals(a.first_name,'changed f_name')
         self.assertEquals(a.last_name,'changed l_name')
         self.assertEquals(a.email,'sdlk@g.com')
+    def test_modify_invalid(self):
+        """
+        Tests the AAC modifying user account page with invalid information
+        """
+        a = mommy.make("User")
+        a.profile.aac = False
+        a.profile.save()
+        dept = mommy.make("Department")
+        fD = {
+            'first_name':string_invalid
+        }
+        r = self.client.post(reverse('makeReports:aac-modify-account',kwargs={'pk':a.pk}),fD)
+        a.refresh_from_db()
+        self.assertNotEquals(a.first_name,string_invalid)
     def test_inactivate(self):
         """
         Tests the inactivate user view
@@ -363,6 +406,17 @@ class GradGoalAdminTests(ReportAACSetupTest):
         })
         num = GradGoal.objects.filter(text='new gg text', active=True).count()
         self.assertEquals(num,1)
+    def test_add_invalid(self):
+        """
+        Tests that a new invalid graduate goal will not be added
+        """
+        r = self.client.post(reverse('makeReports:add-gg'),{
+            'text':string_invalid
+        })
+        r = self.client.post(reverse('makeReports:add-gg')
+        self.assertEquals(r.status_code,200)
+        num = GradGoal.objects.filter(text=string_invalid, active=True).count()
+        self.assertEquals(num,0)
 class AnnouncementsTest(ReportAACSetupTest):
     """
     Tests that announcements can be appropriately created
@@ -411,7 +465,7 @@ class AnnouncementsTest(ReportAACSetupTest):
         a.refresh_from_db()
         self.assertEquals(a.text,'ann text 2')
         self.assertEquals(a.expiration, date(2021,3,27))
-    
+
     
 
     
