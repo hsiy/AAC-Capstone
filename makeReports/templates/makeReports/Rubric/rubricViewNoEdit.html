@@ -1,6 +1,6 @@
 {% extends 'form_entry_base.html' %}
 {% load bootstrap4 %}
-{% block content %}
+{% block inner_content %}
 <h5>Rubric {{object.name}}</h5>
 {% if object.fullFile %}
               Full Rubric: <a href="{{object.fullFile.url}}">Download PDF</a>
