@@ -639,6 +639,21 @@ the given <code class="xref py py-class docutils literal notranslate"><span clas
 </dd></dl>
 
 <dl class="function">
+<dt id="makeReports.models.data_models.update_status">
+<code class="sig-prename descclassname">makeReports.models.data_models.</code><code class="sig-name descname">update_status</code><span class="sig-paren">(</span><em class="sig-param">sS</em>, <em class="sig-param">sigType</em>, <em class="sig-param">pk</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.data_models.update_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the status based upon the AssessmentAggregate values for a given status</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sS</strong> (<a class="reference internal" href="#makeReports.models.data_models.SLOStatus" title="makeReports.models.data_models.SLOStatus"><em>SLOStatus</em></a>) – SLO status to update</p></li>
+<li><p><strong>sigType</strong> (<em>int</em>) – signal type - 0 is post-save, 1 if pre-delete</p></li>
+<li><p><strong>pk</strong> (<em>int</em>) – primary key of AssessmentAggregate to exclude if sigType is 1</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="makeReports.models.data_models.update_status_by_agg">
 <code class="sig-prename descclassname">makeReports.models.data_models.</code><code class="sig-name descname">update_status_by_agg</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">sigType</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.data_models.update_status_by_agg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the SLO status based upon aggregate when aggregates are created or modified</p>
@@ -647,7 +662,7 @@ the given <code class="xref py py-class docutils literal notranslate"><span clas
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sender</strong> (<a class="reference internal" href="#makeReports.models.data_models.AssessmentAggregate" title="makeReports.models.data_models.AssessmentAggregate"><em>AssessmentAggregate</em></a>) – model sending hook</p></li>
 <li><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.data_models.AssessmentAggregate" title="makeReports.models.data_models.AssessmentAggregate"><em>AssessmentAggregate</em></a>) – data updated</p></li>
-<li><p><strong>sigType</strong> (<em>int</em>) – singal type - 0 is post-save, 1 if pre-delete</p></li>
+<li><p><strong>sigType</strong> (<em>int</em>) – signal type - 0 is post-save, 1 if pre-delete</p></li>
 </ul>
 </dd>
 </dl>
