@@ -44,7 +44,7 @@ class ClearOverrideAPI(APIView):
             for status in statuses:
                 status.override = False
                 status.save()
-                update_status(status,0,0)
+                update_status(status,0,0, status.sloIR)
             aggs = AssessmentAggregate.objects.filter(assessmentVersion__report__pk=pk, override=True)
             for agg in aggs:
                 agg.override = False
