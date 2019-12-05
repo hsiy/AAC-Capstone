@@ -686,7 +686,7 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
             str : URL of assessment summary (:class:`~makeReports.views.assessment_views.AssessmentSummary`)
         """
         oldNum = self.oldNum
-        assess = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
+        assess = AssessmentVersion.objects.filter(report=self.report,slo=self.slo)
         for a in assess:
             if a.number > oldNum:
                 a.number -= 1
@@ -744,7 +744,7 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
             assessment.numberOfUses -= 1
             assessment.save()
         oldNum = self.oldNum
-        assess = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
+        assess = AssessmentVersion.objects.filter(report=self.report,slo=self.slo)
         for a in assess:
             if a.number > oldNum:
                 a.number -= 1
