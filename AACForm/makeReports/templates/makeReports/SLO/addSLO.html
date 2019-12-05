@@ -7,14 +7,14 @@
     {% load static %}
     {% bootstrap_label form.text.label_tag %}
     {% bootstrap_field form.text show_label=False %}
-    <div class="alert alert-secondary" role="alert" id="complex_sugg" style="display: none">
+    <div class="alert alert-secondary col-6" role="alert" id="complex_sugg" style="display: none">
         This SLO may be too complex. Consider breaking it down into multiple SLOs.
     </div>
     {% bootstrap_label form.blooms.label_tag %}
-    <div class="alert alert-secondary" role="alert" id="blooms_sugg" style="display: none">
+    <div class="alert alert-secondary col-6" role="alert" id="blooms_sugg" style="display: none">
         
     </div>
-    <div class="alert alert-secondary" role="alert" id="keywords_sugg" style="display: none">
+    <div class="alert alert-secondary col-6" role="alert" id="keywords_sugg" style="display: none">
         
     </div>
     {% bootstrap_field form.blooms show_label=False %}
@@ -104,7 +104,7 @@
             success: function(msg, status, jqXHR){
                 suggest = msg.blooms;
                 if(suggest !== "none"){
-                    $('#blooms_sugg').html("Suggested Bloom's Taxonomy Level from your text: <b>" + suggest + "</b>");
+                    $('#blooms_sugg').html("Suggested Bloom's Taxonomy Level: <b>" + suggest + "</b>");
                     $('#blooms_sugg').css("display", "block");
                 } else {
                     $('#blooms_sugg').css("display", "none");
@@ -131,8 +131,7 @@
         selected = $('#id_blooms option:selected').text();
         if(selected !== suggest){
             $("#keywords_sugg").css("display", "block");
-            msg = "The text above does not seem to match your selected Bloom's level."
-                + " Some of the following keywords can be used to describe <b>" + selected + "</b>: "
+            msg = "The following keywords commonly appear in <b>" + selected + "</b> level SLOs: "
                 + suggestions[selected] + ".";
             $("#keywords_sugg").html(msg);
         } else {
