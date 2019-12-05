@@ -135,9 +135,9 @@ def update_status_by_agg(sender, instance, sigType):
         sS = None
         override = False
     if not override:
-        update_status(sS,sigType,instance.pk)
+        update_status(sS,sigType,instance.pk, sloIR)
 
-def update_status(sS, sigType, pk):
+def update_status(sS, sigType, pk, sloIR):
     """
     Updates the status based upon the AssessmentAggregate values for a given status
 
@@ -145,8 +145,9 @@ def update_status(sS, sigType, pk):
         sS (SLOStatus): SLO status to update
         sigType (int): signal type - 0 is post-save, 1 if pre-delete
         pk (int): primary key of AssessmentAggregate to exclude if sigType is 1
+        sloIR (SLOInReport): the SLO to update the status of
     """
-    aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sS.sloIR)
+    aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sloIR)
     if sigType==1:
         aggs = aggs.exclude(pk=pk)
     met = True
@@ -168,11 +169,11 @@ def update_status(sS, sigType, pk):
         sS.save()
     else:
         if met:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sS.sloIR)
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sloIR)
         elif partiallyMet:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sS.sloIR)
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sloIR)
         else:
-            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sS.sloIR)
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sloIR)
 
 class DataAdditionalInformation(models.Model):
     """
