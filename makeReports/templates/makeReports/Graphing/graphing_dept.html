@@ -49,7 +49,7 @@
 <template v-if="program == 1">
     <div class="dd_graph">
         <select id="id_graph" v-model="graph_opt">
-            <option value="3">Number of degree programs meeting target</option>
+            <option value="3">Percentage of targets each degree program meets</option>
         </select>
     </div>
 </template>
@@ -255,7 +255,13 @@
                  * @property showWeighing
                  * @type Boolean
                  */
-                showWeighing: false
+                showWeighing: false,
+                /**
+                 * Whether to show button
+                 * @property showButton
+                 * @type Boolean
+                 */
+                 showButton: true,
             },
             //computed: {
             //},
@@ -335,6 +341,7 @@
                         });
                         
                     }else if(this.graph_opt==2){
+                        this.showButton = false;
                         fetch("{% url 'makeReports:api-slo-by-dp' %}?report__degreeProgram="+this.program
                         +"&report__year__gte="+this.date1+"&report__year__lte="+this.date2)
                             .then(response => {
@@ -347,6 +354,7 @@
                                         this.$set(this.sloWeights,this.slos[i].slo.pk,1);
                                     }
                                 }
+                                this.showButton=true;
                             })
                         });
                         
@@ -390,7 +398,7 @@
                         'decision': this.graph_opt,
                         'sloIR': this.slo,
                         'assess': assessHere.assessment.pk,
-                        'sloWeights': this.sloWeights
+                        'sloWeights': JSON.stringify(this.sloWeights)
                     }
                     
                     fetch("{% url 'makeReports:api-new-graph' %}",{

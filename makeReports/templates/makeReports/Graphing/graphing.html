@@ -68,7 +68,7 @@
 <template v-if="program == 1">
     <div class="dd_graph">
         <select id="id_graph" v-model="graph_opt">
-            <option value="3">Number of degree programs meeting target</option>
+            <option value="3">Percentage of targets each degree program meets</option>
         </select>
     </div>
 </template>
@@ -123,7 +123,7 @@
     </template>
 </template>
 <div class="mt-5 mb-5"></div>
-<template v-if="date1!=null && date2!=null && graph_opt>0">
+<template v-if="date1!=null && date2!=null && graph_opt>0 && showButton">
 <button class='btn btn-primary' v-on:click="newGraph">View Graph</button> 
 </template>
 <br>
@@ -278,7 +278,13 @@
                  * @property showWeighing
                  * @type Boolean
                  */
-                showWeighing: false
+                showWeighing: false,
+                /**
+                 * Whether to show button
+                 * @property showButton
+                 * @type Boolean
+                 */
+                showButton: true,
             },
             //computed: {
             //},
@@ -353,6 +359,8 @@
                         });
                         
                     }else if(this.graph_opt==2){
+                        this.showButton = false;
+                        //the user must wait for the SLOs to generate the graph
                         fetch("{% url 'makeReports:api-slo-by-dp' %}?report__degreeProgram="+this.program
                         +"&report__year__gte="+this.date1+"&report__year__lte="+this.date2)
                             .then(response => {
@@ -365,6 +373,7 @@
                                         this.$set(this.sloWeights,this.slos[i].slo.pk,1);
                                     }
                                 }
+                                this.showButton = true;
                             })
                         });
                         
@@ -409,7 +418,7 @@
                         'decision': this.graph_opt,
                         'sloIR': this.slo,
                         'assess': assessHere.assessment.pk,
-                        'sloWeights': this.sloWeights
+                        'sloWeights': JSON.stringify(this.sloWeights)
                     }
                     
                     fetch("{% url 'makeReports:api-new-graph' %}",{
