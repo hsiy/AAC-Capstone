@@ -624,6 +624,22 @@ the given <code class="xref py py-class docutils literal notranslate"><span clas
 </dd></dl>
 
 <dl class="function">
+<dt id="makeReports.models.data_models.update_agg">
+<code class="sig-prename descclassname">makeReports.models.data_models.</code><code class="sig-name descname">update_agg</code><span class="sig-paren">(</span><em class="sig-param">agg</em>, <em class="sig-param">sigType</em>, <em class="sig-param">pk</em>, <em class="sig-param">assessment</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.data_models.update_agg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates an assessment aggregate that has not been previously overriden</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agg</strong> (<a class="reference internal" href="#makeReports.models.data_models.AssessmentAggregate" title="makeReports.models.data_models.AssessmentAggregate"><em>AssessmentAggregate</em></a>) – aggregate to update</p></li>
+<li><p><strong>sigType</strong> (<em>int</em>) – signal type - 0 if save, 1 if delete</p></li>
+<li><p><strong>pk</strong> (<em>int</em>) – primary key of instance that changed (only needed if pre-delete)</p></li>
+<li><p><strong>assessment</strong> (<a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – assessment of aggregate</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="makeReports.models.data_models.update_agg_by_data">
 <code class="sig-prename descclassname">makeReports.models.data_models.</code><code class="sig-name descname">update_agg_by_data</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">sigType</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.data_models.update_agg_by_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the assessment aggregate when data is modified or created and it has not been previously overridden</p>
