@@ -11,7 +11,7 @@ BLOOMS_CHOICES = (
 RUBRIC_GRADES_CHOICES = (
     ("DNM","Does Not Meet/Did Not Include"),
     ("MC", "Meets with Concerns"),
-    ("ME", "Meets"))
+    ("ME", "Meets Established"))
 LEVELS = (
     ("UG", "Undergraduate"),
     ("GR", "Graduate"))
