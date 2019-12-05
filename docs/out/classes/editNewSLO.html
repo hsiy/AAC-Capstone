@@ -92,7 +92,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l19"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:19</code></a>
+            Defined in: <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l35"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:35</code></a>
         </div>
 
 
@@ -100,7 +100,7 @@
 
 
 <div class="box intro">
-    <p>Handles getting SLO suggestions from API</p>
+    <p>Handles calling for SLO suggestions API while on page</p>
 
 </div>
 
@@ -165,7 +165,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l69"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:69</code></a>
+        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l88"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:88</code></a>
         </p>
 
 
@@ -173,7 +173,7 @@
     </div>
 
     <div class="description">
-        <p>Sends the ajax request</p>
+        <p>Sends the ajax request to get SLO suggestions</p>
 
     </div>
 
@@ -196,7 +196,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l57"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:57</code></a>
+        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l77"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:77</code></a>
         </p>
 
 
@@ -204,7 +204,7 @@
     </div>
 
     <div class="description">
-        <p>Ensures the cookie is included in ajax request</p>
+        <p>Ensures cookie is sent in the ajax request</p>
 
     </div>
 
@@ -230,7 +230,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l47"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:47</code></a>
+        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l65"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:65</code></a>
         </p>
 
 
@@ -238,7 +238,7 @@
     </div>
 
     <div class="description">
-        <p>Checks is CSRF is needed</p>
+        <p>Method to check if HTTP method needs cookie</p>
 
     </div>
 
@@ -248,7 +248,7 @@
 
             <div class="returns-description">
                         <span class="type">Boolean</span>:
-                    <p>if cookie is needed</p>
+                    <p>whether cookie is required</p>
 
             </div>
         </div>
@@ -258,7 +258,13 @@
 <div id="method_getCookie" class="method item">
     <h3 class="name"><code>getCookie</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
         <span class="returns-inline">
             <span class="type">String</span>
@@ -273,7 +279,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l25"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:25</code></a>
+        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l42"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:42</code></a>
         </p>
 
 
@@ -281,10 +287,29 @@
     </div>
 
     <div class="description">
-        <p>Gets CSRF cookie needed to do POST requests</p>
+        <p>Gets the CSRF cookie needed for post requests</p>
 
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>the name of the cookie</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
         <div class="returns">
             <h4>Returns:</h4>
@@ -313,7 +338,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l80"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:80</code></a>
+        <a href="../files/.._AACForm_makeReports_templates_makeReports_SLO_editNewSLO.html.html#l99"><code>..\AACForm\makeReports\templates\makeReports\SLO\editNewSLO.html:99</code></a>
         </p>
 
 
@@ -321,7 +346,7 @@
     </div>
 
     <div class="description">
-        <p>Upon success of sending request, display suggestions to the user</p>
+        <p>Upon succesfully getting a response, show the results to the user</p>
 
     </div>
 

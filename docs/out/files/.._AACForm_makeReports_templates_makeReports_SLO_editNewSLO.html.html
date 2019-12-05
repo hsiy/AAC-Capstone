@@ -98,10 +98,26 @@
 &lt;form method=&quot;post&quot; class=&quot;form&quot; enctype=&quot;multipart/form-data&quot;&gt;
     {% csrf_token %}
     {% load static %}
-    {% bootstrap_form form %}
+    {% bootstrap_label form.text.label_tag %}
+    {% bootstrap_field form.text show_label=False %}
+    &lt;div class=&quot;alert alert-secondary col-6&quot; role=&quot;alert&quot; id=&quot;complex_sugg&quot; style=&quot;display: none&quot;&gt;
+        This SLO may be too complex. Consider breaking it down into multiple SLOs.
+    &lt;/div&gt;
+    {% bootstrap_label form.blooms.label_tag %}
+    &lt;div class=&quot;alert alert-secondary col-6&quot; role=&quot;alert&quot; id=&quot;blooms_sugg&quot; style=&quot;display: none&quot;&gt;
+        
+    &lt;/div&gt;
+    &lt;div class=&quot;alert alert-secondary col-6&quot; role=&quot;alert&quot; id=&quot;keywords_sugg&quot; style=&quot;display: none&quot;&gt;
+        
+    &lt;/div&gt;
+    {% bootstrap_field form.blooms show_label=False %}
+    {% if form.gradGoals %}
+    {% bootstrap_label form.gradGoals.label_tag %}
+    {% bootstrap_field form.gradGoals show_label=False %}
+    {% endif %}
     &lt;p id=&#x27;errors&#x27;&gt;&lt;/p&gt;
     {% buttons %}
-        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Submit Changes&lt;/button&gt;
+        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Add SLO&lt;/button&gt;
     {% endbuttons %}
 &lt;/form&gt;
 {% endblock %}
@@ -110,14 +126,16 @@
 &lt;/script&gt; 
 &lt;script&gt;
     /**
-     * Handles getting SLO suggestions from API
+     * Handles calling for SLO suggestions API while on page
      * @class editNewSLO
      */
+    var suggest = &quot;none&quot;;
     $(&#x27;#id_text&#x27;).blur(function() {
         // Method to get cookie
         /**
-         * Gets CSRF cookie needed to do POST requests
+         * Gets the CSRF cookie needed for post requests
          * @method getCookie
+         * @param {String} name - the name of the cookie
          * @return {String} cookie value
          */
         function getCookie(name) {
@@ -138,20 +156,21 @@
         var csrftoken = getCookie(&#x27;csrftoken&#x27;);
         // Method to check if HTTP method needs cookie
         /**
-         * Checks is CSRF is needed
+         * Method to check if HTTP method needs cookie
          * @method csrfSafeMethod
-         * @return {Boolean} if cookie is needed
-         */ 
+         * @return {Boolean} whether cookie is required
+         */
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
         // Ensure cookie is sent in ajax request
-        /**
-         * Ensures the cookie is included in ajax request
-         * @method beforeSend
-         */
+        
         $.ajaxSetup({
+            /**
+             * Ensures cookie is sent in the ajax request
+             * @method beforeSend
+             */
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) &amp;&amp; !this.crossDomain) {
                     xhr.setRequestHeader(&quot;X-CSRFToken&quot;, csrftoken);
@@ -160,7 +179,7 @@
         });
         // actual ajax request
         /**
-         * Sends the ajax request
+         * Sends the ajax request to get SLO suggestions
          * @method ajax
          */
         $.ajax({
@@ -171,27 +190,47 @@
             },
             // If the request goes through, do the following
             /**
-             * Upon success of sending request, display suggestions to the user
+             * Upon succesfully getting a response, show the results to the user
+             * 
              * @method success
              */
             success: function(msg, status, jqXHR){
-                var label_str = &quot;Highest Bloom&#x27;s Taxonomy Level:&quot;;
-                if(msg.blooms == &quot;none&quot;){
-                    label_str = &quot;Highest Bloom&#x27;s Taxonomy Level:&quot;;
+                suggest = msg.blooms;
+                if(suggest !== &quot;none&quot;){
+                    $(&#x27;#blooms_sugg&#x27;).html(&quot;Suggested Bloom&#x27;s Taxonomy Level: &lt;b&gt;&quot; + suggest + &quot;&lt;/b&gt;&quot;);
+                    $(&#x27;#blooms_sugg&#x27;).css(&quot;display&quot;, &quot;block&quot;);
                 } else {
-                    label_str = &quot;Highest Bloom&#x27;s Taxonomy Level (Suggested Level: &quot; + msg.blooms + &quot;):&quot;
+                    $(&#x27;#blooms_sugg&#x27;).css(&quot;display&quot;, &quot;none&quot;);
                 }
-                document.querySelector(&#x27;[for=&quot;id_blooms&quot;]&#x27;).innerHTML = label_str;
 
                 var error_str;
                 if(msg.complex){
-                    error_str = &quot;This SLO may be too complex. Consider breaking it down into multiple SLOs.&quot;;
+                    $(&quot;#complex_sugg&quot;).css(&quot;display&quot;, &quot;block&quot;);
                 } else {
-                    error_str = &quot;&quot;;
+                    $(&quot;#complex_sugg&quot;).css(&quot;display&quot;, &quot;none&quot;);
                 }
-                document.getElementById(&quot;errors&quot;).innerHTML = error_str;
             }
         });
+    });
+    $(&#x27;#id_blooms&#x27;).change(function() {
+        suggestions = {
+            &quot;Knowledge&quot;: &quot;remember, repeat, copy, reproduce, define, retell, duplicate, recite, recognize, read, memorize, knowledge, tell, retell&quot;,
+            &quot;Comprehension&quot;: &quot;ask, infer, cite, summarize, classify, purpose, compare, show, contrast, demonstrate, discuss, express, rephrase, examples&quot;,
+            &quot;Application&quot;: &quot;act, develop, administer, solve, apply, teach, build, plan, choose, employ, connect, demonstrate&quot;,
+            &quot;Analysis&quot;: &quot;analyze, inspect, arrange, research, breakdown, compare, categorize, highlight, differences, find, dissect, question, examine, cause and effect&quot;,
+            &quot;Synthesis&quot;: &quot;adapt, plan, build, produce, construct, solve, compose, think, create, theorize, develop, modify, formulate, improve&quot;,
+            &quot;Evaluation&quot;: &quot;argue, measure, assess, opinion, compare, prove, conclude, support, debate, test, decide, validate, evaluate, interpret&quot;,
+        }
+        selected = $(&#x27;#id_blooms option:selected&#x27;).text();
+        if(selected !== suggest){
+            $(&quot;#keywords_sugg&quot;).css(&quot;display&quot;, &quot;block&quot;);
+            msg = &quot;The following keywords commonly appear in &lt;b&gt;&quot; + selected + &quot;&lt;/b&gt; level SLOs: &quot;
+                + suggestions[selected] + &quot;.&quot;;
+            $(&quot;#keywords_sugg&quot;).html(msg);
+        } else {
+            $(&quot;#keywords_sugg&quot;).css(&quot;display&quot;, &quot;none&quot;);
+            $(&#x27;#blooms_sugg&#x27;).css(&quot;display&quot;, &quot;none&quot;);
+        }
     });
 &lt;/script&gt;
 {% endblock %}

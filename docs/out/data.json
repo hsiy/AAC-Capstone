@@ -217,7 +217,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\addSLO.html",
-            "line": 19,
+            "line": 35,
             "description": "Handles calling for SLO suggestions API while on page"
         },
         "editNewSLO": {
@@ -229,8 +229,8 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\editNewSLO.html",
-            "line": 19,
-            "description": "Handles getting SLO suggestions from API"
+            "line": 35,
+            "description": "Handles calling for SLO suggestions API while on page"
         },
         "importSLO": {
             "name": "importSLO",
@@ -444,7 +444,15 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\CSV\\csvManagement.html",
-            "line": 179,
+            "line": 178,
+            "description": "Calls the updateProg upon mount",
+            "itemtype": "method",
+            "name": "mounted",
+            "class": "csvManagement"
+        },
+        {
+            "file": "..\\AACForm\\makeReports\\templates\\makeReports\\CSV\\csvManagement.html",
+            "line": 187,
             "description": "Calls the API to update list of departments by selected college",
             "itemtype": "method",
             "name": "updateDept",
@@ -452,7 +460,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\CSV\\csvManagement.html",
-            "line": 192,
+            "line": 200,
             "description": "Calls the API to update the list of degree programs by selected department",
             "itemtype": "method",
             "name": "updateProg",
@@ -905,10 +913,17 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\addSLO.html",
-            "line": 26,
+            "line": 42,
             "description": "Gets the CSRF cookie needed for post requests",
             "itemtype": "method",
             "name": "getCookie",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "- the name of the cookie",
+                    "type": "String"
+                }
+            ],
             "return": {
                 "description": "cookie value",
                 "type": "String"
@@ -917,7 +932,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\addSLO.html",
-            "line": 48,
+            "line": 65,
             "description": "Method to check if HTTP method needs cookie",
             "itemtype": "method",
             "name": "csrfSafeMethod",
@@ -929,7 +944,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\addSLO.html",
-            "line": 60,
+            "line": 77,
             "description": "Ensures cookie is sent in the ajax request",
             "itemtype": "method",
             "name": "beforeSend",
@@ -937,7 +952,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\addSLO.html",
-            "line": 71,
+            "line": 88,
             "description": "Sends the ajax request to get SLO suggestions",
             "itemtype": "method",
             "name": "ajax",
@@ -945,7 +960,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\addSLO.html",
-            "line": 82,
+            "line": 99,
             "description": "Upon succesfully getting a response, show the results to the user",
             "itemtype": "method",
             "name": "success",
@@ -953,10 +968,17 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\editNewSLO.html",
-            "line": 25,
-            "description": "Gets CSRF cookie needed to do POST requests",
+            "line": 42,
+            "description": "Gets the CSRF cookie needed for post requests",
             "itemtype": "method",
             "name": "getCookie",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "- the name of the cookie",
+                    "type": "String"
+                }
+            ],
             "return": {
                 "description": "cookie value",
                 "type": "String"
@@ -965,36 +987,36 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\editNewSLO.html",
-            "line": 47,
-            "description": "Checks is CSRF is needed",
+            "line": 65,
+            "description": "Method to check if HTTP method needs cookie",
             "itemtype": "method",
             "name": "csrfSafeMethod",
             "return": {
-                "description": "if cookie is needed",
+                "description": "whether cookie is required",
                 "type": "Boolean"
             },
             "class": "editNewSLO"
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\editNewSLO.html",
-            "line": 57,
-            "description": "Ensures the cookie is included in ajax request",
+            "line": 77,
+            "description": "Ensures cookie is sent in the ajax request",
             "itemtype": "method",
             "name": "beforeSend",
             "class": "editNewSLO"
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\editNewSLO.html",
-            "line": 69,
-            "description": "Sends the ajax request",
+            "line": 88,
+            "description": "Sends the ajax request to get SLO suggestions",
             "itemtype": "method",
             "name": "ajax",
             "class": "editNewSLO"
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\editNewSLO.html",
-            "line": 80,
-            "description": "Upon success of sending request, display suggestions to the user",
+            "line": 99,
+            "description": "Upon succesfully getting a response, show the results to the user",
             "itemtype": "method",
             "name": "success",
             "class": "editNewSLO"
