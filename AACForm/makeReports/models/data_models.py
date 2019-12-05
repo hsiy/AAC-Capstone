@@ -51,18 +51,33 @@ def update_agg_by_data(sender, instance, sigType):
         sigType (int): signal type - 0 if save, 1 if delete
     """
     try:
-        agg = AssessmentAggregate.objects.get(assessmentVersion=instance.assessmentVersion)
-        if not agg.override:
-            agg.aggregate_proficiency = calcWeightedAgg(instance.assessmentVersion, sigType, instance.pk)
-            agg.met = (agg.aggregate_proficiency >= instance.assessmentVersion.target)
-            agg.save()
+        update_agg(instance.assessmentVersion.assessmentaggregate,sigType,instance.pk, instance.assessmentVersion)
     except:
-        aProf = calcWeightedAgg(instance.assessmentVersion, sigType, instance.pk)
-        met = (aProf >= instance.assessmentVersion.target)
+        update_agg(None,sigType,instance.pk,instance.assessmentVersion)
+
+def update_agg(agg, sigType, pk, assessment):
+    """
+    Updates an assessment aggregate that has not been previously overriden
+
+    Args:
+        agg (AssessmentAggregate): aggregate to update
+        sigType (int): signal type - 0 if save, 1 if delete
+        pk (int): primary key of instance that changed (only needed if pre-delete)
+        assessment (AssessmentVersion): assessment of aggregate
+    """
+    if agg:
+        if not agg.override:
+            agg.aggregate_proficiency = calcWeightedAgg(assessment, sigType, pk)
+            agg.met = (agg.aggregate_proficiency >= assessment.target)
+            agg.save()
+    else:
+        aProf = calcWeightedAgg(assessment, sigType, pk)
+        met = (aProf >= assessment.target)
         AssessmentAggregate.objects.create(
-            assessmentVersion=instance.assessmentVersion,
+            assessmentVersion=assessment,
             aggregate_proficiency=aProf, 
             met = met)
+
 def calcWeightedAgg(assessment, sigType, pk):
     """
     Calculates the weighted aggregate value based upon assessment data for 
