@@ -19,10 +19,9 @@ class CreateNewSLO(forms.Form):
     """
     Form to create a new SLO
     """
-    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO") 
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO", max_length=1000) 
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, label="Highest Bloom's Taxonomy Level", widget=forms.Select(attrs={'class':'form-control col-5'}))
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple, label="Graduate-level Goals")
-    summer_max_length = 1000
     def __init__(self,*args,**kwargs):
         """
         Initializes form and deletes grad field if undergraduate level
@@ -56,7 +55,7 @@ class EditNewSLOForm(forms.Form):
     """
     Form to edit a new SLO (no restrictions)
     """
-    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO")
+    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO", max_length=1000)
     blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level",widget=forms.Select(attrs={'class':'form-control col-5'}))
     gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple(), label="Graduate-level Goals")
     
