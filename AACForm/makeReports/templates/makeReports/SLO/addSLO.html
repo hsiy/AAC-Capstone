@@ -18,9 +18,10 @@
         
     </div>
     {% bootstrap_field form.blooms show_label=False %}
+    {% if form.gradGoals %}
     {% bootstrap_label form.gradGoals.label_tag %}
     {% bootstrap_field form.gradGoals show_label=False %}
-
+    {% endif %}
     <p id='errors'></p>
     {% buttons %}
         <button type="submit" class="btn btn-primary">Add SLO</button>
