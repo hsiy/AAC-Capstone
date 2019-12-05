@@ -60,7 +60,7 @@ class SLOFormsTest(TestCase):
         Tests that EditNewSLOForm reject too long of text
         """
         f = EditNewSLOForm( {
-            'text':"sldkfjdslkj sadflk sldkf lksdjfa asdfklj"*100,
+            'text':"sldkfjdslkj sadflk sldkf lksdjfa asdfklj"*2000,
             'blooms':BLOOMS_CHOICES[1][0]
         },grad=True)
         self.assertFalse(f.is_valid())
