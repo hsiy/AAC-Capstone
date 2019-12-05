@@ -43,27 +43,12 @@ class ClearOverrideAPI(APIView):
             statuses = SLOStatus.objects.filter(sloIR__report__pk=pk, override=True)
             for status in statuses:
                 status.override = False
-                aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=status.sloIR)
-                met = True
-                partiallyMet = False
-                for a in aggs:
-                    if a.met is False:
-                        met = False
-                    if a.met is True:
-                        partiallyMet=True
-                    if not met and partiallyMet:
-                        break
-                if met:
-                    status.status = SLO_STATUS_CHOICES[0][0]
-                elif partiallyMet:
-                    status.status = SLO_STATUS_CHOICES[1][0]
-                else:
-                    status.status = SLO_STATUS_CHOICES[2][0]
                 status.save()
+                update_status(status,0,0)
             aggs = AssessmentAggregate.objects.filter(assessmentVersion__report__pk=pk, override=True)
             for agg in aggs:
                 agg.override = False
                 agg.aggregate_proficiency = calcWeightedAgg(agg.assessmentVersion,0,0)
                 agg.save()
-        return Response()
+            return Response()
 

@@ -125,7 +125,7 @@ def update_status_by_agg(sender, instance, sigType):
     Args:
         sender (AssessmentAggregate): model sending hook
         instance (AssessmentAggregate): data updated
-        sigType (int): singal type - 0 is post-save, 1 if pre-delete
+        sigType (int): signal type - 0 is post-save, 1 if pre-delete
     """
     sloIR = instance.assessmentVersion.slo
     try:
@@ -135,33 +135,45 @@ def update_status_by_agg(sender, instance, sigType):
         sS = None
         override = False
     if not override:
-        aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sloIR)
-        if sigType==1:
-            aggs = aggs.exclude(pk=instance.pk)
-        met = True
-        partiallyMet = False
-        for a in aggs:
-            if a.met is False:
-                met = False
-            if a.met is True:
-                partiallyMet=True
-            if not met and partiallyMet:
-                break
-        if sS:
-            if met:
-                sS.status = SLO_STATUS_CHOICES[0][0]
-            elif partiallyMet:
-                sS.status = SLO_STATUS_CHOICES[1][0]
-            else:
-                sS.status = SLO_STATUS_CHOICES[2][0]
-            sS.save()
+        update_status(sS,sigType,instance.pk)
+
+def update_status(sS, sigType, pk):
+    """
+    Updates the status based upon the AssessmentAggregate values for a given status
+
+    Args:
+        sS (SLOStatus): SLO status to update
+        sigType (int): signal type - 0 is post-save, 1 if pre-delete
+        pk (int): primary key of AssessmentAggregate to exclude if sigType is 1
+    """
+    aggs = AssessmentAggregate.objects.filter(assessmentVersion__slo=sS.sloIR)
+    if sigType==1:
+        aggs = aggs.exclude(pk=pk)
+    met = True
+    partiallyMet = False
+    for a in aggs:
+        if a.met is False:
+            met = False
+        if a.met is True:
+            partiallyMet=True
+        if not met and partiallyMet:
+            break
+    if sS:
+        if met:
+            sS.status = SLO_STATUS_CHOICES[0][0]
+        elif partiallyMet:
+            sS.status = SLO_STATUS_CHOICES[1][0]
         else:
-            if met:
-                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sloIR)
-            elif partiallyMet:
-                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sloIR)
-            else:
-                SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sloIR)
+            sS.status = SLO_STATUS_CHOICES[2][0]
+        sS.save()
+    else:
+        if met:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[0][0],sloIR=sS.sloIR)
+        elif partiallyMet:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[1][0],sloIR=sS.sloIR)
+        else:
+            SLOStatus.objects.create(status=SLO_STATUS_CHOICES[2][0],sloIR=sS.sloIR)
+
 class DataAdditionalInformation(models.Model):
     """
     Model to hold additional information about the data, possibly with a PDF supplement
