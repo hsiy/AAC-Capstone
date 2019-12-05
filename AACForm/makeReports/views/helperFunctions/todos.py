@@ -33,7 +33,7 @@ def section1ToDo(report):
         toDos['r'].append(("Add description of how SLOs are communicated to stakeholders",1))
     for slo in slos:
         b = blooms_suggestion(slo.goalText)
-        if b and b != slo.slo.get_blooms_display:
+        if b and b != slo.slo.get_blooms_display and b!="none":
             toDos['s'].append(("Set the Bloom's level of SLO "+str(slo.number)+" to "+b,1))
         if is_complex(slo.goalText):
             toDos['s'].append(("Simplify or split SLO "+str(slo.number)+" into multiple, focused SLOs",1))
