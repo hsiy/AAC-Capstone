@@ -68,7 +68,7 @@ class RubricItemForm(forms.ModelForm):
             'order':'Order position of item (lower numbers will be displayed first) (optional)',
             'DMEtext':'Did not meet expectations text',
             'MEtext':"Met expectations with concerns text",
-            'EEtext':'Met expectations text'
+            'EEtext':'Met expectations established text'
         }
         widgets ={
             'text': SummernoteWidget(attrs={'style':'width:750px'}),
