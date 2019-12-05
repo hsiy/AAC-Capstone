@@ -52,6 +52,25 @@ class AssessmentVersion(models.Model):
     supplements = models.ManyToManyField('AssessmentSupplement')
     def __str__(self):
         return self.assessment.title
+@receiver(post_save,sender=AssessmentVersion)
+def post_save_update_agg_by_assessment(sender,instance,**kwargs):
+    """
+    Updates aggregates when AssessmentVersion is changed, in case the target value changed
+    
+    Args:
+        sender (AssessmentVersion): model sending hook
+        instance (AssessmentVersion): assessment updated
+    """
+    try:
+        aa = instance.assessmentaggregate
+        if aa and not aa.override:
+            met = (aa.aggregate_proficiency >= instance.target)
+            if not (met == aa.met):
+                aa.met = met
+                aa.save()
+    except:
+        pass
+
 class AssessmentSupplement(models.Model):
     """
     Supplemental PDF files to assessments

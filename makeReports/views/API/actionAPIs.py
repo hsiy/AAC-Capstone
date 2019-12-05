@@ -48,7 +48,7 @@ class ClearOverrideAPI(APIView):
             aggs = AssessmentAggregate.objects.filter(assessmentVersion__report__pk=pk, override=True)
             for agg in aggs:
                 agg.override = False
-                agg.aggregate_proficiency = calcWeightedAgg(agg.assessmentVersion,0,0)
                 agg.save()
+                update_agg(agg,0,0,agg.assessmentVersion)
             return Response()
 
