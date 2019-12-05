@@ -142,7 +142,7 @@
 &lt;template v-if=&quot;program == 1&quot;&gt;
     &lt;div class=&quot;dd_graph&quot;&gt;
         &lt;select id=&quot;id_graph&quot; v-model=&quot;graph_opt&quot;&gt;
-            &lt;option value=&quot;3&quot;&gt;Number of degree programs meeting target&lt;/option&gt;
+            &lt;option value=&quot;3&quot;&gt;Percentage of targets each degree program meets&lt;/option&gt;
         &lt;/select&gt;
     &lt;/div&gt;
 &lt;/template&gt;
@@ -348,7 +348,13 @@
                  * @property showWeighing
                  * @type Boolean
                  */
-                showWeighing: false
+                showWeighing: false,
+                /**
+                 * Whether to show button
+                 * @property showButton
+                 * @type Boolean
+                 */
+                 showButton: true,
             },
             //computed: {
             //},
@@ -428,6 +434,7 @@
                         });
                         
                     }else if(this.graph_opt==2){
+                        this.showButton = false;
                         fetch(&quot;{% url &#x27;makeReports:api-slo-by-dp&#x27; %}?report__degreeProgram=&quot;+this.program
                         +&quot;&amp;report__year__gte=&quot;+this.date1+&quot;&amp;report__year__lte=&quot;+this.date2)
                             .then(response =&gt; {
@@ -440,6 +447,7 @@
                                         this.$set(this.sloWeights,this.slos[i].slo.pk,1);
                                     }
                                 }
+                                this.showButton=true;
                             })
                         });
                         
@@ -483,7 +491,7 @@
                         &#x27;decision&#x27;: this.graph_opt,
                         &#x27;sloIR&#x27;: this.slo,
                         &#x27;assess&#x27;: assessHere.assessment.pk,
-                        &#x27;sloWeights&#x27;: this.sloWeights
+                        &#x27;sloWeights&#x27;: JSON.stringify(this.sloWeights)
                     }
                     
                     fetch(&quot;{% url &#x27;makeReports:api-new-graph&#x27; %}&quot;,{

@@ -640,7 +640,7 @@ the given <code class="xref py py-class docutils literal notranslate"><span clas
 
 <dl class="function">
 <dt id="makeReports.models.data_models.update_status">
-<code class="sig-prename descclassname">makeReports.models.data_models.</code><code class="sig-name descname">update_status</code><span class="sig-paren">(</span><em class="sig-param">sS</em>, <em class="sig-param">sigType</em>, <em class="sig-param">pk</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.data_models.update_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">makeReports.models.data_models.</code><code class="sig-name descname">update_status</code><span class="sig-paren">(</span><em class="sig-param">sS</em>, <em class="sig-param">sigType</em>, <em class="sig-param">pk</em>, <em class="sig-param">sloIR</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.data_models.update_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the status based upon the AssessmentAggregate values for a given status</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -648,6 +648,7 @@ the given <code class="xref py py-class docutils literal notranslate"><span clas
 <li><p><strong>sS</strong> (<a class="reference internal" href="#makeReports.models.data_models.SLOStatus" title="makeReports.models.data_models.SLOStatus"><em>SLOStatus</em></a>) – SLO status to update</p></li>
 <li><p><strong>sigType</strong> (<em>int</em>) – signal type - 0 is post-save, 1 if pre-delete</p></li>
 <li><p><strong>pk</strong> (<em>int</em>) – primary key of AssessmentAggregate to exclude if sigType is 1</p></li>
+<li><p><strong>sloIR</strong> (<a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><em>SLOInReport</em></a>) – the SLO to update the status of</p></li>
 </ul>
 </dd>
 </dl>

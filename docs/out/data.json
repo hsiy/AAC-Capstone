@@ -647,7 +647,16 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 289,
+            "line": 282,
+            "description": "Whether to show button",
+            "itemtype": "property",
+            "name": "showButton",
+            "type": "Boolean",
+            "class": "graphing"
+        },
+        {
+            "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
+            "line": 295,
             "description": "Calls the API to update the department based upon the chosen college",
             "itemtype": "method",
             "name": "updateDept",
@@ -655,7 +664,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 303,
+            "line": 309,
             "description": "Calls the API to update the degree programs based upon the chosen department",
             "itemtype": "method",
             "name": "updateProg",
@@ -663,7 +672,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 316,
+            "line": 322,
             "description": "Creates a new Choices dropdown if the graph type is newly changed to specific SLO",
             "itemtype": "method",
             "name": "changeGraphOpt",
@@ -671,7 +680,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 332,
+            "line": 338,
             "description": "Calls the API to update the SLOs based upon the chosen degree program.\nIt also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary",
             "itemtype": "method",
             "name": "updateSLOs",
@@ -679,7 +688,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 373,
+            "line": 382,
             "description": "Calls the API to update assessments",
             "itemtype": "method",
             "name": "updateAssesses",
@@ -687,7 +696,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 392,
+            "line": 401,
             "description": "Calls the API to generate the chosen graph based upon selected options",
             "itemtype": "method",
             "name": "newGraph",
@@ -857,7 +866,16 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 262,
+            "line": 259,
+            "description": "Whether to show button",
+            "itemtype": "property",
+            "name": "showButton",
+            "type": "Boolean",
+            "class": "graphingDept"
+        },
+        {
+            "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
+            "line": 268,
             "description": "Upon mounting, update the degree programs for user's department",
             "itemtype": "method",
             "name": "mounted",
@@ -865,7 +883,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 271,
+            "line": 277,
             "description": "Calls the API to update the department based upon the chosen college",
             "itemtype": "method",
             "name": "updateProg",
@@ -873,7 +891,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 285,
+            "line": 291,
             "description": "Calls the API to update the degree programs based upon the chosen department",
             "itemtype": "method",
             "name": "updateProg",
@@ -881,7 +899,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 298,
+            "line": 304,
             "description": "Creates a new Choices dropdown if the graph type is newly changed to specific SLO",
             "itemtype": "method",
             "name": "changeGraphOpt",
@@ -889,7 +907,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 314,
+            "line": 320,
             "description": "Calls the API to update the SLOs based upon the chosen degree program.\nIt also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary",
             "itemtype": "method",
             "name": "updateSLOs",
@@ -897,7 +915,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 355,
+            "line": 363,
             "description": "Calls the API to update assessments",
             "itemtype": "method",
             "name": "updateAssesses",
@@ -905,7 +923,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 373,
+            "line": 381,
             "description": "Calls the API to generate the chosen graph based upon selected options",
             "itemtype": "method",
             "name": "newGraph",
