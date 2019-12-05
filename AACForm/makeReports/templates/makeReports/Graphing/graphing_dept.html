@@ -104,7 +104,7 @@
     </template>
 </template>
 <div class="mt-5 mb-5"></div>
-<template v-if="date1!=null && date2!=null && graph_opt>0">
+<template v-if="date1!=null && date2!=null && graph_opt>0 && showButton">
 <button class='btn btn-primary' v-on:click="newGraph">View Graph</button> 
 </template>
 <br>
@@ -307,6 +307,7 @@
                 *@method changeGraphOpt
                 */
                 changeGraphOpt: function(){
+                    showButton=true;
                     if(this.graph_opt==1){
                         this.$nextTick(function(){
                             //have to wait for DOM to change to attach ChoicesJS to dropdown
