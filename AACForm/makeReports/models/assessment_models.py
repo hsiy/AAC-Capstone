@@ -55,10 +55,10 @@ class AssessmentVersion(models.Model):
 @receiver(post_save,sender=AssessmentVersion)
 def post_save_update_agg_by_assessment(sender,instance,**kwargs):
     """
-    Updates aggregates when AssessmentVersion is changed, in case the target value changed
+    Updates aggregate (AssessmentAggregate) when AssessmentVersion is changed, in case the target value changed
     
     Args:
-        sender (AssessmentVersion): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentVersion): assessment updated
     """
     try:

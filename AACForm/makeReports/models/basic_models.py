@@ -56,9 +56,9 @@ def update_user_profile(sender, instance, created, **kwargs):
     Updates the custom profile when users are created
     
     Args:
-        sender (User): model sending hook
+        sender (type): model type sending hook
         instance (User): user updated
-        created (Boolean): whether model was newly created
+        created (bool): whether model was newly created
     """
     #this updates profile when user is updated
     if created:

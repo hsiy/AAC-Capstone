@@ -504,11 +504,11 @@ and includes fields which should never change</p>
 <dl class="function">
 <dt id="makeReports.models.assessment_models.post_save_update_agg_by_assessment">
 <code class="sig-prename descclassname">makeReports.models.assessment_models.</code><code class="sig-name descname">post_save_update_agg_by_assessment</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.assessment_models.post_save_update_agg_by_assessment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates aggregates when AssessmentVersion is changed, in case the target value changed</p>
+<dd><p>Updates aggregate (AssessmentAggregate) when AssessmentVersion is changed, in case the target value changed</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sender</strong> (<a class="reference internal" href="#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – model sending hook</p></li>
+<li><p><strong>sender</strong> (<em>type</em>) – model type sending hook</p></li>
 <li><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – assessment updated</p></li>
 </ul>
 </dd>

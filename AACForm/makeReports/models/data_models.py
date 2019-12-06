@@ -27,7 +27,7 @@ def post_save_agg_by_data(sender, instance, **kwargs):
     Updates aggregates when data is created or modified post-save
     
     Args:
-        sender (AssessmentData): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentData): data updated
     """
     update_agg_by_data(sender,instance, 0)
@@ -37,7 +37,7 @@ def pre_delete_agg_by_data(sender,instance,**kwargs):
     Updates aggregates when data is deleted
     
     Args:
-        sender (AssessmentData): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentData): data updated
     """
     update_agg_by_data(sender,instance, 1)
@@ -46,7 +46,7 @@ def update_agg_by_data(sender, instance, sigType):
     Updates the assessment aggregate when data is modified or created and it has not been previously overridden
     
     Args:
-        sender (AssessmentData): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentData): data updated
         sigType (int): signal type - 0 if save, 1 if delete
     """
@@ -118,7 +118,7 @@ def post_save_status_by_agg(sender,instance,**kwargs):
     Updates status based upon aggregates after model is saved
 
     Args:
-        sender (AssessmentAggregate): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentAggregate): data updated
     """
     update_status_by_agg(sender,instance, 0)
@@ -128,7 +128,7 @@ def pre_delete_status_by_agg(sender,instance,**kwargs):
     Updates status based upon aggregates after model is saved
 
     Args:
-        sender (AssessmentAggregate): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentAggregate): data updated
     """
     update_status_by_agg(sender,instance,1)
@@ -138,7 +138,7 @@ def update_status_by_agg(sender, instance, sigType):
     Updates the SLO status based upon aggregate when aggregates are created or modified
     
     Args:
-        sender (AssessmentAggregate): model sending hook
+        sender (type): model type sending hook
         instance (AssessmentAggregate): data updated
         sigType (int): signal type - 0 is post-save, 1 if pre-delete
     """
