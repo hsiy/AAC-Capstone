@@ -19,7 +19,7 @@
 {% block content %}
 {% include 'makeReports/Grading/grading_navbar.html' %}
 <h3>Reviewing Section {{section}}</h3>
-<h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
+<h5>{{rpt.year|add:"-1"}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})</h5>
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -43,8 +43,8 @@
         </div>
         <div class="col-4 please-scroll">
             <!--grading column-->
-            {% if report.rubric.rubricVersion.fullFile %}
-              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% if rpt.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{rpt.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
             {% endif %}
             <h5>Section {{section}} Rubric</h5>
             <form method="post" novalidate>

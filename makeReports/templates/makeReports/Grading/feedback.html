@@ -6,11 +6,11 @@
 <link href="{% static 'css/shelves.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
+<h5>{{rpt.year|add:"-1"}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})</h5>
 <div class="container">
     <div class = "row">
       <div class="col">
-          <a class="btn btn-primary"  role="button" href="{% url 'makeReports:graded-rub-pdf' report=report.pk %}">PDF of Feedback </a>
+          <a class="btn btn-primary"  role="button" href="{% url 'makeReports:graded-rub-pdf' report=rpt.pk %}">PDF of Feedback </a>
       </div>
     </div>
     <div class="row">
@@ -20,8 +20,8 @@
         </div>
         <div class="col">
             <!--grading column-->
-            {% if report.rubric.rubricVersion.fullFile %}
-              Full Rubric: <a href="{{report.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
+            {% if rpt.rubric.rubricVersion.fullFile %}
+              Full Rubric: <a href="{{rpt.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
             {% endif %}
                 <table>
                   {% for GRI in obj_list %}

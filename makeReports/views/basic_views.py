@@ -136,7 +136,7 @@ class DisplayReport(DeptAACMixin,TemplateView):
             dict : context for template
         """
         context = super(DisplayReport,self).get_context_data(**kwargs)
-        context['report'] = self.report
+        context['rpt'] = self.report
         context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         context = section1Context(self,context)
         context = section2Context(self,context)

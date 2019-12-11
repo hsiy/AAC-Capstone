@@ -68,13 +68,23 @@ def get_item(dictionary, key1, key2):
         return mark_safe(s[key2])
     else:
         return ""
-class GradingEntry(AACOnlyMixin,TemplateView):
+class GradingEntry(AACReportMixin,TemplateView):
+    """
+    View that provides initial information on report to be graded
+
+    Keyword Args:
+        report (str): primary key of :class:`~makeReports.models.report_models.Report` to grade
+    """
     template_name = 'makeReports/Grading/grading_entry.html'
     def get_context_data(self,**kwargs):
+        """
+        Adds report supplements to the context
+
+        Returns:
+            dict : context needed to display view, including the report supplements
+        """
         context = super().get_context_data(**kwargs)
-        report = Report.objects.get(pk=self.kwargs['report'])
-        context['report'] = report
-        context['reportSups'] = ReportSupplement.objects.filter(report=report)
+        context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         return context
 class GradingView(AACOnlyMixin,FormView):
     """
@@ -152,7 +162,6 @@ class GradingView(AACOnlyMixin,FormView):
         context = super().get_context_data(**kwargs)
         context = rubricItemsHelper(self,context)
         context['section'] = self.section
-        context['report'] = self.report
         context['rpt'] = self.report
         context['toDo'] = todoGetter(self.section,self.report)
         context['reqTodo'] = len(context['toDo']['r'])
@@ -294,7 +303,6 @@ class OverallComment(AACReportMixin,FormView):
             dict : context of template
         """
         context = super(OverallComment,self).get_context_data(**kwargs)
-        context['report'] = self.report
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
@@ -389,7 +397,6 @@ class RubricReview(AACReportMixin, FormView):
             dict : context for template
         """
         context = super(RubricReview,self).get_context_data(**kwargs)
-        context['report'] = self.report
         context['gRub'] = self.report.rubric
         context['object_list'] = self.GRIs
         context = section1Context(self,context)
@@ -478,7 +485,7 @@ class Feedback(DeptAACMixin, ListView):
             dict : context for template
         """
         context = super(Feedback,self).get_context_data(**kwargs)
-        context['report'] = self.report
+        context['rpt'] = self.report
         context['gRub'] = self.report.rubric
         context['obj_list'] = self.GRIs
         context = section1Context(self,context)
