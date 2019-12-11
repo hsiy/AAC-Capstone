@@ -8,25 +8,25 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'makeReports:grade-entry' report=report.pk %}">Report Information <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{% url 'makeReports:grade-entry' report=rpt.pk %}">Report Information <span class="sr-only">(current)</span></a>
                             </li>
                     <li class="nav-item active">
-                      <a class="nav-link" href="{% url 'makeReports:grade-sec1' report=report.pk %}">Section I. SLOs <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="{% url 'makeReports:grade-sec1' report=rpt.pk %}">Section I. SLOs <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'makeReports:grade-sec2' report=report.pk %}">Section II. Assessments <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'makeReports:grade-sec2' report=rpt.pk %}">Section II. Assessments <span class="sr-only">(current)</span></a>
                       </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'makeReports:grade-sec3' report=report.pk %}">Section III. Data <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'makeReports:grade-sec3' report=rpt.pk %}">Section III. Data <span class="sr-only">(current)</span></a>
                       </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'makeReports:grade-sec4' report=report.pk %}">Section IV. Decisions & Actions <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'makeReports:grade-sec4' report=rpt.pk %}">Section IV. Decisions & Actions <span class="sr-only">(current)</span></a>
                       </li>
                       <li class="nav-item active">
-                          <a class="nav-link" href="{% url 'makeReports:grade-comment' report=report.pk %}">Overall Comments <span class="sr-only">(current)</span></a>
+                          <a class="nav-link" href="{% url 'makeReports:grade-comment' report=rpt.pk %}">Overall Comments <span class="sr-only">(current)</span></a>
                         </li>
                       <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'makeReports:rub-review' report=report.pk %}">Preview & Submit <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{% url 'makeReports:rub-review' report=rpt.pk %}">Preview & Submit <span class="sr-only">(current)</span></a>
                         </li>
                 </div>
               </nav>

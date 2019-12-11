@@ -57,16 +57,6 @@ class FinalReportSupplements(DeptReportMixin, ListView):
     """
     model = ReportSupplement
     template_name = "makeReports/ReportEntryExtras/supplementList.html"
-    def get_context_data(self, **kwargs):
-        """
-        Gets the context for the template, including the report
-
-        Returns:
-            dict : context for template
-        """
-        context = super(FinalReportSupplements,self).get_context_data(**kwargs)
-        context['report'] = self.report
-        return context
     def get_queryset(self):
         return ReportSupplement.objects.filter(report=self.report)
 class AddEndSupplements(DeptReportMixin, CreateView):
@@ -76,16 +66,6 @@ class AddEndSupplements(DeptReportMixin, CreateView):
     model = ReportSupplement
     template_name = "makeReports/ReportEntryExtras/addSupplement.html"
     fields = ['supplement']
-    def get_context_data(self, **kwargs):
-        """
-        Gets the context for the template, including the report
-
-        Returns:
-            dict : context for template
-        """
-        context = super(AddEndSupplements,self).get_context_data(**kwargs)
-        context['report'] = self.report
-        return context
     def form_valid(self,form):
         """
         Sets the report then creates the report supplement from the form
@@ -115,16 +95,6 @@ class DeleteEndSupplements(DeptReportMixin, DeleteView):
     """
     model = ReportSupplement
     template_name = "makeReports/ReportEntryExtras/deleteSupplement.html"
-    def get_context_data(self,**kwargs):
-        """
-        Gets the context for the template, including the report
-
-        Returns:
-            dict : context for template
-        """
-        context = super(DeleteEndSupplements,self).get_context_data(**kwargs)
-        context['report'] = self.report
-        return context
     def get_success_url(self):
         """
         Gets URL to go to upon success (report supplement summary)
@@ -192,7 +162,6 @@ class SubmitReport(DeptReportMixin, FormView):
             dict : context for template
         """
         context = super(SubmitReport,self).get_context_data(**kwargs)
-        context['report'] = self.report
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)

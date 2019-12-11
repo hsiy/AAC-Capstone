@@ -238,11 +238,26 @@ context needed to display the report</p>
 <dl class="class">
 <dt id="makeReports.views.grading_views.GradingEntry">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.grading_views.</code><code class="sig-name descname">GradingEntry</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.GradingEntry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACReportMixin" title="makeReports.views.helperFunctions.mixins.AACReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
+<p>View that provides initial information on report to be graded</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to grade</p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.grading_views.GradingEntry.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.GradingEntry.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds report supplements to the context</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>context needed to display view, including the report supplements</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="makeReports.views.grading_views.GradingEntry.template_name">

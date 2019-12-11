@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Reviewing Section {{section}}</h3>
-<h5>{{report.year|add:"-1"}}-{{report.year}} Report for {{report.degreeProgram.name}} ({{report.degreeProgram.level}})</h5>
+<h5>{{rpt.year|add:"-1"}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})</h5>
 <div class="container">
     <div class="row">
         <div class="col-7">
@@ -23,7 +23,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <b>Additional Comment: </b>{{report.section1Comment|safe}}
+            <b>Additional Comment: </b>{{rpt.section1Comment|safe}}
         </div>
     </div>
 </div>

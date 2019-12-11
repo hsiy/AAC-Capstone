@@ -115,7 +115,7 @@ class PDFPreview(TemplateView):
         """
         context = super(PDFPreview,self).get_context_data(**kwargs)
         context['rubric'] = self.report.rubric
-        context['report'] = self.report
+        context['rpt'] = self.report
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
@@ -203,7 +203,7 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
         """
         context = super(ReportPDFGen,self).get_context_data(**kwargs)
         context['rubric'] = self.report.rubric
-        context['report'] = self.report
+        context['rpt'] = self.report
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
