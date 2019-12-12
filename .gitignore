@@ -10,3 +10,6 @@ env/
 AACForm/staticfiles/
 AACForm/staticfiles/*
 AACForm/makeReports/__pycache__/
+.env
+*.json
+AACForm/gd_cred.json
