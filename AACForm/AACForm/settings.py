@@ -165,7 +165,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'My Project-7fa0f5fdaa9f.json')
+
+f = open(os.path.join(BASE_DIR,'gd_storage2.json'),'w')
+f.write(os.environ['GD_KEY'])
+
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'gd_storage2.json')
 DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
 SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
