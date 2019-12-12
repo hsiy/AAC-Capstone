@@ -94,7 +94,7 @@
 {% extends &#x27;base.html&#x27; %}
 {% load bootstrap4 %}
 {% block scripts %}
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue/dist/vue.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue@2.6.0&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js&quot;&gt;&lt;/script&gt;
 &lt;!-- Include Choices CSS --&gt;
 &lt;link
@@ -197,7 +197,7 @@
     &lt;/template&gt;
 &lt;/template&gt;
 &lt;div class=&quot;mt-5 mb-5&quot;&gt;&lt;/div&gt;
-&lt;template v-if=&quot;date1!=null &amp;&amp; date2!=null &amp;&amp; graph_opt&gt;0&quot;&gt;
+&lt;template v-if=&quot;date1!=null &amp;&amp; date2!=null &amp;&amp; graph_opt&gt;0 &amp;&amp; showButton&quot;&gt;
 &lt;button class=&#x27;btn btn-primary&#x27; v-on:click=&quot;newGraph&quot;&gt;View Graph&lt;/button&gt; 
 &lt;/template&gt;
 &lt;br&gt;
@@ -400,6 +400,7 @@
                 *@method changeGraphOpt
                 */
                 changeGraphOpt: function(){
+                    showButton=true;
                     if(this.graph_opt==1){
                         this.$nextTick(function(){
                             //have to wait for DOM to change to attach ChoicesJS to dropdown

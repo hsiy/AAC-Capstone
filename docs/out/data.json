@@ -680,7 +680,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 338,
+            "line": 339,
             "description": "Calls the API to update the SLOs based upon the chosen degree program.\nIt also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary",
             "itemtype": "method",
             "name": "updateSLOs",
@@ -688,7 +688,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 382,
+            "line": 383,
             "description": "Calls the API to update assessments",
             "itemtype": "method",
             "name": "updateAssesses",
@@ -696,7 +696,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing.html",
-            "line": 401,
+            "line": 402,
             "description": "Calls the API to generate the chosen graph based upon selected options",
             "itemtype": "method",
             "name": "newGraph",
@@ -907,7 +907,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 320,
+            "line": 321,
             "description": "Calls the API to update the SLOs based upon the chosen degree program.\nIt also creates a new instance of the ChoicesJS object (i.e. fancy dropdown) if necessary",
             "itemtype": "method",
             "name": "updateSLOs",
@@ -915,7 +915,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 363,
+            "line": 364,
             "description": "Calls the API to update assessments",
             "itemtype": "method",
             "name": "updateAssesses",
@@ -923,7 +923,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\Graphing\\graphing_dept.html",
-            "line": 381,
+            "line": 382,
             "description": "Calls the API to generate the chosen graph based upon selected options",
             "itemtype": "method",
             "name": "newGraph",

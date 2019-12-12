@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "psychic-city-254619",
+  "private_key_id": "27b8028393a7fd5a958f47ca42beadace90790ad",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDf7jC1cgHnPAYs\nY4loNVXfdSttTmk8glkeoE9v8UmgDqDcuweMeUhaAfOriX/OdQrEHBUM9VNwBEIJ\nlAS6TD8ZV6W6mHDU2bdjPQY/A9N2l3O0iq4v6tZxM2t4XsAA+OjAoFNnRGfgmN/j\nFHmW7kAOYN19uCMu/2IX8CGKjoTQ1F444fWYA2upcf43TJjyAx4LkOeC5L/w745x\npX5RVBpbaDsON7ofLiPzApDZlnXnwab7twDrSComhKziqrNfOFP0cB1QcDpAo4Se\nvNjigj7OcHD09A+p5PSM0jRR6PjKHnt137kC9rx7hbYsyiLbHfkAGJsxNDVfxYNj\nuH+Xt0IHAgMBAAECggEAZy40AG8bRGZqe8qTdlJZEqFFFNUT9X8kPFHmuHBoGdmT\nspF1PXtm5J5QnkI5gzJ39vvvkSx7OTqlCQ/Mi+D1FCLIKO3z04fMEex88806A0Nu\n24opD8g37iogw3J5KxmF+bgGJiela55VTydQjUSTfGySskqF37JqCxipA9R+i0/q\nu4p1fSeIQ7FM452e046S/5T8yiOkYgR8ZD2j3LQgLmTrluBQlxpGO9IMdKjH5yYB\nKiCQsgshP38YEuL0kAE0eZ6Qng3HYMoekmTJHw73yWPOvibAARNCFxo22mDzIB35\n2idg6n5enwIvCgK5Ix4yuQ/jiKywrtl3QEJrUMKh+QKBgQDzUJ8bodmOzt9xBkH/\nkvbpxq3ui8EQJplF2PMEClRfa2ITRDwyMG76Gufiasx0rC+G6ZctxeES0RqUZRHd\nD7ITGrb5On8ZfNxDVNZXheAWpwZyaUsY8ps2R5Cd/Y7yI+DS2ua4SaJH6Jg5TamE\n3E2D1Uu+wvrI0bEr7fU8cd2XmQKBgQDrmtsBeFkymQlTPoIDlJablVWNM8iwUrdQ\nV89Y04xDWn4NnLR0qfT/QsDY0qb85aS2vZ5Qr0DA2WB8XU5OtFuplDyiQXQj5HNj\nWNWz5uSA1ZRn/3AHAct3A46bHCsmRAcj0iE09qmQgib+oZL6SqA9J2vGkQXMERGS\nqBnQHE8qnwKBgQDBqI+a7K0+bwWE7hgllRGVbB8P2IgnlLE12MFDm/0fnVaIQy0u\nPUJ3KmcZ3SsyScHiPZWoRvEniur+5ZrcOhvf/MlZgOecn7aomKOpMdLz9Ki683dk\nOeSzxS4jsabOryPIb5ZnY6QYW9ac9WVRbA7+OQx6nrIAmHXNoy4nl/FpMQKBgAOp\nzbvxHhnuTTnRH/5kQg87PDBM3NL5Bkamht/Psj+d2ZXmmNuzhM6vQAZfCB+ohm4c\n9qg0gWI+PwTQApawsTgqyOKQ9/hS5gRmbjQ049qo93zCeQBy47H/CSmaP4WBy0ag\nTsnfB/XqQCb3ZiykGme5BDD7MkbhAQ/xsy0MM6LrAoGAJymyplxkSS6pOgG9dufs\nV2f6lqtHRZyBnxAOi5O5xxMNsXU5/mm7tZfFfEdLJM7B+7mdu/JKh/OGhfwGio0N\nly3p4WBohn/vBLxSrI2dJEbVs3Q/eajzscXU0qbjtWkcgIneD2L6vb18B0wS0Nj0\nxinPiXLt0l7K9YOhVnE7wsA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "storeuploadedfiles@psychic-city-254619.iam.gserviceaccount.com",
+  "client_id": "102457057469929214939",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/storeuploadedfiles%40psychic-city-254619.iam.gserviceaccount.com"
+}
