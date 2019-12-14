@@ -93,7 +93,7 @@ class CreateNewAssessment(forms.Form):
             ValidationError : when text is too long after being cleaned
         """
         data = self.cleaned_data['frequency']
-        max_length = 100
+        max_length = 500
         cleaned = cleanText(data)
         if len(cleaned)>max_length:
             raise ValidationError("This text has length "+str(len(cleaned))+", when the maximum is "+str(max_length))
