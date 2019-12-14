@@ -6,6 +6,8 @@ Subpackages
 
 .. toctree::
 
+   makeReports.views.AAC
+   makeReports.views.API
    makeReports.views.helperFunctions
 
 Submodules

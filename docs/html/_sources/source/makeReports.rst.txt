@@ -10,6 +10,7 @@ Subpackages
    makeReports.forms
    makeReports.migrations
    makeReports.models
+   makeReports.signals
    makeReports.tests
    makeReports.views
 

@@ -4,8 +4,6 @@ This file contains models most directly related to Student Learning Outcomes
 from django.db import models
 from makeReports.choices import *
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete, post_delete
-from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
@@ -33,45 +31,6 @@ class SLOInReport(models.Model):
     numberOfAssess = models.PositiveIntegerField(default=0, verbose_name="number of assessments")
     def __str__(self):
         return self.goalText
-@receiver(post_save,sender=SLOInReport)
-def post_save_slo_update_numbering(sender,instance,created,**kwargs):
-    """
-    Post save receiver that triggers numbers to be updated
-
-    Args:
-        sender (type): model type sending hook
-        instance (SLOInReport): SLO updated
-        created (bool): whether model was newly created
-    """
-    if created:
-        instance.report.numberOfSLOs +=1
-        instance.report.save()
-        instance.slo.numberOfUses += 1
-        instance.slo.save()
-
-@receiver(post_delete,sender=SLOInReport)
-def post_delete_slo_update_numbering(sender,instance,**kwargs):
-    """
-    Updates the numbering of SLOs in the same report
-
-    Args:
-        sender (type): model type sending hook
-        instance (SLOInReport): SLO deleted
-    """
-    oldNum = instance.number
-    num = instance.report.numberOfSLOs
-    if instance.slo.numberOfUses <= 1:
-        instance.slo.delete()
-    else:
-        instance.slo.numberOfUses -= 1
-        instance.slo.save()
-    slos = SLOInReport.objects.filter(report=instance.report).order_by("number")
-    for slo in slos:
-        if slo.number > oldNum:
-            slo.number -= 1
-            slo.save()
-    instance.report.numberOfSLOs -= 1
-    instance.report.save()
 
 class GradGoal(models.Model):
     """
