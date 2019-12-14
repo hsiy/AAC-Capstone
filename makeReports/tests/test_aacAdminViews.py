@@ -31,10 +31,10 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         Tests that the create college page exists and works
         """
         data = {
-            'name': 'col name'
+            'name': 'College of Arts and Sciences'
         }
         response = self.client.post(reverse('makeReports:add-college'),data)
-        num = College.active_objects.filter(name='col name').count()
+        num = College.active_objects.filter(name='College of Arts and Sciences').count()
         self.assertGreaterEqual(num,1)
     def test_list(self):
         """
@@ -130,11 +130,11 @@ class DepartmentViewsTest(ReportAACSetupTest):
         """
         col = baker.make("College")
         data = {
-            'name':'dept name',
+            'name':'History',
             'college': col.pk
         }
         r = self.client.post(reverse('makeReports:add-dept'),data)
-        num = Department.objects.filter(name='dept name',college=col).count()
+        num = Department.objects.filter(name='History',college=col).count()
         self.assertGreaterEqual(num,1)
     def test_list(self):
         """
@@ -216,23 +216,23 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}))
         self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
-            'name':'dp name',
+            'name':'Poetry',
             'level':"UG",
             'cycle': 5,
             'startingYear': 7
         })
-        num = DegreeProgram.objects.filter(department=self.dept,name='dp name',cycle=5, startingYear=7, level="UG").count()
+        num = DegreeProgram.objects.filter(department=self.dept,name='Poetry',cycle=5, startingYear=7, level="UG").count()
         self.assertGreaterEqual(num, 1)
     def test_create_emptyslots(self):
         """
         Tests that a degree program is created when cycle and starting year are left blank
         """
         r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
-            'name':'dp name 2',
+            'name':'Secondary education',
             'level':'GR',
             'cycle': 0
         })
-        num = DegreeProgram.objects.filter(department=self.dept,name='dp name 2', level="GR").count()
+        num = DegreeProgram.objects.filter(department=self.dept,name='Secondary education', level="GR").count()
         self.assertGreaterEqual(num, 1)
     def test_update(self):
         """
@@ -242,11 +242,11 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
         self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{
-            'name':'up dp',
+            'name':'History',
             'level':'GR',
         })
         dp.refresh_from_db()
-        self.assertEquals(dp.name,'up dp')
+        self.assertEquals(dp.name,'History')
         self.assertEquals(dp.level,'GR')
     def test_update_DNE(self):
         """
@@ -317,11 +317,11 @@ class DegreeProgramAdminTestRecipe(DegreeProgramAdminTest):
         r = self.client.get(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
         self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{
-            'name':'up dp',
+            'name':'Accounting',
             'level':'GR',
         })
         dp.refresh_from_db()
-        self.assertEquals(dp.name,'up dp')
+        self.assertEquals(dp.name,'Accounting')
         self.assertEquals(dp.level,'GR')
     def test_update_DNE(self):
         """
@@ -420,14 +420,14 @@ class AccountAdminTests(ReportAACSetupTest):
             'isaac':'on',
             'department':dept.pk,
             'college':dept.college.pk,
-            'email':'sdkl@ksld.com',
-            'username':'sldkjslkfdj',
-            'password1':'slsdfdsfsdfdk',
-            'password2':'slsdfdsfsdfdk',
-            'first_name':'sdklfj',
-            'last_name':'sdlkfjsadlkfj'
+            'email':'sJames@ksld.com',
+            'username':'sJames2',
+            'password1':'pwpwpwpw',
+            'password2':'pwpwpwpw',
+            'first_name':'Sonya-Joe',
+            'last_name':'James-Michael'
             })
-        num = Profile.objects.filter(aac=True,department=dept,user__first_name='sdklfj').count()
+        num = Profile.objects.filter(aac=True,department=dept,user__first_name='Sonya-Joe').count()
         self.assertEquals(num,1)
     def test_list(self):
         """
@@ -440,11 +440,11 @@ class AccountAdminTests(ReportAACSetupTest):
         """
         Tests the acount list acts as expected
         """
-        a = baker.make("User",first_name="aboijoie")
-        b = baker.make("User",first_name="dsasdfbwerwerqrqwejlkjljkl")
+        a = baker.make("User",first_name="Janet")
+        b = baker.make("User",first_name="Tucker")
         r = self.client.get(reverse('makeReports:search-account-list')+"?f="+a.first_name+"&l="+a.last_name+"&e=")
         self.assertContains(r,a.first_name)
-        self.assertNotContains(r,"dsasdfbwerwerqrqwejlkjljkl")
+        self.assertNotContains(r,"Tucker")
     def test_modify(self):
         """
         Tests the AAC modifying user account page
@@ -458,17 +458,17 @@ class AccountAdminTests(ReportAACSetupTest):
         fD = {
             'aac':'on',
             'department':dept.pk,
-            'first_name':'changed f_name',
-            'last_name':'changed l_name',
-            'email':'sdlk@g.com'
+            'first_name':'Tina',
+            'last_name':'Fey',
+            'email':'tfey@g.com'
         }
         r = self.client.post(reverse('makeReports:aac-modify-account',kwargs={'pk':a.pk}),fD)
         a.refresh_from_db()
         self.assertEquals(a.profile.aac,True)
         self.assertEquals(a.profile.department,dept)
-        self.assertEquals(a.first_name,'changed f_name')
-        self.assertEquals(a.last_name,'changed l_name')
-        self.assertEquals(a.email,'sdlk@g.com')
+        self.assertEquals(a.first_name,'Tina')
+        self.assertEquals(a.last_name,'Fey')
+        self.assertEquals(a.email,'tfey@g.com')
     def test_inactivate(self):
         """
         Tests the inactivate user view
@@ -528,11 +528,11 @@ class GradGoalAdminTests(ReportAACSetupTest):
         self.assertEquals(resp.status_code,200)
         res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
             'active':'on',
-            'text':'new text here'
+            'text':'Students will perform community service.'
         })
         r.refresh_from_db()
         self.assertEquals(r.active,True)
-        self.assertEquals(r.text,'new text here')
+        self.assertEquals(r.text,'Students will perform community service.')
     def test_update_recipe(self):
         """
         Tests the update function of the graduate goal with recipe based model
@@ -540,11 +540,11 @@ class GradGoalAdminTests(ReportAACSetupTest):
         r = baker.make_recipe("makeReports.gradGoal",active=False)
         res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
             'active':'on',
-            'text':'new text here'
+            'text':'Students will create original content.'
         })
         r.refresh_from_db()
         self.assertEquals(r.active,True)
-        self.assertEquals(r.text,'new text here')
+        self.assertEquals(r.text,'Students will create original content.')
     def test_add(self):
         """
         Tests that a new graduate goal can be effectively added
@@ -552,9 +552,9 @@ class GradGoalAdminTests(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:add-gg'))
         self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:add-gg'),{
-            'text':'new gg text'
+            'text':'Students will synthesis information and communicate.'
         })
-        num = GradGoal.objects.filter(text='new gg text', active=True).count()
+        num = GradGoal.objects.filter(text='Students will synthesis information and communicate.', active=True).count()
         self.assertEquals(num,1)
 class AnnouncementsTest(ReportAACSetupTest):
     """
@@ -567,12 +567,12 @@ class AnnouncementsTest(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:add-announ'))
         self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:add-announ'),{
-            'text':'ann text',
+            'text':'All reports must be submitted this week.',
             'expiration_month':2,
             'expiration_day': 17,
             'expiration_year':2020
         })
-        num = Announcement.objects.filter(text='ann text',expiration=date(2020,2,17)).count()
+        num = Announcement.objects.filter(text='All reports must be submitted this week.',expiration=date(2020,2,17)).count()
         self.assertEquals(num,1)
     def test_list(self):
         """
@@ -626,13 +626,13 @@ class AnnouncementsTest(ReportAACSetupTest):
         r = self.client.get(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}))
         self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
-            'text':'ann text 2',
+            'text':'There are some technical difficulties. Please be paitent.',
             'expiration_month':3,
             'expiration_day': 27,
             'expiration_year':2021
         })
         a.refresh_from_db()
-        self.assertEquals(a.text,'ann text 2')
+        self.assertEquals(a.text,'There are some technical difficulties. Please be paitent.')
         self.assertEquals(a.expiration, date(2021,3,27))
         self.assertEquals(r.status_code,302)
     def test_edit_DNE(self):
@@ -647,7 +647,7 @@ class AnnouncementsTest(ReportAACSetupTest):
         """
         a = baker.make("Announcement")
         r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
-            'text':'ann text 2',
+            'text':'There are some technical difficulties. Please be paitent.',
             'expiration_month':3,
             'expiration_day': 272,
             'expiration_year':2021
@@ -659,7 +659,7 @@ class AnnouncementsTest(ReportAACSetupTest):
         """
         a = baker.make_recipe("makeReports.announcement")
         r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
-            'text':'ann text 2',
+            'text':'There are some technical difficulties. Please be paitent.',
             'expiration_month':3,
             'expiration_day': 27,
         })
@@ -670,13 +670,13 @@ class AnnouncementsTest(ReportAACSetupTest):
         """
         a = baker.make_recipe("makeReports.announcement")
         r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
-            'text':'ann text 2',
+            'text':'There are some technical difficulties. Please be paitent and kind.',
             'expiration_month':3,
             'expiration_day': 27,
             'expiration_year':2021
         })
         a.refresh_from_db()
-        self.assertEquals(a.text,'ann text 2')
+        self.assertEquals(a.text,'There are some technical difficulties. Please be paitent and kind.')
         self.assertEquals(a.expiration, date(2021,3,27))
     
     

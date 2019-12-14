@@ -23,20 +23,19 @@ class AssessmentFormTests(TestCase):
         slo = baker.make("SLOInReport")
         f = CreateNewAssessment({
             'slo':slo.pk,
-            'title':'dslkfj sdlkf',
-            'description':'ldkfjsdlkfj fasldkfj slfjsadl',
+            'title':'Final Report',
+            'description':'Students will write a report describing their capstone project.',
             'domain':["Pe"],
             'directMeasure':True,
             'finalTerm':False,
             'where':'kldsfj',
             'allStudents':True,
-            'sampleDescription':'lksfdj flksdjf lsdklfj',
+            'sampleDescription':'',
             'frequencyChoice': FREQUENCY_CHOICES[0][0],
-            'frequency':'lksdjf',
-            'threshold':'sldkfj',
+            'frequency':'',
+            'threshold':'Students must be rated proficient.',
             'target':93
         },sloQS=SLOInReport.objects.all())
-        print(f.errors)
         self.assertTrue(f.is_valid())
         
     def test_create_new_invalid(self):
@@ -49,11 +48,11 @@ class AssessmentFormTests(TestCase):
             'domain':["Pe"],
             'directMeasure':True,
             'finalTerm':False,
-            'where':'kldsfj',
+            'where':'During ENGL 5090',
             'allStudents':True,
-            'sampleDescription':'lksfdj flksdjf lsdklfj',
+            'sampleDescription':'All students',
             'frequencyChoice': FREQUENCY_CHOICES[0][0],
-            'frequency':'lksdjf',
+            'frequency':'Every semester',
             'target':93
         },sloQS=SLOInReport.objects.all()
         )

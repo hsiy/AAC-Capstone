@@ -178,13 +178,13 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
             'report':self.rpt.pk,
             'dataCollection': d.pk
         }),{
-            'dataRange':'Fall 2119',
+            'dataRange':'Fall 2019',
             'numberStudents':31,
             'overallProficient':86
         })
         num = AssessmentData.objects.filter(
             assessmentVersion = self.assess,
-            dataRange = "Fall 2119",
+            dataRange = "Fall 2019",
             numberStudents = 31,
             overallProficient = 86,
             pk = pk

@@ -79,9 +79,9 @@ class DecActViewsTest(ReportSetupTest):
             'report':self.rpt.pk,
             'slopk':self.slo.pk
         }),{
-            'text':'testingtestingtes334t'
+            'text':'We will modify ENGL 4050 to have better support.'
         })
-        num = DecisionsActions.objects.filter(text='testingtestingtes334t',sloIR=self.slo).count()
+        num = DecisionsActions.objects.filter(text='We will modify ENGL 4050 to have better support.',sloIR=self.slo).count()
         self.assertEquals(num,1)
         self.assertRedirects(resp,reverse('makeReports:slo-summary',kwargs={
             'report':self.rpt.pk
@@ -113,7 +113,7 @@ class DecActViewsTest(ReportSetupTest):
             'report':self.rpt.pk,
             'slopk':self.slo.pk
         }),{
-            'text':'testingtestingtes334t'*500
+            'text':'Modifying the curriculum.'*500
         })
         self.assertNotEquals(resp.status_code,302)
     def test_editDecAct(self):
@@ -132,10 +132,10 @@ class DecActViewsTest(ReportSetupTest):
             'slopk':self.slo.pk,
             'pk':dA.pk
         }),{
-            'text':'testingtestingtest545'
+            'text':'We will meet with our stakeholders starting next week.'
         })
         dA.refresh_from_db()
-        self.assertEquals(dA.text,'testingtestingtest545')
+        self.assertEquals(dA.text,'We will meet with our stakeholders starting next week.')
     def test_editDecActSLO_DNE(self):
         """
         Tests the edit decision/action page returns 404 when the dec/act not exist
@@ -156,7 +156,7 @@ class DecActViewsTest(ReportSetupTest):
             'slopk':self.slo.pk,
             'pk':dA.pk
         }),{
-            'text':'testingtestingtest545'*300
+            'text':'We will meet constantly with students.'*300
         })
         dA.refresh_from_db()
         self.assertEquals(dA.text,'valid text')
@@ -177,10 +177,10 @@ class DecActViewsTest(ReportSetupTest):
             'slopk':self.slo.pk,
             'pk':dA.pk
         }),{
-            'text':'testingtestingtest54576'
+            'text':'The department will start to have study sessions available.'
         })
         dA.refresh_from_db()
-        self.assertEquals(dA.text,'testingtestingtest54576')
+        self.assertEquals(dA.text,'The department will start to have study sessions available.')
         self.assertRedirects(resp,reverse('makeReports:slo-summary',kwargs={
             'report':self.rpt.pk
         }))
@@ -223,10 +223,10 @@ class DecActViewsTest(ReportSetupTest):
         resp = self.client.post(reverse('makeReports:d-a-comment',kwargs={
             'report':self.rpt.pk
         }),{
-            'text':'seccy4comment2'
+            'text':'The department is working on meeting with the dean to discuss further changes.'
         })
         self.rpt.refresh_from_db()
-        self.assertEquals(self.rpt.section4Comment,'seccy4comment2')
+        self.assertEquals(self.rpt.section4Comment,'The department is working on meeting with the dean to discuss further changes.')
 class DecActViewsTestRecipe(DecActViewsTest):
     """
     Tests views relating to decisions and actions with recipe based SLO
@@ -247,10 +247,10 @@ class DecActViewsTestRecipe(DecActViewsTest):
             'slopk':self.slo.pk,
             'pk':dA.pk
         }),{
-            'text':'testingtestingtest545'
+            'text':'Students will be required to take a research seminar during their sophomore year.'
         })
         dA.refresh_from_db()
-        self.assertEquals(dA.text,'testingtestingtest545')
+        self.assertEquals(dA.text,'Students will be required to take a research seminar during their sophomore year.')
     def test_editDecAct_toolong(self):
         """
         Tests the decision/action does not update when the text is too long
@@ -261,7 +261,7 @@ class DecActViewsTestRecipe(DecActViewsTest):
             'slopk':self.slo.pk,
             'pk':dA.pk
         }),{
-            'text':'testingtestingtest545'*500
+            'text':'The students will have to evaluate sources during the freshman intro course.'*500
         })
         dA.refresh_from_db()
         self.assertEquals(dA.text,'all right text')
@@ -275,10 +275,10 @@ class DecActViewsTestRecipe(DecActViewsTest):
             'slopk':self.slo.pk,
             'pk':dA.pk
         }),{
-            'text':'testingtestingtest54576'
+            'text':'The students will have to evaluate sources during the freshman intro course.'
         })
         dA.refresh_from_db()
-        self.assertEquals(dA.text,'testingtestingtest54576')
+        self.assertEquals(dA.text,'The students will have to evaluate sources during the freshman intro course.')
         self.assertRedirects(resp,reverse('makeReports:slo-summary',kwargs={
             'report':self.rpt.pk
         }))

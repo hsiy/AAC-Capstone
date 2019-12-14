@@ -1,5 +1,5 @@
 """
-Tests relating most directly to models
+Tests relating to signals
 """
 from django.test import TestCase
 from django.urls import reverse

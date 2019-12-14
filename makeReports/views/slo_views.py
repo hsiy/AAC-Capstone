@@ -266,7 +266,7 @@ class EditNewSLO(DeptReportMixin,FormView):
         sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
     """
     template_name = "makeReports/SLO/editNewSLO.html"
-    form_class = EditNewSLOForm
+    form_class = CreateNewSLO
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
@@ -325,7 +325,7 @@ class EditNewSLO(DeptReportMixin,FormView):
         Update SLO based upon the form
 
         Args:
-            form (EditNewSLOForm): filled out form to process
+            form (CreateNewSLO): filled out form to process
                 
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url

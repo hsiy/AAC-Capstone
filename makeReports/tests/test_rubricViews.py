@@ -40,16 +40,16 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         resp = self.client.get(reverse('makeReports:add-rubric'))
         resp = self.client.post(reverse('makeReports:add-rubric'),{
-            'name':'test3'
+            'name':'Rubric 5 for Graduate programs'
         })
         self.assertEquals(resp.status_code,302)
-        num = Rubric.objects.filter(name="test3").count()
+        num = Rubric.objects.filter(name='Rubric 5 for Graduate programs').count()
         self.assertEquals(num,1)
     def test_rubricadd_name_toolong(self):
         """
         Tests adding too long of a name prevents form submission
         """
-        reallyLong = "abcd"*250+"x"
+        reallyLong = "Rubric for 2019"*250+"x"
         resp = self.client.post(reverse('makeReports:add-rubric'),{
             'name':reallyLong
         })
@@ -87,22 +87,22 @@ class RubricMgmtTest(ReportAACSetupTest):
         resp = self.client.post(reverse('makeReports:add-RI',kwargs={
             'rubric':self.rubric.pk
         }),{
-            'text':'text5',
+            'text':'Report has sufficient data to make conclusions.',
             'abbreviation':'EX',
             'section':2,
             'order':3,
-            'DMEtext':'dsds',
-            'MEtext':'abab',
-            'EEtext':'cccs'
+            'DMEtext':'There is no data',
+            'MEtext':'There is only some data.',
+            'EEtext':'There is more than enough data collected over multiple semesters.'
         })
         num = RubricItem.objects.filter(
-            text='text5',
+            text='Report has sufficient data to make conclusions.',
             abbreviation ='EX',
             section=2,
             order=3,
-            DMEtext='dsds',
-            MEtext='abab',
-            EEtext='cccs'
+            DMEtext='There is no data',
+            MEtext='There is only some data.',
+            EEtext='There is more than enough data collected over multiple semesters.'
         ).count()
         self.assertEquals(num,1)
         self.assertEquals(resp.status_code,302)
@@ -118,7 +118,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         Tests posting to add rubric item with too long of text fails
         """
-        reallyLong = "xydksdfa I want    "*1000
+        reallyLong = "The report has data.    "*1000
         resp = self.client.post(reverse('makeReports:add-RI',kwargs={
             'rubric':self.rubric.pk
         }),{
@@ -126,25 +126,24 @@ class RubricMgmtTest(ReportAACSetupTest):
             'abbreviation':'EX',
             'section':2,
             'order':3,
-            'DMEtext':'dsds',
-            'MEtext':'abab',
-            'EEtext':'cccs'
+            'DMEtext':'There is not any data.',
+            'MEtext':'There is just enough data.',
+            'EEtext':'There is a lot of data.'
         })
         self.assertNotEquals(resp.status_code,302)
     def test_rubricItemAdd_missingText(self):
         """
         Tests posting to add rubric item without text fails
         """
-        reallyLong = "xydksdfa I want    "*1000
         resp = self.client.post(reverse('makeReports:add-RI',kwargs={
             'rubric':self.rubric.pk
         }),{
             'abbreviation':'EX',
             'section':2,
             'order':3,
-            'DMEtext':'dsds',
-            'MEtext':'abab',
-            'EEtext':'cccs'
+            'DMEtext':'The SLOs are unfocused.',
+            'MEtext':'The SLOs are very focused.',
+            'EEtext':'The SLOs are focused and concise.'
         })
         self.assertNotEquals(resp.status_code,302)
     def test_deleteRubric(self):
@@ -179,22 +178,22 @@ class RubricMgmtTest(ReportAACSetupTest):
         resp = self.client.get(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}))
         self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
-            'text':'text7',
+            'text':'The report uses data to come to conclusions.',
             'abbreviation':'EZ',
             'section':1,
             'order':5,
-            'DMEtext':'ddsds',
-            'MEtext':'abaab',
-            'EEtext':'cccss'
+            'DMEtext':'There is no data to use.',
+            'MEtext':'The conclusions sometimes refer to the data.',
+            'EEtext':'The conclusions are highly motivated by the data.'
         })
         num = RubricItem.objects.filter(
-            text='text7',
+            text='The report uses data to come to conclusions.',
             abbreviation ='EZ',
             section=1,
             order=5,
-            DMEtext='ddsds',
-            MEtext='abaab',
-            EEtext='cccss',
+            DMEtext='There is no data to use.',
+            MEtext='The conclusions sometimes refer to the data.',
+            EEtext='The conclusions are highly motivated by the data.',
             pk=pk
         ).count()
         self.assertEquals(num,1)
@@ -214,15 +213,15 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         rI = baker.make("RubricItem",rubricVersion = self.rubric)
         pk = rI.pk
-        reallyLong = "text of rubric"*500
+        reallyLong = "The conclusions need more attention"*500
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
-            'text':'text',
+            'text':'Data is used to make decisions.',
             'abbreviation':'EZ',
             'section':1,
             'order':5,
             'DMEtext': reallyLong,
-            'MEtext':'abaab',
-            'EEtext':'cccss'
+            'MEtext':'The conclusions are somewhat motivated by the data.',
+            'EEtext':'The conclusions are highly motivated by the data.'
         })
         self.assertNotEquals(resp.status_code,302)
     def test_updateRI_recipe(self):
@@ -232,22 +231,22 @@ class RubricMgmtTest(ReportAACSetupTest):
         rI = baker.make_recipe("makeReports.rubricItem",rubricVersion = self.rubric)
         pk = rI.pk
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
-            'text':'text7',
+            'text':'Data is used to make the decisions',
             'abbreviation':'EZ',
             'section':1,
             'order':5,
-            'DMEtext':'ddsds',
-            'MEtext':'abaab',
-            'EEtext':'cccss'
+            'DMEtext':'There is not any data in the report.',
+            'MEtext':'The author uses data sometimes.',
+            'EEtext':'All decisions are clearly related to the data.'
         })
         num = RubricItem.objects.filter(
-            text='text7',
+            text='Data is used to make the decisions',
             abbreviation ='EZ',
             section=1,
             order=5,
-            DMEtext='ddsds',
-            MEtext='abaab',
-            EEtext='cccss',
+            DMEtext='There is not any data in the report.',
+            MEtext='The author uses data sometimes.',
+            EEtext='All decisions are clearly related to the data.',
             pk=pk
         ).count()
         self.assertEquals(num,1)
@@ -264,15 +263,15 @@ class RubricMgmtTest(ReportAACSetupTest):
         resp = self.client.post(reverse('makeReports:dup-rub',kwargs={
             'rubric':self.rubric.pk,
         }),{
-            'new_name':"newName33"
+            'new_name':"Rubric 2019-2020 for CBA"
         })
         self.rubric.refresh_from_db()
         rI.refresh_from_db()
         self.assertEquals(self.rubric.name, preName)
         self.assertEquals(rI.rubricVersion,self.rubric)
-        rubs = Rubric.objects.filter(name="newName33")
+        rubs = Rubric.objects.filter(name="Rubric 2019-2020 for CBA")
         self.assertEquals(rubs.count(),1)
-        rub = Rubric.objects.get(name="newName33")
+        rub = Rubric.objects.get(name="Rubric 2019-2020 for CBA")
         num = RubricItem.objects.filter(rubricVersion=rub,text=rI.text).count()
         self.assertEquals(num, 1)
         self.assertEquals(resp.status_code,302)
@@ -283,7 +282,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         r = self.client.post(reverse('makeReports:dup-rub',kwargs={
             'rubric':433,
         }),{
-            'new_name':"newName33"
+            'new_name':"Rubric 2018-2020"
         })
         self.assertEquals(r.status_code,404)
     def test_duplicateRubric_missingName(self):

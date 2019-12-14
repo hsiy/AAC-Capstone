@@ -21,7 +21,7 @@ class DataCollectionFormTests(TestCase):
         Tests AddDataCollection accepts valid data
         """
         f = AddDataCollection({
-            'dataRange':"Srping 2019",
+            'dataRange':"Spring 2019",
             'numberStudents':993,
             'overallProficient':93
         })
@@ -31,7 +31,7 @@ class DataCollectionFormTests(TestCase):
         Tests AddDataCollection rejects non-integer number of students
         """
         f = AddDataCollection({
-            'dataRange':'sldkfj',
+            'dataRange':'Fall 2019 - Spring 202',
             'numberStudents': 93.2,
             'overallProficient':83
         })
@@ -80,6 +80,6 @@ class DataCollectionFormTests(TestCase):
         Test that AssessmentAggregateForm rejects non-numbers
         """
         f = AssessmentAggregateForm({
-            'aggregate_proficiency':"lkdsjf"
+            'aggregate_proficiency':"at least 80"
         })
         self.assertFalse(f.is_valid())
