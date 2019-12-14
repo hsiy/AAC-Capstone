@@ -53,7 +53,7 @@ class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView)
         'assessmentVersion__report__year',
         'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name',
         'assessmentVersion__report',
-        'assessmentVersion__slo', 'assessmentVersion__slo__goalText',
+        'assessmentVersion__slo', 'assessmentVersion__slo__goalText', 'assessmentVersion__slo__changedFromPrior',
         'assessmentVersion__slo__slo__blooms',
         'assessmentVersion__assessment', 'assessmentVersion__assessment__title',
         'assessmentVersion__assessment__domainExamination', 
@@ -66,7 +66,7 @@ class OutputCSVDepartment(LoginRequiredMixin, UserPassesTestMixin,CSVExportView)
         'assessmentVersion__finalTerm', 'assessmentVersion__where',
         'assessmentVersion__allStudents', 'assessmentVersion__sampleDescription',
         'assessmentVersion__frequencyChoice', 'assessmentVersion__frequency',
-        'assessmentVersion__threshold', 'assessmentVersion__target',
+        'assessmentVersion__threshold', 'assessmentVersion__target', 'assessmentVersion__changedFromPrior',
         'dataRange','numberStudents','overallProficient',
         ]
     def get_field_value(self,obj, field_name):
@@ -143,7 +143,7 @@ class OutputCSVCollege(OutputCSVDepartment):
         'assessmentVersion__report__degreeProgram__department', 'assessmentVersion__report__degreeProgram__department__name',
         'assessmentVersion__report__degreeProgram', 'assessmentVersion__report__degreeProgram__name',
         'assessmentVersion__report',
-        'assessmentVersion__slo', 'assessmentVersion__slo__goalText',
+        'assessmentVersion__slo', 'assessmentVersion__slo__goalText', 'assessmentVersion__slo__changedFromPrior',
         'assessmentVersion__slo__slo__blooms', 'assessmentVersion__slo__slo',
         'assessmentVersion__assessment', 'assessmentVersion__assessment__title',
         'assessmentVersion__assessment__domainExamination', 
@@ -156,7 +156,7 @@ class OutputCSVCollege(OutputCSVDepartment):
         'assessmentVersion__finalTerm', 'assessmentVersion__where',
         'assessmentVersion__allStudents', 'assessmentVersion__sampleDescription',
         'assessmentVersion__frequencyChoice', 'assessmentVersion__frequency',
-        'assessmentVersion__threshold', 'assessmentVersion__target',
+        'assessmentVersion__threshold', 'assessmentVersion__target', 'assessmentVersion__changedFromPrior',
         'dataRange','numberStudents','overallProficient',
         ]
     def get_queryset(self):

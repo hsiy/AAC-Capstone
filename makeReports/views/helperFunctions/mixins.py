@@ -5,6 +5,8 @@ associated with checking if a user is allowed to access a page and between views
 from makeReports.models import *
 from makeReports.forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import Http404
+
 class AACOnlyMixin(LoginRequiredMixin,UserPassesTestMixin):
     """
     Only allows AAC members to access page
@@ -67,7 +69,10 @@ class DeptReportMixin(DeptOnlyMixin):
         Returns:
             HttpResponse : response with page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['report'])
+        except Report.DoesNotExist:
+            raise Http404("Report matching URL does not exist.")
         return super(DeptReportMixin,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -97,7 +102,10 @@ class AACReportMixin(AACOnlyMixin):
         Returns:
             HttpResponse : response with page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['report'])
+        except Report.DoesNotExist:
+            raise Http404("Report matching URL does not exist.")
         return super(AACReportMixin,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """

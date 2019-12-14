@@ -11,6 +11,8 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
+from django.http import Http404
+
 
 class CreateReport(AACOnlyMixin,CreateView):
     """
@@ -92,7 +94,10 @@ class CreateReportByDP(AACOnlyMixin,CreateView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        form.instance.degreeProgram = DegreeProgram.objects.get(pk=self.kwargs['dP'])
+        try:
+            form.instance.degreeProgram = DegreeProgram.objects.get(pk=self.kwargs['dP'])
+        except DegreeProgram.DoesNotExist:
+            raise Http404("Degree program matching URL does not exist.")
         form.instance.submitted = False
         self.GR = GradedRubric.objects.create(rubricVersion=form.cleaned_data['rubric'])
         return super(CreateReportByDP,self).form_valid(form)

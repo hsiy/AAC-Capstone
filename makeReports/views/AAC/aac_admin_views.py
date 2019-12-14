@@ -13,6 +13,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
+from django.http import Http404
 
 class AdminHome(AACOnlyMixin,FormView):
     """
@@ -249,7 +250,10 @@ class CreateDegreeProgram(AACOnlyMixin,CreateView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        form.instance.department = Department.objects.get(pk=int(self.kwargs['dept']))
+        try:
+            form.instance.department = Department.objects.get(pk=int(self.kwargs['dept']))
+        except Department.DoesNotExist:
+            raise Http404("Department matching URL does not exist.")
         return super(CreateDegreeProgram, self).form_valid(form)
 class UpdateDegreeProgram(AACOnlyMixin,UpdateView):
     """
@@ -299,7 +303,7 @@ class RecoverDegreeProgram(AACOnlyMixin,UpdateView):
     """
     model = DegreeProgram
     fields = ['active']
-    template_name = "makeReports/AACAdminCollegeDeptDP//recoverDP.html"
+    template_name = "makeReports/AACAdmin/CollegeDeptDP/recoverDP.html"
     def get_success_url(self):
         """
         Gets URL to go to upon success (degree program list)
@@ -335,7 +339,10 @@ class DegreeProgramList(AACOnlyMixin,ListView):
             HttpResponse : response of page to request
 
         """
-        self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
+        try:
+            self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
+        except Department.DoesNotExist:
+            raise Http404("Department matching URL does not exist.")
         return super(DegreeProgramList, self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         """
@@ -400,7 +407,10 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
             HttpResponse : response of page to request
             
         """
-        self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
+        try:   
+            self.dept = Department.objects.get(pk=int(self.kwargs['dept']))
+        except Department.DoesNotExist:
+            raise Http404("Department matching URL does not exist.")
         return super(ArchivedDegreePrograms, self).dispatch(request,*args,**kwargs)
     def get_queryset(self):
         """
@@ -460,7 +470,10 @@ class ModifyAccount(AACOnlyMixin,FormView):
         Args:
             request (HttpRequest) : HTTP request to page
         """
-        self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
+        try:
+            self.userToChange = Profile.objects.get(pk=self.kwargs['pk'])
+        except Profile.DoesNotExist:
+            raise Http404("Profile matching URL does not exist.")
         return super(ModifyAccount,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         """

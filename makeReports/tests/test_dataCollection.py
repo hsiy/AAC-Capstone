@@ -36,6 +36,11 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         Tests the ability to post data to create a new data row
         """
+        r = self.client.get(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }))
+        self.assertEquals(r.status_code,200)
         resp = self.client.post(reverse('makeReports:add-data-collection',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk
@@ -52,6 +57,15 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         ).count()
         self.assertEquals(num,1)
         self.assertEquals(resp.status_code,302)
+    def test_createDataRow_DNE(self):
+        """
+        Tests the create data row page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:add-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'assessment':342
+        }))
+        self.assertEquals(r.status_code,404)
     def test_createDataRow_noDataRange(self):
         """
         Tests the form fails when there is not a data range
@@ -107,6 +121,11 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         Tests the create data row form assessment page works and redirects to the assessment summary page
         """
+        r = self.client.get(reverse('makeReports:add-data-collection-assess',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }))
+        self.assertEquals(r.status_code,200)
         resp = self.client.post(reverse('makeReports:add-data-collection-assess',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk
@@ -123,6 +142,15 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         ).count()
         self.assertEquals(num,1)
         self.assertRedirects(resp,reverse('makeReports:assessment-summary',kwargs={'report':self.rpt.pk}))
+    def test_createDataRow_fromAssessment_DNE(self):
+        """
+        Tests the create data row page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:add-data-collection-assess',kwargs={
+            'report':self.rpt.pk,
+            'assessment':342
+        }))
+        self.assertEquals(r.status_code,404)
     def test_datarowFromAssess_noproficient(self):
         """
         Tests the create data row page from assessment fails there is not a proficiency number
@@ -137,10 +165,15 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         self.assertNotEquals(resp.status_code,302)
     def test_editDataRow(self):
         """
-        Test that posting to edit data row actually edits the data row
+        Test that the page to edit data row actually edits the data row
         """
         d = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
         pk = d.pk
+        resp = self.client.get(reverse('makeReports:edit-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'dataCollection': d.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:edit-data-collection',kwargs={
             'report':self.rpt.pk,
             'dataCollection': d.pk
@@ -157,24 +190,52 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
             pk = pk
         ).count()
         self.assertEquals(num,1)
+    def test_editDataRow_DNE(self):
+        """
+        Tests the edit data row page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:edit-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'dataCollection':423
+        }))
+        self.assertEquals(r.status_code,404)
     def test_deleteDataRow(self):
         """
-        Tests that posting to the delete page actually deletes the data row
+        Tests that the page to the delete page actually deletes the data row
         """
         d = baker.make("AssessmentData",assessmentVersion=self.assess,overallProficient=34)
         pk = d.pk
+        resp = self.client.get(reverse('makeReports:delete-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'pk':d.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:delete-data-collection',kwargs={
             'report':self.rpt.pk,
             'pk':d.pk
         }))
         num = AssessmentData.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
+    def test_deleteDataRow_DNE(self):
+        """
+        Tests the delete data row page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:delete-data-collection',kwargs={
+            'report':self.rpt.pk,
+            'pk': 4324
+        }))
+        self.assertEquals(r.status_code,404)
     def test_addAgg(self):
         """
         Tests adding a new AssessmentAggregate
         """
         self.assess.target = 75
         self.assess.save()
+        r = self.client.get(reverse('makeReports:data-agg-create',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }))
+        self.assertEquals(r.status_code,200)
         resp = self.client.post(reverse('makeReports:data-agg-create',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk
@@ -189,6 +250,11 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         self.assess.target = 95
         self.assess.save()
+        resp = self.client.get(reverse('makeReports:data-agg-create',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:data-agg-create',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk
@@ -213,11 +279,17 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         self.assertEquals(num,1)
     def test_editAgg(self):
         """
-        Tests posting to view to edit assessment aggregate
+        Tests the page to view to edit assessment aggregate
         """
         self.assess.target = 80
         self.assess.save()
         agg = baker.make("AssessmentAggregate",assessmentVersion=self.assess, aggregate_proficiency=60, met=False)
+        resp = self.client.get(reverse('makeReports:data-agg-edit',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk,
+            'pk':agg.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:data-agg-edit',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk,
@@ -226,7 +298,17 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
             'aggregate_proficiency':85
         })
         num = AssessmentAggregate.objects.filter(aggregate_proficiency=85,pk=agg.pk,met=True).count()
-        self.assertEquals(num,1)    
+        self.assertEquals(num,1)   
+    def test_editAgg_DNE(self):
+        """
+        Tests the edit aggregate page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:data-agg-edit',kwargs={
+            'report':self.rpt.pk,
+            'assessment':self.assess.pk,
+            'pk': 834
+        }))
+        self.assertEquals(r.status_code,404) 
 class DataCollectionMainTableTestsRecipe(DataCollectionMainTableTests):
     """
     Collection of tests that directly interact with the main data table using recipes
@@ -255,6 +337,11 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         """
         Tests the creation of a new SLO Status
         """
+        resp = self.client.get(reverse('makeReports:add-slo-status',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:add-slo-status',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk
@@ -265,11 +352,39 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
             status=SLO_STATUS_CHOICES[0][0],
             sloIR=self.slo).count()
         self.assertEquals(num,1)
+    def test_newSLOStatus_DNE(self):
+        """
+        Tests the new SLO status page returns 404 when the SLO does not exist
+        """
+        r = self.client.get(reverse('makeReports:add-slo-status',kwargs={
+            'report':self.rpt.pk,
+            'slopk':423
+        }))
+        self.assertEquals(r.status_code,404) 
+    def test_NewSLOStatus_invalid(self):
+        """
+        Tests the creation of a new SLO status handles invalid options
+        """
+        resp = self.client.post(reverse('makeReports:add-slo-status',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk
+        }),{
+            'status':'not a status'
+        })
+
+        self.assertNotEquals(resp.status_code,302)
+
     def test_editSLOStatus(self):
         """
         Tests the editing of an SLO Status
         """
         stat = baker.make("SLOStatus",sloIR=self.slo,status=SLO_STATUS_CHOICES[1][0])
+        resp = self.client.get(reverse('makeReports:edit-slo-status',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk,
+            'statuspk':stat.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:edit-slo-status',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -279,10 +394,24 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         })
         stat.refresh_from_db()
         self.assertEquals(stat.status,SLO_STATUS_CHOICES[0][0])
+    def test_newSLOStatus_DNE(self):
+        """
+        Tests the edit SLO status page returns 404 when the status does not exist
+        """
+        r = self.client.get(reverse('makeReports:edit-slo-status',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk,
+            'statuspk': 3842
+        }))
+        self.assertEquals(r.status_code,404)
     def test_newResultCommunicate(self):
         """
         Tests that adding new result communication description via posting to page works
         """
+        resp = self.client.get(reverse('makeReports:add-result-communication',kwargs={
+            'report':self.rpt.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:add-result-communication',kwargs={
             'report':self.rpt.pk
         }),{
@@ -298,6 +427,11 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         Tests that editing result communication description via posting works
         """
         rc = baker.make("ResultCommunicate",report=self.rpt)
+        resp = self.client.get(reverse('makeReports:edit-result-communication',kwargs={
+            'report':self.rpt.pk,
+            'resultpk':rc.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:edit-result-communication',kwargs={
             'report':self.rpt.pk,
             'resultpk':rc.pk
@@ -310,10 +444,23 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
             pk=rc.pk
         ).count()
         self.assertEquals(num,1)
+    def test_editResultCommunicate_DNE(self):
+        """
+        Tests the edit result communicate page returns 404 when the text not exist
+        """
+        r = self.client.get(reverse('makeReports:edit-result-communication',kwargs={
+            'report':self.rpt.pk,
+            'resultpk':949
+        }))
+        self.assertEquals(r.status_code,404)
     def test_section3Comment(self):
         """
         Tests that the section 3 comment page works as expected
         """
+        resp = self.client.get(reverse('makeReports:data-comment',kwargs={
+            'report':self.rpt.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:data-comment',kwargs={
             'report':self.rpt.pk
         }),{

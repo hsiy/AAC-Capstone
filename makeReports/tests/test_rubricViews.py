@@ -38,6 +38,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         Tests adding rubric via view
         """
+        resp = self.client.get(reverse('makeReports:add-rubric'))
         resp = self.client.post(reverse('makeReports:add-rubric'),{
             'name':'test3'
         })
@@ -61,6 +62,12 @@ class RubricMgmtTest(ReportAACSetupTest):
         resp = self.client.get(reverse('makeReports:view-rubric',kwargs={'pk':self.rubric.pk}))
         self.assertContains(resp,self.rubric.name)
         self.assertContains(resp,rI.text)
+    def test_rubricview_DNE(self):
+        """
+        Tests the response code from the Rubric View page when the rubric does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:view-rubric',kwargs={'pk':313}))
+        self.assertEquals(r.status_code,404)
     def test_rubricview_recipe(self):
         """
         Tests the viewing of rubric with item from recipe
@@ -73,6 +80,10 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         Tests posting to add rubric item
         """
+        resp = self.client.get(reverse('makeReports:add-RI',kwargs={
+            'rubric':self.rubric.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:add-RI',kwargs={
             'rubric':self.rubric.pk
         }),{
@@ -95,6 +106,14 @@ class RubricMgmtTest(ReportAACSetupTest):
         ).count()
         self.assertEquals(num,1)
         self.assertEquals(resp.status_code,302)
+    def test_addRI_DNE(self):
+        """
+        Tests the response code from the Add Rubric Item page when the rubric does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:add-RI',kwargs={
+            'rubric':4191
+        }))
+        self.assertEquals(r.status_code,404)
     def test_rubricItemAdd_toolong(self):
         """
         Tests posting to add rubric item with too long of text fails
@@ -136,17 +155,29 @@ class RubricMgmtTest(ReportAACSetupTest):
         pk = rub.pk
         rI = baker.make("RubricItem", rubricVersion = rub)
         ipk = rI.pk
+        resp = self.client.get(reverse('makeReports:delete-rubric',kwargs={'pk':rub.pk}))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:delete-rubric',kwargs={'pk':rub.pk}))
         num = Rubric.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
         num = RubricItem.objects.filter(pk=ipk).count()
         self.assertEquals(num,0)
+    def test_addRI_DNE(self):
+        """
+        Tests the response code from the delete rubric page when the rubric does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:delete-rubric',kwargs={
+            'pk':4191
+        }))
+        self.assertEquals(r.status_code,404)
     def test_updateRI(self):
         """
         Tests view to update rubric items via post
         """
         rI = baker.make("RubricItem",rubricVersion = self.rubric)
         pk = rI.pk
+        resp = self.client.get(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
             'text':'text7',
             'abbreviation':'EZ',
@@ -168,6 +199,15 @@ class RubricMgmtTest(ReportAACSetupTest):
         ).count()
         self.assertEquals(num,1)
         self.assertEquals(resp.status_code,302)
+    def test_updateRI_DNE(self):
+        """
+        Tests the response code from the Update Rubric Item page when the rubric item does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:update-RI',kwargs={
+            'rubric':self.rubric.pk,
+            'pk':342
+        }))
+        self.assertEquals(r.status_code,404)
     def test_updateRI_toolong(self):
         """
         Tests view to update rubric items via post with too long of DMEtext fails
@@ -217,6 +257,10 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         preName = self.rubric.name
         rI = baker.make("RubricItem", rubricVersion=self.rubric)
+        resp = self.client.get(reverse('makeReports:dup-rub',kwargs={
+            'rubric':self.rubric.pk,
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:dup-rub',kwargs={
             'rubric':self.rubric.pk,
         }),{
@@ -232,6 +276,16 @@ class RubricMgmtTest(ReportAACSetupTest):
         num = RubricItem.objects.filter(rubricVersion=rub,text=rI.text).count()
         self.assertEquals(num, 1)
         self.assertEquals(resp.status_code,302)
+    def test_duplicateRub_DNE(self):
+        """
+        Tests the response code from the Duplicate Rubric page when the rubric does not exist returns 404
+        """
+        r = self.client.post(reverse('makeReports:dup-rub',kwargs={
+            'rubric':433,
+        }),{
+            'new_name':"newName33"
+        })
+        self.assertEquals(r.status_code,404)
     def test_duplicateRubric_missingName(self):
         """
         Tests duplicating a rubric without a name fails
@@ -249,12 +303,26 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         rI = baker.make("RubricItem", rubricVersion=self.rubric)
         pk = rI.pk
+        resp = self.client.get(reverse('makeReports:delete-RI',kwargs={
+            'rubric':self.rubric.pk,
+            'pk':rI.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:delete-RI',kwargs={
             'rubric':self.rubric.pk,
             'pk':rI.pk
         }))
         num=RubricItem.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
+    def test_deleteRI_DNE(self):
+        """
+        Tests the response code from the Delete Rubric Item page when the rubric item does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:delete-RI',kwargs={
+            'rubric':self.rubric.pk,
+            'pk':2553
+        }))
+        self.assertEquals(r.status_code,404)
     def test_deleteRI_recipe(self):
         """
         Tests the deletion of rubric items with recipe based item

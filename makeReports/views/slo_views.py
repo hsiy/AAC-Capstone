@@ -9,6 +9,7 @@ from makeReports.forms import *
 from datetime import datetime
 from makeReports.views.helperFunctions.mixins import *
 from .helperFunctions.todos import todoGetter
+from django.http import Http404
 
 class SLOSummary(DeptReportMixin,ListView):
     """
@@ -87,8 +88,6 @@ class AddNewSLO(DeptReportMixin,FormView):
             sloObj.gradGoals.add(gg)
         num = self.report.numberOfSLOs
         num += 1
-        self.report.numberOfSLOs = num
-        self.report.save()
         sloRpt = SLOInReport.objects.create(
             date=datetime.now(), 
             goalText =form.cleaned_data['text'], 
@@ -126,7 +125,10 @@ class ImportSLO(DeptReportMixin,FormView):
         """
         kwargs = super(ImportSLO,self).get_form_kwargs()
         yearIn = self.request.GET['year']
-        dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
+        try:
+            dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
+        except DegreeProgram.DoesNotExist:
+            raise Http404("Degree program matching URL does not exist.")
         sloChoices = SLOInReport.objects.filter(
             report__year=yearIn, 
             report__degreeProgram=dPobj
@@ -159,8 +161,6 @@ class ImportSLO(DeptReportMixin,FormView):
                 slo=sloInRpt.slo,
                 report=rpt, 
                 changedFromPrior=False)
-            newS.slo.numberOfUses += 1
-            newS.slo.save()
             if form.cleaned_data['importAssessments']:
                     assessSet = AssessmentVersion.objects.filter(slo=sloInRpt)
                     for assess in assessSet:
@@ -181,15 +181,9 @@ class ImportSLO(DeptReportMixin,FormView):
                             threshold = assess.threshold,
                             target = assess.target
                             )
-                        assess.assessment.numberOfUses += 1
-                        assess.assessment.save()
                         for aSup in assess.supplements.all():
                             newA.supplements.add(aSup)
                         newA.save()
-                        newS.numberOfAssess += 1
-                        newS.save()
-        self.report.numberOfSLOs = num
-        self.report.save()
         return super(ImportSLO,self).form_valid(form)
     def get_context_data(self, **kwargs):
         """
@@ -225,7 +219,10 @@ class EditImportedSLO(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
+        try:
+            self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("Report matching URL does not exist.")
         return super(EditImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_initial(self):
         """
@@ -283,7 +280,10 @@ class EditNewSLO(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
+        try:
+            self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("SLO matching URL does not exist.")
         return super(EditNewSLO,self).dispatch(request,*args,**kwargs)
     def get_form_kwargs(self):
         """
@@ -347,8 +347,8 @@ class StakeholderEntry(DeptReportMixin,FormView):
     form_class = Single2000Textbox
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report`
-         and current stakeholder communication (:class:`~makeReports.models.report_models.SLOsToStakeholder`) to instance
+        Dispatches view and attaches
+         current stakeholder communication (:class:`~makeReports.models.report_models.SLOsToStakeholder`) to instance
         
         Args:
             request (HttpRequest): request to view page
@@ -356,9 +356,11 @@ class StakeholderEntry(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         
+        Keyword Args:
+            report (str): primary key of report
+        
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
-        self.sts = SLOsToStakeholder.objects.filter(report=self.report).last()
+        self.sts = SLOsToStakeholder.objects.filter(report__pk=self.kwargs['report']).last()
         return super(StakeholderEntry,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
@@ -424,7 +426,10 @@ class ImportStakeholderEntry(DeptReportMixin,FormView):
         """
         kwargs = super(ImportStakeholderEntry,self).get_form_kwargs()
         yearIn = self.request.GET['year']
-        dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
+        try:
+            dPobj = DegreeProgram.objects.get(pk=self.request.GET['dp'])
+        except DegreeProgram.DoesNotExist:
+            raise Http404("Degree program matching URL does not exist.")
         kwargs['stkChoices'] = SLOsToStakeholder.objects.filter(report__year=yearIn, report__degreeProgram=dPobj)
         return kwargs
     def form_valid(self,form):
@@ -508,52 +513,13 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
-    def dispatch(self,request,*args,**kwargs):
-        """
-        Dispatches the view, and attaches :class:`~makeReports.models.report_models.SLOInReport` and corresponding assessments to instance
-        
-        Args:
-            request (HttpRequest): request to view page
-            
-        Keyword Args:
-            pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
-            
-        Returns:
-            HttpResponse : response of page to request
-        """
-        SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
-        self.oldNum = SLOIR.number
-        self.slo = SLOIR.slo
-        self.assess = Assessment.objects.filter(assessmentversion__slo=SLOIR).distinct()
-        return super(DeleteImportedSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets the success URL (SLO summary) and used as hook to update the number of all SLOs in report,
-        the numberOfUses of the assessments, delete corresponding DecisionsActions, and the numberOfSLOs in the report
+        Gets the success URL (SLO summary)
 
         Returns:
             str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """ 
-        oldNum = self.oldNum
-        num = self.report.numberOfSLOs
-        if self.slo.numberOfUses <= 1:
-            self.slo.delete()
-        else:
-            self.slo.numberOfUses -= 1
-            self.slo.save()
-        slos = SLOInReport.objects.filter(report=self.report).order_by("number")
-        for slo in slos:
-            if slo.number > oldNum:
-                slo.number -= 1
-                slo.save()
-        self.report.numberOfSLOs -= 1
-        self.report.save()
-        for a in self.assess:
-            if a.numberOfUses == 1:
-                a.delete()
-            else:
-                a.numberOfUses -= 1
-                a.save()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 class DeleteNewSLO(DeptReportMixin,DeleteView):
     """
@@ -564,48 +530,12 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
-    def dispatch(self,request,*args,**kwargs):
-        """
-        Dispatches view, and attaches :class:`~makeReports.models.report_models.SLOInReport`
-         and corresponding assessments (:class:`~makeReports.models.report_models.Assessment`) to instance
-        
-        Args:
-            request (HttpRequest): request to view page
-            
-        Keyword Args:
-            pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
-            
-        Returns:
-            HttpResponse : response of page to request
-        """
-        SLOIR = SLOInReport.objects.get(pk=self.kwargs['pk'])
-        self.slo = SLOIR.slo
-        self.oldNum = SLOIR.number
-        self.assess = Assessment.objects.filter(assessmentversion__slo=SLOIR).distinct()
-        return super(DeleteNewSLO,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
-        Gets success URL (SLO summary) and used as hook to update number of other SLOs in report, number of
-        uses of assessments, and delete corresponding decisions/actions
+        Gets success URL (SLO summary)
         
         Returns:
             str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
-        oldNum = self.oldNum
-        slo = self.slo
-        slo.delete()
-        slos = SLOInReport.objects.filter(report=self.report).order_by("number")
-        for slo in slos:
-            if slo.number > oldNum:
-                slo.number -= 1
-                slo.save()
-        self.report.numberOfSLOs -= 1
-        self.report.save()
-        for a in self.assess:
-            if a.numberOfUses == 1:
-                a.delete()
-            else:
-                a.numberOfUses -= 1
-                a.save()
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
 

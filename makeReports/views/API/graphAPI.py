@@ -22,6 +22,8 @@ from datetime import datetime, timedelta
 from matplotlib.ticker import FuncFormatter
 import pandas as pd
 import json
+from django.http import Http404
+
 
 def get_specificSLO_graph(request):
     """
@@ -42,7 +44,10 @@ def get_specificSLO_graph(request):
     eYear=int(endYear)
     degreeProgram = request.data['report__degreeProgram']
     slo = request.data['sloIR']
-    sloObj = SLOInReport.objects.get(pk=slo)
+    try:
+        sloObj = SLOInReport.objects.get(pk=slo)
+    except SLOInReport.DoesNotExist:
+        raise Http404("SLO matching URL does not exist.")
     assess = request.data['assess']
     queryset = AssessmentAggregate.objects.filter(
         assessmentVersion__assessment__pk = assess,

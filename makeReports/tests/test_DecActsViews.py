@@ -33,6 +33,11 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests adding a decision action via posting to the view
         """
+        resp = self.client.get(reverse('makeReports:add-decisions-actions',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk
+        }))
+        self.assertEquals(resp.status_code, 200)
         resp = self.client.post(reverse('makeReports:add-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk
@@ -41,6 +46,15 @@ class DecActViewsTest(ReportSetupTest):
         })
         num = DecisionsActions.objects.filter(text='testingtestingtest',sloIR=self.slo).count()
         self.assertEquals(num,1)
+    def test_addDecAct_DNE(self):
+        """
+        Tests the add decision/action page returns 404 when the SLO not exist
+        """
+        r = self.client.get(reverse('makeReports:add-decisions-actions',kwargs={
+            'report':self.rpt.pk,
+            'slopk':4324
+        }))
+        self.assertEquals(r.status_code,404)
     def test_addDecAct_toolong(self):
         """
         Tests that adding a decision/action with too long of text fails
@@ -56,6 +70,11 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests that adding a decision action from SLO page redirects to SLO page
         """
+        resp = self.client.get(reverse('makeReports:add-decisions-actions-slo',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:add-decisions-actions-slo',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk
@@ -67,6 +86,15 @@ class DecActViewsTest(ReportSetupTest):
         self.assertRedirects(resp,reverse('makeReports:slo-summary',kwargs={
             'report':self.rpt.pk
         }))
+    def test_addDecActSLO_DNE(self):
+        """
+        Tests the add decision/action from SLO summary page returns 404 when the SLO not exist
+        """
+        r = self.client.get(reverse('makeReports:add-decisions-actions-slo',kwargs={
+            'report':self.rpt.pk,
+            'slopk':424
+        }))
+        self.assertEquals(r.status_code,404)
     def test_addDecActSLO_missingtext(self):
         """
         Tests that missing the text when adding the decision/action fails
@@ -93,6 +121,12 @@ class DecActViewsTest(ReportSetupTest):
         Tests that posting to view edits the decision/action text
         """
         dA = baker.make("DecisionsActions",sloIR=self.slo)
+        resp=self.client.get(reverse('makeReports:edit-decisions-actions',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk,
+            'pk':dA.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -102,6 +136,16 @@ class DecActViewsTest(ReportSetupTest):
         })
         dA.refresh_from_db()
         self.assertEquals(dA.text,'testingtestingtest545')
+    def test_editDecActSLO_DNE(self):
+        """
+        Tests the edit decision/action page returns 404 when the dec/act not exist
+        """
+        r = self.client.get(reverse('makeReports:edit-decisions-actions',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk,
+            'pk': 4329
+        }))
+        self.assertEquals(r.status_code,404)
     def test_editDecAct_toolong(self):
         """
         Tests that too long of text does not change the decision/action text
@@ -122,6 +166,12 @@ class DecActViewsTest(ReportSetupTest):
         Testing that the view edits the decision/action works and redirects as expected
         """
         dA = baker.make("DecisionsActions",sloIR=self.slo)
+        resp = self.client.get(reverse('makeReports:edit-decisions-actions-slo',kwargs={
+            'report':self.rpt.pk,
+            'slopk':self.slo.pk,
+            'pk':dA.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:edit-decisions-actions-slo',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
@@ -166,6 +216,10 @@ class DecActViewsTest(ReportSetupTest):
         """
         Tests the section 4 comment works as expected when posted to
         """
+        resp = self.client.get(reverse('makeReports:d-a-comment',kwargs={
+            'report':self.rpt.pk
+        }))
+        self.assertEquals(resp.status_code,200)
         resp = self.client.post(reverse('makeReports:d-a-comment',kwargs={
             'report':self.rpt.pk
         }),{

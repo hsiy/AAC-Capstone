@@ -384,6 +384,12 @@ class DeleteImportedSLOPageTest(ReportSetupTest):
         response = self.client.get(reverse('makeReports:delete-impt-slo',kwargs={'report':self.rpt.pk,'pk':self.slo.pk}))
         self.assertEquals(response.status_code,200)
         self.assertContains(response,"SLO")
+    def test_view_DNE(self):
+        """
+        Tests the response code from the Delete Imported SLO page when the item does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:delete-impt-slo',kwargs={'report':self.rpt.pk,'pk':423}))
+        self.assertEquals(r.status_code,404)
     def test_post(self):
         """
         Tests delete posts

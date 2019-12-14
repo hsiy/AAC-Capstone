@@ -28,7 +28,7 @@ from urllib.parse import urlparse
 import io
 import django.core.files as files
 from datetime import datetime
-
+from django.http import Http404
 
 def test_func_x(self,*args,**kwargs):
     """
@@ -39,7 +39,10 @@ def test_func_x(self,*args,**kwargs):
     Returns:
         boolean : whether user passes test
     """
-    report = Report.objects.get(pk=kwargs['report'])
+    try:
+        report = Report.objects.get(pk=kwargs['report'])
+    except Report.DoesNotExist:
+        raise Http404("No report matching the URL exists.")
     dept= (report.degreeProgram.department == self.profile.department)
     aac = getattr(self.profile, "aac")
     return dept or aac
@@ -89,6 +92,12 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
         return _wrapped_view
     return decorator
 class PDFPreview(TemplateView):
+    """
+    View to preview a PDF in HTML form, not intended for end-users, but is useful for the development future extensions
+
+    Args:
+        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+    """
     template_name = "makeReports/DisplayReport/pdf.html"
     def dispatch(self,request,*args,**kwargs):
         """
@@ -149,7 +158,10 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
         Returns:
             HttpResponse : response of page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['report'])
+        except Report.DoesNotExist:
+            raise Http404("Report matching the URL does not exist.")
         return super(GradedRubricPDFGen,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -191,7 +203,10 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
         Returns:
             HttpResponse : response of page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['report'])
+        except Report.DoesNotExist:
+            raise Http404("Report matching URL does not exist.")
         return super(ReportPDFGen,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """

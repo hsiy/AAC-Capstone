@@ -10,6 +10,8 @@ from makeReports.forms import *
 from .helperFunctions.section_context import *
 from .helperFunctions.mixins import *
 from .helperFunctions.todos import todoGetter
+from django.http import Http404
+
 
 class DecisionsActionsSummary(DeptReportMixin,ListView):
     """
@@ -41,7 +43,10 @@ class AddDecisionAction(DeptReportMixin,CreateView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        try:
+            self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("No SLO matches the URL.")
         return super(AddDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -103,7 +108,10 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        try:
+            self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("NO SLO matching URL exists.")
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -150,7 +158,10 @@ class AddEditRedirect(DeptReportMixin,RedirectView):
         Returns:
             str : URL of either add or edit decision action
         """
-        slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        try:
+            slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("No SLO matching URL exists.")
         rpt = self.report
         try:
             dA = DecisionsActions.objects.get(sloIR=slo)

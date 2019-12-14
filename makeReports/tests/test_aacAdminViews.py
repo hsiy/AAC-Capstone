@@ -63,6 +63,12 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         response = self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
         num = College.active_objects.filter(pk=pk).count()
         self.assertEquals(num,0)
+    def test_delete_DNE(self):
+        """
+        Tests 404 when college does not exist to delete
+        """
+        response = self.client.post(reverse('makeReports:delete-college',kwargs={'pk':89}))
+        self.assertEquals(response.status_code,404)
     def test_delete_recipe(self):
         """
         Tests the delete page deletes the college using recipe based model
@@ -77,9 +83,17 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         Tests the recover page in fact re-marks the college as active
         """
         col = baker.make("College",active=False)
+        r = self.client.get(reverse('makeReports:recover-college',kwargs={'pk':col.pk}))
+        self.assertEquals(r.status_code,200)
         response = self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
         col.refresh_from_db()
         self.assertTrue(col.active)
+    def test_recover_DNE(self):
+        """
+        Tests the recover page returns 404 when it does not exist
+        """
+        r = self.client.get(reverse('makeReports:recover-college',kwargs={'pk':101}))
+        self.assertEquals(r.status_code,404)
     def test_recover_recipe(self):
         """
         Tests the recover page in fact re-marks the college as active using recipe based model
@@ -136,25 +150,49 @@ class DepartmentViewsTest(ReportAACSetupTest):
         Tests that updating department works as expected
         """
         dept = baker.make("Department")
+        r = self.client.get(reverse('makeReports:update-dept',kwargs={'pk':dept.pk}))
+        self.assertEquals(r.status_code, 200)
         r = self.client.post(reverse('makeReports:update-dept',kwargs={'pk':dept.pk}),{'name':"d name 2","college":dept.college.pk})
         dept.refresh_from_db()
         self.assertEquals(dept.name,"d name 2")
+    def test_update_DNE(self):
+        """
+        Tests the update page returns 404 when it does not exist
+        """
+        r = self.client.get(reverse('makeReports:update-dept',kwargs={'pk':103}))
+        self.assertEquals(r.status_code,404)
     def test_delete(self):
         """
         Tests that the delete view marks the department inactive
         """
         dept = baker.make("Department",active=True)
+        r = self.client.get(reverse('makeReports:delete-dept',kwargs={'pk':dept.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:delete-dept',kwargs={'pk':dept.pk}))
         dept.refresh_from_db()
         self.assertFalse(dept.active)
+    def test_delete_DNE(self):
+        """
+        Tests the delete page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:delete-dept',kwargs={'pk':103}))
+        self.assertEquals(r.status_code,404)
     def test_recover(self):
         """
         Tests that recovering a department works as expected
         """
         dept = baker.make("Department",active=False)
+        r = self.client.get(reverse('makeReports:recover-dept',kwargs={'pk':dept.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:recover-dept',kwargs={'pk':dept.pk}),{'active':'on'})
         dept.refresh_from_db()
         self.assertTrue(dept.active)
+    def test_recover_DNE(self):
+        """
+        Tests the recover department page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:recover-dept',kwargs={'pk':922}))
+        self.assertEquals(r.status_code,404)
     def test_arc_depts(self):
         """
         Tests that the archived department lists contains only inactive departments
@@ -175,6 +213,8 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         """
         Tests that a degree program is created
         """
+        r = self.client.get(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
             'name':'dp name',
             'level':"UG",
@@ -199,6 +239,8 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         Tests that a degree program is effectively updated
         """
         dp = baker.make("DegreeProgram",department=self.dept)
+        r = self.client.get(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{
             'name':'up dp',
             'level':'GR',
@@ -206,11 +248,19 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         dp.refresh_from_db()
         self.assertEquals(dp.name,'up dp')
         self.assertEquals(dp.level,'GR')
+    def test_update_DNE(self):
+        """
+        Tests the update DP page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':910}))
+        self.assertEquals(r.status_code,404)
     def test_recover(self):
         """
         Tests that recovering a DP works and sets it to active
         """
         dp = baker.make("DegreeProgram",active=False,department=self.dept)
+        rep = self.client.get(reverse('makeReports:recover-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{'active':'on'})
+        self.assertEquals(rep.status_code,200)
         self.client.post(reverse('makeReports:recover-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{'active':'on'})
         dp.refresh_from_db()
         self.assertTrue(dp.active)
@@ -219,9 +269,17 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         Tests that deleting a DP sets it to inactive
         """
         dp = baker.make("DegreeProgram",active=True,department=self.dept)
+        r = self.client.get(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
+        self.assertEquals(r.status_code,200)
         self.client.post(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
         dp.refresh_from_db()
         self.assertFalse(dp.active)
+    def test_delete_DNE(self):
+        """
+        Tests the delete DP page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':510}))
+        self.assertEquals(r.status_code,404)
     def test_arc_dps(self):
         """
         Tests that the archived degree program page contains only archived programs
@@ -235,6 +293,12 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         self.assertContains(r,dp2.name)
         self.assertNotContains(r,dp.name)
         self.assertNotContains(r,dp3.name)
+    def test_arc_DNE(self):
+        """
+        Tests the archived DP page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:arc-dps',kwargs={'dept':9291}))
+        self.assertEquals(r.status_code,404)
 class DegreeProgramAdminTestRecipe(DegreeProgramAdminTest):
     """
     Tests views relating to degree program administration with recipe based models
@@ -250,6 +314,8 @@ class DegreeProgramAdminTestRecipe(DegreeProgramAdminTest):
         Tests the update page using a recipe
         """
         dp = baker.make_recipe("makeReports.degreeProgram",department=self.dept)
+        r = self.client.get(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}),{
             'name':'up dp',
             'level':'GR',
@@ -257,14 +323,28 @@ class DegreeProgramAdminTestRecipe(DegreeProgramAdminTest):
         dp.refresh_from_db()
         self.assertEquals(dp.name,'up dp')
         self.assertEquals(dp.level,'GR')
+    def test_update_DNE(self):
+        """
+        Tests the update DP page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:update-dp',kwargs={'dept':self.dept.pk,'pk':901}))
+        self.assertEquals(r.status_code,404)
     def test_delete(self):
         """
         Tests the delete page using recipe based degree program
         """
         dp = baker.make_recipe("makeReports.degreeProgram",active=True,department=self.dept)
+        r = self.client.get(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
+        self.assertEquals(r.status_code,200)
         self.client.post(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':dp.pk}))
         dp.refresh_from_db()
         self.assertFalse(dp.active)
+    def test_delete_DNE(self):
+        """
+        Tests the delete DP page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:delete-dp',kwargs={'dept':self.dept.pk,'pk':839}))
+        self.assertEquals(r.status_code,404)
 
 class ReportAdminViewTests(ReportAACSetupTest):
     """
@@ -276,6 +356,8 @@ class ReportAdminViewTests(ReportAACSetupTest):
         """
         dp = baker.make("DegreeProgram")
         rub = baker.make("Rubric")
+        r = self.client.get(reverse('makeReports:add-rpt-dp',kwargs={'dP':dp.pk}))
+        self.assertEquals(r.status_code,200)
         self.client.post(reverse('makeReports:add-rpt-dp',kwargs={'dP':dp.pk}),{'year':2018,'rubric':rub.pk})
         num = Report.objects.filter(year=2018,degreeProgram=dp).count()
         self.assertEquals(num, 1)
@@ -284,6 +366,8 @@ class ReportAdminViewTests(ReportAACSetupTest):
         Tests that reports get deleted
         """
         pk = self.rpt.pk
+        r=self.client.get(reverse('makeReports:delete-rpt',kwargs={'pk':self.rpt.pk}))
+        self.assertEquals(r.status_code,200)
         self.client.post(reverse('makeReports:delete-rpt',kwargs={'pk':self.rpt.pk}))
         num = Report.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
@@ -292,6 +376,8 @@ class ReportAdminViewTests(ReportAACSetupTest):
         Tests that the AAC can manually submit reports
         """
         rep = baker.make("Report",submitted=False)
+        r = self.client.get(reverse('makeReports:manual-submit-rpt',kwargs={'pk':rep.pk}))
+        self.assertEquals(r.status_code,200)
         self.client.post(reverse('makeReports:manual-submit-rpt',kwargs={'pk':rep.pk}),{'submitted':'on'})
         rep.refresh_from_db()
         self.assertTrue(rep.submitted)
@@ -328,6 +414,8 @@ class AccountAdminTests(ReportAACSetupTest):
         Tests the creation of new accounts
         """
         dept = baker.make("Department")
+        r = self.client.get(reverse('makeReports:make-account'))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:make-account'),{
             'isaac':'on',
             'department':dept.pk,
@@ -365,6 +453,8 @@ class AccountAdminTests(ReportAACSetupTest):
         a.profile.aac = False
         a.profile.save()
         dept = baker.make("Department")
+        r = self.client.get(reverse('makeReports:aac-modify-account',kwargs={'pk':a.pk}))
+        self.assertEquals(r.status_code,200)
         fD = {
             'aac':'on',
             'department':dept.pk,
@@ -384,6 +474,8 @@ class AccountAdminTests(ReportAACSetupTest):
         Tests the inactivate user view
         """
         a = baker.make("User", is_active=True)
+        r = self.client.get(reverse('makeReports:inactivate-account',kwargs={'pk':a.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:inactivate-account',kwargs={'pk':a.pk}))
         a.refresh_from_db()
         self.assertEquals(a.is_active,False)
@@ -432,6 +524,8 @@ class GradGoalAdminTests(ReportAACSetupTest):
         Tests the update function of the graduate goal
         """
         r = baker.make("GradGoal",active=False)
+        resp = self.client.get(reverse('makeReports:update-gg',kwargs={'pk':r.pk}))
+        self.assertEquals(resp.status_code,200)
         res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
             'active':'on',
             'text':'new text here'
@@ -455,6 +549,8 @@ class GradGoalAdminTests(ReportAACSetupTest):
         """
         Tests that a new graduate goal can be effectively added
         """
+        r = self.client.get(reverse('makeReports:add-gg'))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:add-gg'),{
             'text':'new gg text'
         })
@@ -468,6 +564,8 @@ class AnnouncementsTest(ReportAACSetupTest):
         """
         Tests adding an announcement
         """
+        r = self.client.get(reverse('makeReports:add-announ'))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:add-announ'),{
             'text':'ann text',
             'expiration_month':2,
@@ -500,9 +598,17 @@ class AnnouncementsTest(ReportAACSetupTest):
         """
         a = baker.make("Announcement")
         pk = a.pk
+        r = self.client.get(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
         num = Announcement.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
+    def test_delete_DNE(self):
+        """
+        Tests the delete announcement page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:delete-announ',kwargs={'pk':929}))
+        self.assertEquals(r.status_code,404)
     def test_delete_recipe(self):
         """
         Tests that announcements can be effectively deleted with recipe based models
@@ -517,6 +623,8 @@ class AnnouncementsTest(ReportAACSetupTest):
         Tests that the edit page effectively edits announcements
         """
         a = baker.make("Announcement")
+        r = self.client.get(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
             'text':'ann text 2',
             'expiration_month':3,
@@ -527,6 +635,12 @@ class AnnouncementsTest(ReportAACSetupTest):
         self.assertEquals(a.text,'ann text 2')
         self.assertEquals(a.expiration, date(2021,3,27))
         self.assertEquals(r.status_code,302)
+    def test_edit_DNE(self):
+        """
+        Tests the edit announcement page returns 404 when the object does not exist
+        """
+        r = self.client.get(reverse('makeReports:edit-announ',kwargs={'pk':929}))
+        self.assertEquals(r.status_code,404)
     def test_edit_notday(self):
         """
         Tests the edit page fails when the date is not a valid day
