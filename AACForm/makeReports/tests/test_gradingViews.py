@@ -154,12 +154,14 @@ class GradingSectionsTest(ReportAACSetupTest):
         self.assertEquals(self.rub.section4Comment,'fsfkjllaskdfls4')
     def test_comment(self):
         """
-        Tests that the overall comment posts to the database as expected
+        Tests that the overall comment page interacts with the database as expected
         """
         rub = baker.make("GradedRubric")
         self.rpt.rubric = rub
         self.rpt.save()
         self.rpt.refresh_from_db()
+        r = self.client.get(reverse('makeReports:grade-comment',kwargs={'report':self.rpt.pk}))
+        self.assertEquals(r.status_code,200)
         r = self.client.post(reverse('makeReports:grade-comment',kwargs={'report':self.rpt.pk}),{
             'text':'comm test'
         })

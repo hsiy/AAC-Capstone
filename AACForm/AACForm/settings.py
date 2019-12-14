@@ -29,7 +29,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.herokuapp.com','localhost','127.0.0.1']
 
@@ -99,16 +99,6 @@ WSGI_APPLICATION = 'AACForm.wsgi.application'
 DATABASES = {}
 DATABASES["default"] = dj_database_url.config(conn_max_age=600)
 
-if 'test' in sys.argv:
-    #use when wanting PostgreqSQL database for testing
-    # DATABASES['default'] = {'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'd2u8q51dtl989v',                      
-    #     'USER': 'dxvjgcmgawltpn',
-    #     'PASSWORD': '2c00fc0bfb1a1ddcd6ecc3435e29711fe2178d5dbef11f96b93ab623215ddf80',
-    #     'HOST': 'ec2-54-235-92-244.compute-1.amazonaws.com',
-    #     'PORT': '5432'
-    # }
-    DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -127,13 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 TEST_DATABASES = {
-    'default':{'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd2u8q51dtl989v',                      
-        'USER': 'dxvjgcmgawltpn',
-        'PASSWORD': '2c00fc0bfb1a1ddcd6ecc3435e29711fe2178d5dbef11f96b93ab623215ddf80',
-        'HOST': 'ec2-54-235-92-244.compute-1.amazonaws.com',
-        'PORT': '5432'
-    }
+    'default': dj_database_url.parse(os.environ["TEST_DATABASE_URL"], conn_max_age=600)
 }
 
 # Use when wanting PostgreSQL database

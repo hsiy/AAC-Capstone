@@ -10,6 +10,7 @@ from .helperFunctions.section_context import *
 from .helperFunctions.mixins import *
 from .helperFunctions.todos import todoGetter
 from makeReports.choices import *
+from django.http import Http404
 
 class DataCollectionSummary(DeptReportMixin,ListView):
     """
@@ -65,7 +66,10 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        try:
+            self.assessment = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        except AssessmentVersion.DoesNotExist:
+            raise Http404("Assessment matching URL does not exist.")
         return super(CreateDataCollectionRow,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -138,7 +142,10 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.dataCollection = AssessmentData.objects.get(pk=self.kwargs['dataCollection'])
+        try:
+            self.dataCollection = AssessmentData.objects.get(pk=self.kwargs['dataCollection'])
+        except AssessmentData.DoesNotExist:
+            raise Http404("Data matching URL does not exist.")
         return super(EditDataCollectionRow,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
@@ -222,7 +229,10 @@ class NewSLOStatus(DeptReportMixin,FormView):
         Keyword Args:
             slopk (int): primary key of SLO (:class:`~makeReports.models.SLOInReport`) to create status of 
         """
-        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        try:
+            self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("SLO matching URL does not exist.")
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
     def get_success_url(self):
         """
@@ -240,11 +250,14 @@ class NewSLOStatus(DeptReportMixin,FormView):
         Args:
             form (SLOStatusForm): completed form to process
         """
-        slo_status_obj = SLOStatus.objects.create(
-            status = form.cleaned_data['status'], 
-            sloIR=self.slo,
-            override = True)
-        slo_status_obj.save()
+        try:
+            slo_status_obj = SLOStatus.objects.create(
+                status = form.cleaned_data['status'], 
+                sloIR=self.slo,
+                override = True)
+            slo_status_obj.save()
+        except:
+            pass
         return super(NewSLOStatus, self).form_valid(form)
 
 
@@ -270,8 +283,13 @@ class EditSLOStatus(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
-        self.slo_status = SLOStatus.objects.get(pk=self.kwargs['statuspk'])
+        try:
+            self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
+            self.slo_status = SLOStatus.objects.get(pk=self.kwargs['statuspk'])
+        except SLOInReport.DoesNotExist:
+            raise Http404("No SLO matches the URL.")
+        except SLOStatus.DoesNotExist:
+            raise Http404("No status matches the URL")
         return super(EditSLOStatus,self).dispatch(request,*args,**kwargs)
 
     def get_initial(self):
@@ -362,7 +380,10 @@ class EditResultCommunication(DeptReportMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.result_communication = ResultCommunicate.objects.get(pk=self.kwargs['resultpk'])
+        try:
+            self.result_communication = ResultCommunicate.objects.get(pk=self.kwargs['resultpk'])
+        except ResultCommunicate.DoesNotExist:
+            raise Http404("No result communication matches the URL")
         return super(EditResultCommunication,self).dispatch(request,*args,**kwargs)
 
     def get_initial(self):
@@ -517,7 +538,10 @@ class AssessmentAggregateCreate(DeptReportMixin, CreateView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        try:
+            self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        except AssessmentVersion.DoesNotExist:
+            raise Http404("No assessment matching the the URL")
         form.instance.assessmentVersion = self.assess
         if self.assess.target <= form.instance.aggregate_proficiency:
             form.instance.met = True
@@ -552,7 +576,10 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        try:
+            self.assess = AssessmentVersion.objects.get(pk=self.kwargs['assessment'])
+        except AssessmentVersion.DoesNotExist:
+            raise Http404("No assessment matching the URL")
         if self.assess.target <= form.instance.aggregate_proficiency:
             form.instance.met = True
         else:

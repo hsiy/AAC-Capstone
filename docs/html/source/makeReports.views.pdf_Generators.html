@@ -209,6 +209,12 @@ separated by section</p>
 <dt id="makeReports.views.pdf_Generators.PDFPreview">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">PDFPreview</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
+<p>View to preview a PDF in HTML form, not intended for end-users, but is useful for the development future extensions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
+</dd>
+</dl>
 <dl class="method">
 <dt id="makeReports.views.pdf_Generators.PDFPreview.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview.dispatch" title="Permalink to this definition">¶</a></dt>

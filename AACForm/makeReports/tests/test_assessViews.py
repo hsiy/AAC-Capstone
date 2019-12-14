@@ -10,6 +10,7 @@ from django.http import HttpResponse
 import requests
 from model_bakery import baker
 from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
+import time
 
 class AssessmentSummaryPageTest(ReportSetupTest):
     """
@@ -148,12 +149,24 @@ class EditAssessmentTest(ReportSetupTest):
         """
         response = getWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"")
         self.assertEquals(response.status_code,200)
+    def test_view_new_DNE(self):
+        """
+        Tests the edit new assessment page returns 404 when the object does not exist
+        """
+        response = getWithReport('edit-new-assessment',self,{'assessIR':399},"")
+        self.assertEquals(response.status_code,404)
     def test_view_old(self):
         """
         Tests that the edit imported assessment page exists
         """
         response = getWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"")
         self.assertEquals(response.status_code,200)
+    def test_view_new_DNE(self):
+        """
+        Tests the imported assessment page returns 404 when the object does not exist
+        """
+        response = getWithReport('edit-impt-assessment',self,{'assessIR':399},"")
+        self.assertEquals(response.status_code,404)
     def test_post_new(self):
         """
         Tests that posting information to the edit new assessment page work
@@ -255,13 +268,21 @@ class EditAssessmentTest(ReportSetupTest):
         """
         pk = self.assessN.pk
         aPk = self.assessN.assessment.pk
-        self.assessN.slo.numberOfAssess = 1
-        self.assessN.slo.save()
+        self.assessN.assessment.numberOfUses = 1
+        self.assessN.assessment.save()
+        r = getWithReport('delete-new-assessment',self,{'pk':self.assessN.pk},"")
+        self.assertEquals(r.status_code,200)
         response = postWithReport('delete-new-assessment',self,{'pk':self.assessN.pk},"",{})
         num = AssessmentVersion.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
         num = Assessment.objects.filter(pk=aPk).count()
         self.assertEquals(num,0)
+    def test_delete_new_DNE(self):
+        """
+        Tests the delete (new) assessment page returns 404 when the object does not exist
+        """
+        response = getWithReport('delete-new-assessment',self,{'pk':4242},"")
+        self.assertEquals(response.status_code,404)
     def test_delete_old(self):
         """
         Tests that deleting an imported assessment deletes only the in-report version
@@ -270,11 +291,19 @@ class EditAssessmentTest(ReportSetupTest):
         aPk = self.assessO.assessment.pk
         self.assessO.slo.numberOfAssess = 1
         self.assessO.slo.save()
+        r = getWithReport('delete-impt-assessment',self,{'pk':self.assessN.pk},"")
+        self.assertEquals(r.status_code,200)
         response = postWithReport('delete-impt-assessment',self,{'pk':self.assessO.pk},"",{})
         num = AssessmentVersion.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
         num = Assessment.objects.filter(pk=aPk).count()
         self.assertEquals(num,1)
+    def test_delete_old_DNE(self):
+        """
+        Tests the delete (imported) assessment page returns 404 when the object does not exist
+        """
+        response = getWithReport('delete-impt-assessment',self,{'pk':4242},"")
+        self.assertEquals(response.status_code,404)
 class EditAssessmentRecipeTest(EditAssessmentTest):
     """
     Tests the edit assessment pages with recipe based models
@@ -310,6 +339,12 @@ class AssessmentSupplementTest(ReportSetupTest):
         """
         response = getWithReport('assessment-supplement-upload',self,{'assessIR':self.a.pk},"")
         self.assertEquals(response.status_code,200)
+    def test_upload_DNE(self):
+        """
+        Tests the upload assessment supplement page returns 404 when the object does not exist
+        """
+        response = getWithReport('assessment-supplement-upload',self,{'assessIR':4242},"")
+        self.assertEquals(response.status_code,404)
     def test_import(self):
         """
         Checks that the import supplement page exists
@@ -322,6 +357,12 @@ class AssessmentSupplementTest(ReportSetupTest):
         """
         response = getWithReport('delete-supplement',self,{'assessIR':self.a.pk,'pk':self.sup.pk},"")
         self.assertEquals(response.status_code,200)
+    def test_delete_DNE(self):
+        """
+        Tests the delete assessment supplement page returns 404 when the object does not exist
+        """
+        response = getWithReport('delete-supplement',self,{'assessIR':4242,'pk':8842},"")
+        self.assertEquals(response.status_code,404)
     def test_delete_post(self):
         """
         Checks that posting to delete works

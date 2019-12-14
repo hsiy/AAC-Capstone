@@ -23,6 +23,12 @@ class ReportFirstPageTest(ReportSetupTest):
         self.assertContains(response, "Author")
         self.assertContains(response, "Date")
         self.assertContains(response, "Form Entry")
+    def test_view_DNE(self):
+        """
+        Tests the response code when the report does not exist returns 404
+        """
+        r = self.client.get(reverse('makeReports:rpt-first-page',kwargs={'pk':42}))
+        self.assertEquals(r.status_code,404)
 class FinalReportSupplementsTest(ReportSetupTest):
     """
     Tests the add final report supplements page

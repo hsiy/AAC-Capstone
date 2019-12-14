@@ -11,6 +11,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
+from django.http import Http404
 
 class HomePage(ListView):
     """
@@ -125,7 +126,10 @@ class DisplayReport(DeptAACMixin,TemplateView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['pk'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['pk'])
+        except Report.DoesNotExist:
+            raise Http404("No report matches the URL.")
         return super(DisplayReport,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """

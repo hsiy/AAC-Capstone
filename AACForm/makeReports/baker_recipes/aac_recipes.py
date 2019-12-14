@@ -12,7 +12,7 @@ from model_bakery.recipe import Recipe, foreign_key
 from makeReports.models import *
 
 
-college_names = ["College of Information Science & Technology","College of Arts and Sciences","College of Business", "College of Engineering","College of Education","College of Health and Kineseology"]
+college_names = ["College of Information Science and Technology","College of Arts and Sciences","College of Business", "College of Engineering","College of Education","College of Health and Kineseology"]
 department_names = ["English","Mathematics","Computer Science","Computer Engineering","Business Administration","History","Secondary Education","Elementary Education","Biology","Physical Education"]
 
 dp_names = ["English","Electrical Engineering","Mathematics","Statistics","Computer Science","IT Innovations","Civil Engineering","Secondary Education","Business",'Biology',"Ancient History","Black Studies","Physics"]

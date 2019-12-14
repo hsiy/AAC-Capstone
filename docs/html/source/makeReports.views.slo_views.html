@@ -222,30 +222,9 @@
 </dd>
 </dl>
 <dl class="method">
-<dt id="makeReports.views.slo_views.DeleteImportedSLO.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteImportedSLO.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view, and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code> and corresponding assessments to instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code> to delete</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="makeReports.views.slo_views.DeleteImportedSLO.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteImportedSLO.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the success URL (SLO summary) and used as hook to update the number of all SLOs in report,
-the numberOfUses of the assessments, delete corresponding DecisionsActions, and the numberOfSLOs in the report</p>
+<dd><p>Gets the success URL (SLO summary)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>URL of SLO summary page (<a class="reference internal" href="#makeReports.views.slo_views.SLOSummary" title="makeReports.views.slo_views.SLOSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOSummary</span></code></a>)</p>
@@ -280,33 +259,9 @@ the numberOfUses of the assessments, delete corresponding DecisionsActions, and 
 </dd>
 </dl>
 <dl class="method">
-<dt id="makeReports.views.slo_views.DeleteNewSLO.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteNewSLO.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Dispatches view, and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></dt><dd><p>and corresponding assessments (<code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code>) to instance</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code> to delete</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="makeReports.views.slo_views.DeleteNewSLO.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.DeleteNewSLO.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets success URL (SLO summary) and used as hook to update number of other SLOs in report, number of
-uses of assessments, and delete corresponding decisions/actions</p>
+<dd><p>Gets success URL (SLO summary)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>URL of SLO summary page (<a class="reference internal" href="#makeReports.views.slo_views.SLOSummary" title="makeReports.views.slo_views.SLOSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOSummary</span></code></a>)</p>
@@ -795,7 +750,7 @@ uses of assessments, and delete corresponding decisions/actions</p>
 <dt id="makeReports.views.slo_views.StakeholderEntry.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.slo_views.StakeholderEntry.dispatch" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></dt><dd><p>and current stakeholder communication (<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOsToStakeholder</span></code>) to instance</p>
+<dt>Dispatches view and attaches</dt><dd><p>current stakeholder communication (<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOsToStakeholder</span></code>) to instance</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -807,6 +762,9 @@ uses of assessments, and delete corresponding decisions/actions</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>HttpResponse</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of report</p>
 </dd>
 </dl>
 </dd></dl>

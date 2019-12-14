@@ -466,6 +466,35 @@ includes only the attributes which should never change and counts how often it i
 
 </dd></dl>
 
+<dl class="function">
+<dt id="makeReports.models.slo_models.post_delete_slo_update_numbering">
+<code class="sig-prename descclassname">makeReports.models.slo_models.</code><code class="sig-name descname">post_delete_slo_update_numbering</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.slo_models.post_delete_slo_update_numbering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the numbering of SLOs in the same report</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>type</em>) – model type sending hook</p></li>
+<li><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><em>SLOInReport</em></a>) – SLO deleted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.models.slo_models.post_save_slo_update_numbering">
+<code class="sig-prename descclassname">makeReports.models.slo_models.</code><code class="sig-name descname">post_save_slo_update_numbering</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">created</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.slo_models.post_save_slo_update_numbering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post save receiver that triggers numbers to be updated</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>type</em>) – model type sending hook</p></li>
+<li><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><em>SLOInReport</em></a>) – SLO updated</p></li>
+<li><p><strong>created</strong> (<em>bool</em>) – whether model was newly created</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 

@@ -15,6 +15,7 @@ from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime, timedelta
+from django.http import Http404
 
 class ClearOverrideAPI(APIView):
     """
@@ -37,7 +38,10 @@ class ClearOverrideAPI(APIView):
             Expects primary key of report to be passed in GET request as 'pk'
         """
         pk = int(request.query_params['pk'])
-        rpt = Report.objects.get(pk=pk)
+        try:
+            rpt = Report.objects.get(pk=pk)
+        except Report.DoesNotExist:
+            raise Http404("Report matching URL does not exist")
         if((rpt.degreeProgram.department==request.user.profile.department) or request.user.profile.aac):
             #only proceed if the person truly has the right to modify the report
             statuses = SLOStatus.objects.filter(sloIR__report__pk=pk, override=True)

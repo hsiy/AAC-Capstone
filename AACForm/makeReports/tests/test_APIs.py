@@ -255,7 +255,7 @@ class APITesting(NonAACTest):
         }
         resp = self.client.post(reverse('makeReports:api-new-graph'),data)
         self.assertEquals(resp.status_code,200)
-    def test_api_new_graph_3(self):
+    def test_api_new_graph_3_recipe(self):
         """
         Tests the status code the new graph API for type 3 with recipe based models
         """
@@ -277,8 +277,6 @@ class APITesting(NonAACTest):
         }
         resp = self.client.post(reverse('makeReports:api-new-graph'),data)
         self.assertEquals(resp.status_code,200)
-    
-    #Bloom's suggestion API is not done yet, so no tests for it
 class ActionAPITests(ReportAACSetupTest):
     """
     Tests relating to the action API

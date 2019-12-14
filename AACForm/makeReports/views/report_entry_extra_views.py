@@ -10,6 +10,7 @@ from makeReports.forms import *
 from .helperFunctions.section_context import *
 from .helperFunctions.mixins import *
 from .helperFunctions.todos import todoGetter
+from django.http import Http404
 
 class ReportFirstPage(DeptOnlyMixin,UpdateView):
     """
@@ -31,7 +32,10 @@ class ReportFirstPage(DeptOnlyMixin,UpdateView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['pk'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['pk'])
+        except Report.DoesNotExist:
+            raise Http404("Report matching the URL does not exist.")
         return super(ReportFirstPage,self).dispatch(request,*args,**kwargs)
     def get_context_data(self,**kwargs):
         """
@@ -132,19 +136,9 @@ class SubmitReport(DeptReportMixin, FormView):
                 valid = False
                 eMsg = eMsg+"There are no decisions or actions for SLO "+str(slo.number)+".\n"
         assesses = AssessmentVersion.objects.filter(report=self.report)
-        # for a in assesses:
-        #     if AssessmentData.objects.filter(assessmentVersion=a).count()==0:
-        #         valid = False
-        #         eMsg = eMsg+"There is no data for assessment "+str(a.number)+".\n"
-        #     if AssessmentAggregate.objects.filter(assessmentVersion=a).count()==0:
-        #         valid = False
-        #         eMsg = eMsg+"There is no aggregate number for assessment "+str(a.number)+".\n"
         if not self.report.author or self.report.author=="":
             valid = False
             eMsg = eMsg+"There is no report author.\n"
-        # if not self.report.date_range_of_reported_data or self.report.date_range_of_reported_data=="":
-        #     valid = False
-        #     eMsg = eMsg+"There is no reported data range.\n"
         if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
             valid == False
             eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"

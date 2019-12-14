@@ -318,32 +318,9 @@
 </dd>
 </dl>
 <dl class="method">
-<dt id="makeReports.views.assessment_views.DeleteImportedAssessment.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.DeleteImportedAssessment.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view, and attaches the <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code>,
-the <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code>, and the number of the assessments to the instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to “delete”</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="makeReports.views.assessment_views.DeleteImportedAssessment.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.DeleteImportedAssessment.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets success url (assessment summary) and uses it has a hook to update the number of other assessments and
-update corresponding <code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></p>
+<dd><p>Gets success url (assessment summary)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>URL of assessment summary (<a class="reference internal" href="#makeReports.views.assessment_views.AssessmentSummary" title="makeReports.views.assessment_views.AssessmentSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSummary</span></code></a>)</p>
@@ -378,31 +355,9 @@ update corresponding <code class="xref py py-class docutils literal notranslate"
 </dd>
 </dl>
 <dl class="method">
-<dt id="makeReports.views.assessment_views.DeleteNewAssessment.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.DeleteNewAssessment.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view, and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to the instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> delete</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="makeReports.views.assessment_views.DeleteNewAssessment.get_success_url">
 <code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.DeleteNewAssessment.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets success url (assessment summary page), and uses as hook to update corresponding
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></p>
+<dd><p>Gets success url (assessment summary page)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>assessment summary URL (<a class="reference internal" href="#makeReports.views.assessment_views.AssessmentSummary" title="makeReports.views.assessment_views.AssessmentSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSummary</span></code></a>)</p>
@@ -568,33 +523,13 @@ update corresponding <code class="xref py py-class docutils literal notranslate"
 <dl class="class">
 <dt id="makeReports.views.assessment_views.EditNewAssessment">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.assessment_views.</code><code class="sig-name descname">EditNewAssessment</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#makeReports.views.assessment_views.EditImportedAssessment" title="makeReports.views.assessment_views.EditImportedAssessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.assessment_views.EditImportedAssessment</span></code></a></p>
 <p>View to edit new assessments (can change fields in <code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to edit</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="makeReports.views.assessment_views.EditNewAssessment.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatch view and attach assessment to instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
-</dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to edit</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="makeReports.views.assessment_views.EditNewAssessment.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment.form_class" title="Permalink to this definition">¶</a></dt>
@@ -619,20 +554,6 @@ update corresponding <code class="xref py py-class docutils literal notranslate"
 </dd></dl>
 
 <dl class="method">
-<dt id="makeReports.views.assessment_views.EditNewAssessment.get_form_kwargs">
-<code class="sig-name descname">get_form_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment.get_form_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return form keywords, setting SLO options to those within the report</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>form keyword arguments</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="makeReports.views.assessment_views.EditNewAssessment.get_initial">
 <code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment.get_initial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get initial values of form based upon current values of the assessment</p>
@@ -642,20 +563,6 @@ update corresponding <code class="xref py py-class docutils literal notranslate"
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.assessment_views.EditNewAssessment.get_success_url">
-<code class="sig-name descname">get_success_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment.get_success_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets URL to go to upon success (assessment summary)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>URL of assessment summary page (<a class="reference internal" href="#makeReports.views.assessment_views.AssessmentSummary" title="makeReports.views.assessment_views.AssessmentSummary"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSummary</span></code></a>)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -686,8 +593,6 @@ update corresponding <code class="xref py py-class docutils literal notranslate"
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.ImportAssessment.form_valid" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">Creates <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> from form</div>
-<div class="line">Also updates the numberOfAssess field of corresponding <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></div>
-<div class="line">Updates the numberOfUses field of corresponding <code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

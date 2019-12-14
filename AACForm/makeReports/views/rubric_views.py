@@ -9,6 +9,7 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime, timedelta
 from makeReports.views.helperFunctions.mixins import *
+from django.http import Http404
 
 class RubricList(AACOnlyMixin,ListView):
     """
@@ -85,7 +86,10 @@ class AddRubricItems(AACOnlyMixin, FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.rubric = Rubric.objects.get(pk=self.kwargs['rubric'])
+        try:
+            self.rubric = Rubric.objects.get(pk=self.kwargs['rubric'])
+        except Rubric.DoesNotExist:
+            raise Http404("Rubric matching query does not exist.")
         return super(AddRubricItems, self).dispatch(request,*args,**kwargs)
     def form_valid(self,form):
         """
@@ -227,7 +231,10 @@ class DuplicateRubric(AACOnlyMixin, FormView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        rubToDup = Rubric.objects.get(pk=self.kwargs['rubric'])
+        try:
+            rubToDup = Rubric.objects.get(pk=self.kwargs['rubric'])
+        except Rubric.DoesNotExist:
+            raise Http404("Rubric matching URL does not exist.")
         RIs = RubricItem.objects.filter(rubricVersion=rubToDup)
         newRub = Rubric.objects.create(
             date=datetime.now(), 

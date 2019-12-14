@@ -11,6 +11,8 @@ from django.template.defaulttags import register
 from makeReports.views.helperFunctions.section_context import *
 from makeReports.views.helperFunctions.mixins import *
 from makeReports.views.helperFunctions.todos import todoGetter
+from django.http import Http404
+
 
 def generateRubricItems(rIs,form,r):
     """
@@ -112,7 +114,10 @@ class GradingView(AACOnlyMixin,FormView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['report'])
+        except Report.DoesNotExist:
+            raise Http404("No report matching URL exists.")
         self.rubricItems = RubricItem.objects.filter(
             rubricVersion=self.report.rubric.rubricVersion,
             section=self.section
@@ -456,7 +461,10 @@ class Feedback(DeptAACMixin, ListView):
         Returns:
             HttpResponse : response of page to request
         """
-        self.report = Report.objects.get(pk=self.kwargs['report'])
+        try:
+            self.report = Report.objects.get(pk=self.kwargs['report'])
+        except Report.DoesNotExist:
+            raise Http404("No report matching URL exists.")
         self.GRIs = GradedRubricItem.objects.filter(rubric__report=self.report)
         return super(Feedback,self).dispatch(request,*args,**kwargs)
     def get_queryset(self):

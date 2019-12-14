@@ -502,15 +502,52 @@ and includes fields which should never change</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="makeReports.models.assessment_models.post_save_update_agg_by_assessment">
-<code class="sig-prename descclassname">makeReports.models.assessment_models.</code><code class="sig-name descname">post_save_update_agg_by_assessment</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.assessment_models.post_save_update_agg_by_assessment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates aggregate (AssessmentAggregate) when AssessmentVersion is changed, in case the target value changed</p>
+<dt id="makeReports.models.assessment_models.post_create_update_assessment_uses">
+<code class="sig-prename descclassname">makeReports.models.assessment_models.</code><code class="sig-name descname">post_create_update_assessment_uses</code><span class="sig-paren">(</span><em class="sig-param">instance</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.assessment_models.post_create_update_assessment_uses" title="Permalink to this definition">¶</a></dt>
+<dd><p>After an assessment version is created, increment the number of uses of Assessment by 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – assessment updated</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.models.assessment_models.post_delete_assessment_update_numbering">
+<code class="sig-prename descclassname">makeReports.models.assessment_models.</code><code class="sig-name descname">post_delete_assessment_update_numbering</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.assessment_models.post_delete_assessment_update_numbering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the numbering of assessments in the same report</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> (<em>type</em>) – model type sending hook</p></li>
+<li><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – assessment deleted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.models.assessment_models.post_save_receiver_assessment">
+<code class="sig-prename descclassname">makeReports.models.assessment_models.</code><code class="sig-name descname">post_save_receiver_assessment</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">instance</em>, <em class="sig-param">created</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.assessment_models.post_save_receiver_assessment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post save receiver that triggers aggregates and numbers to be updated</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sender</strong> (<em>type</em>) – model type sending hook</p></li>
 <li><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – assessment updated</p></li>
+<li><p><strong>created</strong> (<em>bool</em>) – whether model was newly created</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.models.assessment_models.post_save_update_agg_by_assessment">
+<code class="sig-prename descclassname">makeReports.models.assessment_models.</code><code class="sig-name descname">post_save_update_agg_by_assessment</code><span class="sig-paren">(</span><em class="sig-param">instance</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.assessment_models.post_save_update_agg_by_assessment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates aggregate (AssessmentAggregate) when AssessmentVersion is changed, in case the target value changed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>instance</strong> (<a class="reference internal" href="#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><em>AssessmentVersion</em></a>) – assessment updated</p>
 </dd>
 </dl>
 </dd></dl>
