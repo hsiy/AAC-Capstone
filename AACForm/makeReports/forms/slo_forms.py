@@ -51,25 +51,6 @@ class ImportSLOForm(forms.Form):
         self.fields['slo'].queryset = sloChoices
     def clean(self):
         return super(ImportSLOForm,self).clean()
-class EditNewSLOForm(forms.Form):
-    """
-    Form to edit a new SLO (no restrictions)
-    """
-    text = forms.CharField(widget= forms.Textarea(attrs={'class':'form-control col-7'}), label="SLO", max_length=1000)
-    blooms = forms.ChoiceField(choices=BLOOMS_CHOICES, required=False, label="Highest Bloom's Taxonomy Level",widget=forms.Select(attrs={'class':'form-control col-5'}))
-    gradGoals = forms.ModelMultipleChoiceField(queryset=GradGoal.active_objects.all(), required=False,widget=forms.CheckboxSelectMultiple(), label="Graduate-level Goals")
-    
-    def __init__(self,*args,**kwargs):
-        """
-        Initializes form and deletes grad if undergraduate program
-
-        Keyword Args:
-            grad (bool): whether graduate level program
-        """
-        grad = kwargs.pop('grad',None)
-        super(EditNewSLOForm,self).__init__(*args,**kwargs)
-        if not grad:
-            del self.fields['gradGoals']
 class EditImportedSLOForm(CleanSummer,forms.Form):
     """
     Form to edit imported SLO (more restricted than new)

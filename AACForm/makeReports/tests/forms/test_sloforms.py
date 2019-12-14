@@ -22,7 +22,7 @@ class SLOFormsTest(TestCase):
         """
         gg = baker.make("GradGoal")
         f = CreateNewSLO({
-            'text':'dlksfj lksdfj  sldkajf',
+            'text':'Students will acknowlege the affect of the criminal justice system.',
             'blooms':BLOOMS_CHOICES[0][0],
             'gradGoals':gg.pk
         })
@@ -42,27 +42,9 @@ class SLOFormsTest(TestCase):
         Tests that ImportSLOForm rejects non SLOs
         """
         f = ImportSLOForm({
-            'slo':'sdlf',
+            'slo':'Students will analyze text carefully by using several outside sources.',
             'importAssessments': False
         },sloChoices=SLOInReport.objects.all())
-        self.assertFalse(f.is_valid())
-    def test_edit_new_valid(self):
-        """
-        Tests that EditNewSLOForm accepts correct data
-        """
-        f = EditNewSLOForm({
-            'text':"sldkfjdslkj sadflk sldkf lksdjfa asdfklj",
-            'blooms':BLOOMS_CHOICES[1][0]
-        },grad=False)
-        self.assertTrue(f.is_valid())
-    def test_edit_new_invalid(self):
-        """
-        Tests that EditNewSLOForm reject too long of text
-        """
-        f = EditNewSLOForm( {
-            'text':"sldkfjdslkj sadflk sldkf lksdjfa asdfklj"*2000,
-            'blooms':BLOOMS_CHOICES[1][0]
-        },grad=True)
         self.assertFalse(f.is_valid())
     def test_impt_stk_valid(self):
         """

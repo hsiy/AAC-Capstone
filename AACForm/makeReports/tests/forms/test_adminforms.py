@@ -26,7 +26,7 @@ class UserFormsTest(TestCase):
             'department': d.pk,
             'first_name':'Ruby',
             'last_name':"Drake",
-            'email':'dslkf@gma.com'
+            'email':'rdrake@gma.com'
         })
         self.assertTrue(f.is_valid())
     def test_update_valid_data_no_dep(self):
@@ -38,7 +38,7 @@ class UserFormsTest(TestCase):
             'aac':True,
             'first_name':'Ruby-Jane',
             'last_name':"Drake",
-            'email':'dslkf@gma.com'
+            'email':'rdrake@gma.com'
         })
         self.assertTrue(f.is_valid())
     def test_update_noname_invalid(self):
@@ -50,7 +50,7 @@ class UserFormsTest(TestCase):
             'aac':False,
             'department':d.pk,
             'last_name':"Drake",
-            'email':'dslkf@gma.com'
+            'email':'drake@gma.com'
         })
         self.assertFalse(f.is_valid())
     def test_users_own_form(self):
@@ -82,11 +82,11 @@ class UserFormsTest(TestCase):
             'department':d.pk,
             'college':d.college.pk,
             'email':'kfldsj@klfjc.com',
-            'username':'sdlkslla',
+            'username':'jliver',
             'password1':'pwpwpwpw',
             'password2':'pwpwpwpw',
-            'first_name':"sdlkf",
-            "last_name":"lskdfjsdlk"
+            'first_name':"Janey",
+            "last_name":"Liverman"
         })
         self.assertTrue(f.is_valid())
     def test_make_account_password_doesnt_match(self):
@@ -98,12 +98,12 @@ class UserFormsTest(TestCase):
             'isaac': False,
             'department':d.pk,
             'college':d.college.pk,
-            'email':'kfldsj@klfjc.com',
-            'username':'slkfjsd',
+            'email':'jOmaha@klfjc.com',
+            'username':'jOmaha',
             'password1':'pwpwpwpw',
             'password2':'pwp33wpwpw',
-            'first_name':"sdlkf",
-            "last_name":"lskdfjsdlk"
+            'first_name':"Johnathan",
+            "last_name":"Omaha"
         })
         self.assertFalse(f.is_valid())
 class DepartmentFormTest(TestCase):
@@ -116,7 +116,7 @@ class DepartmentFormTest(TestCase):
         """
         c = baker.make("College",active=True)
         f = CreateDepartmentForm({
-            'name':'New D name',
+            'name':'Psychology',
             'college': c.pk
         })
         self.assertTrue(f.is_valid())
@@ -126,7 +126,7 @@ class DepartmentFormTest(TestCase):
         """
         c = baker.make("College",active=False)
         f = CreateDepartmentForm({
-            'name':'sdklfj',
+            'name':'College of Education',
             'college':c
         })
         self.assertFalse(f.is_valid())
@@ -204,7 +204,7 @@ class GradGoalFormTests(TestCase):
         Tests the GradGoalEditForm accepts valid data
         """
         f = GradGoalEditForm({
-            'text':"sdklfjsld lkfjsl jsdlkf",
+            'text':"Students will comprehend detailed instructions.",
             'active': True
         })
         self.assertTrue(f.is_valid())

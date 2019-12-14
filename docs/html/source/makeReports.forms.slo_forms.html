@@ -199,35 +199,6 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="makeReports.forms.slo_forms.EditNewSLOForm">
-<em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.slo_forms.</code><code class="sig-name descname">EditNewSLOForm</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.slo_forms.EditNewSLOForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.forms.Form</span></code></p>
-<p>Form to edit a new SLO (no restrictions)</p>
-<p><strong>Form fields:</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code>: SLO (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">blooms</span></code>: Highest Bloom’s Taxonomy Level (<code class="xref py py-class docutils literal notranslate"><span class="pre">ChoiceField</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gradGoals</span></code>: Graduate-level Goals (<code class="xref py py-class docutils literal notranslate"><span class="pre">ModelMultipleChoiceField</span></code>)</p></li>
-</ul>
-<dl class="method">
-<dt id="makeReports.forms.slo_forms.EditNewSLOForm.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.slo_forms.EditNewSLOForm.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializes form and deletes grad if undergraduate program</p>
-<dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>grad</strong> (<em>bool</em>) – whether graduate level program</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.forms.slo_forms.EditNewSLOForm.media">
-<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#makeReports.forms.slo_forms.EditNewSLOForm.media" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="makeReports.forms.slo_forms.ImportSLOForm">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.slo_forms.</code><code class="sig-name descname">ImportSLOForm</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.slo_forms.ImportSLOForm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.forms.Form</span></code></p>

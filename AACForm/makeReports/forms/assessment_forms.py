@@ -20,7 +20,7 @@ class CreateNewAssessment(forms.Form):
     directMeasure = forms.ChoiceField(label="Direct measure",choices = ((True, "Direct Measure"), (False,"Indirect Measure")), widget=forms.Select(attrs={'class':'form-control col-6'}))
     finalTerm = forms.ChoiceField(label="Point in Program Assessment is Administered",choices = ((True, "In final term"), (False, "In final year")), widget=forms.Select(attrs={'class':'form-control col-6'}))
     where = forms.CharField(label="Where does the assessment occur",widget= SummernoteWidget(attrs={'style':'width:750px'}))
-    allStudents = forms.ChoiceField(label="Population Measured",choices = ((False,"Sample of Students"), (True, "All Students")),widget=forms.Select(attrs={'class':'form-control col-6'}))
+    allStudents = forms.ChoiceField(label="Population Measured",choices = ( (True, "All Students"),(False,"Sample of Students")),widget=forms.Select(attrs={'class':'form-control col-6'}))
     sampleDescription = forms.CharField(label="Describe what students are sampled (if not all)",widget= SummernoteWidget(attrs={'style':'width:750px'}), required=False)
     frequencyChoice = forms.ChoiceField(label="Frequency of Data Collection", choices=FREQUENCY_CHOICES, widget=forms.Select(attrs={'class':'form-control col-4'}))
     frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(attrs={'style':'width:750px'}),required=False)

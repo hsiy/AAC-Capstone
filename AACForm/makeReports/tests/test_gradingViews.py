@@ -69,7 +69,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         Tests that section 1 grading fails with too long of comment
         """
         fieldName = 'rI'+str(self.rInG.pk)
-        reallyLong = "xyz"*1000
+        reallyLong = "This needs more improvement."*1000
         resp = self.client.post(reverse('makeReports:grade-sec1',kwargs={'report':self.rpt.pk}),{
             fieldName:"ME",
             'section_comment':reallyLong
@@ -91,12 +91,12 @@ class GradingSectionsTest(ReportAACSetupTest):
         fieldName = 'rI'+str(self.rInG2.pk)
         resp = self.client.post(reverse('makeReports:grade-sec2',kwargs={'report':self.rpt.pk}),{
             fieldName:"DNM",
-            'section_comment':'fsfkjllaskdfls2'
+            'section_comment':'More students should take assessment 2.'
         })
         self.rI2.refresh_from_db()
         self.rub.refresh_from_db()
         self.assertEquals(self.rI2.grade,"DNM")
-        self.assertEquals(self.rub.section2Comment,'fsfkjllaskdfls2')
+        self.assertEquals(self.rub.section2Comment,'More students should take assessment 2.')
     def test_sec2_post_missingComment(self):
         """
         Tests that the section 2 grading page works as expected when optional section comment is empty
@@ -124,12 +124,12 @@ class GradingSectionsTest(ReportAACSetupTest):
         fieldName = 'rI'+str(self.rInG3.pk)
         resp = self.client.post(reverse('makeReports:grade-sec3',kwargs={'report':self.rpt.pk}),{
             fieldName: "MC",
-            'section_comment':'fsfkjllaskdfls3'
+            'section_comment':'More students should take assessment 2 so there can be more data.'
         })
         self.rI3.refresh_from_db()
         self.rub.refresh_from_db()
         self.assertEquals(self.rI3.grade,"MC")
-        self.assertEquals(self.rub.section3Comment,'fsfkjllaskdfls3')
+        self.assertEquals(self.rub.section3Comment,'More students should take assessment 2 so there can be more data.')
     def test_sec4_get(self):
         """
         Tests that the section 1 grading page works as expected
@@ -146,12 +146,12 @@ class GradingSectionsTest(ReportAACSetupTest):
         fieldName = 'rI'+str(self.rInG4.pk)
         resp = self.client.post(reverse('makeReports:grade-sec4',kwargs={'report':self.rpt.pk}),{
             fieldName:"ME",
-            'section_comment':'fsfkjllaskdfls4'
+            'section_comment':'Spend more time discussing results with the stakeholders.'
         })
         self.rI4.refresh_from_db()
         self.rub.refresh_from_db()
         self.assertEquals(self.rI4.grade,"ME")
-        self.assertEquals(self.rub.section4Comment,'fsfkjllaskdfls4')
+        self.assertEquals(self.rub.section4Comment,'Spend more time discussing results with the stakeholders.')
     def test_comment(self):
         """
         Tests that the overall comment page interacts with the database as expected

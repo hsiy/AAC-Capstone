@@ -21,7 +21,7 @@ class DAFormsTest(TestCase):
         Tests DecActForm1Box accepts valid data
         """
         f = DecActForm1Box({
-            'text':"dlksjflsd"*100
+            'text':"We will modify the curriculum to better improve outcomes."
         })
         self.assertTrue(f.is_valid())
     def test_toolong(self):
@@ -29,6 +29,6 @@ class DAFormsTest(TestCase):
         Tests DecActForm1Box rejects too long of text
         """
         f = DecActForm1Box({
-            'text':"dslkfjdsdsds"*900
+            'text':"We will modify the curriculum to better improve outcomes."*900
         })
         self.assertFalse(f.is_valid())

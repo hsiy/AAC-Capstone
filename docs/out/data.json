@@ -108,6 +108,33 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "..\\AACForm\\static\\extPlugin\\choice-widget-stk.js": {
+            "name": "..\\AACForm\\static\\extPlugin\\choice-widget-stk.js",
+            "modules": {},
+            "classes": {
+                "choice-widget-stk": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "..\\AACForm\\static\\extPlugin\\choices-widget.js": {
+            "name": "..\\AACForm\\static\\extPlugin\\choices-widget.js",
+            "modules": {},
+            "classes": {
+                "choices-widget": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "..\\AACForm\\static\\js\\assessmentEntryBoxes.js": {
+            "name": "..\\AACForm\\static\\js\\assessmentEntryBoxes.js",
+            "modules": {},
+            "classes": {
+                "assessmentBoxes": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
@@ -255,6 +282,42 @@
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\SLO\\importStakeholderComm.html",
             "line": 38,
             "description": "Handles creating and managing the drop-downs"
+        },
+        "choice-widget-stk": {
+            "name": "choice-widget-stk",
+            "shortname": "choice-widget-stk",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\AACForm\\static\\extPlugin\\choice-widget-stk.js",
+            "line": 1,
+            "description": "Function to instantiate the ChoicesJS dropdown for stakeholders"
+        },
+        "choices-widget": {
+            "name": "choices-widget",
+            "shortname": "choices-widget",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\AACForm\\static\\extPlugin\\choices-widget.js",
+            "line": 1,
+            "description": "Function to instantiate the ChoicesJS dropdown for SLOs"
+        },
+        "assessmentBoxes": {
+            "name": "assessmentBoxes",
+            "shortname": "assessmentBoxes",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "..\\AACForm\\static\\js\\assessmentEntryBoxes.js",
+            "line": 1,
+            "description": "Functions to properly show and hide boxes on the assessment forms"
         }
     },
     "elements": {},
@@ -1070,6 +1133,46 @@
             "itemtype": "method",
             "name": "updateYears",
             "class": "importStakeholderComm"
+        },
+        {
+            "file": "..\\AACForm\\static\\extPlugin\\choice-widget-stk.js",
+            "line": 6,
+            "description": "On load, create the dropdown",
+            "itemtype": "method",
+            "name": "DOMContentLoaded",
+            "class": "choice-widget-stk"
+        },
+        {
+            "file": "..\\AACForm\\static\\extPlugin\\choices-widget.js",
+            "line": 6,
+            "description": "On load, create the dropdown",
+            "itemtype": "method",
+            "name": "DOMContentLoaded",
+            "class": "choices-widget"
+        },
+        {
+            "file": "..\\AACForm\\static\\js\\assessmentEntryBoxes.js",
+            "line": 6,
+            "description": "On load, calls the change function for allStudents and frequencyChoice",
+            "itemtype": "method",
+            "name": "onLoad",
+            "class": "assessmentBoxes"
+        },
+        {
+            "file": "..\\AACForm\\static\\js\\assessmentEntryBoxes.js",
+            "line": 16,
+            "description": "When allStudents change, hide or show the box to describe students",
+            "itemtype": "method",
+            "name": "allStudents.change",
+            "class": "assessmentBoxes"
+        },
+        {
+            "file": "..\\AACForm\\static\\js\\assessmentEntryBoxes.js",
+            "line": 28,
+            "description": "When frequencyChoice changes, hide or show the box to describe the frequency",
+            "itemtype": "method",
+            "name": "frequencyChoice.change",
+            "class": "assessmentBoxes"
         }
     ],
     "warnings": [

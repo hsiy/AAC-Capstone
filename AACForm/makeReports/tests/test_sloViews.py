@@ -108,34 +108,34 @@ class AddSLOGRTestPage(ReportSetupTest):
         Tests post creates SLO
         """
         form_data = {
-            'text':'text of slo',
+            'text':'The students can write reports with solid mechanics.',
             'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
-        s = SLOInReport.objects.filter(goalText='text of slo').count()
+        s = SLOInReport.objects.filter(goalText='The students can write reports with solid mechanics.').count()
         self.assertTrue(s)
     def test_post_bloom_fail(self):
         """
         Tests that posting invalid Bloom option fails
         """
         form_data = {
-            'text':'text of slo 2',
+            'text':'The students can write reports with biological terms.',
             'blooms': "not a blooms choice"
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
-        s = SLOInReport.objects.filter(goalText='text of slo 2').count()
+        s = SLOInReport.objects.filter(goalText='The students can write reports with biological terms.').count()
         self.assertFalse(s>0)
     def test_post_too_long_fail(self):
         """
         Tests that posting too long of text fails
         """
-        reallyLong = "xy"*501
+        reallyLong = "Students will use a microscope."*501
         form_data = {
             'text':reallyLong,
             'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
-        s = SLOInReport.objects.filter(goalText='text of slo 3').count()
+        s = SLOInReport.objects.filter(goalText=reallyLong).count()
         self.assertFalse(s>0)
 class AddSLOUGTestPage(ReportSetupTest):
     """
@@ -162,23 +162,23 @@ class AddSLOUGTestPage(ReportSetupTest):
         Tests post creates SLO
         """
         form_data = {
-            'text':'text of slo2',
+            'text':'Students will design physics experiments.',
             'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
-        s = SLOInReport.objects.filter(goalText='text of slo2').count()
+        s = SLOInReport.objects.filter(goalText='Students will design physics experiments.').count()
         self.assertTrue(s)
     def test_post_too_long_fail(self):
         """
         Tests that posting too long of text fails
         """
-        reallyLong = "xy"*501
+        reallyLong = "Students will write reports."*501
         form_data = {
             'text':reallyLong,
             'blooms': BLOOMS_CHOICES[1][0]
         }
         response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
-        s = SLOInReport.objects.filter(goalText='text of slo 3').count()
+        s = SLOInReport.objects.filter(goalText=reallyLong).count()
         self.assertFalse(s>0)
 class ImportSLOTestPage(ReportSetupTest):
     """

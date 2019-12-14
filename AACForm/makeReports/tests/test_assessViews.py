@@ -67,18 +67,18 @@ class AddNewAssessmentTest(ReportSetupTest):
         slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
-            'title': 'title of assess',
-            'description': 'desc things',
+            'title': 'Final performance',
+            'description': 'Students will write an original play and use fellow students are actors.',
             'domain': "Pe",
             'domain': 'Pr',
             'directMeasure':True,
             'finalTerm':True,
-            'where': 'a place',
+            'where': 'The final semester by appointment',
             'allStudents': True,
-            'sampleDescription':'dsd',
+            'sampleDescription':'Students who are graduating',
             'frequencyChoice': FREQUENCY_CHOICES[0][0],
-            'frequency':'freq desc',
-            'threshold':'thresholding',
+            'frequency':'Only during the summer semester.',
+            'threshold':'Recieves at least 85 on the rubric',
             'target':34
         }
         response = self.client.post(reverse('makeReports:add-assessment',kwargs={'report':self.rpt.pk}),fD)
@@ -174,24 +174,24 @@ class EditAssessmentTest(ReportSetupTest):
         slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
-            'title': 'title of assess',
-            'description': 'desc things',
+            'title': 'Final performance',
+            'description': 'Students will write a musical',
             'domain': "Pe",
             'domain': 'Pr',
             'directMeasure':True,
             'finalTerm':True,
-            'where': 'a place',
+            'where': 'During SPEECH 5070',
             'allStudents': True,
-            'sampleDescription':'dsd',
+            'sampleDescription':'Every student',
             'frequencyChoice': FREQUENCY_CHOICES[0][0],
-            'frequency':'freq desc',
-            'threshold':'thresholding',
-            'target':34
+            'frequency':'Every week',
+            'threshold':'At least a 90th percentile',
+            'target':74
         }
         response = postWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"",fD)
         self.assessN.refresh_from_db()
-        self.assertEquals(self.assessN.assessment.title, 'title of assess')
-        self.assertEquals(self.assessN.target,34)
+        self.assertEquals(self.assessN.assessment.title, 'Final performance')
+        self.assertEquals(self.assessN.target,74)
     def test_post_new_frequency_choice_fail(self):
         """
         Tests that posting that is not a valid frequency choice fails
@@ -199,24 +199,24 @@ class EditAssessmentTest(ReportSetupTest):
         slo = baker.make_recipe("makeReports.sloInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
-            'title': 'title of assess',
-            'description': 'desc things',
+            'title': 'Report',
+            'description': 'A report comparing poetry',
             'domain': "Pe",
             'domain': 'Pr',
             'directMeasure':True,
             'finalTerm':True,
-            'where': 'a place',
+            'where': 'ENGL 3050',
             'allStudents': True,
             'sampleDescription':'dsd',
             'frequencyChoice': 'this is not a valid choice',
-            'frequency':'freq desc',
-            'threshold':'thresholding',
-            'target':34
+            'frequency':'',
+            'threshold':'At least 85 percent',
+            'target':64
         }
         response = postWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"",fD)
         self.assessN.refresh_from_db()
-        self.assertNotEqual(self.assessN.assessment.title, 'title of assess')
-        self.assertNotEqual(self.assessN.target,34)
+        self.assertNotEqual(self.assessN.assessment.title, 'Report')
+        self.assertNotEqual(self.assessN.target,64)
         self.assertNotEqual(response.status_code,302)
     def test_post_impt_fails(self):
         """
@@ -225,23 +225,23 @@ class EditAssessmentTest(ReportSetupTest):
         slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
-            'title': 'title of assess23',
-            'description': 'desc things',
+            'title': 'Literature review and publish',
+            'description': 'Students will compare several pieces of literature.',
             'domain': "Pe",
             'domain': 'Pr',
             'directMeasure':True,
             'finalTerm':True,
             'where': 'a place',
             'allStudents': True,
-            'sampleDescription':'dsd',
+            'sampleDescription':'',
             'frequencyChoice': FREQUENCY_CHOICES[0][0],
-            'frequency':'freq desc66',
-            'threshold':'thresholding',
+            'frequency':'',
+            'threshold':'At least 80 percent by rubric',
             'target':34
         }
         response = postWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"",fD)
         self.assessO.refresh_from_db()
-        self.assertNotEquals(self.assessO.assessment.title, 'title of assess23s')
+        self.assertNotEquals(self.assessO.assessment.title, 'Literature review and publish')
     def test_post_impt(self):
         """
         Tests that posting the correct information to the edit imported assessment page works
@@ -249,19 +249,19 @@ class EditAssessmentTest(ReportSetupTest):
         slo = baker.make("SLOInReport", report=self.rpt)
         fD = {
             'slo': slo.pk,
-            'description': 'desc things',
+            'description': 'Students will analyze biological reports',
             'finalTerm':True,
-            'where': 'a place',
+            'where': 'BIOL 3909',
             'allStudents': True,
-            'sampleDescription':'dsd',
+            'sampleDescription':'All students',
             'frequencyChoice': FREQUENCY_CHOICES[0][0],
-            'frequency':'freq desc',
-            'threshold':'thresholding',
+            'frequency':'Every spring and summer',
+            'threshold':'With 90 degrees of accuracy',
             'target':34
         }
         response = postWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"",fD)
         self.assessO.refresh_from_db()
-        self.assertEquals(self.assessO.frequency, 'freq desc')
+        self.assertEquals(self.assessO.frequency, 'Every spring and summer')
     def test_delete_new(self):
         """
         Tests that deleting a new assessment deletes the in-report and overarching version
