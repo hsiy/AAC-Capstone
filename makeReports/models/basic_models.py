@@ -50,17 +50,3 @@ class Profile(models.Model):
     #False = faculty member/dept account
     department = models.ForeignKey('Department', on_delete=models.SET_NULL, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-@receiver(post_save,sender=User)
-def update_user_profile(sender, instance, created, **kwargs):
-    """
-    Updates the custom profile when users are created
-    
-    Args:
-        sender (type): model type sending hook
-        instance (User): user updated
-        created (bool): whether model was newly created
-    """
-    #this updates profile when user is updated
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
