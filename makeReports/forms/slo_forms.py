@@ -80,7 +80,7 @@ class Single2000Textbox(CleanSummer,forms.Form):
     """
     Form for a single 2000 character textbox
     """
-    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="",max_length=2000)
+    text = forms.CharField(widget=SummernoteWidget(attrs={'style':'width:750px'}),label="")
     summer_max_length = 2000
 
 class ImportStakeholderForm(forms.Form):

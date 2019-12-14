@@ -168,7 +168,7 @@ SUMMERNOTE_CONFIG = {
 
     # Set custom storage class for attachments.
     'toolbar': [
-        ['cleaner',['cleaner']],
+        #['cleaner',['cleaner']],
         ['style',['style']],
         ['font',['bold','italic','underline','clear']],
         ['color',['color']],
@@ -181,7 +181,7 @@ SUMMERNOTE_CONFIG = {
     # To use external plugins,
     # Include them within `css` and `js`.
     'js': (
-        os.path.join(STATIC_URL, 'extPlugin/summernote-cleaner.js'),
+        #os.path.join(STATIC_URL, 'extPlugin/summernote-cleaner.js'),
     )
 }
 

@@ -43,7 +43,7 @@ class AssessmentVersion(models.Model):
     #false = sample of students
     sampleDescription = models.CharField(max_length=500,blank=True,null=True, verbose_name="description of sample")
     frequencyChoice = models.CharField(max_length=100,choices=FREQUENCY_CHOICES,default="O", verbose_name="frequency choice")
-    frequency = models.CharField(max_length=100)
+    frequency = models.CharField(max_length=500)
     #the below are percentage points
     threshold = models.CharField(max_length=500)
     target = models.PositiveIntegerField()
