@@ -109,6 +109,14 @@ def add_other_tenses(words):
     return allTenses
         
 def blooms_words(level):
+    """
+    Returns words indicative of certain level
+
+    Args:
+        level (str): Bloom's level to get words for
+    Returns:
+        dict : dictionary of words matching level
+    """
     create_words = ['design', 'assemble', 'construct', 'conjecture', 'develop',
                     'formulate', 'author', 'investigate', 'create', 'adapt', 'plan',
                     'produce', 'build', 'solve', 'compose', 'think', 'theorize', 'modify',
