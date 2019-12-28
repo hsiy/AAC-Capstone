@@ -237,6 +237,8 @@ class EditNewSLOPageTest(ReportSetupTest):
         """
         super(EditNewSLOPageTest,self).setUp()
         self.slo = baker.make("SLOInReport",slo__numberOfUses=1)
+        self.slo.slo.numberOfUses = 1
+        self.slo.slo.save()
     def test_view(self):
         """
         Tests response and basic expected text
@@ -255,6 +257,8 @@ class EditNewSLOPageTestRecipe(EditNewSLOPageTest):
         """
         super().setUp()
         self.slo = baker.make_recipe('makeReports.sloInReport',slo__numberOfUses=1)
+        self.slo.slo.numberOfUses = 1
+        self.slo.slo.save()
 class EditImptedSLOPageTest(ReportSetupTest):
     """
     Tests edit imported SLO page
@@ -355,6 +359,8 @@ class DeleteNewSLOPageTest(ReportSetupTest):
         super(DeleteNewSLOPageTest,self).setUp()
         self.sSLO = baker.make("SLO",numberOfUses=1)
         self.slo = baker.make("SLOInReport",report=self.rpt, slo=self.sSLO)
+        self.sSLO.numberOfUses=1
+        self.sSLO.save()
     def test_view(self):
         """
         Checks the page exists
