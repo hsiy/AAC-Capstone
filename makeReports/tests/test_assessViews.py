@@ -140,9 +140,13 @@ class EditAssessmentTest(ReportSetupTest):
         """
         super(EditAssessmentTest,self).setUp()
         self.assessN = baker.make("AssessmentVersion",report=self.rpt, assessment__numberOfUses=1)
+        self.assessN.assessment.numberOfUses = 1
+        self.assessN.assessment.save()
         self.shareAssess = baker.make("Assessment", numberOfUses = 2)
         self.assessO = baker.make("AssessmentVersion",report=self.rpt, assessment=self.shareAssess)
         self.assessO2 = baker.make("AssessmentVersion",report=self.rpt, assessment=self.shareAssess)
+        self.shareAssess.numberOfUses=2
+        self.shareAssess.save()
     def test_view_new(self):
         """
         Tests that the edit new assessment page exists
@@ -291,7 +295,9 @@ class EditAssessmentTest(ReportSetupTest):
         aPk = self.assessO.assessment.pk
         self.assessO.slo.numberOfAssess = 1
         self.assessO.slo.save()
-        r = getWithReport('delete-impt-assessment',self,{'pk':self.assessN.pk},"")
+        self.assessO.assessment.numberOfUses = 2
+        self.assessO.assessment.save()
+        r = getWithReport('delete-impt-assessment',self,{'pk':self.assessO.pk},"")
         self.assertEquals(r.status_code,200)
         response = postWithReport('delete-impt-assessment',self,{'pk':self.assessO.pk},"",{})
         num = AssessmentVersion.objects.filter(pk=pk).count()
@@ -314,6 +320,8 @@ class EditAssessmentRecipeTest(EditAssessmentTest):
         """
         super().setUp()
         self.assessN = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, assessment__numberOfUses=1)
+        self.assessN.assessment.numberOfUses =1
+        self.assessN.assessment.save()
         self.shareAssess = baker.make_recipe("makeReports.assessment", numberOfUses = 2)
         self.assessO = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, assessment=self.shareAssess)
         self.assessO2 = baker.make_recipe("makeReports.assessmentVersion",report=self.rpt, assessment=self.shareAssess)
