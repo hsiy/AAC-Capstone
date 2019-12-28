@@ -281,7 +281,7 @@ class EditNewSLO(DeptReportMixin,FormView):
             HttpResponse : response of page to request
         """
         try:
-            self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'])
+            self.sloInRpt = SLOInReport.objects.get(pk=self.kwargs['sloIR'], slo__numberOfUses=1)
         except SLOInReport.DoesNotExist:
             raise Http404("SLO matching URL does not exist.")
         return super(EditNewSLO,self).dispatch(request,*args,**kwargs)
@@ -513,6 +513,12 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
+    def get_object(self, queryset=None):
+        """ Hook to ensure it is an imported SLO """
+        obj = super(DeleteImportedSLO, self).get_object()
+        if not obj.slo.numberOfUses>1:
+            raise Http404("Imported SLO matching does not exist.")
+        return obj
     def get_success_url(self):
         """
         Gets the success URL (SLO summary)
@@ -530,6 +536,12 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
+    def get_object(self, queryset=None):
+        """ Hook to ensure it is a new SLO """
+        obj = super(DeleteNewSLO, self).get_object()
+        if obj.slo.numberOfUses>1:
+            raise Http404("New SLO matching does not exist.")
+        return obj
     def get_success_url(self):
         """
         Gets success URL (SLO summary)

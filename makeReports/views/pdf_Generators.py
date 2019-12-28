@@ -33,7 +33,6 @@ from django.http import Http404
 def test_func_x(self,*args,**kwargs):
     """
     Ensures the user accessing the page is in the AAC or right department
-
     Keyword Args:
         report (str): primary key of :class:`~makeReports.models.report_models.Report`
     Returns:
@@ -49,7 +48,6 @@ def test_func_x(self,*args,**kwargs):
 def test_func_a(self):
     """
     Ensures the user accessing page is in the AAC
-
     Returns:
         boolean : whether user passes test
     """
@@ -63,7 +61,6 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
     
     This function is very slightly modified from Django source code in order to allow args and
     kwargs to be passed to the test function
-
     Args:
         test_func (method) : function that user must return tru
         login_url (str) : URL to login page
@@ -94,7 +91,6 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
 class PDFPreview(TemplateView):
     """
     View to preview a PDF in HTML form, not intended for end-users, but is useful for the development future extensions
-
     Args:
         report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
@@ -102,7 +98,6 @@ class PDFPreview(TemplateView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the view
-
         Args:
             request (HttpRequest): request to view PDF page
     
@@ -118,7 +113,6 @@ class PDFPreview(TemplateView):
         """
         Gets the context for the template, including the rubric and graded rubric items for the report,
         separated by section
-
         Returns:
             dict : template context
         """
@@ -133,7 +127,6 @@ class PDFPreview(TemplateView):
 class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     """
     View to generate a graded rubric PDF
-
     Keyword Args:
         report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
@@ -148,7 +141,6 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the view
-
         Args:
             request (HttpRequest): request to view PDF page
     
@@ -167,7 +159,6 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
         """
         Gets the context for the template, including the rubric and graded rubric items for the report,
         separated by section
-
         Returns:
             dict : template context
         """
@@ -181,7 +172,6 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
 class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     """
     View to generate PDF of report, without supplements
-
     Keyword Args:
         report (str): primary key of :class:`~makeReports.models.report_models.Report`
     """
@@ -194,7 +184,6 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to instance
-
         Args:
             request (HttpRequest): request to view page
         
@@ -212,7 +201,6 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
         """
         Gets the context for the template, including the report and context
         needed for each section
-
         Returns:
             dict : context for template
         """
@@ -229,14 +217,11 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
 def reportPDF(request, report):
     """
     View to generate report PDF with supplements
-
     Args:
         request (HttpRequest): request to view page
         report (str): primary key of :class:`~makeReports.models.report_models.Report` 
-
     Returns:
         HttpResponse : the PDF
-
     Notes:
         A function instead of class due to limitations of class based views
     """
@@ -247,7 +232,7 @@ def reportPDF(request, report):
     sec3 = get_template('makeReports/DisplayReport/PDFsub/pdf3.html')
     sec4 = get_template('makeReports/DisplayReport/PDFsub/pdf4.html')
     #build the context needed for the report
-    context = {'report':report}
+    context = {'rpt':report, 'report':report}
     #SimpleNamespace lets report be accessed via dot-notation in section#Context
     s = SimpleNamespace(**context)
     context = section1Context(s,context)
@@ -255,12 +240,12 @@ def reportPDF(request, report):
     #render HTML string for section 1 and 2
     p1and2 = sec1and2.render(context).encode()
     #reset context for section 3
-    context = {'report':report}
+    context = {'rpt':report, 'report':report}
     context = section3Context(s,context)
     #render HTML string for section 3
     p3 = sec3.render(context).encode()
     #reset context
-    context = {'report':report}
+    context = {'rpt':report, 'report':report}
     context = section4Context(s,context)
     #render HTML string for section 4
     p4 =sec4.render(context).encode()
@@ -317,7 +302,6 @@ def reportPDF(request, report):
 def UngradedRubric(request, rubric):
     """
     View to generate ungraded rubric PDF
-
     Args:
         request (HttpRequest): request for page
         rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`

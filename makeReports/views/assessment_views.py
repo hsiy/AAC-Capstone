@@ -419,6 +419,8 @@ class EditNewAssessment(EditImportedAssessment):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
+        if self.assessVers.assessment.numberOfUses >1:
+            raise Http404("This assessment is imported elsewhere.")
         self.assessVers.assessment.title = form.cleaned_data['title']
         self.assessVers.assessment.domain = form.cleaned_data['domain']
         self.assessVers.assessment.directMeasure = form.cleaned_data['directMeasure']
@@ -622,6 +624,12 @@ class DeleteImportedAssessment(DeptReportMixin,DeleteView):
     """
     model = AssessmentVersion
     template_name = "makeReports/Assessment/deleteAssessment.html"
+    def get_object(self, queryset=None):
+        """ Hook to ensure it is an imported assessment """
+        obj = super(DeleteImportedAssessment, self).get_object()
+        if not obj.assessment.numberOfUses>1:
+            raise Http404("Imported assessment matching does not exist.")
+        return obj
     def get_success_url(self):
         """
         Gets success url (assessment summary)
@@ -639,6 +647,12 @@ class DeleteNewAssessment(DeptReportMixin,DeleteView):
     """
     model = AssessmentVersion
     template_name = "makeReports/Assessment/deleteAssessment.html"
+    def get_object(self, queryset=None):
+        """ Hook to ensure it is a new assessment """
+        obj = super(DeleteNewAssessment, self).get_object()
+        if obj.assessment.numberOfUses>1:
+            raise Http404("New assessment matching URL does not exist.")
+        return obj
     def get_success_url(self):
         """
         Gets success url (assessment summary page)
