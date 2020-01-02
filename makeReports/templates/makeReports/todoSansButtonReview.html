@@ -31,15 +31,15 @@
                 {% for item,idx in toDo.s %}
                 <li class="list-group-item">
                     {% if idx is 0 %}
-                    <a style="color:black" href="{% url 'makeReports:rpt-first-page' rpt.pk %}">{{item}}</a>
+                    <a style="color:black" href="{% url 'makeReports:grade-entry' rpt.pk %}">{{item}}</a>
                     {% elif idx is 1 %}
-                    <a style="color:black" href="{% url 'makeReports:slo-summary' rpt.pk %}">{{item}}</a>
+                    <a style="color:black" href="{% url 'makeReports:grade-sec1' rpt.pk %}">{{item}}</a>
                     {% elif idx is 2 %}
-                    <a style="color:black" href="{% url 'makeReports:assessment-summary' rpt.pk %}">{{item}}</a>
+                    <a style="color:black" href="{% url 'makeReports:grade-sec2' rpt.pk %}">{{item}}</a>
                     {% elif idx is 3 %}
-                    <a style="color:black" href="{% url 'makeReports:data-summary' rpt.pk %}">{{item}}</a>
+                    <a style="color:black" href="{% url 'makeReports:grade-sec3' rpt.pk %}">{{item}}</a>
                     {% elif idx is 4 %}
-                    <a style="color:black" href="{% url 'makeReports:decisions-actions-summary' rpt.pk %}">{{item}}</a>
+                    <a style="color:black" href="{% url 'makeReports:grade-sec4' rpt.pk %}">{{item}}</a>
                     {% endif %}
                 </li>
                 {% endfor %}
