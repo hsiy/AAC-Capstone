@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% block content %}
 <h3>Rubric List</h3>
-<form action="{% url 'makeReports:search-rubric-list' %}" type="get">
+<form action="{% url 'makeReports:search-rubric-list' %}" type="get" style="max-width: 500px">
         <h3>Search:</h3>
         <div class="form-group"><label for="name">Name:</label><input id="name" type="text" class="form-control" name="name"></div>
         <div class="form-group"><label for="date">Date created (will return results within 180 days of selected date):</label><input id="date" type="date" class="form-control" name="date"></div>
