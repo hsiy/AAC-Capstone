@@ -45,15 +45,15 @@ class ClearOverrideAPI(APIView):
             raise Http404("Report matching URL does not exist")
         if((rpt.degreeProgram.department==request.user.profile.department) or request.user.profile.aac):
             #only proceed if the person truly has the right to modify the report
-            statuses = SLOStatus.objects.filter(sloIR__report__pk=pk, override=True)
-            for status in statuses:
-                status.override = False
-                status.save()
-                update_status(status,0,0, status.sloIR)
             aggs = AssessmentAggregate.objects.filter(assessmentVersion__report__pk=pk, override=True)
             for agg in aggs:
                 agg.override = False
-                agg.save()
+                #update_agg will save the change
                 update_agg(agg,0,0,agg.assessmentVersion)
+            statuses = SLOStatus.objects.filter(sloIR__report__pk=pk, override=True)
+            for status in statuses:
+                status.override = False
+                #update_status will save the change
+                update_status(status,0,0, status.sloIR)
             return Response()
 
