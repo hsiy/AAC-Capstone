@@ -2,16 +2,31 @@
 {% load bootstrap4 %}
 {% block styles %}
 <style>
-  .please-scroll{
-  height: calc(100vh - 110px);
-  overflow-y: scroll;
+.please-scroll{
+  height: calc(100vh - 275px);
+  overflow-y: auto;
+  overflow-x: auto;
 }
-      .italics{
-          font-style: italic;
-        }
-        .italics p{
-            margin:2pt;
-        }
+.italics{
+    font-style: italic;
+}
+.italics p{
+    margin:2pt;
+}
+.split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.gutter {
+    background-color: rgb(165, 165, 165);
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
 </style>
 {% block in_styles %}
 {% endblock %}
@@ -36,12 +51,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-8">
+        <div id="one" class="col please-scroll">
             <!--showreport column-->
             {% block report_content %}
             {% endblock %}
         </div>
-        <div class="col-4 please-scroll">
+        <div id="two" class="col please-scroll">
             <!--grading column-->
             {% if rpt.rubric.rubricVersion.fullFile %}
               Full Rubric: <a href="{{rpt.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
@@ -104,5 +119,19 @@
         </div>
     </div>
 </div>
-
+<script>
+  var splitobj = Split(["#one","#two"], {
+      elementStyle: function (dimension, size, gutterSize) { 
+          return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
+      },
+      gutterStyle: function (dimension, gutterSize) { return {'flex-basis':  gutterSize + 'px'} },
+      sizes: [65,35],
+      snapOffset: 0,
+      gutterSize: 6,
+      cursor: 'col-resize'
+  });
+</script>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js"></script>
 {% endblock %}
