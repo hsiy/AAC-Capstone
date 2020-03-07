@@ -41,11 +41,11 @@
       </div>
     </div>
     <div class="row">
-        <div id="one" class="col">
+        <div id="one" class="col please-scroll">
             <!--showreport column-->
             {% include 'makeReports/DisplayReport/reportIncluding.html' %}
         </div>
-        <div id="two" class="col">
+        <div id="two" class="col please-scroll">
             <!--grading column-->
             {% if rpt.rubric.rubricVersion.fullFile %}
               Full Rubric: <a href="{{rpt.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
