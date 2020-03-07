@@ -4,7 +4,7 @@
 {% block styles %}
 <style>
   .please-scroll{
-    height: calc(100vh - 200px);
+    height: calc(100vh - 195px);
     overflow-y: auto;
     overflow-x: auto;
   }
@@ -51,7 +51,8 @@
               Full Rubric: <a href="{{rpt.rubric.rubricVersion.fullFile.url}}">Download PDF</a>
             {% endif %}
                 <table>
-                  {% for GRI in obj_list %}
+                  <tr><td><h5>Section I. SLOs</h5></td></tr>
+                  {% for GRI in gri1 %}
                     <tr>
                       <td>
                         {{GRI.item.text|safe}} 
@@ -76,17 +77,98 @@
                     </td>
                     </tr>
                   {% endfor %}
-                  <tr><td><h5>Comments</h5></td></tr>
-                  <tr><td><b>Section 1: </b>{{gRub.section1Comment|safe}}</td></tr>
-                  <tr><td><b>Section 2: </b>{{gRub.section2Comment|safe}}</td></tr>
-                  <tr><td><b>Section 3: </b>{{gRub.section3Comment|safe}}</td></tr>
-                  <tr><td><b>Section 4: </b>{{gRub.section4Comment|safe}}</td></tr>
-                  <tr><td><b>Overall: </b>{{gRub.generalComment|safe}}</td></tr>
+                  <tr><td><b>Section I Comments: </b>{{gRub.section1Comment|safe}}</td></tr>
+                  <tr><td><h5>Section II. Assessments</h5></td></tr>
+                  {% for GRI in gri2 %}
+                    <tr>
+                      <td>
+                        {{GRI.item.text|safe}} 
+                        <p><b>{{GRI.get_grade_display}}</b></p>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <button class="btn btn-primary"  role="button" type="button" data-toggle="collapse" data-target="#col{{GRI.pk}}" aria-expanded="false" aria-controls="col{{GRI.pk}}">
+                                        More Details
+                        </button>
+                        <div class="collapse" id="col{{GRI.pk}}">
+                                <div class="card card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item"><b>Did Not Meet Expectations: </b>{{GRI.item.DMEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations with Concerns: </b>{{GRI.item.MEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext|safe}}</li>
+                                        </ul>
+                                </div>
+                        </div>
+                        <br><br>
+                    </td>
+                    </tr>
+                  {% endfor %}
+                  <tr><td><b>Section II Comments: </b>{{gRub.section2Comment|safe}}</td></tr>
+                  <tr><td><h5>Section III. Data</h5></td></tr>
+                  {% for GRI in gri3 %}
+                    <tr>
+                      <td>
+                        {{GRI.item.text|safe}} 
+                        <p><b>{{GRI.get_grade_display}}</b></p>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <button class="btn btn-primary"  role="button" type="button" data-toggle="collapse" data-target="#col{{GRI.pk}}" aria-expanded="false" aria-controls="col{{GRI.pk}}">
+                                        More Details
+                        </button>
+                        <div class="collapse" id="col{{GRI.pk}}">
+                                <div class="card card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item"><b>Did Not Meet Expectations: </b>{{GRI.item.DMEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations with Concerns: </b>{{GRI.item.MEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext|safe}}</li>
+                                        </ul>
+                                </div>
+                        </div>
+                        <br><br>
+                    </td>
+                    </tr>
+                  {% endfor %}
+                  <tr><td><b>Section III Comments: </b>{{gRub.section3Comment|safe}}</td></tr>
+                  <tr><td><h5>Section IV. Decisions & Actions</h5></td></tr>
+                  {% for GRI in gri4 %}
+                    <tr>
+                      <td>
+                        {{GRI.item.text|safe}} 
+                        <p><b>{{GRI.get_grade_display}}</b></p>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <button class="btn btn-primary"  role="button" type="button" data-toggle="collapse" data-target="#col{{GRI.pk}}" aria-expanded="false" aria-controls="col{{GRI.pk}}">
+                                        More Details
+                        </button>
+                        <div class="collapse" id="col{{GRI.pk}}">
+                                <div class="card card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item"><b>Did Not Meet Expectations: </b>{{GRI.item.DMEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations with Concerns: </b>{{GRI.item.MEtext|safe}}</li>
+                                            <li class="list-group-item"><b>Met Expectations Established: </b>{{GRI.item.EEtext|safe}}</li>
+                                        </ul>
+                                </div>
+                        </div>
+                        <br><br>
+                    </td>
+                    </tr>
+                  {% endfor %}
+                  <tr><td><b>Section IV Comments: </b>{{gRub.section4Comment|safe}}</td></tr>
+                  <tr><td><b>Overall Comments: </b>{{gRub.generalComment|safe}}</td></tr>
                 </table>
         </div>
     </div>
 </div>
 <script>
+  /**
+  * Handles the adjustment of the width of the columns, uses Split.js library
+  * @class feedback
+  */
   var splitobj = Split(["#one","#two"], {
       elementStyle: function (dimension, size, gutterSize) { 
           return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}

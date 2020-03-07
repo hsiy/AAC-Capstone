@@ -48,10 +48,30 @@ def getInitialRubric(rIs, r, initial):
     for ri in rIs:
         try:
             GRI = GradedRubricItem.objects.filter(rubric=r.rubric, item=ri).last()
-            initial["rI"+str(ri.pk)]=GRI.grade
+            initial["rI"+str(ri.pk)]=GRI.get_grade_display
         except:
             pass
     return initial
+def allRubricItemsSomeGrades(rIs,gRIs):
+    """
+    Generates dictionary with key of rubric items and value of grade.
+    If no grade, the value is "Not graded"
+
+    Args:
+        rIs (list): list of :class:`~makeReports.models.report_models.RubricItem`
+        gRIs (list): list of :class:`~makeReports.models.report_models.GradedRubricItem`
+    
+    Returns:
+        dict : items and grades
+    """
+    con = []
+    for rI in rIs:
+        gr = gRIs.filter(item=rI).last()
+        if gr:
+            con.append((rI, gr.grade))
+        else:
+            con.append((rI,"Not graded"))
+    return con
 @register.simple_tag
 def get_item(dictionary, key1, key2):
     """
@@ -402,8 +422,13 @@ class RubricReview(AACReportMixin, FormView):
             dict : context for template
         """
         context = super(RubricReview,self).get_context_data(**kwargs)
+        rIs = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion)
         context['gRub'] = self.report.rubric
         context['object_list'] = self.GRIs
+        context['rIs1'] = allRubricItemsSomeGrades(rIs.filter(section=1),self.GRIs)
+        context['rIs2'] = allRubricItemsSomeGrades(rIs.filter(section=2),self.GRIs)
+        context['rIs3'] = allRubricItemsSomeGrades(rIs.filter(section=3),self.GRIs)
+        context['rIs4'] = allRubricItemsSomeGrades(rIs.filter(section=4),self.GRIs)
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
@@ -438,7 +463,7 @@ class ReturnReport(AACOnlyMixin,UpdateView):
             self.object.rubric.complete = False
             self.object.rubric.save()
         return super(ReturnReport,self).form_valid(form)
-class Feedback(DeptAACMixin, ListView):
+class Feedback(DeptAACMixin, TemplateView):
     """
     View for department to view AAC feedback
 
@@ -467,15 +492,6 @@ class Feedback(DeptAACMixin, ListView):
             raise Http404("No report matching URL exists.")
         self.GRIs = GradedRubricItem.objects.filter(rubric__report=self.report)
         return super(Feedback,self).dispatch(request,*args,**kwargs)
-    def get_queryset(self):
-        """
-        Returns all graded rubric items within report
-
-        Returns:
-            QuerySet : all graded rubric items (:class:`~makeReports.models.report_models.GradedRubricItem`) in report
-        """
-
-        return self.GRIs
     def get_success_url(self):
         """
         Gets URL to go to upon success (return report option page)
@@ -495,7 +511,10 @@ class Feedback(DeptAACMixin, ListView):
         context = super(Feedback,self).get_context_data(**kwargs)
         context['rpt'] = self.report
         context['gRub'] = self.report.rubric
-        context['obj_list'] = self.GRIs
+        context['gri1'] = self.GRIs.filter(item__section=1)
+        context['gri2'] = self.GRIs.filter(item__section=2)
+        context['gri3'] = self.GRIs.filter(item__section=3)
+        context['gri4'] = self.GRIs.filter(item__section=4)
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)

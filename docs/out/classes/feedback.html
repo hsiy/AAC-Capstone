@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>assessmentBoxes</title>
+    <title>feedback</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -39,13 +39,12 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/addSLO.html">addSLO</a></li>
-                                <li><a href="../classes/assessmentBoxes.html">assessmentBoxes</a></li>
-                                <li><a href="../classes/choice-widget-stk.html">choice-widget-stk</a></li>
-                                <li><a href="../classes/choices-widget.html">choices-widget</a></li>
                                 <li><a href="../classes/create_account.html">create_account</a></li>
                                 <li><a href="../classes/csvManagement.html">csvManagement</a></li>
                                 <li><a href="../classes/dataCollectionSummary.html">dataCollectionSummary</a></li>
                                 <li><a href="../classes/editNewSLO.html">editNewSLO</a></li>
+                                <li><a href="../classes/feedback.html">feedback</a></li>
+                                <li><a href="../classes/grading_section.html">grading_section</a></li>
                                 <li><a href="../classes/graphing.html">graphing</a></li>
                                 <li><a href="../classes/graphingDept.html">graphingDept</a></li>
                                 <li><a href="../classes/importAssessment.html">importAssessment</a></li>
@@ -53,6 +52,7 @@
                                 <li><a href="../classes/importAssessmentSupplement.html">importAssessmentSupplement</a></li>
                                 <li><a href="../classes/importSLO.html">importSLO</a></li>
                                 <li><a href="../classes/importStakeholderComm.html">importStakeholderComm</a></li>
+                                <li><a href="../classes/rubric_review.html">rubric_review</a></li>
                             </ul>
                 
                 
@@ -90,12 +90,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>assessmentBoxes Class</h1>
+<h1>feedback Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l1"><code>..\AACForm\static\js\assessmentEntryBoxes.js:1</code></a>
+            Defined in: <a href="../files/.._AACForm_makeReports_templates_makeReports_Grading_feedback.html.html#l168"><code>..\AACForm\makeReports\templates\makeReports\Grading\feedback.html:168</code></a>
         </div>
 
 
@@ -103,7 +103,7 @@
 
 
 <div class="box intro">
-    <p>Functions to properly show and hide boxes on the assessment forms</p>
+    <p>Handles the adjustment of the width of the columns, uses Split.js library</p>
 
 </div>
 
@@ -112,133 +112,17 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_allStudents.change">allStudents.change</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_frequencyChoice.change">frequencyChoice.change</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_onLoad">onLoad</a>
-
-                            </li>
-                    </ul>
-                </div>
 
 
 
         </div>
 
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_allStudents.change" class="method item">
-    <h3 class="name"><code>allStudents.change</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l16"><code>..\AACForm\static\js\assessmentEntryBoxes.js:16</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>When allStudents change, hide or show the box to describe students</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_frequencyChoice.change" class="method item">
-    <h3 class="name"><code>frequencyChoice.change</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l28"><code>..\AACForm\static\js\assessmentEntryBoxes.js:28</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>When frequencyChoice changes, hide or show the box to describe the frequency</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_onLoad" class="method item">
-    <h3 class="name"><code>onLoad</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l6"><code>..\AACForm\static\js\assessmentEntryBoxes.js:6</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>On load, calls the change function for allStudents and frequencyChoice</p>
-
-    </div>
-
-
-
-
-</div>
-            </div>
 
 
 

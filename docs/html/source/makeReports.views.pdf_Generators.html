@@ -152,28 +152,24 @@
 <dt id="makeReports.views.pdf_Generators.GradedRubricPDFGen">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">GradedRubricPDFGen</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.GradedRubricPDFGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django_weasyprint.views.WeasyTemplateView</span></code>, <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptAACMixin" title="makeReports.views.helperFunctions.mixins.DeptAACMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptAACMixin</span></code></a></p>
-<p>View to generate a graded rubric PDF</p>
+<p>View to generate a graded rubric PDF
+:keyword report: primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code>
+:kwtype report: str</p>
+<dl class="method">
+<dt id="makeReports.views.pdf_Generators.GradedRubricPDFGen.dispatch">
+<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.GradedRubricPDFGen.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to the view
+:param request: request to view PDF page
+:type request: HttpRequest</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
 </dd>
-</dl>
-<dl class="method">
-<dt id="makeReports.views.pdf_Generators.GradedRubricPDFGen.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.GradedRubricPDFGen.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to the view</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view PDF page</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response of page to request</p>
 </dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>HttpResponse</p>
 </dd>
 </dl>
 </dd></dl>
@@ -182,15 +178,9 @@
 <dt id="makeReports.views.pdf_Generators.GradedRubricPDFGen.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.GradedRubricPDFGen.get_context_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the context for the template, including the rubric and graded rubric items for the report,
-separated by section</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>template context</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
+separated by section
+:returns: template context
+:rtype: dict</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -209,28 +199,24 @@ separated by section</p>
 <dt id="makeReports.views.pdf_Generators.PDFPreview">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">PDFPreview</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
-<p>View to preview a PDF in HTML form, not intended for end-users, but is useful for the development future extensions</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
-</dd>
-</dl>
+<p>View to preview a PDF in HTML form, not intended for end-users, but is useful for the development future extensions
+:param report: primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code>
+:type report: str</p>
 <dl class="method">
 <dt id="makeReports.views.pdf_Generators.PDFPreview.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to the view</p>
+<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to the view
+:param request: request to view PDF page
+:type request: HttpRequest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view PDF page</p>
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
 </dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response of page to request</p>
 </dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>HttpResponse</p>
 </dd>
 </dl>
 </dd></dl>
@@ -239,15 +225,9 @@ separated by section</p>
 <dt id="makeReports.views.pdf_Generators.PDFPreview.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.PDFPreview.get_context_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the context for the template, including the rubric and graded rubric items for the report,
-separated by section</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>template context</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
+separated by section
+:returns: template context
+:rtype: dict</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -261,28 +241,24 @@ separated by section</p>
 <dt id="makeReports.views.pdf_Generators.ReportPDFGen">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">ReportPDFGen</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django_weasyprint.views.WeasyTemplateView</span></code>, <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptAACMixin" title="makeReports.views.helperFunctions.mixins.DeptAACMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptAACMixin</span></code></a></p>
-<p>View to generate PDF of report, without supplements</p>
+<p>View to generate PDF of report, without supplements
+:keyword report: primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code>
+:kwtype report: str</p>
+<dl class="method">
+<dt id="makeReports.views.pdf_Generators.ReportPDFGen.dispatch">
+<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to instance
+:param request: request to view page
+:type request: HttpRequest</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
 </dd>
-</dl>
-<dl class="method">
-<dt id="makeReports.views.pdf_Generators.ReportPDFGen.dispatch">
-<code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code> to instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response of page to request</p>
 </dd>
-<dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>response of page to request</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>HttpResponse</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>HttpResponse</p>
 </dd>
 </dl>
 </dd></dl>
@@ -291,15 +267,9 @@ separated by section</p>
 <dt id="makeReports.views.pdf_Generators.ReportPDFGen.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.ReportPDFGen.get_context_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the context for the template, including the report and context
-needed for each section</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>context for template</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
+needed for each section
+:returns: context for template
+:rtype: dict</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -317,19 +287,17 @@ needed for each section</p>
 <dl class="function">
 <dt id="makeReports.views.pdf_Generators.UngradedRubric">
 <code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">UngradedRubric</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">rubric</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.UngradedRubric" title="Permalink to this definition">¶</a></dt>
-<dd><p>View to generate ungraded rubric PDF</p>
+<dd><p>View to generate ungraded rubric PDF
+:param request: request for page
+:type request: HttpRequest
+:param rubric: primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code>
+:type rubric: str</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<em>HttpRequest</em>) – request for page</p></li>
-<li><p><strong>rubric</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rubric</span></code></p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the PDF</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the PDF</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>HttpResponse</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>HttpResponse</p>
 </dd>
 </dl>
 </dd></dl>
@@ -341,34 +309,29 @@ needed for each section</p>
 redirecting to the log-in page if necessary. The test should be a callable
 that takes the user object and returns True if the user passes.</p>
 <p>This function is very slightly modified from Django source code in order to allow args and
-kwargs to be passed to the test function</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>test_func</strong> (<em>method</em>) – function that user must return tru</p></li>
-<li><p><strong>login_url</strong> (<em>str</em>) – URL to login page</p></li>
-<li><p><strong>redirect_field_name</strong> (<em>str</em>) – field name of where to put redirect URL</p></li>
-</ul>
-</dd>
-</dl>
+kwargs to be passed to the test function
+:param test_func: function that user must return tru
+:type test_func: method
+:param login_url: URL to login page
+:type login_url: str
+:param redirect_field_name: field name of where to put redirect URL
+:type redirect_field_name: str</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="makeReports.views.pdf_Generators.reportPDF">
 <code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">reportPDF</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">report</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.reportPDF" title="Permalink to this definition">¶</a></dt>
-<dd><p>View to generate report PDF with supplements</p>
+<dd><p>View to generate report PDF with supplements
+:param request: request to view page
+:type request: HttpRequest
+:param report: primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code>
+:type report: str</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p></li>
-<li><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the PDF</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the PDF</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>HttpResponse</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>HttpResponse</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -378,30 +341,23 @@ kwargs to be passed to the test function</p>
 <dl class="function">
 <dt id="makeReports.views.pdf_Generators.test_func_a">
 <code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">test_func_a</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.test_func_a" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ensures the user accessing page is in the AAC</p>
+<dd><p>Ensures the user accessing page is in the AAC
+:returns: whether user passes test
+:rtype: boolean</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.views.pdf_Generators.test_func_x">
+<code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">test_func_x</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.test_func_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensures the user accessing the page is in the AAC or right department
+:keyword report: primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code>
+:kwtype report: str</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>whether user passes test</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>boolean</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="makeReports.views.pdf_Generators.test_func_x">
-<code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">test_func_x</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.test_func_x" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ensures the user accessing the page is in the AAC or right department</p>
-<dl class="field-list simple">
-<dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>report</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Report</span></code></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>whether user passes test</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>boolean</p>
 </dd>
 </dl>
 </dd></dl>

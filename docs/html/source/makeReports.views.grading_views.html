@@ -151,7 +151,7 @@
 <dl class="class">
 <dt id="makeReports.views.grading_views.Feedback">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.grading_views.</code><code class="sig-name descname">Feedback</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.Feedback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptAACMixin" title="makeReports.views.helperFunctions.mixins.DeptAACMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptAACMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptAACMixin" title="makeReports.views.helperFunctions.mixins.DeptAACMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptAACMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.base.TemplateView</span></code></p>
 <p>View for department to view AAC feedback</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
@@ -190,20 +190,6 @@ context needed to display the report</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="makeReports.views.grading_views.Feedback.get_queryset">
-<code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.Feedback.get_queryset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all graded rubric items within report</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>all graded rubric items (<code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code>) in report</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>QuerySet</p>
 </dd>
 </dl>
 </dd></dl>
@@ -800,6 +786,27 @@ context needed to display the report</p>
 <code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/Grading/grading_section4.html'</em><a class="headerlink" href="#makeReports.views.grading_views.Section4Grading.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.views.grading_views.allRubricItemsSomeGrades">
+<code class="sig-prename descclassname">makeReports.views.grading_views.</code><code class="sig-name descname">allRubricItemsSomeGrades</code><span class="sig-paren">(</span><em class="sig-param">rIs</em>, <em class="sig-param">gRIs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.grading_views.allRubricItemsSomeGrades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates dictionary with key of rubric items and value of grade.
+If no grade, the value is “Not graded”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rIs</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">RubricItem</span></code></p></li>
+<li><p><strong>gRIs</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">GradedRubricItem</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>items and grades</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">

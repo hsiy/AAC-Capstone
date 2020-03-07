@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>..\AACForm\makeReports\templates\makeReports\Grading\grading_section.html</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/addSLO.html">addSLO</a></li>
+                                <li><a href="../classes/create_account.html">create_account</a></li>
+                                <li><a href="../classes/csvManagement.html">csvManagement</a></li>
+                                <li><a href="../classes/dataCollectionSummary.html">dataCollectionSummary</a></li>
+                                <li><a href="../classes/editNewSLO.html">editNewSLO</a></li>
+                                <li><a href="../classes/feedback.html">feedback</a></li>
+                                <li><a href="../classes/grading_section.html">grading_section</a></li>
+                                <li><a href="../classes/graphing.html">graphing</a></li>
+                                <li><a href="../classes/graphingDept.html">graphingDept</a></li>
+                                <li><a href="../classes/importAssessment.html">importAssessment</a></li>
+                                <li><a href="../classes/importAssessmentSLO.html">importAssessmentSLO</a></li>
+                                <li><a href="../classes/importAssessmentSupplement.html">importAssessmentSupplement</a></li>
+                                <li><a href="../classes/importSLO.html">importSLO</a></li>
+                                <li><a href="../classes/importStakeholderComm.html">importStakeholderComm</a></li>
+                                <li><a href="../classes/rubric_review.html">rubric_review</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ..\AACForm\makeReports\templates\makeReports\Grading\grading_section.html</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+{% extends &#x27;base.html&#x27; %}
+{% load bootstrap4 %}
+{% block styles %}
+&lt;style&gt;
+.please-scroll{
+  height: calc(100vh - 275px);
+  overflow-y: auto;
+  overflow-x: auto;
+}
+.italics{
+    font-style: italic;
+}
+.italics p{
+    margin:2pt;
+}
+.split {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.gutter {
+    background-color: rgb(165, 165, 165);
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image: url(&#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==&#x27;);
+}
+&lt;/style&gt;
+{% block in_styles %}
+{% endblock %}
+{% endblock %}
+{% block content %}
+{% include &#x27;makeReports/Grading/grading_navbar.html&#x27; %}
+&lt;h3&gt;Reviewing Section {{section}}&lt;/h3&gt;
+&lt;h5&gt;{{rpt.year|add:&quot;-1&quot;}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})&lt;/h5&gt;
+&lt;div class=&quot;container-fluid&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col&quot;&gt;
+            {% if reqTodo &gt; 0 %}
+            &lt;button class=&quot;btn btn-danger&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#collapseTodo&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;collapseTodo&quot;&gt;
+                    Needs Attention
+            &lt;/button&gt;
+            {% elif sugTodo &gt; 0 %}
+            &lt;button class=&quot;btn btn-warning&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#collapseTodo&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;collapseTodo&quot;&gt;
+                    Needs Attention
+            &lt;/button&gt;
+            {% endif %}
+            {% include &#x27;makeReports/todoSansButtonReview.html&#x27; %}
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div id=&quot;one&quot; class=&quot;col please-scroll&quot;&gt;
+            &lt;!--showreport column--&gt;
+            {% block report_content %}
+            {% endblock %}
+        &lt;/div&gt;
+        &lt;div id=&quot;two&quot; class=&quot;col please-scroll&quot;&gt;
+            &lt;!--grading column--&gt;
+            {% if rpt.rubric.rubricVersion.fullFile %}
+              Full Rubric: &lt;a href=&quot;{{rpt.rubric.rubricVersion.fullFile.url}}&quot;&gt;Download PDF&lt;/a&gt;
+            {% endif %}
+            &lt;h5&gt;Section {{section}} Rubric&lt;/h5&gt;
+            &lt;form method=&quot;post&quot; novalidate&gt;
+                {% csrf_token %}
+              
+                {% if form.non_field_errors %}
+                  &lt;ul&gt;
+                    {% for error in form.non_field_errors %}
+                      &lt;li&gt;{{ error }}&lt;/li&gt;
+                    {% endfor %}
+                  &lt;/ul&gt;
+                {% endif %}
+              
+                {% for hidden_field in form.hidden_fields %}
+                  {% if hidden_field.errors %}
+                    &lt;ul&gt;
+                      {% for error in hidden_field.errors %}
+                        &lt;li&gt;(Hidden field {{ hidden_field.name }}) {{ error }}&lt;/li&gt;
+                      {% endfor %}
+                    &lt;/ul&gt;
+                  {% endif %}
+                  {{ hidden_field }}
+                {% endfor %}
+                &lt;table&gt;
+                  {% for field in form.visible_fields %}
+                    &lt;tr&gt;
+                      &lt;td&gt;
+                        {% bootstrap_field field %}
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                    {% if not field.name == &quot;section_comment&quot; %}
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                        &lt;button class=&quot;btn btn-primary&quot;  role=&quot;button&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#col{{field.name}}&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;col{{field.name}}&quot;&gt;
+                                        More Details
+                        &lt;/button&gt;
+                        &lt;div class=&quot;collapse&quot; id=&quot;col{{field.name}}&quot;&gt;
+                                &lt;div class=&quot;card card-body&quot;&gt;
+                                        &lt;ul class=&quot;list-group&quot;&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Did Not Meet Expectations: &lt;/b&gt;{% get_item extraHelp field.name 0 %}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations with Concerns: &lt;/b&gt;{% get_item extraHelp field.name 1 %}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations Established: &lt;/b&gt;{% get_item extraHelp field.name 2 %}&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                    &lt;/tr&gt;
+                    {% endif %}
+                  {% endfor %}
+                &lt;/table&gt;
+                {% buttons %}
+                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Save &amp; Next&lt;/button&gt;
+                {% endbuttons %}
+              &lt;/form&gt;
+              &lt;div class=&quot;my-5 py-5&quot;&gt;&lt;/div&gt;
+              &lt;div class=&quot;my-5 py-5&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+      /**
+     * Handles the adjustment of the width of the columns, uses Split.js library
+     * @class grading_section
+     */
+  var splitobj = Split([&quot;#one&quot;,&quot;#two&quot;], {
+      elementStyle: function (dimension, size, gutterSize) { 
+          return {&#x27;flex-basis&#x27;: &#x27;calc(&#x27; + size + &#x27;% - &#x27; + gutterSize + &#x27;px)&#x27;}
+      },
+      gutterStyle: function (dimension, gutterSize) { return {&#x27;flex-basis&#x27;:  gutterSize + &#x27;px&#x27;} },
+      sizes: [65,35],
+      snapOffset: 0,
+      gutterSize: 6,
+      cursor: &#x27;col-resize&#x27;
+  });
+&lt;/script&gt;
+{% endblock %}
+{% block scripts %}
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js&quot;&gt;&lt;/script&gt;
+{% endblock %}
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

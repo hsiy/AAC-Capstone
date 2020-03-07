@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>..\AACForm\makeReports\templates\makeReports\Grading\feedback.html</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/addSLO.html">addSLO</a></li>
+                                <li><a href="../classes/create_account.html">create_account</a></li>
+                                <li><a href="../classes/csvManagement.html">csvManagement</a></li>
+                                <li><a href="../classes/dataCollectionSummary.html">dataCollectionSummary</a></li>
+                                <li><a href="../classes/editNewSLO.html">editNewSLO</a></li>
+                                <li><a href="../classes/feedback.html">feedback</a></li>
+                                <li><a href="../classes/grading_section.html">grading_section</a></li>
+                                <li><a href="../classes/graphing.html">graphing</a></li>
+                                <li><a href="../classes/graphingDept.html">graphingDept</a></li>
+                                <li><a href="../classes/importAssessment.html">importAssessment</a></li>
+                                <li><a href="../classes/importAssessmentSLO.html">importAssessmentSLO</a></li>
+                                <li><a href="../classes/importAssessmentSupplement.html">importAssessmentSupplement</a></li>
+                                <li><a href="../classes/importSLO.html">importSLO</a></li>
+                                <li><a href="../classes/importStakeholderComm.html">importStakeholderComm</a></li>
+                                <li><a href="../classes/rubric_review.html">rubric_review</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ..\AACForm\makeReports\templates\makeReports\Grading\feedback.html</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+{% extends &#x27;base.html&#x27; %}
+{% load bootstrap4 %}
+{% load static %}
+{% block styles %}
+&lt;style&gt;
+  .please-scroll{
+    height: calc(100vh - 195px);
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+  .italics{
+      font-style: italic;
+  }
+  .italics p{
+      margin:2pt;
+  }
+  .split {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+  }
+  .gutter {
+      background-color: rgb(165, 165, 165);
+      background-repeat: no-repeat;
+      background-position: 50%;
+  }
+  .gutter.gutter-horizontal {
+      cursor: col-resize;
+      background-image: url(&#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==&#x27;);
+  }
+  &lt;/style&gt;
+&lt;!--this page use shelves css to make the table, because Bootstrap grid system was insufficient--&gt;
+&lt;link href=&quot;{% static &#x27;css/shelves.css&#x27; %}&quot; rel=&quot;stylesheet&quot;&gt;
+{% endblock %}
+{% block content %}
+&lt;h5&gt;Feedback for {{rpt.year|add:&quot;-1&quot;}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})&lt;/h5&gt;
+&lt;div class=&quot;container-fluid&quot;&gt;
+    &lt;div class = &quot;row&quot;&gt;
+      &lt;div class=&quot;col&quot;&gt;
+          &lt;a class=&quot;btn btn-primary&quot;  role=&quot;button&quot; href=&quot;{% url &#x27;makeReports:graded-rub-pdf&#x27; report=rpt.pk %}&quot;&gt;PDF of Feedback &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div id=&quot;one&quot; class=&quot;col please-scroll&quot;&gt;
+            &lt;!--showreport column--&gt;
+            {% include &#x27;makeReports/DisplayReport/reportIncluding.html&#x27; %}
+        &lt;/div&gt;
+        &lt;div id=&quot;two&quot; class=&quot;col please-scroll&quot;&gt;
+            &lt;!--grading column--&gt;
+            {% if rpt.rubric.rubricVersion.fullFile %}
+              Full Rubric: &lt;a href=&quot;{{rpt.rubric.rubricVersion.fullFile.url}}&quot;&gt;Download PDF&lt;/a&gt;
+            {% endif %}
+                &lt;table&gt;
+                  &lt;tr&gt;&lt;td&gt;&lt;h5&gt;Section I. SLOs&lt;/h5&gt;&lt;/td&gt;&lt;/tr&gt;
+                  {% for GRI in gri1 %}
+                    &lt;tr&gt;
+                      &lt;td&gt;
+                        {{GRI.item.text|safe}} 
+                        &lt;p&gt;&lt;b&gt;{{GRI.get_grade_display}}&lt;/b&gt;&lt;/p&gt;
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                        &lt;button class=&quot;btn btn-primary&quot;  role=&quot;button&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#col{{GRI.pk}}&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;col{{GRI.pk}}&quot;&gt;
+                                        More Details
+                        &lt;/button&gt;
+                        &lt;div class=&quot;collapse&quot; id=&quot;col{{GRI.pk}}&quot;&gt;
+                                &lt;div class=&quot;card card-body&quot;&gt;
+                                        &lt;ul class=&quot;list-group&quot;&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Did Not Meet Expectations: &lt;/b&gt;{{GRI.item.DMEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations with Concerns: &lt;/b&gt;{{GRI.item.MEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations Established: &lt;/b&gt;{{GRI.item.EEtext|safe}}&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;br&gt;&lt;br&gt;
+                    &lt;/td&gt;
+                    &lt;/tr&gt;
+                  {% endfor %}
+                  &lt;tr&gt;&lt;td&gt;&lt;b&gt;Section I Comments: &lt;/b&gt;{{gRub.section1Comment|safe}}&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;&lt;h5&gt;Section II. Assessments&lt;/h5&gt;&lt;/td&gt;&lt;/tr&gt;
+                  {% for GRI in gri2 %}
+                    &lt;tr&gt;
+                      &lt;td&gt;
+                        {{GRI.item.text|safe}} 
+                        &lt;p&gt;&lt;b&gt;{{GRI.get_grade_display}}&lt;/b&gt;&lt;/p&gt;
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                        &lt;button class=&quot;btn btn-primary&quot;  role=&quot;button&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#col{{GRI.pk}}&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;col{{GRI.pk}}&quot;&gt;
+                                        More Details
+                        &lt;/button&gt;
+                        &lt;div class=&quot;collapse&quot; id=&quot;col{{GRI.pk}}&quot;&gt;
+                                &lt;div class=&quot;card card-body&quot;&gt;
+                                        &lt;ul class=&quot;list-group&quot;&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Did Not Meet Expectations: &lt;/b&gt;{{GRI.item.DMEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations with Concerns: &lt;/b&gt;{{GRI.item.MEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations Established: &lt;/b&gt;{{GRI.item.EEtext|safe}}&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;br&gt;&lt;br&gt;
+                    &lt;/td&gt;
+                    &lt;/tr&gt;
+                  {% endfor %}
+                  &lt;tr&gt;&lt;td&gt;&lt;b&gt;Section II Comments: &lt;/b&gt;{{gRub.section2Comment|safe}}&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;&lt;h5&gt;Section III. Data&lt;/h5&gt;&lt;/td&gt;&lt;/tr&gt;
+                  {% for GRI in gri3 %}
+                    &lt;tr&gt;
+                      &lt;td&gt;
+                        {{GRI.item.text|safe}} 
+                        &lt;p&gt;&lt;b&gt;{{GRI.get_grade_display}}&lt;/b&gt;&lt;/p&gt;
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                        &lt;button class=&quot;btn btn-primary&quot;  role=&quot;button&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#col{{GRI.pk}}&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;col{{GRI.pk}}&quot;&gt;
+                                        More Details
+                        &lt;/button&gt;
+                        &lt;div class=&quot;collapse&quot; id=&quot;col{{GRI.pk}}&quot;&gt;
+                                &lt;div class=&quot;card card-body&quot;&gt;
+                                        &lt;ul class=&quot;list-group&quot;&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Did Not Meet Expectations: &lt;/b&gt;{{GRI.item.DMEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations with Concerns: &lt;/b&gt;{{GRI.item.MEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations Established: &lt;/b&gt;{{GRI.item.EEtext|safe}}&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;br&gt;&lt;br&gt;
+                    &lt;/td&gt;
+                    &lt;/tr&gt;
+                  {% endfor %}
+                  &lt;tr&gt;&lt;td&gt;&lt;b&gt;Section III Comments: &lt;/b&gt;{{gRub.section3Comment|safe}}&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;&lt;h5&gt;Section IV. Decisions &amp; Actions&lt;/h5&gt;&lt;/td&gt;&lt;/tr&gt;
+                  {% for GRI in gri4 %}
+                    &lt;tr&gt;
+                      &lt;td&gt;
+                        {{GRI.item.text|safe}} 
+                        &lt;p&gt;&lt;b&gt;{{GRI.get_grade_display}}&lt;/b&gt;&lt;/p&gt;
+                      &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                        &lt;button class=&quot;btn btn-primary&quot;  role=&quot;button&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#col{{GRI.pk}}&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;col{{GRI.pk}}&quot;&gt;
+                                        More Details
+                        &lt;/button&gt;
+                        &lt;div class=&quot;collapse&quot; id=&quot;col{{GRI.pk}}&quot;&gt;
+                                &lt;div class=&quot;card card-body&quot;&gt;
+                                        &lt;ul class=&quot;list-group&quot;&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Did Not Meet Expectations: &lt;/b&gt;{{GRI.item.DMEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations with Concerns: &lt;/b&gt;{{GRI.item.MEtext|safe}}&lt;/li&gt;
+                                            &lt;li class=&quot;list-group-item&quot;&gt;&lt;b&gt;Met Expectations Established: &lt;/b&gt;{{GRI.item.EEtext|safe}}&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;br&gt;&lt;br&gt;
+                    &lt;/td&gt;
+                    &lt;/tr&gt;
+                  {% endfor %}
+                  &lt;tr&gt;&lt;td&gt;&lt;b&gt;Section IV Comments: &lt;/b&gt;{{gRub.section4Comment|safe}}&lt;/td&gt;&lt;/tr&gt;
+                  &lt;tr&gt;&lt;td&gt;&lt;b&gt;Overall Comments: &lt;/b&gt;{{gRub.generalComment|safe}}&lt;/td&gt;&lt;/tr&gt;
+                &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  /**
+  * Handles the adjustment of the width of the columns, uses Split.js library
+  * @class feedback
+  */
+  var splitobj = Split([&quot;#one&quot;,&quot;#two&quot;], {
+      elementStyle: function (dimension, size, gutterSize) { 
+          return {&#x27;flex-basis&#x27;: &#x27;calc(&#x27; + size + &#x27;% - &#x27; + gutterSize + &#x27;px)&#x27;}
+      },
+      gutterStyle: function (dimension, gutterSize) { return {&#x27;flex-basis&#x27;:  gutterSize + &#x27;px&#x27;} },
+      sizes: [65,35],
+      snapOffset: 0,
+      gutterSize: 6,
+      cursor: &#x27;col-resize&#x27;
+  });
+&lt;/script&gt;
+{% endblock %}
+{% block scripts %}
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js&quot;&gt;&lt;/script&gt;
+{% endblock %}
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
