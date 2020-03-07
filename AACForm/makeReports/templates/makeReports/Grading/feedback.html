@@ -4,7 +4,7 @@
 {% block styles %}
 <style>
   .please-scroll{
-    height: calc(100vh - 275px);
+    height: calc(100vh - 200px);
     overflow-y: auto;
     overflow-x: auto;
   }
@@ -33,7 +33,7 @@
 <link href="{% static 'css/shelves.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<h5>{{rpt.year|add:"-1"}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})</h5>
+<h5>Feedback for {{rpt.year|add:"-1"}}-{{rpt.year}} Report for {{rpt.degreeProgram.name}} ({{rpt.degreeProgram.level}})</h5>
 <div class="container-fluid">
     <div class = "row">
       <div class="col">
