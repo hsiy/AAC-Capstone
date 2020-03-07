@@ -120,6 +120,10 @@
     </div>
 </div>
 <script>
+      /**
+     * Handles the adjustment of the width of the columns, uses Split.js library
+     * @class grading_section
+     */
   var splitobj = Split(["#one","#two"], {
       elementStyle: function (dimension, size, gutterSize) { 
           return {'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)'}
