@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from makeReports.views.helperFunctions.section_context import *
 from django_weasyprint import WeasyTemplateView
-from PyPDF4 import PdfFileMerger, PdfFileReader
+from PyPDF2 import PdfFileMerger, PdfFileReader
 from types import SimpleNamespace
 from weasyprint import HTML, CSS
 import tempfile
