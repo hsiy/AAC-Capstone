@@ -156,6 +156,7 @@ class SubmitReport(DeptReportMixin, FormView):
             dict : context for template
         """
         context = super(SubmitReport,self).get_context_data(**kwargs)
+        context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
