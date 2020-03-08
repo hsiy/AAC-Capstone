@@ -146,6 +146,8 @@ f = open(os.path.join(BASE_DIR,'gd_cred2.json'),'w')
 f.write(os.environ['GD_KEY'])
 f.close()
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE= os.path.join(BASE_DIR,'gd_cred2.json')
 DEFAULT_FILE_STORAGE = "gdstorage.storage.GoogleDriveStorage"
 SUMMERNOTE_THEME = 'bs4'
