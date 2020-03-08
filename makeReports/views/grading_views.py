@@ -328,6 +328,7 @@ class OverallComment(AACReportMixin,FormView):
             dict : context of template
         """
         context = super(OverallComment,self).get_context_data(**kwargs)
+        context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
@@ -422,6 +423,7 @@ class RubricReview(AACReportMixin, FormView):
             dict : context for template
         """
         context = super(RubricReview,self).get_context_data(**kwargs)
+        context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         rIs = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion)
         context['gRub'] = self.report.rubric
         context['object_list'] = self.GRIs
@@ -509,6 +511,7 @@ class Feedback(DeptAACMixin, TemplateView):
             dict : context for template
         """
         context = super(Feedback,self).get_context_data(**kwargs)
+        context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         context['rpt'] = self.report
         context['gRub'] = self.report.rubric
         context['gri1'] = self.GRIs.filter(item__section=1)
