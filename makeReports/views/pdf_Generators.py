@@ -22,7 +22,6 @@ from functools import wraps
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.shortcuts import resolve_url
-from django.utils.decorators import available_attrs
 from makeReports.views.helperFunctions.mixins import *
 from urllib.parse import urlparse
 import io
@@ -68,7 +67,7 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
     """
 
     def decorator(view_func):
-        @wraps(view_func, assigned=available_attrs(view_func))
+        @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             # the following line is the only change with respect to
             # user_passes_test:
@@ -270,29 +269,17 @@ def reportPDF(request, report):
     merged.append(f1and2)
     #start with section 1 and 2, then append assessment supplements
     for sup in assessSups:
-        #get from file server, write to temporary file, append file
-        rep = requests.get(sup.supplement.url)
-        f7 = tempfile.TemporaryFile()
-        f7.write(rep.content)
-        merged.append(PdfFileReader(f7))
+        merged.append(PdfFileReader(sup.supplement.open()))
     #add section 3
     merged.append(f3)
     #append data supplements
     for sup in dataSups:
-        #get from file server, write to temporary file, append file
-        rep = requests.get(sup.supplement.url)
-        f7 = tempfile.TemporaryFile()
-        f7.write(rep.content)
-        merged.append(PdfFileReader(f7))
+        merged.append(PdfFileReader(sup.supplement.open()))
     #append section 4
     merged.append(f4)
     #add report supplements
     for sup in repSups:
-        #get from file server, write to temporary file, append file
-        rep = requests.get(sup.supplement.url)
-        f7 = tempfile.TemporaryFile()
-        f7.write(rep.content)
-        merged.append(PdfFileReader(f7))
+        merged.append(PdfFileReader(sup.supplement.open()))
     #write the merged pdf to the HTTP Response
     http_response = HttpResponse(content_type="application/pdf")
     merged.write(http_response)
