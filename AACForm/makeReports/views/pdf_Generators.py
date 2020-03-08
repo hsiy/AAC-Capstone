@@ -22,6 +22,7 @@ from functools import wraps
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.shortcuts import resolve_url
+from django.utils.decorators import available_attrs
 from makeReports.views.helperFunctions.mixins import *
 from urllib.parse import urlparse
 import io
@@ -67,7 +68,7 @@ def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_
     """
 
     def decorator(view_func):
-        @wraps(view_func)
+        @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
             # the following line is the only change with respect to
             # user_passes_test:
