@@ -68,7 +68,7 @@ def allRubricItemsSomeGrades(rIs,gRIs):
     for rI in rIs:
         gr = gRIs.filter(item=rI).last()
         if gr:
-            con.append((rI, gr.grade))
+            con.append((rI, gr.get_grade_display))
         else:
             con.append((rI,"Not graded"))
     return con
@@ -427,10 +427,10 @@ class RubricReview(AACReportMixin, FormView):
         rIs = RubricItem.objects.filter(rubricVersion=self.report.rubric.rubricVersion)
         context['gRub'] = self.report.rubric
         context['object_list'] = self.GRIs
-        context['rIs1'] = allRubricItemsSomeGrades(rIs.filter(section=1),self.GRIs)
-        context['rIs2'] = allRubricItemsSomeGrades(rIs.filter(section=2),self.GRIs)
-        context['rIs3'] = allRubricItemsSomeGrades(rIs.filter(section=3),self.GRIs)
-        context['rIs4'] = allRubricItemsSomeGrades(rIs.filter(section=4),self.GRIs)
+        context['rIs1'] = allRubricItemsSomeGrades(rIs.filter(section=1).order_by("order","pk"),self.GRIs)
+        context['rIs2'] = allRubricItemsSomeGrades(rIs.filter(section=2).order_by("order","pk"),self.GRIs)
+        context['rIs3'] = allRubricItemsSomeGrades(rIs.filter(section=3).order_by("order","pk"),self.GRIs)
+        context['rIs4'] = allRubricItemsSomeGrades(rIs.filter(section=4).order_by("order","pk"),self.GRIs)
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
@@ -514,10 +514,10 @@ class Feedback(DeptAACMixin, TemplateView):
         context['reportSups'] = ReportSupplement.objects.filter(report=self.report)
         context['rpt'] = self.report
         context['gRub'] = self.report.rubric
-        context['gri1'] = self.GRIs.filter(item__section=1)
-        context['gri2'] = self.GRIs.filter(item__section=2)
-        context['gri3'] = self.GRIs.filter(item__section=3)
-        context['gri4'] = self.GRIs.filter(item__section=4)
+        context['gri1'] = self.GRIs.filter(item__section=1).order_by("item__order","item__pk")
+        context['gri2'] = self.GRIs.filter(item__section=2).order_by("item__order","item__pk")
+        context['gri3'] = self.GRIs.filter(item__section=3).order_by("item__order","item__pk")
+        context['gri4'] = self.GRIs.filter(item__section=4).order_by("item__order","item__pk")
         context = section1Context(self,context)
         context = section2Context(self,context)
         context = section3Context(self,context)
