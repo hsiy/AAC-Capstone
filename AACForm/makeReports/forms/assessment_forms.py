@@ -21,9 +21,9 @@ class CreateNewAssessment(forms.Form):
     finalTerm = forms.ChoiceField(label="Point in Program Assessment is Administered",choices = ((True, "In final term"), (False, "In final year")), widget=forms.Select(attrs={'class':'form-control col-6'}))
     where = forms.CharField(label="Where does the assessment occur",widget= SummernoteWidget(attrs={'style':'width:750px'}))
     allStudents = forms.ChoiceField(label="Population Measured",choices = ( (True, "All Students"),(False,"Sample of Students")),widget=forms.Select(attrs={'class':'form-control col-6'}))
-    sampleDescription = forms.CharField(label="Describe what students are sampled (if not all)",widget= SummernoteWidget(attrs={'style':'width:750px'}), required=False)
+    sampleDescription = forms.CharField(label="Describe what students are sampled (if not all)",widget= SummernoteWidget(attrs={'style':'width:750px','scrolling':'no'}), required=False)
     frequencyChoice = forms.ChoiceField(label="Frequency of Data Collection", choices=FREQUENCY_CHOICES, widget=forms.Select(attrs={'class':'form-control col-4'}))
-    frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(attrs={'style':'width:750px'}),required=False)
+    frequency = forms.CharField(label="Describe frequency if other",widget=SummernoteWidget(attrs={'style':'width:750px','scrolling':'no'}),required=False)
     threshold = forms.CharField(max_length=500,label="Proficiency Threshold", widget=forms.TextInput(attrs={'class':'form-control col-6'}))
     target = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'class':'form-control col-2','addon_after':'%','placeholder':'Target'}), label="Program Proficiency Target: Percentage of students that achieve the proficiency threshold")
     
