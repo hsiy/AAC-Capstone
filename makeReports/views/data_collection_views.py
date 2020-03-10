@@ -234,6 +234,25 @@ class NewSLOStatus(DeptReportMixin,FormView):
         except SLOInReport.DoesNotExist:
             raise Http404("SLO matching URL does not exist.")
         return super(NewSLOStatus,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        """
+        Gets context for template
+
+        Returns:
+            dict : context for template
+        """
+        context = super(NewSLOStatus,self).get_context_data(**kwargs)
+        assessments = AssessmentVersion.objects.filter(slo=self.slo).order_by('number','pk')
+        assessTargs = list()
+        for a in assessments:
+            try:
+                agg = AssessmentAggregate.objects.get(assessmentVersion=a)
+                assessTargs.append((a.number,a.assessment.title,a.target,agg.aggregate_proficiency))
+            except:
+                assessTargs.append((a.number,a.assessment.title,a.target,"-"))
+        context["aTs"] = assessTargs
+        context['slo'] = self.slo
+        return context
     def get_success_url(self):
         """
         Gets URL to go to upon success (data summary)
@@ -302,6 +321,25 @@ class EditSLOStatus(DeptReportMixin,FormView):
         initial = super(EditSLOStatus, self).get_initial()
         initial['status'] = self.slo_status.status
         return initial
+    def get_context_data(self, **kwargs):
+        """
+        Gets context for template
+
+        Returns:
+            dict : context for template
+        """
+        context = super(EditSLOStatus,self).get_context_data(**kwargs)
+        assessments = AssessmentVersion.objects.filter(slo=self.slo).order_by('number','pk')
+        assessTargs = list()
+        for a in assessments:
+            try:
+                agg = AssessmentAggregate.objects.get(assessmentVersion=a)
+                assessTargs.append((a.number,a.assessment.title,a.target,agg.aggregate_proficiency))
+            except:
+                assessTargs.append((a.number,a.assessment.title,a.target,"-"))
+        context["aTs"] = assessTargs
+        context['slo'] = self.slo
+        return context
     def get_success_url(self):
         """
         Gets URL to go to upon success (data summary)
