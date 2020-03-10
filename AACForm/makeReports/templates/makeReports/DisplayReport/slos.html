@@ -14,9 +14,11 @@
                     {{slo.slo.get_blooms_display}}
                 </td>
                 <td>
+                    {% if slo_list.0.report.degreeProgram.level == "GR" %}
                     {% for gG in slo.slo.gradGoals.all %}
                             <p>{{gG.text|safe}}</p>
                     {% endfor %}
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
