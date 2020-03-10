@@ -47,6 +47,7 @@
                     Needs Attention
             </button>
             {% endif %}
+            <a class="btn btn-primary"  role="button" href="{% url 'makeReports:graded-rub-pdf' report=rpt.pk %}" style="display:inline;">PDF of Feedback </a>
             {% include 'makeReports/todoSansButtonReview.html' %}
         </div>
     </div>

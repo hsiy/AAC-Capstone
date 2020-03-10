@@ -18,7 +18,7 @@
                     <div class="column-2">Aggregate</div>
                 </div>
                 {% for assessment in assessment_data_dict.assessments %}
-                <div class="row-sh align-items-center border-bottom pt-3 pb-3" {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:rgb(218, 218, 218);" {% endif %}>
+                <div class="row-sh align-items-center border-bottom pt-3 pb-3" {% if not assessment.slo_obj.number|divisibleby:2 %} style="background-color:rgb(228, 238, 253);" {% endif %}>
                     <div class="column-6">
                             <b>SLO {{assessment.slo_obj.number}} -
                                 Measure {{assessment.assessment_obj.number}}, {{assessment.assessment_text}}</b>
