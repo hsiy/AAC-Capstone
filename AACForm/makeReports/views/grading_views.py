@@ -48,7 +48,7 @@ def getInitialRubric(rIs, r, initial):
     for ri in rIs:
         try:
             GRI = GradedRubricItem.objects.filter(rubric=r.rubric, item=ri).last()
-            initial["rI"+str(ri.pk)]=GRI.get_grade_display
+            initial["rI"+str(ri.pk)]=GRI.grade
         except:
             pass
     return initial
