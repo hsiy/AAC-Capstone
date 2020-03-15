@@ -144,9 +144,9 @@ class DuplicateRubricForm(forms.Form):
     new_name = forms.CharField(max_length=1000)
 class SubmitGrade(forms.Form):
     """
-    Dummy form to submit rubric
+    Form to submit rubric
     """
-    hidden = forms.CharField(max_length=5,widget=forms.HiddenInput(), required=False)
+    override = forms.BooleanField(widget=forms.CheckboxInput(), required=False,label="Submit without reviewing all rubric items")
     def __init__(self, *args, **kwargs):
         """
         Initializes form and sets valid on the instance
@@ -156,6 +156,8 @@ class SubmitGrade(forms.Form):
         """
         self.valid = kwargs.pop('valid')
         super(SubmitGrade, self).__init__(*args, **kwargs)
+        if self.valid:
+            self.fields['override'].widget = forms.HiddenInput()
     def clean(self):
         """
         Cleans form and raises validation error if not valid
@@ -164,7 +166,7 @@ class SubmitGrade(forms.Form):
             ValidationError : the grading is not complete
         """
         super().clean()
-        if not self.valid:
+        if not (self.valid or self.cleaned_data['override']):
             raise forms.ValidationError("Not all rubric items have been graded.")
 class OverallCommentForm(CleanSummer,forms.Form):
     """

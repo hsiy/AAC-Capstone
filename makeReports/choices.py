@@ -2,6 +2,7 @@
 Holds static choice tuples that should not change
 """
 BLOOMS_CHOICES = (
+    ('', '------'),
     ("KN","Knowledge"),
     ("CO","Comprehension"),
     ("AP", "Application"),

@@ -12,7 +12,7 @@ from .helperFunctions.mixins import *
 from .helperFunctions.todos import todoGetter
 from django.http import Http404
 
-class ReportFirstPage(DeptOnlyMixin,UpdateView):
+class ReportFirstPage(DeptAACMixin,UpdateView):
     """
     View to set report wide attributes
     """

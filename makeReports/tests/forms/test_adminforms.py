@@ -140,6 +140,7 @@ class GenerateReportsTests(TestCase):
         """
         rubric = baker.make("Rubric")
         f = GenerateReports({
+            'year':2019,
             'rubric': rubric.pk
         })
         self.assertTrue(f.is_valid())
@@ -154,6 +155,7 @@ class GenerateReportsTests(TestCase):
         Tests the form rejects a form where rubric is not an integer
         """
         f = GenerateReports({
+            'year':2019,
             "rubric":"not an int"
         })
         self.assertFalse(f.is_valid())

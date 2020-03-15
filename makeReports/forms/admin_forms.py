@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from makeReports.choices import *
 from .cleaners import CleanSummer
 from django_summernote.widgets import SummernoteWidget
+from datetime import datetime
 
 class UpdateUserForm(forms.Form):
     """
@@ -49,6 +50,7 @@ class GenerateReports(forms.Form):
     """
     Form to generate reports
     """
+    year = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control col-6'}))
     rubric = forms.ModelChoiceField(queryset=Rubric.objects.order_by('-date'), widget=forms.Select(attrs={'class':'form-control col-6'}))
 class MakeNewAccount(UserCreationForm):
     """

@@ -51,7 +51,7 @@ class DeptAACMixin(LoginRequiredMixin,UserPassesTestMixin):
         dept = (self.report.degreeProgram.department == self.request.user.profile.department)
         aac = getattr(self.request.user.profile, "aac")
         return dept or aac
-class DeptReportMixin(DeptOnlyMixin):
+class DeptReportMixin(DeptAACMixin):
     """
     Attaches the :class:`~makeReports.models.report_models.Report` matching to the instance and puts it in the context
 
