@@ -23,7 +23,7 @@ class SLOFormsTest(TestCase):
         gg = baker.make("GradGoal")
         f = CreateNewSLO({
             'text':'Students will acknowlege the affect of the criminal justice system.',
-            'blooms':BLOOMS_CHOICES[0][0],
+            'blooms':BLOOMS_CHOICES[1][0],
             'gradGoals':gg.pk
         })
         self.assertTrue(f.is_valid())

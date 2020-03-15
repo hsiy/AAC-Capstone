@@ -25,7 +25,7 @@ class AdminHome(AACOnlyMixin,FormView):
     success_url = reverse_lazy('makeReports:gen-rpt-suc')
     def form_valid(self, form):
         """
-        Generates all reports in cycle for this year with given rubric (in form)
+        Generates all reports in cycle for the year with given rubric (in form)
         
         Args:
             form (GenerateReports): completed form to process
@@ -34,7 +34,7 @@ class AdminHome(AACOnlyMixin,FormView):
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         #generate this years reports
-        thisYear = datetime.now().year
+        thisYear = form.cleaned_data['year']
         dPs = DegreeProgram.objects.all()
         for dP in dPs:
             if dP.cycle and dP.cycle > 0:
@@ -46,6 +46,16 @@ class AdminHome(AACOnlyMixin,FormView):
                         gR = GradedRubric.objects.create(rubricVersion = form.cleaned_data['rubric'])
                         Report.objects.create(year=thisYear, degreeProgram=dP,rubric=gR, submitted = False)
         return super(AdminHome, self).form_valid(form)
+    def get_initial(self):
+        """
+        Sets the initial year to this year
+
+        Returns:
+            dict : initial form values
+        """
+        initial = super(AdminHome, self).get_initial()
+        initial['year'] = datetime.now().year
+        return initial
 
 class GenerateReportSuccess(AACOnlyMixin,TemplateView):
     """
