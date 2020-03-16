@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -176,10 +176,7 @@ which this class then implements the cleaning method for</p>
 <dl class="function">
 <dt id="makeReports.forms.cleaners.cleanText">
 <code class="sig-prename descclassname">makeReports.forms.cleaners.</code><code class="sig-name descname">cleanText</code><span class="sig-paren">(</span><em class="sig-param">txt</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.cleaners.cleanText" title="Permalink to this definition">¶</a></dt>
-<dd><p>This code removes unnecessary markup from rich text, primarily from malicious purposes such as
-adding scripts or from copying pasting (e.g. Word adds thousands of lines of markup)</p>
-<p class="rubric">Notes</p>
-<p>This code was adapted from the Javascript plugin summernote-cleaner (also part of project)</p>
+<dd><p>This code removes unnecessary markup - resulting from malice or Microsoft office adding thousands of lines of markup</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>txt</strong> (<em>str</em>) – text to be cleaned</p>

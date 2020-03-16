@@ -125,24 +125,96 @@ class SubmitReport(DeptReportMixin, FormView):
         slos = SLOInReport.objects.filter(report=self.report)
         valid = True
         eMsg = "The report is not complete.\n"
-        if slos.count() == 0 :
-            valid = False
-            eMsg = eMsg+"There are no SLOs.\n"
-        for slo in slos:
-            if slo.numberOfAssess==0:
+        try:
+            setting = RequiredFieldSetting.objects.get(name="author")
+            if setting.required:
+                if not self.report.author or self.report.author=="":
+                    valid = False
+                    eMsg = eMsg+"There is no report author.\n"
+        except:
+            if not self.report.author or self.report.author=="":
                 valid = False
-                eMsg = eMsg+"There is not an assessment for SLO "+str(slo.number)+".\n"
-            if DecisionsActions.objects.filter(sloIR=slo).count()==0:
+                eMsg = eMsg+"There is no report author.\n"
+        try:
+            setting = RequiredFieldSetting.objects.get(name="dateRange")
+            if setting.required:
+                if not self.report.date_range_of_reported_data:
+                    valid = False
+                    eMsg = eMsg+"There is no date range of reported data.\n"
+        except:
+            pass
+        try:
+            setting = RequiredFieldSetting.objects.get(name="sloCount")
+            if setting.required:
+                if slos.count() == 0 :
+                    valid = False
+                    eMsg = eMsg+"There are no SLOs.\n"
+        except:
+            if slos.count() == 0 :
                 valid = False
-                eMsg = eMsg+"There are no decisions or actions for SLO "+str(slo.number)+".\n"
-        assesses = AssessmentVersion.objects.filter(report=self.report)
-        if not self.report.author or self.report.author=="":
-            valid = False
-            eMsg = eMsg+"There is no report author.\n"
-        if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
-            valid == False
-            eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
-        if ResultCommunicate.objects.filter(report=self.report).count() == 0:
+                eMsg = eMsg+"There are no SLOs.\n"
+        try:
+            setting = RequiredFieldSetting.objects.get(name="sloComm")
+            if setting.required:
+                if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+                    valid = False
+                    eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
+        except:
+            if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+                valid = False
+                eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
+        try:
+            assess = RequiredFieldSetting.objects.get(name="assess").required
+        except:
+            assess = True
+        try:
+            decAct = RequiredFieldSetting.objects.get(name="decAct").required
+        except:
+            decAct = True
+        try:
+            dAssess = RequiredFieldSetting.objects.get(name="directAssess").required
+        except:
+            dAssess = False
+        try:
+            status = RequiredFieldSetting.objects.get(name="status").required
+        except:
+            status = False
+        if assess or decAct or dAssess or status:
+            for slo in slos:
+                if assess and slo.numberOfAssess==0:
+                    valid = False
+                    eMsg = eMsg+"There is not an assessment for SLO "+str(slo.number)+".\n"
+                if dAssess and AssessmentVersion.objects.filter(slo=slo,assessment__directMeasure=True).count()<1:
+                    valid = False
+                    eMsg = eMsg+"There is not a direct assessment for SLO "+str(slo.number)+".\n"
+                if decAct and DecisionsActions.objects.filter(sloIR=slo).count()==0:
+                    valid = False
+                    eMsg = eMsg+"There are no decisions or actions for SLO "+str(slo.number)+".\n"
+                if status and SLOStatus.objects.filter(sloIR=slo).count()==0:
+                    valid = False
+                    eMsg = eMsg+"There is not an SLO status for SLO "+str(slo.number)+".\n"
+        try:
+            data = RequiredFieldSetting.objects.get(name="data").required
+        except:
+            data = False
+        try:
+            agg = RequiredFieldSetting.objects.get(name="agg").required
+        except:
+            agg = False
+        if data or agg:
+            assesses = AssessmentVersion.objects.filter(report=self.report)
+            for a in assesses:
+                if data and AssessmentData.objects.filter(assessmentVersion=a).count()<1:
+                    valid = False
+                    eMsg = eMsg+"There is not any data for SLO "+str(a.slo.number)+", measure "+str(a.number)+".\n"
+                if agg and AssessmentAggregate.objects.filter(assessmentVersion=a).count()<1:
+                    valid = False
+                    eMsg = eMsg+"There is not an assessment aggregate for SLO "+str(a.slo.number)+", measure "+str(a.number)+".\n"
+        try:
+            result = RequiredFieldSetting.objects.get(name="results").required
+        except:
+            result = True
+        if result and ResultCommunicate.objects.filter(report=self.report).count() == 0:
             valid = False
             eMsg = eMsg+"There is no description of communicating results.\n"
         kwargs['valid'] = valid

@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -201,7 +201,7 @@
 <dl class="method">
 <dt id="makeReports.views.AAC.aac_admin_views.AdminHome.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.AdminHome.form_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates all reports in cycle for this year with given rubric (in form)</p>
+<dd><p>Generates all reports in cycle for the year with given rubric (in form)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>form</strong> (<a class="reference internal" href="makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.GenerateReports" title="makeReports.forms.admin_forms.GenerateReports"><em>GenerateReports</em></a>) – completed form to process</p>
@@ -211,6 +211,20 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.AAC.aac_admin_views.AdminHome.get_initial">
+<code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.AdminHome.get_initial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the initial year to this year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>initial form values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -356,6 +370,41 @@
 <dl class="attribute">
 <dt id="makeReports.views.AAC.aac_admin_views.ArchivedDepartments.template_name">
 <code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/AACAdmin/CollegeDeptDP/archivedDepartments.html'</em><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ArchivedDepartments.template_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.views.AAC.aac_admin_views.ChangeRequiredFields">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.views.AAC.aac_admin_views.</code><code class="sig-name descname">ChangeRequiredFields</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
+<p>View to change what is required to submit a form</p>
+<dl class="attribute">
+<dt id="makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.form_class">
+<code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.RequiredReportFieldsForm" title="makeReports.forms.admin_forms.RequiredReportFieldsForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.forms.admin_forms.RequiredReportFieldsForm</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.form_valid">
+<code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.form_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>When form is valid, updates the settings for required fields to submit report</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.get_initial">
+<code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.get_initial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes form with current settings</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.success_url">
+<code class="sig-name descname">success_url</code><em class="property"> = '/aac/home/'</em><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.success_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.template_name">
+<code class="sig-name descname">template_name</code><em class="property"> = 'makeReports/AACAdmin/changeReqFields.html'</em><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

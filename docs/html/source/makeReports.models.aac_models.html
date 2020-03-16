@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -471,6 +471,57 @@
 <dt id="makeReports.models.aac_models.Department.profile_set">
 <code class="sig-name descname">profile_set</code><a class="headerlink" href="#makeReports.models.aac_models.Department.profile_set" title="Permalink to this definition">¶</a></dt>
 <dd><p><strong>Model field:</strong> department, accesses the M2M <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Profile" title="makeReports.models.basic_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.models.aac_models.</code><code class="sig-name descname">RequiredFieldSetting</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Model to hold settings for required field to submit report</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>AutoField</em>) – Id</p></li>
+<li><p><strong>name</strong> (<em>CharField</em>) – Name</p></li>
+<li><p><strong>required</strong> (<em>BooleanField</em>) – Required</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="exception">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting.id">
+<code class="sig-name descname">id</code><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting.id" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Model field:</strong> ID</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting.name" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Model field:</strong> name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting.objects">
+<code class="sig-name descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="makeReports.models.aac_models.RequiredFieldSetting.required">
+<code class="sig-name descname">required</code><a class="headerlink" href="#makeReports.models.aac_models.RequiredFieldSetting.required" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Model field:</strong> required</p>
 </dd></dl>
 
 </dd></dl>

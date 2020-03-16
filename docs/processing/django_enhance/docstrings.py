@@ -222,14 +222,8 @@ def _improve_attribute_docs(obj, name, lines):
         return
 
     if isinstance(obj, DeferredAttribute):
-        # This only points to a field name, not a field.
-        # Get the field by importing the name.
-        cls_path, field_name = name.rsplit(".", 1)
-        model = import_string(cls_path)
-        field = model._meta.get_field(obj.field_name)
-
         del lines[:]  # lines.clear() is Python 3 only
-        lines.append("**Model field:** {label}".format(label=field.verbose_name))
+        lines.append("**Model field:** {label}".format(label=obj.field.verbose_name))
     elif isinstance(obj, _FIELD_DESCRIPTORS):
         # These
         del lines[:]

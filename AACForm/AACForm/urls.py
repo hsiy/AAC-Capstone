@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 URLs used on the project level
 """
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('super/aac/admin/', admin.site.urls),
     re_path(r'^', include('makeReports.urls')),
     path('summernote/', include('django_summernote.urls')),
     re_path(r'^api-auth/', include('rest_framework.urls')),

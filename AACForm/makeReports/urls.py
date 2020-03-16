@@ -110,6 +110,7 @@ urlpatterns = [
     re_path(r'^aac/ann/add/$', views.MakeAnnouncement.as_view(),name='add-announ'),
     re_path(r'^aac/ann/(?P<pk>\d+)/delete/$', views.DeleteAnnouncement.as_view(),name='delete-announ'),
     re_path(r'^aac/ann/(?P<pk>\d+)/modify/$', views.ModifyAnnouncement.as_view(),name='edit-announ'),
+    re_path(r'^aac/report/required/$', views.ChangeRequiredFields.as_view(), name='req-fields'),
     #Grading urls
     re_path(r'^aac/report/(?P<report>\d+)/grading/entry/$',views.GradingEntry.as_view() ,name='grade-entry'),
     re_path(r'^aac/report/(?P<report>\d+)/grading/section1/$', views.Section1Grading.as_view(), name='grade-sec1'),

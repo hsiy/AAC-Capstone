@@ -160,7 +160,7 @@ SUMMERNOTE_CONFIG = {
     # Set custom storage class for attachments.
     'toolbar': [
         #['cleaner',['cleaner']],
-        ['style',['style']],
+        #['style',['style']],
         ['font',['bold','italic','underline','clear']],
         ['color',['color']],
         ['para',['ul','ol','paragraph']],

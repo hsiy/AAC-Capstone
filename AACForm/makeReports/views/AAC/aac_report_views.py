@@ -9,7 +9,6 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
 from django.http import Http404
 

@@ -22,10 +22,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -181,6 +181,8 @@
 </li>
         <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.CreateReportByDPForm.__init__">(makeReports.forms.admin_forms.CreateReportByDPForm method)</a>
 </li>
+        <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.RequiredReportFieldsForm.__init__">(makeReports.forms.admin_forms.RequiredReportFieldsForm method)</a>
+</li>
         <li><a href="source/makeReports.forms.assessment_forms.html#makeReports.forms.assessment_forms.CreateNewAssessment.__init__">(makeReports.forms.assessment_forms.CreateNewAssessment method)</a>
 </li>
         <li><a href="source/makeReports.forms.assessment_forms.html#makeReports.forms.assessment_forms.EditNewAssessmentForm.__init__">(makeReports.forms.assessment_forms.EditNewAssessmentForm method)</a>
@@ -200,6 +202,8 @@
         <li><a href="source/makeReports.forms.slo_forms.html#makeReports.forms.slo_forms.ImportSLOForm.__init__">(makeReports.forms.slo_forms.ImportSLOForm method)</a>
 </li>
         <li><a href="source/makeReports.forms.slo_forms.html#makeReports.forms.slo_forms.ImportStakeholderForm.__init__">(makeReports.forms.slo_forms.ImportStakeholderForm method)</a>
+</li>
+        <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.__init__">(makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -290,11 +294,15 @@
 </li>
       <li><a href="source/makeReports.tests.test_sloViews.html#makeReports.tests.test_sloViews.AddSLOUGTestPage">AddSLOUGTestPage (class in makeReports.tests.test_sloViews)</a>
 </li>
+      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.addSupplements">addSupplements() (in module makeReports.views.pdf_Generators)</a>
+</li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.AdminHome">AdminHome (class in makeReports.views.AAC.aac_admin_views)</a>
 </li>
       <li><a href="source/makeReports.models.data_models.html#makeReports.models.data_models.AssessmentAggregate.aggregate_proficiency">aggregate_proficiency (makeReports.models.data_models.AssessmentAggregate attribute)</a>
 </li>
       <li><a href="source/makeReports.tests.test_signals.html#makeReports.tests.test_signals.AggregateReceiverTests">AggregateReceiverTests (class in makeReports.tests.test_signals)</a>
+</li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.allow_empty">allow_empty (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
 </li>
       <li><a href="source/makeReports.views.grading_views.html#makeReports.views.grading_views.allRubricItemsSomeGrades">allRubricItemsSomeGrades() (in module makeReports.views.grading_views)</a>
 </li>
@@ -316,10 +324,10 @@
 </li>
       <li><a href="source/makeReports.tests.test_aacAdminViews.html#makeReports.tests.test_aacAdminViews.AnnouncementsTest">AnnouncementsTest (class in makeReports.tests.test_aacAdminViews)</a>
 </li>
-      <li><a href="source/makeReports.tests.test_APIs.html#makeReports.tests.test_APIs.APITesting">APITesting (class in makeReports.tests.test_APIs)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/makeReports.tests.test_APIs.html#makeReports.tests.test_APIs.APITesting">APITesting (class in makeReports.tests.test_APIs)</a>
+</li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ArchivedColleges">ArchivedColleges (class in makeReports.views.AAC.aac_admin_views)</a>
 </li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ArchivedDegreePrograms">ArchivedDegreePrograms (class in makeReports.views.AAC.aac_admin_views)</a>
@@ -468,6 +476,8 @@
         <li><a href="source/makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport.changedFromPrior">(makeReports.models.slo_models.SLOInReport attribute)</a>
 </li>
       </ul></li>
+      <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields">ChangeRequiredFields (class in makeReports.views.AAC.aac_admin_views)</a>
+</li>
       <li><a href="source/makeReports.forms.grading_forms.html#makeReports.forms.grading_forms.SubmitGrade.clean">clean() (makeReports.forms.grading_forms.SubmitGrade method)</a>
 
       <ul>
@@ -528,8 +538,6 @@
 </li>
       <li><a href="source/makeReports.models.grading_models.html#makeReports.models.grading_models.GradedRubric.complete">complete (makeReports.models.grading_models.GradedRubric attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.views.assessment_views.html#makeReports.views.assessment_views.AssessmentSummary.context_object_name">context_object_name (makeReports.views.assessment_views.AssessmentSummary attribute)</a>
 
       <ul>
@@ -537,9 +545,13 @@
 </li>
         <li><a href="source/makeReports.views.decisions_actions_views.html#makeReports.views.decisions_actions_views.DecisionsActionsSummary.context_object_name">(makeReports.views.decisions_actions_views.DecisionsActionsSummary attribute)</a>
 </li>
+        <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.context_object_name">(makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
         <li><a href="source/makeReports.views.slo_views.html#makeReports.views.slo_views.SLOSummary.context_object_name">(makeReports.views.slo_views.SLOSummary attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.views.helperFunctions.text_processing.html#makeReports.views.helperFunctions.text_processing.count_level_score">count_level_score() (in module makeReports.views.helperFunctions.text_processing)</a>
 </li>
       <li><a href="source/makeReports.views.helperFunctions.text_processing.html#makeReports.views.helperFunctions.text_processing.create_suggestions_dict">create_suggestions_dict() (in module makeReports.views.helperFunctions.text_processing)</a>
@@ -590,6 +602,8 @@
         <li><a href="source/makeReports.forms.widgets.html#makeReports.forms.widgets.StkChoicesJSWidget.Media.css">(makeReports.forms.widgets.StkChoicesJSWidget.Media attribute)</a>
 </li>
       </ul></li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView">CSVExportView (class in makeReports.views.helperFunctions.csvExport)</a>
+</li>
       <li><a href="source/makeReports.views.graphing_views.html#makeReports.views.graphing_views.CSVManagement">CSVManagement (class in makeReports.views.graphing_views)</a>
 </li>
       <li><a href="source/makeReports.tests.test_graphingCSV.html#makeReports.tests.test_graphingCSV.CSVPagesTest">CSVPagesTest (class in makeReports.tests.test_graphingCSV)</a>
@@ -738,10 +752,10 @@
         <li><a href="source/makeReports.models.basic_models.html#makeReports.models.basic_models.Profile.department_id">(makeReports.models.basic_models.Profile attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.College.department_set">department_set (makeReports.models.aac_models.College attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.tests.forms.test_adminforms.html#makeReports.tests.forms.test_adminforms.DepartmentFormTest">DepartmentFormTest (class in makeReports.tests.forms.test_adminforms)</a>
 </li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.DepartmentList">DepartmentList (class in makeReports.views.AAC.aac_admin_views)</a>
@@ -756,6 +770,10 @@
         <li><a href="source/makeReports.migrations.0003_auto_20191213_2149.html#makeReports.migrations.0003_auto_20191213_2149.Migration.dependencies">(makeReports.migrations.0003_auto_20191213_2149.Migration attribute)</a>
 </li>
         <li><a href="source/makeReports.migrations.0004_auto_20191213_2345.html#makeReports.migrations.0004_auto_20191213_2345.Migration.dependencies">(makeReports.migrations.0004_auto_20191213_2345.Migration attribute)</a>
+</li>
+        <li><a href="source/makeReports.migrations.0005_auto_20200315_1846.html#makeReports.migrations.0005_auto_20200315_1846.Migration.dependencies">(makeReports.migrations.0005_auto_20200315_1846.Migration attribute)</a>
+</li>
+        <li><a href="source/makeReports.migrations.0006_requiredfieldsetting.html#makeReports.migrations.0006_requiredfieldsetting.Migration.dependencies">(makeReports.migrations.0006_requiredfieldsetting.Migration attribute)</a>
 </li>
       </ul></li>
       <li><a href="source/makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptAACMixin">DeptAACMixin (class in makeReports.views.helperFunctions.mixins)</a>
@@ -922,6 +940,8 @@
 </li>
       <li><a href="source/makeReports.models.grading_models.html#makeReports.models.grading_models.RubricItem.EEtext">EEtext (makeReports.models.grading_models.RubricItem attribute)</a>
 </li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.exclude">exclude (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
       <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.Announcement.expiration">expiration (makeReports.models.aac_models.Announcement attribute)</a>
 </li>
   </ul></td>
@@ -1011,6 +1031,8 @@
 </li>
         <li><a href="source/makeReports.views.graphing_views.html#makeReports.views.graphing_views.OutputCSVDepartment.fields">(makeReports.views.graphing_views.OutputCSVDepartment attribute)</a>
 </li>
+        <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.fields">(makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
         <li><a href="source/makeReports.views.report_entry_extra_views.html#makeReports.views.report_entry_extra_views.AddEndSupplements.fields">(makeReports.views.report_entry_extra_views.AddEndSupplements attribute)</a>
 </li>
         <li><a href="source/makeReports.views.report_entry_extra_views.html#makeReports.views.report_entry_extra_views.ReportFirstPage.fields">(makeReports.views.report_entry_extra_views.ReportFirstPage attribute)</a>
@@ -1020,6 +1042,8 @@
         <li><a href="source/makeReports.views.rubric_views.html#makeReports.views.rubric_views.UpdateRubricFile.fields">(makeReports.views.rubric_views.UpdateRubricFile attribute)</a>
 </li>
       </ul></li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.filename">filename (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
       <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.FileSerializer">FileSerializer (class in makeReports.views.API.serializers)</a>
 </li>
       <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.FileSerializer.Meta">FileSerializer.Meta (class in makeReports.views.API.serializers)</a>
@@ -1053,6 +1077,8 @@
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.AdminHome.form_class">form_class (makeReports.views.AAC.aac_admin_views.AdminHome attribute)</a>
 
       <ul>
+        <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.form_class">(makeReports.views.AAC.aac_admin_views.ChangeRequiredFields attribute)</a>
+</li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.CreateDegreeProgram.form_class">(makeReports.views.AAC.aac_admin_views.CreateDegreeProgram attribute)</a>
 </li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.CreateDepartment.form_class">(makeReports.views.AAC.aac_admin_views.CreateDepartment attribute)</a>
@@ -1147,6 +1173,8 @@
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.AdminHome.form_valid">form_valid() (makeReports.views.AAC.aac_admin_views.AdminHome method)</a>
 
       <ul>
+        <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.form_valid">(makeReports.views.AAC.aac_admin_views.ChangeRequiredFields method)</a>
+</li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.CreateDegreeProgram.form_valid">(makeReports.views.AAC.aac_admin_views.CreateDegreeProgram method)</a>
 </li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.DeleteCollege.form_valid">(makeReports.views.AAC.aac_admin_views.DeleteCollege method)</a>
@@ -1259,6 +1287,8 @@
       <ul>
         <li><a href="source/makeReports.views.API.jsonAPIs.html#makeReports.views.API.jsonAPIs.ImportYearsAPI.get">(makeReports.views.API.jsonAPIs.ImportYearsAPI method)</a>
 </li>
+        <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.get">(makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
+</li>
       </ul></li>
       <li><a href="source/makeReports.models.slo_models.html#makeReports.models.slo_models.SLO.get_blooms_display">get_blooms_display() (makeReports.models.slo_models.SLO method)</a>
 </li>
@@ -1286,6 +1316,10 @@
         <li><a href="source/makeReports.views.data_collection_views.html#makeReports.views.data_collection_views.DataCollectionSummary.get_context_data">(makeReports.views.data_collection_views.DataCollectionSummary method)</a>
 </li>
         <li><a href="source/makeReports.views.data_collection_views.html#makeReports.views.data_collection_views.EditDataCollectionRow.get_context_data">(makeReports.views.data_collection_views.EditDataCollectionRow method)</a>
+</li>
+        <li><a href="source/makeReports.views.data_collection_views.html#makeReports.views.data_collection_views.EditSLOStatus.get_context_data">(makeReports.views.data_collection_views.EditSLOStatus method)</a>
+</li>
+        <li><a href="source/makeReports.views.data_collection_views.html#makeReports.views.data_collection_views.NewSLOStatus.get_context_data">(makeReports.views.data_collection_views.NewSLOStatus method)</a>
 </li>
         <li><a href="source/makeReports.views.decisions_actions_views.html#makeReports.views.decisions_actions_views.AddDecisionAction.get_context_data">(makeReports.views.decisions_actions_views.AddDecisionAction method)</a>
 </li>
@@ -1342,9 +1376,19 @@
         <li><a href="source/makeReports.views.slo_views.html#makeReports.views.slo_views.SLOSummary.get_context_data">(makeReports.views.slo_views.SLOSummary method)</a>
 </li>
       </ul></li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.get_csv_writer_fmtparams">get_csv_writer_fmtparams() (makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
+</li>
       <li><a href="source/makeReports.views.API.graphAPI.html#makeReports.views.API.graphAPI.get_degreeProgramSuccess_graph">get_degreeProgramSuccess_graph() (in module makeReports.views.API.graphAPI)</a>
 </li>
       <li><a href="source/makeReports.views.graphing_views.html#makeReports.views.graphing_views.OutputCSVDepartment.get_field_value">get_field_value() (makeReports.views.graphing_views.OutputCSVDepartment method)</a>
+
+      <ul>
+        <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.get_field_value">(makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
+</li>
+      </ul></li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.get_fields">get_fields() (makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
+</li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.get_filename">get_filename() (makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
 </li>
       <li><a href="source/makeReports.views.AAC.aac_report_views.html#makeReports.views.AAC.aac_report_views.CreateReport.get_form_kwargs">get_form_kwargs() (makeReports.views.AAC.aac_report_views.CreateReport method)</a>
 
@@ -1376,9 +1420,15 @@
 </li>
       <li><a href="source/makeReports.models.grading_models.html#makeReports.models.grading_models.GradedRubricItem.get_grade_display">get_grade_display() (makeReports.models.grading_models.GradedRubricItem method)</a>
 </li>
-      <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ModifyAccount.get_initial">get_initial() (makeReports.views.AAC.aac_admin_views.ModifyAccount method)</a>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.get_header_name">get_header_name() (makeReports.views.helperFunctions.csvExport.CSVExportView method)</a>
+</li>
+      <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.AdminHome.get_initial">get_initial() (makeReports.views.AAC.aac_admin_views.AdminHome method)</a>
 
       <ul>
+        <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.get_initial">(makeReports.views.AAC.aac_admin_views.ChangeRequiredFields method)</a>
+</li>
+        <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ModifyAccount.get_initial">(makeReports.views.AAC.aac_admin_views.ModifyAccount method)</a>
+</li>
         <li><a href="source/makeReports.views.assessment_views.html#makeReports.views.assessment_views.AddNewAssessmentSLO.get_initial">(makeReports.views.assessment_views.AddNewAssessmentSLO method)</a>
 </li>
         <li><a href="source/makeReports.views.assessment_views.html#makeReports.views.assessment_views.EditImportedAssessment.get_initial">(makeReports.views.assessment_views.EditImportedAssessment method)</a>
@@ -1740,6 +1790,8 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.header">header (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
       <li><a href="source/makeReports.views.basic_views.html#makeReports.views.basic_views.HelpPage">HelpPage (class in makeReports.views.basic_views)</a>
 </li>
   </ul></td>
@@ -1762,6 +1814,8 @@
         <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram.id">(makeReports.models.aac_models.DegreeProgram attribute)</a>
 </li>
         <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.Department.id">(makeReports.models.aac_models.Department attribute)</a>
+</li>
+        <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting.id">(makeReports.models.aac_models.RequiredFieldSetting attribute)</a>
 </li>
         <li><a href="source/makeReports.models.assessment_models.html#makeReports.models.assessment_models.Assessment.id">(makeReports.models.assessment_models.Assessment attribute)</a>
 </li>
@@ -1954,6 +2008,10 @@
 </li>
       <li><a href="source/makeReports.migrations.0004_auto_20191213_2345.html#module-makeReports.migrations.0004_auto_20191213_2345">makeReports.migrations.0004_auto_20191213_2345 (module)</a>
 </li>
+      <li><a href="source/makeReports.migrations.0005_auto_20200315_1846.html#module-makeReports.migrations.0005_auto_20200315_1846">makeReports.migrations.0005_auto_20200315_1846 (module)</a>
+</li>
+      <li><a href="source/makeReports.migrations.0006_requiredfieldsetting.html#module-makeReports.migrations.0006_requiredfieldsetting">makeReports.migrations.0006_requiredfieldsetting (module)</a>
+</li>
       <li><a href="source/makeReports.models.html#module-makeReports.models">makeReports.models (module)</a>
 </li>
       <li><a href="source/makeReports.models.aac_models.html#module-makeReports.models.aac_models">makeReports.models.aac_models (module)</a>
@@ -2062,6 +2120,8 @@
 </li>
       <li><a href="source/makeReports.views.helperFunctions.html#module-makeReports.views.helperFunctions">makeReports.views.helperFunctions (module)</a>
 </li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#module-makeReports.views.helperFunctions.csvExport">makeReports.views.helperFunctions.csvExport (module)</a>
+</li>
       <li><a href="source/makeReports.views.helperFunctions.mixins.html#module-makeReports.views.helperFunctions.mixins">makeReports.views.helperFunctions.mixins (module)</a>
 </li>
       <li><a href="source/makeReports.views.helperFunctions.section_context.html#module-makeReports.views.helperFunctions.section_context">makeReports.views.helperFunctions.section_context (module)</a>
@@ -2100,6 +2160,8 @@
         <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.GradGoalForm.media">(makeReports.forms.admin_forms.GradGoalForm property)</a>
 </li>
         <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.MakeNewAccount.media">(makeReports.forms.admin_forms.MakeNewAccount property)</a>
+</li>
+        <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.RequiredReportFieldsForm.media">(makeReports.forms.admin_forms.RequiredReportFieldsForm property)</a>
 </li>
         <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.UpdateUserForm.media">(makeReports.forms.admin_forms.UpdateUserForm property)</a>
 </li>
@@ -2170,6 +2232,10 @@
         <li><a href="source/makeReports.migrations.0003_auto_20191213_2149.html#makeReports.migrations.0003_auto_20191213_2149.Migration">(class in makeReports.migrations.0003_auto_20191213_2149)</a>
 </li>
         <li><a href="source/makeReports.migrations.0004_auto_20191213_2345.html#makeReports.migrations.0004_auto_20191213_2345.Migration">(class in makeReports.migrations.0004_auto_20191213_2345)</a>
+</li>
+        <li><a href="source/makeReports.migrations.0005_auto_20200315_1846.html#makeReports.migrations.0005_auto_20200315_1846.Migration">(class in makeReports.migrations.0005_auto_20200315_1846)</a>
+</li>
+        <li><a href="source/makeReports.migrations.0006_requiredfieldsetting.html#makeReports.migrations.0006_requiredfieldsetting.Migration">(class in makeReports.migrations.0006_requiredfieldsetting)</a>
 </li>
       </ul></li>
       <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.AnnouncementForm.Meta.model">model (makeReports.forms.admin_forms.AnnouncementForm.Meta attribute)</a>
@@ -2369,6 +2435,8 @@
 </li>
         <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.Department.name">(makeReports.models.aac_models.Department attribute)</a>
 </li>
+        <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting.name">(makeReports.models.aac_models.RequiredFieldSetting attribute)</a>
+</li>
         <li><a href="source/makeReports.models.grading_models.html#makeReports.models.grading_models.Rubric.name">(makeReports.models.grading_models.Rubric attribute)</a>
 </li>
       </ul></li>
@@ -2414,6 +2482,8 @@
         <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram.objects">(makeReports.models.aac_models.DegreeProgram attribute)</a>
 </li>
         <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.Department.objects">(makeReports.models.aac_models.Department attribute)</a>
+</li>
+        <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting.objects">(makeReports.models.aac_models.RequiredFieldSetting attribute)</a>
 </li>
         <li><a href="source/makeReports.models.assessment_models.html#makeReports.models.assessment_models.Assessment.objects">(makeReports.models.assessment_models.Assessment attribute)</a>
 </li>
@@ -2469,6 +2539,10 @@
 </li>
         <li><a href="source/makeReports.migrations.0004_auto_20191213_2345.html#makeReports.migrations.0004_auto_20191213_2345.Migration.operations">(makeReports.migrations.0004_auto_20191213_2345.Migration attribute)</a>
 </li>
+        <li><a href="source/makeReports.migrations.0005_auto_20200315_1846.html#makeReports.migrations.0005_auto_20200315_1846.Migration.operations">(makeReports.migrations.0005_auto_20200315_1846.Migration attribute)</a>
+</li>
+        <li><a href="source/makeReports.migrations.0006_requiredfieldsetting.html#makeReports.migrations.0006_requiredfieldsetting.Migration.operations">(makeReports.migrations.0006_requiredfieldsetting.Migration attribute)</a>
+</li>
       </ul></li>
       <li><a href="source/makeReports.forms.widgets.html#makeReports.forms.widgets.SLOChoicesJSWidget.option_template_name">option_template_name (makeReports.forms.widgets.SLOChoicesJSWidget attribute)</a>
 
@@ -2504,12 +2578,12 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/AACForm.urls.html#AACForm.urls.path">path() (in module AACForm.urls)</a>
-
-      <ul>
-        <li><a href="source/makeReports.urls.html#makeReports.urls.path">(in module makeReports.urls)</a>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.page_kwarg">page_kwarg (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
 </li>
-      </ul></li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.paginate_by">paginate_by (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.paginator_class">paginator_class (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
       <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.GradedRubricPDFGen.pdf_stylesheets">pdf_stylesheets (makeReports.views.pdf_Generators.GradedRubricPDFGen attribute)</a>
 
       <ul>
@@ -2598,12 +2672,6 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/AACForm.urls.html#AACForm.urls.re_path">re_path() (in module AACForm.urls)</a>
-
-      <ul>
-        <li><a href="source/makeReports.urls.html#makeReports.urls.re_path">(in module makeReports.urls)</a>
-</li>
-      </ul></li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.RecoverCollege">RecoverCollege (class in makeReports.views.AAC.aac_admin_views)</a>
 </li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.RecoverDegreeProgram">RecoverDegreeProgram (class in makeReports.views.AAC.aac_admin_views)</a>
@@ -2620,8 +2688,6 @@
         <li><a href="source/makeReports.views.API.jsonAPIs.html#makeReports.views.API.jsonAPIs.SLOSuggestionsAPI.renderer_classes">(makeReports.views.API.jsonAPIs.SLOSuggestionsAPI attribute)</a>
 </li>
       </ul></li>
-      <li><a href="source/makeReports.migrations.0001_squashed_0058_auto_20191202_1902.html#makeReports.migrations.0001_squashed_0058_auto_20191202_1902.Migration.replaces">replaces (makeReports.migrations.0001_squashed_0058_auto_20191202_1902.Migration attribute)</a>
-</li>
       <li><a href="source/makeReports.models.basic_models.html#makeReports.models.basic_models.Report">Report (class in makeReports.models.basic_models)</a>
 </li>
       <li><a href="source/makeReports.baker_recipes.basic_recipes.html#makeReports.baker_recipes.basic_recipes.report">report (in module makeReports.baker_recipes.basic_recipes)</a>
@@ -2682,8 +2748,6 @@
         <li><a href="source/makeReports.views.basic_views.html#makeReports.views.basic_views.ReportListSearchedDept">(class in makeReports.views.basic_views)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.reportPDF">reportPDF() (in module makeReports.views.pdf_Generators)</a>
 </li>
       <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.ReportPDFGen">ReportPDFGen (class in makeReports.views.pdf_Generators)</a>
@@ -2692,11 +2756,23 @@
 </li>
       <li><a href="source/makeReports.models.decisionsActions_models.html#makeReports.models.decisionsActions_models.ReportSupplement">ReportSupplement (class in makeReports.models.decisionsActions_models)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.models.decisionsActions_models.html#makeReports.models.decisionsActions_models.ReportSupplement.DoesNotExist">ReportSupplement.DoesNotExist</a>
 </li>
       <li><a href="source/makeReports.models.decisionsActions_models.html#makeReports.models.decisionsActions_models.ReportSupplement.MultipleObjectsReturned">ReportSupplement.MultipleObjectsReturned</a>
 </li>
       <li><a href="source/makeReports.models.basic_models.html#makeReports.models.basic_models.Report.reportsupplement_set">reportsupplement_set (makeReports.models.basic_models.Report attribute)</a>
+</li>
+      <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting.required">required (makeReports.models.aac_models.RequiredFieldSetting attribute)</a>
+</li>
+      <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting">RequiredFieldSetting (class in makeReports.models.aac_models)</a>
+</li>
+      <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting.DoesNotExist">RequiredFieldSetting.DoesNotExist</a>
+</li>
+      <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.RequiredFieldSetting.MultipleObjectsReturned">RequiredFieldSetting.MultipleObjectsReturned</a>
+</li>
+      <li><a href="source/makeReports.forms.admin_forms.html#makeReports.forms.admin_forms.RequiredReportFieldsForm">RequiredReportFieldsForm (class in makeReports.forms.admin_forms)</a>
 </li>
       <li><a href="source/makeReports.models.data_models.html#makeReports.models.data_models.ResultCommunicate">ResultCommunicate (class in makeReports.models.data_models)</a>
 </li>
@@ -2982,10 +3058,10 @@
         <li><a href="source/makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport.slo_id">(makeReports.models.slo_models.SLOInReport attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.models.slo_models.html#makeReports.models.slo_models.GradGoal.slo_set">slo_set (makeReports.models.slo_models.GradGoal attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/makeReports.views.API.jsonAPIs.html#makeReports.views.API.jsonAPIs.SloByDPListAPI">SloByDPListAPI (class in makeReports.views.API.jsonAPIs)</a>
 </li>
       <li><a href="source/makeReports.forms.widgets.html#makeReports.forms.widgets.SLOChoicesJSWidget">SLOChoicesJSWidget (class in makeReports.forms.widgets)</a>
@@ -3076,6 +3152,8 @@
 </li>
       <li><a href="source/makeReports.tests.test_sloViews.html#makeReports.tests.test_sloViews.SLOSummaryUGTestRecipe">SLOSummaryUGTestRecipe (class in makeReports.tests.test_sloViews)</a>
 </li>
+      <li><a href="source/makeReports.views.helperFunctions.csvExport.html#makeReports.views.helperFunctions.csvExport.CSVExportView.specify_separator">specify_separator (makeReports.views.helperFunctions.csvExport.CSVExportView attribute)</a>
+</li>
       <li><a href="source/makeReports.views.slo_views.html#makeReports.views.slo_views.StakeholderEntry">StakeholderEntry (class in makeReports.views.slo_views)</a>
 </li>
       <li><a href="source/makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram.startingYear">startingYear (makeReports.models.aac_models.DegreeProgram attribute)</a>
@@ -3103,6 +3181,8 @@
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.AdminHome.success_url">success_url (makeReports.views.AAC.aac_admin_views.AdminHome attribute)</a>
 
       <ul>
+        <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.success_url">(makeReports.views.AAC.aac_admin_views.ChangeRequiredFields attribute)</a>
+</li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.CreateCollege.success_url">(makeReports.views.AAC.aac_admin_views.CreateCollege attribute)</a>
 </li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.CreateDepartment.success_url">(makeReports.views.AAC.aac_admin_views.CreateDepartment attribute)</a>
@@ -3218,6 +3298,8 @@
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ArchivedDegreePrograms.template_name">(makeReports.views.AAC.aac_admin_views.ArchivedDegreePrograms attribute)</a>
 </li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ArchivedDepartments.template_name">(makeReports.views.AAC.aac_admin_views.ArchivedDepartments attribute)</a>
+</li>
+        <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ChangeRequiredFields.template_name">(makeReports.views.AAC.aac_admin_views.ChangeRequiredFields attribute)</a>
 </li>
         <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.CollegeList.template_name">(makeReports.views.AAC.aac_admin_views.CollegeList attribute)</a>
 </li>

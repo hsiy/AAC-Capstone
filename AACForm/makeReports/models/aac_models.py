@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
-from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os
 from .basic_models import gd_storage, NonArchivedManager
@@ -59,3 +58,9 @@ class Announcement(models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return mark_safe(self.text)
+class RequiredFieldSetting(models.Model):
+    """
+    Model to hold settings for required field to submit report
+    """
+    name = models.CharField(max_length=200, blank=True, default="Setting")
+    required = models.BooleanField(default=False)

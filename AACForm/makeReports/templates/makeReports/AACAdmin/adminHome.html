@@ -7,7 +7,7 @@
 <a  role="button" class="btn btn-primary" href="{% url 'makeReports:rubric-list'  %}">Rubrics</a>
 <br>
 <br>
-<h5>Generate Reports:</h5>
+<h5>Generate Reports</h5>
 <div class="col-6">
 Note, if a report for a degree program the year already exists, this will not assign another or change the assignment for that degree program.
 Use create manual report or update report instead if needed.
@@ -22,6 +22,7 @@ Use create manual report or update report instead if needed.
 <br>
 <h5>Report Template Management</h5>
 <a  role="button" class="btn btn-primary" href="{% url 'makeReports:gg-list'  %}">Graduate Goals</a>
+<a  role="button" class="btn btn-primary" href="{% url 'makeReports:req-fields'  %}">Required Fields</a>
 <h5>Colleges & Departments</h5>
 <a  role="button" class="btn btn-primary" href="{% url 'makeReports:college-list'  %}">All Colleges</a>
 <a  role="button" class="btn btn-primary" href="{% url 'makeReports:dept-list'  %}?college=&name=">All Departments</a>

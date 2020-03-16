@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -397,6 +397,7 @@ to use to build the form.</p>
 <p>Form to generate reports</p>
 <p><strong>Form fields:</strong></p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code>: Year (<code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rubric</span></code>: Rubric (<code class="xref py py-class docutils literal notranslate"><span class="pre">ModelChoiceField</span></code>)</p></li>
 </ul>
 <dl class="method">
@@ -547,6 +548,25 @@ creating the form</p>
 </dd>
 </dl>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="makeReports.forms.admin_forms.RequiredReportFieldsForm">
+<em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.admin_forms.</code><code class="sig-name descname">RequiredReportFieldsForm</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.admin_forms.RequiredReportFieldsForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.forms.Form</span></code></p>
+<p>Form to change which fields are required to submit a report</p>
+<p><strong>Form fields:</strong></p>
+<dl class="method">
+<dt id="makeReports.forms.admin_forms.RequiredReportFieldsForm.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.admin_forms.RequiredReportFieldsForm.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the form fields from the list in POSSIBLE_REQS (from choices)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="makeReports.forms.admin_forms.RequiredReportFieldsForm.media">
+<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#makeReports.forms.admin_forms.RequiredReportFieldsForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

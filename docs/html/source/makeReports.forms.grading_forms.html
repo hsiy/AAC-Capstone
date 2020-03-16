@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -349,10 +349,10 @@ use to build the form</p>
 <dt id="makeReports.forms.grading_forms.SubmitGrade">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.forms.grading_forms.</code><code class="sig-name descname">SubmitGrade</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.forms.grading_forms.SubmitGrade" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.forms.forms.Form</span></code></p>
-<p>Dummy form to submit rubric</p>
+<p>Form to submit rubric</p>
 <p><strong>Form fields:</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">hidden</span></code>: Hidden (<code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">override</span></code>: Submit without reviewing all rubric items (<code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanField</span></code>)</p></li>
 </ul>
 <dl class="method">
 <dt id="makeReports.forms.grading_forms.SubmitGrade.__init__">

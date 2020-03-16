@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -298,6 +298,26 @@ needed for each section
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeReports.views.pdf_Generators.addSupplements">
+<code class="sig-prename descclassname">makeReports.views.pdf_Generators.</code><code class="sig-name descname">addSupplements</code><span class="sig-paren">(</span><em class="sig-param">sups</em>, <em class="sig-param">merged</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.pdf_Generators.addSupplements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds supplements to the merged PDF</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sups</strong> – QuerySet of supplements to merge</p></li>
+<li><p><strong>merged</strong> – PdfFileMerger to add to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>with supplements integrated</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PdfFileMerger</p>
 </dd>
 </dl>
 </dd></dl>
