@@ -204,3 +204,14 @@ class CreateDPByDept(forms.ModelForm):
             'cycle': forms.NumberInput(attrs={'class':'form-control col-3','placeholder':'Cycle length'}),
             'startingYear': forms.NumberInput(attrs={'class':'form-control col-3', 'placeholder':'Starting year'})
         }
+class RequiredReportFieldsForm(forms.Form):
+    """
+    Form to change which fields are required to submit a report
+    """
+    def __init__(self, *args, **kwargs):
+        """
+        Creates the form fields from the list in POSSIBLE_REQS (from choices)
+        """
+        super().__init__(*args,**kwargs)
+        for req in POSSIBLE_REQS:
+            self.fields[req[0]] = forms.BooleanField(required=False, label=req[1])

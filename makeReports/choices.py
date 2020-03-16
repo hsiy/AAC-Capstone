@@ -37,3 +37,18 @@ FREQUENCY_CHOICES = (
     ("Y","Once/year"),
     ("O","Other")    
 )
+#if one of these is deleted or changed, the old setting will stay in the database
+#Always make sure to update todos.py and report_entry_extra_views.py
+POSSIBLE_REQS = (
+    ("author","Report author"),
+    ("dateRange","Date range for reported data"),
+    ("sloCount", "At least one SLO"),
+    ("sloComm","Description of how SLOs are communicated"),
+    ("assess","At least one assessment per SLO"),
+    ("directAssess","At least one direct assessment per SLO"),
+    ("data","Data for every measure of every SLO"),
+    ("agg","Aggregate value for every measure of every SLO"),
+    ("status","SLO status for every SLO"),
+    ("results","Description of how results are communicated with stakeholders"),
+    ("decAct","Description of decisions and actions for each SLO")
+)

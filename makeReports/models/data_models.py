@@ -5,7 +5,6 @@ from django.db import models
 from makeReports.choices import *
 from django.contrib.auth.models import User
 from gdstorage.storage import GoogleDriveStorage
-from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os
 from .basic_models import gd_storage
@@ -39,7 +38,7 @@ class DataAdditionalInformation(models.Model):
     supplement = models.FileField(
         upload_to='data/supplements', 
         storage=gd_storage, 
-        validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
+        validators=[])
     def __str__(self):
         return os.path.basename(self.supplement.name)
 class SLOStatus(models.Model):

@@ -8,7 +8,6 @@ from makeReports.models import *
 from makeReports.forms import *
 from django.contrib.auth.models import User
 from django.conf import settings 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from makeReports.views.helperFunctions.section_context import *
 from django_weasyprint import WeasyTemplateView
@@ -16,7 +15,6 @@ from PyPDF2 import PdfFileMerger, PdfFileReader
 from types import SimpleNamespace
 from weasyprint import HTML, CSS
 import tempfile
-import requests
 from django.contrib.auth.decorators import login_required, user_passes_test
 from functools import wraps
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -28,6 +26,7 @@ import io
 import django.core.files as files
 from datetime import datetime
 from django.http import Http404
+from pathlib import Path
 
 def test_func_x(self,*args,**kwargs):
     """
@@ -211,6 +210,30 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
         context = section3Context(self,context)
         context = section4Context(self,context)
         return context
+def addSupplements(sups,merged):
+    """
+    Adds supplements to the merged PDF
+
+    Args:
+        sups : QuerySet of supplements to merge
+        merged: PdfFileMerger to add to
+    Returns:
+        PdfFileMerger : with supplements integrated
+    """
+    fSup = tempfile.TemporaryFile()
+    nonPdfs = []
+    for sup in sups:
+        if Path(sup.supplement.name).suffix[1:].lower() == "pdf":
+            merged.append(PdfFileReader(sup.supplement.open()))
+        else:
+            nonPdfs.append((sup.supplement.name,sup.supplement.url))
+    if len(nonPdfs)>0:
+        secSups = get_template('makeReports/DisplayReport/PDFsub/extraSups.html')
+        pSups = secSups.render({"urls":nonPdfs}).encode()
+        htmlSup = HTML(string = pSups)
+        htmlSup.write_pdf(target=fSup,stylesheets=[CSS(staticfiles_storage.path('css/report.css'))])
+        merged.append(fSup)
+    return merged
 @login_required
 @my_user_passes_test(test_func_x)
 def reportPDF(request, report):
@@ -268,18 +291,15 @@ def reportPDF(request, report):
     merged = PdfFileMerger()
     merged.append(f1and2)
     #start with section 1 and 2, then append assessment supplements
-    for sup in assessSups:
-        merged.append(PdfFileReader(sup.supplement.open()))
+    merged = addSupplements(assessSups, merged)
     #add section 3
     merged.append(f3)
     #append data supplements
-    for sup in dataSups:
-        merged.append(PdfFileReader(sup.supplement.open()))
+    merged = addSupplements(dataSups, merged)
     #append section 4
     merged.append(f4)
     #add report supplements
-    for sup in repSups:
-        merged.append(PdfFileReader(sup.supplement.open()))
+    merged = addSupplements(repSups, merged)
     #write the merged pdf to the HTTP Response
     http_response = HttpResponse(content_type="application/pdf")
     merged.write(http_response)

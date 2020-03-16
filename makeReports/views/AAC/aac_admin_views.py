@@ -11,9 +11,9 @@ from makeReports.models import *
 from makeReports.forms import *
 from datetime import datetime
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from makeReports.views.helperFunctions.mixins import *
 from django.http import Http404
+from makeReports.choices import POSSIBLE_REQS
 
 class AdminHome(AACOnlyMixin,FormView):
     """
@@ -610,4 +610,34 @@ class DeleteAnnouncement(AACOnlyMixin,DeleteView):
     model = Announcement
     template_name = "makeReports/AACAdmin/Announcements/deleteAnn.html"
     success_url = reverse_lazy('makeReports:announ-list')
-
+class ChangeRequiredFields(AACOnlyMixin,FormView):
+    """
+    View to change what is required to submit a form
+    """
+    template_name = "makeReports/AACAdmin/changeReqFields.html"
+    success_url = reverse_lazy('makeReports:admin-home')
+    form_class = RequiredReportFieldsForm
+    def get_initial(self):
+        """
+        Initializes form with current settings
+        """
+        initial = super().get_initial()
+        for req in POSSIBLE_REQS:
+            try:
+                reqSetting = RequiredFieldSetting.objects.get(name=req[0])
+                initial[req[0]] = reqSetting.required
+            except:
+                pass
+        return initial
+    def form_valid(self,form):
+        """
+        When form is valid, updates the settings for required fields to submit report
+        """
+        for req in POSSIBLE_REQS:
+            try:
+                reqSetting = RequiredFieldSetting.objects.get(name=req[0])
+                reqSetting.required = form.cleaned_data[req[0]]
+                reqSetting.save()
+            except:
+                RequiredFieldSetting.objects.create(name=req[0],required=form.cleaned_data[req[0]])
+        return super().form_valid(form)

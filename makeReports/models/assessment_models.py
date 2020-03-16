@@ -5,7 +5,6 @@ from django.db import models
 from makeReports.choices import *
 from django.contrib.auth.models import User
 from gdstorage.storage import GoogleDriveStorage
-from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
 import os
 from .basic_models import gd_storage, NonArchivedManager
@@ -53,12 +52,12 @@ class AssessmentVersion(models.Model):
 
 class AssessmentSupplement(models.Model):
     """
-    Supplemental PDF files to assessments
+    Supplemental files to assessments
     """
     supplement = models.FileField(
         upload_to='asssements/supplements', 
         storage=gd_storage, 
-        validators=[FileExtensionValidator(allowed_extensions=('pdf',))])
+        validators=[])
     uploaded_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return os.path.basename(self.supplement.name)
