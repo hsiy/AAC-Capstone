@@ -131,6 +131,7 @@
         selected = $('#id_blooms option:selected').text();
         if(selected !== suggest){
             $("#keywords_sugg").css("display", "block");
+            $('#blooms_sugg').css("display", "block");
             msg = "The following keywords commonly appear in <b>" + selected + "</b> level SLOs: "
                 + suggestions[selected] + ".";
             $("#keywords_sugg").html(msg);

@@ -4,6 +4,7 @@
 <h3>Edit Assessment Collection Data</h3>
 <b>SLO: </b> {{assess.slo}}<br>
 <b>Assessment: </b> {{assess}}<br>
+<b>Threshold: </b> {{assess.threshold}}<br>
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}

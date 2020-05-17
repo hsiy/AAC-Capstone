@@ -20,8 +20,8 @@ class Assessment(models.Model):
     domainProduct = models.BooleanField(verbose_name="product domain")
     domainPerformance = models.BooleanField(verbose_name="performance domain")
     directMeasure = models.BooleanField(verbose_name="direct measure")
-    numberOfUses = models.PositiveIntegerField(default=0, verbose_name="number of uses")
     #false = indirect measure
+    numberOfUses = models.PositiveIntegerField(default=0, verbose_name="number of uses")
     def __str__(self):
         return self.title
 class AssessmentVersion(models.Model):

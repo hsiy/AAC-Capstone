@@ -2,11 +2,13 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "addSLO",
+        "assessmentBoxes",
+        "choice-widget-stk",
+        "choices-widget",
         "create_account",
         "csvManagement",
         "dataCollectionSummary",
         "editNewSLO",
-        "feedback",
         "grading_section",
         "graphing",
         "graphingDept",
@@ -14,8 +16,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "importAssessmentSLO",
         "importAssessmentSupplement",
         "importSLO",
-        "importStakeholderComm",
-        "rubric_review"
+        "importStakeholderComm"
     ],
     "modules": [],
     "allModules": [],

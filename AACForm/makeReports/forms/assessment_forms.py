@@ -3,7 +3,7 @@ Contains forms related to inputting assessments
 """
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django_summernote.widgets import SummernoteWidget
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from .cleaners import cleanText
 from django.core.exceptions import ValidationError
 from makeReports.choices import FREQUENCY_CHOICES

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>create_account</title>
+    <title>assessmentBoxes</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -91,12 +91,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>create_account Class</h1>
+<h1>assessmentBoxes Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/.._AACForm_makeReports_templates_makeReports_AACAdmin_create_account.html.html#l86"><code>..\AACForm\makeReports\templates\makeReports\AACAdmin\create_account.html:86</code></a>
+            Defined in: <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l1"><code>..\AACForm\static\js\assessmentEntryBoxes.js:1</code></a>
         </div>
 
 
@@ -104,7 +104,7 @@
 
 
 <div class="box intro">
-    <p>Vue instance to control create account page</p>
+    <p>Functions to properly show and hide boxes on the assessment forms</p>
 
 </div>
 
@@ -114,7 +114,6 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -126,26 +125,20 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_updateDept">updateDept</a>
+                                <a href="#method_allStudents.change">allStudents.change</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_frequencyChoice.change">frequencyChoice.change</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_onLoad">onLoad</a>
 
                             </li>
                     </ul>
                 </div>
 
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_college">college</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_depts">depts</a>
-
-                            </li>
-                    </ul>
-                </div>
 
 
         </div>
@@ -153,8 +146,8 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_updateDept" class="method item">
-    <h3 class="name"><code>updateDept</code></h3>
+<div id="method_allStudents.change" class="method item">
+    <h3 class="name"><code>allStudents.change</code></h3>
 
         <span class="paren">()</span>
 
@@ -168,7 +161,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_AACAdmin_create_account.html.html#l112"><code>..\AACForm\makeReports\templates\makeReports\AACAdmin\create_account.html:112</code></a>
+        <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l16"><code>..\AACForm\static\js\assessmentEntryBoxes.js:16</code></a>
         </p>
 
 
@@ -176,7 +169,69 @@
     </div>
 
     <div class="description">
-        <p>Calls the API to get the departments within the college</p>
+        <p>When allStudents change, hide or show the box to describe students</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_frequencyChoice.change" class="method item">
+    <h3 class="name"><code>frequencyChoice.change</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l28"><code>..\AACForm\static\js\assessmentEntryBoxes.js:28</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>When frequencyChoice changes, hide or show the box to describe the frequency</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_onLoad" class="method item">
+    <h3 class="name"><code>onLoad</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._AACForm_static_js_assessmentEntryBoxes.js.html#l6"><code>..\AACForm\static\js\assessmentEntryBoxes.js:6</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>On load, calls the change function for allStudents and frequencyChoice</p>
 
     </div>
 
@@ -186,60 +241,6 @@
 </div>
             </div>
 
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property_college" class="property item">
-    <h3 class="name"><code>college</code></h3>
-    <span class="type">Integer</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_AACAdmin_create_account.html.html#l102"><code>..\AACForm\makeReports\templates\makeReports\AACAdmin\create_account.html:102</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>Primary key of college chosen</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_depts" class="property item">
-    <h3 class="name"><code>depts</code></h3>
-    <span class="type">Dictionary</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._AACForm_makeReports_templates_makeReports_AACAdmin_create_account.html.html#l96"><code>..\AACForm\makeReports\templates\makeReports\AACAdmin\create_account.html:96</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>List of departments with properties to choose within college</p>
-
-    </div>
-
-
-
-</div>
-            </div>
 
 
     </div>
