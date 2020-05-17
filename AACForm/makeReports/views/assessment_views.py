@@ -370,6 +370,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         self.assessVers.frequency = form.cleaned_data['frequency']
         self.assessVers.threshold = form.cleaned_data['threshold']
         self.assessVers.target = form.cleaned_data['target']
+        self.assessVers.changedFromPrior = True
         if self.assessVers.slo != form.cleaned_data['slo']:
             slo = self.assessVers.slo
             oldNum = self.assessVers.number
