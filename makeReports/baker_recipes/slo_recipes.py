@@ -2,13 +2,13 @@
 This file contains recipes to create SLO models
 
 Attributes:
-    sloInReport (Recipe): recipe to create :class:`~makeReports.models.SLOInReport` model
-    gradGoal (Recipe): recipe to create :class:`~makeReports.models.GradGoal` model
-    slosToStakeholders (Recipe): recipe to create :class:`~makeReports.models.SLOsToStakeholders` model
+    sloInReport (Recipe): recipe to create :class:`~makeReports.models.slo_models.SLOInReport` model
+    gradGoal (Recipe): recipe to create :class:`~makeReports.models.slo_models.GradGoal` model
+    slosToStakeholders (Recipe): recipe to create :class:`~makeReports.models.slo_models.SLOsToStakeholders` model
 """
 from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.slo_models import GradGoal, SLOInReport, SLOsToStakeholder
 from .basic_recipes import report
 
 

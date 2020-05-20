@@ -1,15 +1,9 @@
 """
 This file contains tests to verify that all PDF views exist without error.
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
-from makeReports.choices import *
+from .test_basicViews import ReportAACSetupTest
 
 class TestingPDFs(ReportAACSetupTest):
     """
@@ -20,7 +14,7 @@ class TestingPDFs(ReportAACSetupTest):
         Tests the graded rubric PDf page exists
         """
         rub = baker.make("GradedRubric")
-        rI = baker.make("GradedRubricItem",rubric=rub)
+        baker.make("GradedRubricItem",rubric=rub)
         self.rpt.rubric = rub
         self.rpt.save()
         resp = self.client.get(reverse('makeReports:graded-rub-pdf',kwargs={
@@ -48,8 +42,9 @@ class TestingPDFs(ReportAACSetupTest):
         Tests the the ungraded rubric generation page exists
         """
         rub = baker.make("Rubric")
-        rI = baker.make("RubricItem", rubricVersion=rub)
+        baker.make("RubricItem", rubricVersion=rub)
         resp = self.client.get(reverse('makeReports:rubric-auto-pdf',kwargs={
             'rubric':rub.pk
         }))
+        self.assertEquals(resp.status_code,302)
 

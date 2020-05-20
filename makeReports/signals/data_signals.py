@@ -1,9 +1,14 @@
 """
 Contains all signals relating to data collection models
 """
-from django.db.models.signals import post_save, pre_delete, post_delete
-from makeReports.models import *
 from django.dispatch import receiver
+from django.db.models.signals import post_save, pre_delete
+from makeReports.models import (
+    AssessmentAggregate,
+    AssessmentData,
+    SLOStatus
+)
+from makeReports.choices import SLO_STATUS_CHOICES
 
 
 @receiver(post_save,sender=AssessmentData)
@@ -66,10 +71,10 @@ def update_agg(agg, sigType, pk, assessment):
 def calcWeightedAgg(assessment, sigType, pk):
     """
     Calculates the weighted aggregate value based upon assessment data for 
-    the given :class:`~makeReports.models.AssessmentVersion`
+    the given :class:`~makeReports.models.assessment_models.AssessmentVersion`
 
     Args:
-        assessment (~makeReports.models.AssessmentVersion) : the assessment to calculate the aggregate for
+        assessment (~makeReports.models.assessment_models.AssessmentVersion) : the assessment to calculate the aggregate for
         sigType (int): signal type - 0 is post-save, 1 is pre-delete
         pk (int): primary key of instance that changed (only needed if pre-delete)
 

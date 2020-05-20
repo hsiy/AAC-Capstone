@@ -2,15 +2,10 @@
 This tests the SLO forms work as expected
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import SLOInReport, SLOsToStakeholder
 from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+from makeReports.forms import CreateNewSLO, ImportSLOForm, ImportStakeholderForm
+from makeReports.choices import BLOOMS_CHOICES
 
 class SLOFormsTest(TestCase):
     """

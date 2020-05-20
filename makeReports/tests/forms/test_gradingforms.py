@@ -2,15 +2,16 @@
 This tests the grading forms work as expected
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import RubricItem
 from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+from makeReports.forms import (
+    DuplicateRubricForm, 
+    OverallCommentForm, 
+    RubricItemForm, 
+    SectionRubricForm, 
+    SubmitGrade
+)
+from makeReports.choices import RUBRIC_GRADES_CHOICES
 
 class RubricFormsTests(TestCase):
     """
@@ -45,7 +46,6 @@ class RubricFormsTests(TestCase):
         Tests the form is invalid when the section comment is too long
         """
         rI = baker.make("RubricItem")
-        rI2 = baker.make("RubricItem")
         f = SectionRubricForm({
             'rI'+str(rI.pk): RUBRIC_GRADES_CHOICES[0][0],
             'section_comment':"This simply will not do."*200

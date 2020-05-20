@@ -1,15 +1,11 @@
 """
 This file contains tests relating to SLO views
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from makeReports.choices import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import SLOInReport
+from makeReports.choices import BLOOMS_CHOICES
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
+from .test_basicViews import ReportSetupTest
 
 
 class SLOSummaryGRTest(ReportSetupTest):
@@ -111,7 +107,7 @@ class AddSLOGRTestPage(ReportSetupTest):
             'text':'The students can write reports with solid mechanics.',
             'blooms': BLOOMS_CHOICES[1][0]
         }
-        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='The students can write reports with solid mechanics.').count()
         self.assertTrue(s)
     def test_post_bloom_fail(self):
@@ -122,7 +118,7 @@ class AddSLOGRTestPage(ReportSetupTest):
             'text':'The students can write reports with biological terms.',
             'blooms': "not a blooms choice"
         }
-        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='The students can write reports with biological terms.').count()
         self.assertFalse(s>0)
     def test_post_too_long_fail(self):
@@ -134,7 +130,7 @@ class AddSLOGRTestPage(ReportSetupTest):
             'text':reallyLong,
             'blooms': BLOOMS_CHOICES[1][0]
         }
-        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText=reallyLong).count()
         self.assertFalse(s>0)
 class AddSLOUGTestPage(ReportSetupTest):
@@ -165,7 +161,7 @@ class AddSLOUGTestPage(ReportSetupTest):
             'text':'Students will design physics experiments.',
             'blooms': BLOOMS_CHOICES[1][0]
         }
-        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText='Students will design physics experiments.').count()
         self.assertTrue(s)
     def test_post_too_long_fail(self):
@@ -177,7 +173,7 @@ class AddSLOUGTestPage(ReportSetupTest):
             'text':reallyLong,
             'blooms': BLOOMS_CHOICES[1][0]
         }
-        response = self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
+        self.client.post(reverse('makeReports:add-slo',kwargs={'report':self.rpt.pk}),form_data)
         s = SLOInReport.objects.filter(goalText=reallyLong).count()
         self.assertFalse(s>0)
 class ImportSLOTestPage(ReportSetupTest):
@@ -210,7 +206,7 @@ class ImportSLOTestPage(ReportSetupTest):
         fD = {
             'slo': self.inSLO.pk
         }
-        response = self.client.post(reverse('makeReports:import-slo',kwargs={"report":self.rpt.pk})+"?dp="+str(self.inDp.pk)+"&year="+str(self.rpt.year),fD)
+        self.client.post(reverse('makeReports:import-slo',kwargs={"report":self.rpt.pk})+"?dp="+str(self.inDp.pk)+"&year="+str(self.rpt.year),fD)
         self.rpt.refresh_from_db()
         self.assertEquals(num+1,self.rpt.numberOfSLOs)
         self.assertEquals(1,SLOInReport.objects.filter(report=self.rpt).count())
@@ -365,8 +361,6 @@ class DeleteNewSLOPageTest(ReportSetupTest):
         """
         Checks the page exists
         """
-        pk = self.slo.pk
-        SLOpk = self.slo.slo.pk
         response = self.client.get(reverse('makeReports:delete-new-slo',kwargs={'report':self.rpt.pk,'pk':self.slo.pk}))
         self.assertEquals(response.status_code,200)
         self.assertContains(response,"SLO")
@@ -401,5 +395,5 @@ class DeleteImportedSLOPageTest(ReportSetupTest):
         Tests delete posts
         """
         pk = self.slo.pk
-        response = self.client.post(reverse('makeReports:delete-impt-slo',kwargs={'report':self.rpt.pk,'pk':pk}),follow=True)
+        self.client.post(reverse('makeReports:delete-impt-slo',kwargs={'report':self.rpt.pk,'pk':pk}),follow=True)
         self.assertRaises(SLOInReport.DoesNotExist, SLOInReport.objects.get,pk=pk)

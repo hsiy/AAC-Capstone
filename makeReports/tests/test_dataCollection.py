@@ -1,15 +1,11 @@
 """
 Tests related to testing data collection entry views
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import AssessmentAggregate, AssessmentData, ResultCommunicate, SLOStatus
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
-from makeReports.choices import *
+from .test_basicViews import ReportAACSetupTest
+from makeReports.choices import SLO_STATUS_CHOICES
 
 class DataCollectionMainTableTests(ReportAACSetupTest):
     """
@@ -236,7 +232,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
             'assessment':self.assess.pk
         }))
         self.assertEquals(r.status_code,200)
-        resp = self.client.post(reverse('makeReports:data-agg-create',kwargs={
+        self.client.post(reverse('makeReports:data-agg-create',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk
         }),{
@@ -269,7 +265,7 @@ class DataCollectionMainTableTests(ReportAACSetupTest):
         """
         self.assess.target = 80
         self.assess.save()
-        resp = self.client.post(reverse('makeReports:data-agg-create',kwargs={
+        self.client.post(reverse('makeReports:data-agg-create',kwargs={
             'report':self.rpt.pk,
             'assessment':self.assess.pk
         }),{
@@ -394,7 +390,7 @@ class DataCollectionExtrasTests(ReportAACSetupTest):
         })
         stat.refresh_from_db()
         self.assertEquals(stat.status,SLO_STATUS_CHOICES[0][0])
-    def test_newSLOStatus_DNE(self):
+    def test_editSLOStatus_DNE(self):
         """
         Tests the edit SLO status page returns 404 when the status does not exist
         """

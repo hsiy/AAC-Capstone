@@ -2,11 +2,10 @@
 Contains forms related to inputting assessments
 """
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
-from .cleaners import cleanText
 from django.core.exceptions import ValidationError
+from django_summernote.widgets import SummernoteWidget
 from makeReports.choices import FREQUENCY_CHOICES
+from .cleaners import cleanText
 from .widgets import SLOChoicesJSWidget
 
 class CreateNewAssessment(forms.Form):

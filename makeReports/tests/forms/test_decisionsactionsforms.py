@@ -2,15 +2,7 @@
 This tests the decision and action forms work as expected
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
-from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+from makeReports.forms import DecActForm1Box
 
 class DAFormsTest(TestCase):
     """

@@ -1,24 +1,27 @@
 """
 This file contains the APIs which return JSON to the front-end
 """
-from rest_framework import generics
-from rest_framework import views, status
-from rest_framework.response import Response
 from django_filters import rest_framework as filters
-from rest_framework import serializers
+from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
-from makeReports.models import *
-from makeReports.choices import *
-from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-import tempfile
-import django.core.files as files
-import io
-from datetime import datetime, timedelta
-from .serializers import *
+from makeReports.models import (
+    AssessmentVersion, 
+    Department, 
+    DegreeProgram, 
+    Report, 
+    SLOInReport
+)
+from makeReports.views.helperFunctions import text_processing
+from .serializers import (
+    AssessmentSerializer,
+    DeptSerializer,
+    ProgSerializer,
+    SLOSerializerWithParent
+)
 
 class DeptByColListAPI(generics.ListAPIView):
     """
@@ -44,7 +47,7 @@ class ProgByDeptListAPI(generics.ListAPIView):
     serializer_class = ProgSerializer
 class SloByDPListAPI(generics.ListAPIView):
     """
-    JSON API to gets past SLOs :class:`~makeReports.models.SLO` within specified degree program
+    JSON API to gets past SLOs :class:`~makeReports.models.slo_models.SLO` within specified degree program
     
     Notes:
         'report__degreeProgram' (degreeProgram primary key), 'report__year__gte' (min year),
@@ -62,7 +65,7 @@ class SloByDPListAPI(generics.ListAPIView):
         Gets the filtered QuerySet, and picks the most recent SLOInReport for each parent SLO
 
         Returns:
-            QuerySet : QuerySet of SLOs (:class:`~makeReports.models.SLOInReport`) that match parameters
+            QuerySet : QuerySet of SLOs (:class:`~makeReports.models.slo_models.SLOInReport`) that match parameters
         Notes:
             .order_by(...).distinct(...) is only supported by PostgreSQL
         """
@@ -84,8 +87,7 @@ class AssessmentBySLO(generics.ListAPIView):
         'slo__slo':['exact'],
         'report__year':['gte','lte'],
     }
-    serializer_class = Assessmentserializer
-    #filterset_class = AssessmentSLOFilterClass
+    serializer_class = AssessmentSerializer
     def get_queryset(self):
         """
         Gets the filtered queryset, and picks the most recent AssessmentVersion for each parent Assessment

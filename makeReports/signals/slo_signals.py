@@ -1,10 +1,11 @@
 """
 Contains all signals related to SLO models
 """
-from django.db.models.signals import post_save, pre_delete, post_delete
-from makeReports.models import *
 from django.dispatch import receiver
-
+from django.db.models.signals import post_save, post_delete
+from makeReports.models import (
+    SLOInReport
+)
 
 @receiver(post_save,sender=SLOInReport)
 def post_save_slo_update_numbering(sender,instance,created,**kwargs):
@@ -32,7 +33,6 @@ def post_delete_slo_update_numbering(sender,instance,**kwargs):
         instance (SLOInReport): SLO deleted
     """
     oldNum = instance.number
-    num = instance.report.numberOfSLOs
     if instance.slo.numberOfUses <= 1:
         instance.slo.delete()
     else:

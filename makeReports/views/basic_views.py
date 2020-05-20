@@ -1,17 +1,26 @@
 """
 This file contains miscellaneous views that are used by many users
 """
+from datetime import datetime
+from django.http import Http404
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
-from django.http import Http404
+from makeReports.models import (
+    Announcement,
+    Report,
+    ReportSupplement
+)
+from makeReports.forms import UserUpdateUserForm
+from makeReports.views.helperFunctions.section_context import (
+    section1Context,
+    section2Context,
+    section3Context,
+    section4Context
+)
+from makeReports.views.helperFunctions.mixins import DeptAACMixin
 
 class HomePage(ListView):
     """
@@ -24,7 +33,7 @@ class HomePage(ListView):
         When logged in, this returns unsubmitted reports within the user's department
 
         Returns:
-            QuerySet : :class:`~makeReports.models.report_models.Report` objects that need work
+            QuerySet : :class:`~makeReports.models.basic_models.Report` objects that need work
         """
         try:
             objs = Report.objects.filter(
@@ -61,7 +70,7 @@ class FacultyReportList(LoginRequiredMixin,ListView):
         Gets QuerySet of reports within the department
         
         Returns:
-            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) within department 
+            QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) within department 
         """
         objs = Report.objects.filter(
             degreeProgram__department=self.request.user.profile.department, 
@@ -83,7 +92,7 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
         Gets QuerySet based upon search parameters
         
         Returns:
-            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) within department matching search
+            QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) within department matching search
         """
         keys = self.request.GET.keys()
         objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, degreeProgram__active=True).order_by('submitted','-rubric__complete')
@@ -111,18 +120,18 @@ class DisplayReport(DeptAACMixin,TemplateView):
     View to see report
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Report` to display
+        pk (str): primary key of :class:`~makeReports.models.basic_models.Report` to display
     """
     template_name = "makeReports/DisplayReport/report.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to instance
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` to instance
 
         Args:
             request (HttpRequest): request to view page
             
         Keyword Args:
-            pk (str): primary key of :class:`~makeReports.models.report_models.Report` to display
+            pk (str): primary key of :class:`~makeReports.models.basic_models.Report` to display
         Returns:
             HttpResponse : response of page to request
         """

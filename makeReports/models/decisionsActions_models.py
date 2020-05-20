@@ -1,14 +1,9 @@
 """
 This file contains models most directly related to decisions and actions
 """
-from django.db import models
-from makeReports.choices import *
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete
-from django.dispatch import receiver
-from gdstorage.storage import GoogleDriveStorage
 import os
-from .basic_models import gd_storage, NonArchivedManager
+from django.db import models
+from .basic_models import gd_storage
 
 class DecisionsActions(models.Model):
     """

@@ -1,15 +1,8 @@
 """
 Tests graphing and CSV view pages exist
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
-from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
-from makeReports.choices import *
+from .test_basicViews import ReportAACSetupTest
 
 class GraphPagesTests(ReportAACSetupTest):
     """

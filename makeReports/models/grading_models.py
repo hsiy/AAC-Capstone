@@ -2,14 +2,9 @@
 This file contains models most directly related to grading and reviewing reports
 """
 from django.db import models
-from makeReports.choices import *
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete
-from django.dispatch import receiver
-from gdstorage.storage import GoogleDriveStorage
 from django.core.validators import FileExtensionValidator
 from django.utils.safestring import mark_safe
-import os
+from makeReports.choices import RUBRIC_GRADES_CHOICES, SECTIONS
 from .basic_models import gd_storage
 
 class Rubric(models.Model):

@@ -2,13 +2,13 @@
 This file contains recipes to create basic models
 
 Attributes:
-    report (Recipe): recipe to create :class:`~makeReports.models.Report` model
-    profile (Recipe): recipe to create :class:`~makeReports.models.Profile` model
+    report (Recipe): recipe to create :class:`~makeReports.models.basic_models.Report` model
+    profile (Recipe): recipe to create :class:`~makeReports.models.basic_models.Profile` model
 
 """
-from itertools import cycle, product
+from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.basic_models import Profile, Report
 from .aac_recipes import degreeProgram, department
 
 first_names = ['Ada',"Ida","Grant","Shannon","Steve","Loki","Matthew","Allison","Mary-Rose","Jonathan"]

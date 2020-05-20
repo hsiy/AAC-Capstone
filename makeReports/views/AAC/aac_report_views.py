@@ -1,16 +1,14 @@
 """
 This file contains views directly related to creating, editing, and viewing reports done by the AAC
 """
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.views.generic import TemplateView
-from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
 from datetime import datetime
-from django.contrib.auth.models import User
-from makeReports.views.helperFunctions.mixins import *
 from django.http import Http404
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from makeReports.models import DegreeProgram, GradedRubric, GradGoal, Report
+from makeReports.forms import CreateReportByDept, CreateReportByDPForm, GradGoalForm, GradGoalEditForm
+from makeReports.views.helperFunctions.mixins import AACOnlyMixin
 
 
 class CreateReport(AACOnlyMixin,CreateView):
@@ -18,7 +16,7 @@ class CreateReport(AACOnlyMixin,CreateView):
     View to create report by department
 
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department` to create report for
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department` to create report for
     """
     model = Report
     form_class = CreateReportByDept
@@ -26,7 +24,7 @@ class CreateReport(AACOnlyMixin,CreateView):
     #success_url = reverse_lazy('makeReports:admin-home')
     def get_form_kwargs(self):
         """
-        Returns the keyword arguments for the form, appending the :class:`~makeReports.models.report_models.Department` primary key
+        Returns the keyword arguments for the form, appending the :class:`~makeReports.models.aac_models.Department` primary key
 
         Returns:
             dict : form keyword arguments
@@ -67,7 +65,7 @@ class CreateReportByDP(AACOnlyMixin,CreateView):
     View to create report by degree program
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.DegreeProgram`
+        pk (str): primary key of :class:`~makeReports.models.aac_models.DegreeProgram`
     """
     model = Report
     form_class = CreateReportByDPForm
@@ -105,7 +103,7 @@ class DeleteReport(AACOnlyMixin,DeleteView):
     View to delete report
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Report` to delete
+        pk (str): primary key of :class:`~makeReports.models.basic_models.Report` to delete
     """
     model = Report
     template_name = "makeReports/AACAdmin/deleteReport.html"
@@ -121,7 +119,7 @@ class ReportList(AACOnlyMixin,ListView):
         Gets reports from this year and active degree programs
 
         Returns:
-            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) from this year
+            QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) from this year
         """
         qs = Report.objects.filter(year=int(datetime.now().year), degreeProgram__active=True).order_by('submitted','-rubric__complete')
         return qs
@@ -141,7 +139,7 @@ class ReportListSearched(AACOnlyMixin,ListView):
         Gets filtered QuerySet based upon parameters
 
         Returns:
-            QuerySet : reports (:class:`~makeReports.models.report_models.Report`) meeting search criteria
+            QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) meeting search criteria
         """
         keys = self.request.GET.keys()
         objs = Report.objects.filter(degreeProgram__active=True).order_by('submitted','-rubric__complete')
@@ -192,7 +190,7 @@ class UpdateGradGoal(AACOnlyMixin,UpdateView):
     View to change the text of a graduate-level goal
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.GradGoal` to update
+        pk (str): primary key of :class:`~makeReports.models.slo_models.GradGoal` to update
     """
     model = GradGoal
     form_class = GradGoalEditForm
@@ -209,7 +207,7 @@ class ListActiveGradGoals(AACOnlyMixin,ListView):
         Gets only the active grad goals
 
         Returns:
-            QuerySet : :class:`~makeReports.models.report_models.GradGoal` objects that are active
+            QuerySet : :class:`~makeReports.models.slo_models.GradGoal` objects that are active
         """
         return GradGoal.active_objects.all()
 class ListInactiveGradGoals(AACOnlyMixin,ListView):
@@ -223,6 +221,6 @@ class ListInactiveGradGoals(AACOnlyMixin,ListView):
         Gets inactive grad goals
         
         Returns:
-            QuerySet : :class:`~makeReports.models.report_models.GradGoal` objects that are inactive
+            QuerySet : :class:`~makeReports.models.slo_models.GradGoal` objects that are inactive
         """
         return GradGoal.objects.filter(active=False)

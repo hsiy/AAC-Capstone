@@ -2,13 +2,13 @@
 This file contains recipes to create grading models
 
 Attributes:
-    gradedRubric (Recipe): recipe to create :class:`~makeReports.models.GradedRubric` model
-    rubricItem (Recipe): recipe to create :class:`~makeReports.models.RubricItem` model
-    gradedRubricItem (Recipe): recipe to create :class:`~makeReports.models.GradedRubricItem` model
+    gradedRubric (Recipe): recipe to create :class:`~makeReports.grading_models.GradedRubric` model
+    rubricItem (Recipe): recipe to create :class:`~makeReports.grading_models.RubricItem` model
+    gradedRubricItem (Recipe): recipe to create :class:`~makeReports.grading_models.GradedRubricItem` model
 """
 from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.grading_models import RubricItem, GradedRubric, GradedRubricItem
 
 comments = [
     "•	There is evidence of wide-spread faculty involvement that informs and drives continuous program improvement.",

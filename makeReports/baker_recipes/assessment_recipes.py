@@ -2,12 +2,12 @@
 This file contains recipes to create assessment models
 
 Attributes:
-    assessment (Recipe): recipe to create :class:`~makeReports.models.Assessment` model
-    assessmentVersion (Recipe): recipe to create :class:`~makeReports.models.AssessmentVersion` model
+    assessment (Recipe): recipe to create :class:`~makeReports.models.assessment_models.Assessment` model
+    assessmentVersion (Recipe): recipe to create :class:`~makeReports.models.assessment_models.AssessmentVersion` model
 """
 from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.assessment_models import Assessment, AssessmentVersion
 from .basic_recipes import report
 from .slo_recipes import sloInReport
 

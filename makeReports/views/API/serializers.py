@@ -1,23 +1,15 @@
 """
 This file contains the JSON APIs used
 """
-from rest_framework import generics
-from rest_framework import views, status
-from rest_framework.response import Response
-from django_filters import rest_framework as filters
 from rest_framework import serializers
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
-from makeReports.models import *
-from makeReports.choices import *
-from makeReports.views.helperFunctions import text_processing
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
-import tempfile
-import django.core.files as files
-import io
-from datetime import datetime, timedelta
+from makeReports.models import (
+    Assessment,
+    DegreeProgram, 
+    Department, 
+    Graph,
+    SLO, 
+    SLOInReport
+)
 
 class DeptSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -54,7 +46,7 @@ class SLOserializer(serializers.HyperlinkedModelSerializer):
         fields = ['pk', 'goalText']
 class SLOParentSerializer(serializers.HyperlinkedModelSerializer):
     """
-    Serializes :class:`~makeReports.models.SLO` into just its primary key
+    Serializes :class:`~makeReports.models.slo_models.SLO` into just its primary key
     """
     class Meta:
         """
@@ -65,7 +57,7 @@ class SLOParentSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['pk']
 class SLOSerializerWithParent(serializers.HyperlinkedModelSerializer):
     """
-    Serializes SLOs (:class:`~makeReports.models.SLOInReport`) to JSON with the primary key and name and primary key of SLO
+    Serializes SLOs (:class:`~makeReports.models.slo_models.SLOInReport`) to JSON with the primary key and name and primary key of SLO
     """
     slo = SLOParentSerializer()
     class Meta:
@@ -77,7 +69,7 @@ class SLOSerializerWithParent(serializers.HyperlinkedModelSerializer):
         fields = ['pk', 'goalText','slo']
 class AssessmentParentSerializer(serializers.HyperlinkedModelSerializer):
     """
-    Serializes parent assessments (:class:`~makeReports.models.Assessment`) into its primary key and title
+    Serializes parent assessments (:class:`~makeReports.models.assessment_models.Assessment`) into its primary key and title
     """
     class Meta:
         """
@@ -86,11 +78,11 @@ class AssessmentParentSerializer(serializers.HyperlinkedModelSerializer):
         """
         model = Assessment
         fields = ['pk','title']
-class Assessmentserializer(serializers.HyperlinkedModelSerializer):
+class AssessmentSerializer(serializers.HyperlinkedModelSerializer):
     """
-    Serializes assessments (:class:`~makeReports.models.AssessmentVersion`) to JSON with the primary key and and title
+    Serializes assessments (:class:`~makeReports.models.assessment_models.AssessmentVersion`) to JSON with the primary key and and title
     """
-    assessment =AssessmentParentSerializer()
+    assessment = AssessmentParentSerializer()
     class Meta:
         """
         Defines the model type and fields for the superclass

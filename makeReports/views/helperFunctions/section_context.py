@@ -1,9 +1,19 @@
 """
 This file contains methods that generate the context needed to display each section of the report and grading views.
 """
-from makeReports.models import *
-from makeReports.forms import *
-from django.contrib.auth.models import User
+from makeReports.models import (
+    Assessment,
+    AssessmentAggregate,
+    AssessmentData,
+    AssessmentVersion,
+    DataAdditionalInformation,
+    DecisionsActions,
+    ResultCommunicate,
+    SLOInReport,
+    SLOStatus,
+    SLOsToStakeholder
+)
+
 def rubricItemsHelper(self,context):
     """
     Adds the text of each rubric item to the context

@@ -1,9 +1,12 @@
 """
 Contains all signals relating to the AAC Admin component
 """
-from django.db.models.signals import post_save, pre_delete, post_delete
-from makeReports.models import *
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+from makeReports.models import (
+    Profile,
+    User
+)
 
 @receiver(post_save,sender=User)
 def update_user_profile(sender, instance, created, **kwargs):

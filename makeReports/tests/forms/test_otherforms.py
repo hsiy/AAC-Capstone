@@ -2,15 +2,8 @@
 This tests the other forms work as expected
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
-from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+from makeReports.forms import SubmitReportForm
+
 class SubmitReportformTest(TestCase):
     """
     Tests forms relating to submitting reports

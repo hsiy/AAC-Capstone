@@ -4,11 +4,8 @@ Code adapted from https://gist.github.com/gregsadetsky/5018173
 This allows the test suite to run on a Heroku-based test database 
 (due to restrictions of Heroku, the standard test runner does not work)
 """
-import os
 import django
 from django.test.runner import DiscoverRunner
-from django.db import connection
-from django.db.utils import ConnectionHandler
 from django.conf import settings
 from django.core.management import call_command
 from django.db.utils import ConnectionHandler

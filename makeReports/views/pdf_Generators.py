@@ -1,38 +1,48 @@
 """
 This file contains views and methods needed to generate PDFs throughout the application
 """
+import io
+import tempfile
+from datetime import datetime
+from functools import wraps
+from types import SimpleNamespace
+from pathlib import Path
+from PyPDF2 import PdfFileMerger, PdfFileReader
+from weasyprint import HTML, CSS
+from urllib.parse import urlparse
+from django.conf import settings 
+import django.core.files as files
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from django.views.generic import TemplateView
-from makeReports.models import *
-from makeReports.forms import *
-from django.contrib.auth.models import User
-from django.conf import settings 
-from django.http import HttpResponse, FileResponse, HttpResponseRedirect
-from makeReports.views.helperFunctions.section_context import *
-from django_weasyprint import WeasyTemplateView
-from PyPDF2 import PdfFileMerger, PdfFileReader
-from types import SimpleNamespace
-from weasyprint import HTML, CSS
-import tempfile
 from django.contrib.auth.decorators import login_required, user_passes_test
-from functools import wraps
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.shortcuts import resolve_url
-from makeReports.views.helperFunctions.mixins import *
-from urllib.parse import urlparse
-import io
-import django.core.files as files
-from datetime import datetime
-from django.http import Http404
-from pathlib import Path
+from django_weasyprint import WeasyTemplateView
+from makeReports.models import (
+    Report,
+    GradedRubricItem,
+    AssessmentSupplement,
+    DataAdditionalInformation,
+    ReportSupplement,
+    Rubric,
+    RubricItem
+)
+from makeReports.views.helperFunctions.section_context import (
+    section1Context,
+    section2Context,
+    section3Context, 
+    section4Context
+)
+from makeReports.views.helperFunctions.mixins import DeptAACMixin
 
-def test_func_x(self,*args,**kwargs):
+def test_aac_or_dept(self,*args,**kwargs):
     """
     Ensures the user accessing the page is in the AAC or right department
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report`
     Returns:
         boolean : whether user passes test
     """
@@ -43,7 +53,7 @@ def test_func_x(self,*args,**kwargs):
     dept= (report.degreeProgram.department == self.profile.department)
     aac = getattr(self.profile, "aac")
     return dept or aac
-def test_func_a(self):
+def test_aac(self):
     """
     Ensures the user accessing page is in the AAC
     Returns:
@@ -51,7 +61,7 @@ def test_func_a(self):
     """
     aac = getattr(self.profile, "aac")
     return aac
-def my_user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
+def user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Decorator for views that checks that the user passes the given test,
     redirecting to the log-in page if necessary. The test should be a callable
@@ -90,17 +100,17 @@ class PDFPreview(TemplateView):
     """
     View to preview a PDF in HTML form, not intended for end-users, but is useful for the development future extensions
     Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report`
     """
     template_name = "makeReports/DisplayReport/pdf.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the view
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` to the view
         Args:
             request (HttpRequest): request to view PDF page
     
         Keyword Args:
-            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+            report (str): primary key of :class:`~makeReports.models.basic_models.Report`
                 
         Returns:
             HttpResponse : response of page to request
@@ -126,7 +136,7 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     """
     View to generate a graded rubric PDF
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report`
     """
     template_name = "makeReports/Grading/feedbackPDF.html"
     pdf_stylesheets =[
@@ -138,12 +148,12 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
     ]
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the view
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` to the view
         Args:
             request (HttpRequest): request to view PDF page
     
         Keyword Args:
-            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+            report (str): primary key of :class:`~makeReports.models.basic_models.Report`
                 
         Returns:
             HttpResponse : response of page to request
@@ -171,22 +181,21 @@ class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     """
     View to generate PDF of report, without supplements
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report`
     """
     template_name = "makeReports/DisplayReport/pdf.html"
     pdf_stylesheets =[
         staticfiles_storage.path('css/report.css'),
         staticfiles_storage.path('css/shelves.css'),
-        #settings.BASE_DIR + 'css/main.css',
     ]
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to instance
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` to instance
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+            report (str): primary key of :class:`~makeReports.models.basic_models.Report`
         Returns:
             HttpResponse : response of page to request
         """
@@ -235,13 +244,13 @@ def addSupplements(sups,merged):
         merged.append(fSup)
     return merged
 @login_required
-@my_user_passes_test(test_func_x)
+@user_passes_test(test_aac_or_dept)
 def reportPDF(request, report):
     """
     View to generate report PDF with supplements
     Args:
         request (HttpRequest): request to view page
-        report (str): primary key of :class:`~makeReports.models.report_models.Report` 
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report` 
     Returns:
         HttpResponse : the PDF
     Notes:
@@ -305,13 +314,13 @@ def reportPDF(request, report):
     merged.write(http_response)
     return http_response
 @login_required
-@user_passes_test(test_func_a)
+@user_passes_test(test_aac)
 def UngradedRubric(request, rubric):
     """
     View to generate ungraded rubric PDF
     Args:
         request (HttpRequest): request for page
-        rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`
+        rubric (str): primary key of :class:`~makeReports.models.grading_models.Rubric`
     Returns:
         HttpResponse : the PDF
     """

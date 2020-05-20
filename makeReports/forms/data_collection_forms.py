@@ -2,9 +2,9 @@
 File contains forms related to inputting data points
 """
 from django import forms
-from makeReports.models import *
-from makeReports.choices import *
 from django_summernote.widgets import SummernoteWidget
+from makeReports.models import AssessmentAggregate
+from makeReports.choices import SLO_STATUS_CHOICES
 from .cleaners import CleanSummer
 
 

@@ -2,15 +2,9 @@
 Tests relating to signals
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import AssessmentAggregate, SLOStatus
 from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+
 class AggregateReceiverTests(TestCase):
     """
     Tests related to functions that run on AssessmentAggregate save
@@ -26,7 +20,7 @@ class AggregateReceiverTests(TestCase):
         """
         Tests that statuses are created when assessment aggregates are
         """
-        aa = baker.make("AssessmentAggregate",assessmentVersion=self.aV,aggregate_proficiency=60,met=True)
+        baker.make("AssessmentAggregate",assessmentVersion=self.aV,aggregate_proficiency=60,met=True)
         ss = SLOStatus.objects.filter(sloIR=self.slo).first()
         ss.refresh_from_db()
         self.assertEquals("Met",ss.status)

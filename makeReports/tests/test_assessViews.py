@@ -1,16 +1,11 @@
 """
 Tests relating to the Assessment Views
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from makeReports.forms import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import Assessment, AssessmentVersion, AssessmentSupplement
+from makeReports.choices import FREQUENCY_CHOICES
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
-import time
+from .test_basicViews import ReportSetupTest, getWithReport, postWithReport
 
 class AssessmentSummaryPageTest(ReportSetupTest):
     """
@@ -69,8 +64,7 @@ class AddNewAssessmentTest(ReportSetupTest):
             'slo': slo.pk,
             'title': 'Final performance',
             'description': 'Students will write an original play and use fellow students are actors.',
-            'domain': "Pe",
-            'domain': 'Pr',
+            'domain': ["Pe","Pr"],
             'directMeasure':True,
             'finalTerm':True,
             'where': 'The final semester by appointment',
@@ -81,7 +75,7 @@ class AddNewAssessmentTest(ReportSetupTest):
             'threshold':'Recieves at least 85 on the rubric',
             'target':34
         }
-        response = self.client.post(reverse('makeReports:add-assessment',kwargs={'report':self.rpt.pk}),fD)
+        self.client.post(reverse('makeReports:add-assessment',kwargs={'report':self.rpt.pk}),fD)
         num = AssessmentVersion.objects.filter(
             slo=slo,
             ).count()
@@ -114,7 +108,7 @@ class ImportAssessmentPageTest(ReportSetupTest):
             'assessment': self.assess.pk,
             'slo': self.slo.pk
         }
-        response = self.client.post(reverse('makeReports:import-assessment',kwargs={'report':self.rpt.pk})+"?year=2019&dp="+str(self.slo2.report.degreeProgram.pk)+"&slo="+str(self.slo2.pk),fD)
+        self.client.post(reverse('makeReports:import-assessment',kwargs={'report':self.rpt.pk})+"?year=2019&dp="+str(self.slo2.report.degreeProgram.pk)+"&slo="+str(self.slo2.pk),fD)
         num = AssessmentVersion.objects.filter(report=self.rpt).count()
         self.assertGreaterEqual(num, 1)
 class ImportAssessmentPageTestRecipe(ImportAssessmentPageTest):
@@ -153,7 +147,7 @@ class EditAssessmentTest(ReportSetupTest):
         """
         response = getWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"")
         self.assertEquals(response.status_code,200)
-    def test_view_new_DNE(self):
+    def test_view_new_edit_DNE(self):
         """
         Tests the edit new assessment page returns 404 when the object does not exist
         """
@@ -180,8 +174,7 @@ class EditAssessmentTest(ReportSetupTest):
             'slo': slo.pk,
             'title': 'Final performance',
             'description': 'Students will write a musical',
-            'domain': "Pe",
-            'domain': 'Pr',
+            'domain': ["Pe","Pr"],
             'directMeasure':True,
             'finalTerm':True,
             'where': 'During SPEECH 5070',
@@ -192,7 +185,7 @@ class EditAssessmentTest(ReportSetupTest):
             'threshold':'At least a 90th percentile',
             'target':74
         }
-        response = postWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"",fD)
+        postWithReport('edit-new-assessment',self,{'assessIR':self.assessN.pk},"",fD)
         self.assessN.refresh_from_db()
         self.assertEquals(self.assessN.assessment.title, 'Final performance')
         self.assertEquals(self.assessN.target,74)
@@ -205,8 +198,7 @@ class EditAssessmentTest(ReportSetupTest):
             'slo': slo.pk,
             'title': 'Report',
             'description': 'A report comparing poetry',
-            'domain': "Pe",
-            'domain': 'Pr',
+            'domain': ["Pe","Pr"],
             'directMeasure':True,
             'finalTerm':True,
             'where': 'ENGL 3050',
@@ -231,8 +223,7 @@ class EditAssessmentTest(ReportSetupTest):
             'slo': slo.pk,
             'title': 'Literature review and publish',
             'description': 'Students will compare several pieces of literature.',
-            'domain': "Pe",
-            'domain': 'Pr',
+            'domain': ["Pe","Pr"],
             'directMeasure':True,
             'finalTerm':True,
             'where': 'a place',
@@ -243,7 +234,7 @@ class EditAssessmentTest(ReportSetupTest):
             'threshold':'At least 80 percent by rubric',
             'target':34
         }
-        response = postWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"",fD)
+        postWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"",fD)
         self.assessO.refresh_from_db()
         self.assertNotEquals(self.assessO.assessment.title, 'Literature review and publish')
     def test_post_impt(self):
@@ -263,7 +254,7 @@ class EditAssessmentTest(ReportSetupTest):
             'threshold':'With 90 degrees of accuracy',
             'target':34
         }
-        response = postWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"",fD)
+        postWithReport('edit-impt-assessment',self,{'assessIR':self.assessO.pk},"",fD)
         self.assessO.refresh_from_db()
         self.assertEquals(self.assessO.frequency, 'Every spring and summer')
     def test_delete_new(self):
@@ -276,7 +267,7 @@ class EditAssessmentTest(ReportSetupTest):
         self.assessN.assessment.save()
         r = getWithReport('delete-new-assessment',self,{'pk':self.assessN.pk},"")
         self.assertEquals(r.status_code,200)
-        response = postWithReport('delete-new-assessment',self,{'pk':self.assessN.pk},"",{})
+        postWithReport('delete-new-assessment',self,{'pk':self.assessN.pk},"",{})
         num = AssessmentVersion.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
         num = Assessment.objects.filter(pk=aPk).count()
@@ -299,7 +290,7 @@ class EditAssessmentTest(ReportSetupTest):
         self.assessO.assessment.save()
         r = getWithReport('delete-impt-assessment',self,{'pk':self.assessO.pk},"")
         self.assertEquals(r.status_code,200)
-        response = postWithReport('delete-impt-assessment',self,{'pk':self.assessO.pk},"",{})
+        postWithReport('delete-impt-assessment',self,{'pk':self.assessO.pk},"",{})
         num = AssessmentVersion.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
         num = Assessment.objects.filter(pk=aPk).count()
@@ -376,7 +367,7 @@ class AssessmentSupplementTest(ReportSetupTest):
         Checks that posting to delete works
         """
         pk = self.sup.pk
-        response = postWithReport('delete-supplement',self,{'assessIR':self.a.pk,'pk':self.sup.pk},"", {})
+        postWithReport('delete-supplement',self,{'assessIR':self.a.pk,'pk':self.sup.pk},"", {})
         num = AssessmentSupplement.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
 class AssessmentSupplementTestRecipe(AssessmentSupplementTest):

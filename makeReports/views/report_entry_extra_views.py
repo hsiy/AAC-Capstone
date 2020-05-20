@@ -4,13 +4,32 @@ This file contains extra views needed during the form input process
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import TemplateView, DetailView
-from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from .helperFunctions.section_context import *
-from .helperFunctions.mixins import *
-from .helperFunctions.todos import todoGetter
 from django.http import Http404
+from django.urls import reverse_lazy
+from makeReports.models import (
+    AssessmentAggregate,
+    AssessmentData,
+    AssessmentVersion,
+    DecisionsActions,
+    Report, 
+    ReportSupplement, 
+    RequiredFieldSetting, 
+    ResultCommunicate,
+    Rubric,
+    RubricItem,
+    SLOInReport, 
+    SLOStatus,
+    SLOsToStakeholder
+)
+from makeReports.forms import SubmitReportForm
+from .helperFunctions.section_context import (
+    section1Context,
+    section2Context,
+    section3Context,
+    section4Context
+)
+from .helperFunctions.mixins import DeptAACMixin, DeptReportMixin
+from .helperFunctions.todos import todoGetter
 
 class ReportFirstPage(DeptAACMixin,UpdateView):
     """
@@ -95,7 +114,7 @@ class DeleteEndSupplements(DeptReportMixin, DeleteView):
     Delete a report supplement
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.ReportSupplement` to be deleted
+        pk (str): primary key of :class:`~makeReports.models.decisionsActions_models.ReportSupplement` to be deleted
     """
     model = ReportSupplement
     template_name = "makeReports/ReportEntryExtras/deleteSupplement.html"
@@ -260,7 +279,7 @@ class DeptViewRubric(DeptReportMixin,DetailView):
     View to view a rubric as a department
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Rubric` to view
+        pk (str): primary key of :class:`~makeReports.models.grading_models.Rubric` to view
     """
     model = Rubric
     template_name = "makeReports/Rubric/rubricViewNoEdit.html"

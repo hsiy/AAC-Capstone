@@ -1,14 +1,10 @@
 """
 This file contains views related to graphing
 """
-from django.views.generic.list import ListView
 from django.views.generic import TemplateView
-from django.urls import reverse_lazy
-from makeReports.models import *
-from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
+from makeReports.models import College, AssessmentData
+from makeReports.views.helperFunctions.mixins import AACOnlyMixin
 from makeReports.views.helperFunctions.csvExport import CSVExportView
 
 class GraphingHome(AACOnlyMixin,TemplateView):
