@@ -1,16 +1,16 @@
 """
 This file contains all views related to inputting decisions/actions into the form
 """
+from django.http import Http404
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, FormView
 from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from .helperFunctions.section_context import *
-from .helperFunctions.mixins import *
+from makeReports.models import DecisionsActions, SLOInReport
+from makeReports.forms import DecActForm1Box, Single2000Textbox
+from .helperFunctions.section_context import section4Context
+from .helperFunctions.mixins import DeptReportMixin
 from .helperFunctions.todos import todoGetter
-from django.http import Http404
 
 
 class DecisionsActionsSummary(DeptReportMixin,ListView):
@@ -35,7 +35,7 @@ class AddDecisionAction(DeptReportMixin,CreateView):
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
+        Dispatches view and attaches :class:`~makeReports.models.slo_models.SLOInReport` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -89,21 +89,21 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
     Edit decision/action
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.DecisionsActions` to update
-        slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
+        pk (str): primary key of :class:`~makeReports.models.decisionActions_models.DecisionsActions` to update
+        slopk (str): primary key of :class:`~makeReports.models.slo_models.SLO`
     """
     model = DecisionsActions
     form_class = DecActForm1Box
     template_name = "makeReports/DecisionsActions/changeDecisionAction.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches the view and attaches the :class:`~makeReports.models.report_models.SLO` to the instance
+        Dispatches the view and attaches the :class:`~makeReports.models.slo_models.SLO` to the instance
 
         Args:
             request (HttpRequest): request to view page
         Keyword Args:
-            pk (str): primary key of :class:`~makeReports.models.report_models.DecisionsActions` to update
-            slopk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport`
+            pk (str): primary key of :class:`~makeReports.models.decisionActions_models.DecisionsActions` to update
+            slopk (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport`
             
         Returns:
             HttpResponse : response of page to request
@@ -115,7 +115,7 @@ class EditDecisionAction(DeptReportMixin,UpdateView):
         return super(EditDecisionAction,self).dispatch(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
         """
-        Gets the context for the template, including the corresponding :class:`~makeReports.models.report_models.SLOInReport` 
+        Gets the context for the template, including the corresponding :class:`~makeReports.models.slo_models.SLOInReport` 
 
         Returns:
             dict : context for template
@@ -149,7 +149,7 @@ class AddEditRedirect(DeptReportMixin,RedirectView):
     based upon whether a decision action already exists
 
     Keyword Args:
-        slopk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport`
+        slopk (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport`
     """
     def get_redirect_url(self, *args,**kwargs):
         """

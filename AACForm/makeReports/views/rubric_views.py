@@ -1,15 +1,15 @@
 """
 This file contains views related to managing rubrics (but not grading with them)
 """
+from datetime import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import DetailView
-from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from datetime import datetime, timedelta
-from makeReports.views.helperFunctions.mixins import *
 from django.http import Http404
+from django.urls import reverse_lazy
+from makeReports.models import Rubric, RubricItem
+from makeReports.forms import DuplicateRubricForm, RubricItemForm
+from makeReports.views.helperFunctions.mixins import AACOnlyMixin
 
 class RubricList(AACOnlyMixin,ListView):
     """
@@ -33,7 +33,7 @@ class SearchRubricList(AACOnlyMixin,ListView):
         Gets rubrics within 180 days of date if it exists and containing name if it exists
         
         Returns:
-            QuerySet : rubrics (:class:`~makeReports.models.report_models.Rubric`) meeting search parameters
+            QuerySet : rubrics (:class:`~makeReports.models.grading_models.Rubric`) meeting search parameters
         """
         rubs = Rubric.objects
         keys = self.request.GET.keys()
@@ -69,19 +69,19 @@ class AddRubricItems(AACOnlyMixin, FormView):
     View to add rubric items to rubric
     
     Keyword Args:
-        rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`
+        rubric (str): primary key of :class:`~makeReports.models.grading_models.Rubric`
     """
     template_name = "makeReports/Rubric/addRI.html"
     form_class = RubricItemForm
     def dispatch(self, request,*args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Rubric` to instance
+        Dispatches view and attaches :class:`~makeReports.models.grading_models.Rubric` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric`
+            rubric (str): primary key of :class:`~makeReports.models.grading_models.Rubric`
             
         Returns:
             HttpResponse : response of page to request
@@ -139,7 +139,7 @@ class ViewRubric(AACOnlyMixin,DetailView):
     View to view a rubric
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Rubric` to view
+        pk (str): primary key of :class:`~makeReports.models.grading_models.Rubric` to view
     """
     model = Rubric
     template_name = "makeReports/Rubric/rubricDetail.html"
@@ -162,7 +162,7 @@ class UpdateRubricItem(AACOnlyMixin,UpdateView):
     View to update rubric item
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.RubricItem` to update
+        pk (str): primary key of :class:`~makeReports.models.basic_models.RubricItem` to update
     """
     model = RubricItem
     form_class = RubricItemForm
@@ -180,7 +180,7 @@ class UpdateRubricFile(AACOnlyMixin, UpdateView):
     View to update file associated with the rubric
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Rubric` to update
+        pk (str): primary key of :class:`~makeReports.models.grading_models.Rubric` to update
     """
     model = Rubric
     fields = ['name','fullFile']
@@ -198,7 +198,7 @@ class DeleteRubricItem(AACOnlyMixin,DeleteView):
     View to delete rubric item
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.RubricItem` to delete
+        pk (str): primary key of :class:`~makeReports.models.grading_models.RubricItem` to delete
     """
     model = RubricItem
     template_name = "makeReports/Rubric/deleteRubricItem.html"
@@ -215,7 +215,7 @@ class DuplicateRubric(AACOnlyMixin, FormView):
     View to duplicate rubric 
 
     Keyword Args:
-        rubric (str): primary key of :class:`~makeReports.models.report_models.Rubric` to duplicate
+        rubric (str): primary key of :class:`~makeReports.models.grading_models.Rubric` to duplicate
     """
     #duplicate -> edit/delete/add intended workflow instead of some kind of import
     form_class = DuplicateRubricForm
@@ -242,14 +242,14 @@ class DuplicateRubric(AACOnlyMixin, FormView):
             name=form.cleaned_data['new_name']
             )
         for ri in RIs:
-            newRi = RubricItem.objects.create(text=ri.text, abbreviation=ri.abbreviation, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
+            RubricItem.objects.create(text=ri.text, abbreviation=ri.abbreviation, section=ri.section, rubricVersion=newRub,order=ri.order,DMEtext=ri.DMEtext,MEtext=ri.MEtext,EEtext=ri.EEtext)
         return super(DuplicateRubric,self).form_valid(form)
 class DeleteRubric(AACOnlyMixin,DeleteView):
     """
     View to delete rubric
 
     Keyword Args:
-        pk (str) : primary key of :class:`~makeReports.models.report_models.Rubric` to delete
+        pk (str) : primary key of :class:`~makeReports.models.grading_models.Rubric` to delete
     """
     model = Rubric
     template_name = "makeReports/Rubric/deleteRubric.html"

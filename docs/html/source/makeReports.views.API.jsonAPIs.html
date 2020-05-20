@@ -190,7 +190,7 @@ are the GET parameters</p>
 <dl class="attribute">
 <dt id="makeReports.views.API.jsonAPIs.AssessmentBySLO.serializer_class">
 <code class="sig-name descname">serializer_class</code><a class="headerlink" href="#makeReports.views.API.jsonAPIs.AssessmentBySLO.serializer_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="makeReports.views.API.serializers.html#makeReports.views.API.serializers.Assessmentserializer" title="makeReports.views.API.serializers.Assessmentserializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.API.serializers.Assessmentserializer</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentSerializer" title="makeReports.views.API.serializers.AssessmentSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.API.serializers.AssessmentSerializer</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -387,7 +387,7 @@ are the GET parameters</p>
 <dt id="makeReports.views.API.jsonAPIs.SloByDPListAPI">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.API.jsonAPIs.</code><code class="sig-name descname">SloByDPListAPI</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.API.jsonAPIs.SloByDPListAPI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rest_framework.generics.ListAPIView</span></code></p>
-<p>JSON API to gets past SLOs <code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code> within specified degree program</p>
+<p>JSON API to gets past SLOs <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLO" title="makeReports.models.slo_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> within specified degree program</p>
 <p class="rubric">Notes</p>
 <p>‘report__degreeProgram’ (degreeProgram primary key), ‘report__year__gte’ (min year),
 ‘report__year__lte’ (max year) are the GET request parameters</p>
@@ -407,7 +407,7 @@ are the GET parameters</p>
 <dd><p>Gets the filtered QuerySet, and picks the most recent SLOInReport for each parent SLO</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>QuerySet of SLOs (<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code>) that match parameters</p>
+<dd class="field-odd"><p>QuerySet of SLOs (<a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a>) that match parameters</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>

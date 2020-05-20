@@ -1,16 +1,29 @@
 """
 This file contains all views related to inputting data into the form
 """
+from django.http import Http404
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from .helperFunctions.section_context import *
-from .helperFunctions.mixins import *
+from makeReports.models import (
+    AssessmentAggregate,
+    AssessmentData,
+    AssessmentVersion,
+    DataAdditionalInformation,
+    ResultCommunicate,
+    SLOInReport,
+    SLOStatus
+)
+from makeReports.forms import (
+    AddDataCollection, 
+    AssessmentAggregateForm,
+    SLOStatusForm, 
+    ResultCommunicationForm,
+    Single2000Textbox
+)
+from .helperFunctions.section_context import section3Context
+from .helperFunctions.mixins import DeptReportMixin
 from .helperFunctions.todos import todoGetter
-from makeReports.choices import *
-from django.http import Http404
 
 class DataCollectionSummary(DeptReportMixin,ListView):
     """
@@ -24,7 +37,7 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         Gets QuerySet of data objects that go with the report
 
         Returns:
-            QuerySet : data (:class:`~makeReports.models.report_models.AssessmentData`) within the report
+            QuerySet : data (:class:`~makeReports.models.data_models.AssessmentData`) within the report
         """
         report = self.report
         assessments = AssessmentVersion.objects.filter(report=report).order_by("slo__number","number")
@@ -40,7 +53,6 @@ class DataCollectionSummary(DeptReportMixin,ListView):
         Returns:
             dict : context for template
         """
-        report = self.report
         context = super(DataCollectionSummary, self).get_context_data(**kwargs)
         context['toDo'] = todoGetter(3,self.report)
         context['reqTodo'] = len(context['toDo']['r'])
@@ -52,13 +64,13 @@ class CreateDataCollectionRow(DeptReportMixin,FormView):
     View to add new data
 
     Keyword Args:
-        assessment (str): primary key of :class:`~makeReports.models.report_models.AssessmentVersion` to add data for
+        assessment (str): primary key of :class:`~makeReports.models.assessment_models.AssessmentVersion` to add data for
     """
     template_name = "makeReports/DataCollection/addDataCollection.html"
     form_class = AddDataCollection
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentVersion` to instance
+        Dispatches view and attaches :class:`~makeReports.models.assessment_models.AssessmentVersion` to instance
 
         Args:
             request(HttpRequest): request to view page
@@ -127,14 +139,14 @@ class EditDataCollectionRow(DeptReportMixin,FormView):
     View to edit a data point
 
     Keyword Args:
-        dataCollection (str): primary key of :class:`~makeReports.models.report_models.AssessmentData` to edit
+        dataCollection (str): primary key of :class:`~makeReports.models.data_models.AssessmentData` to edit
     """
     template_name = "makeReports/DataCollection/editDataCollection.html"
     form_class = AddDataCollection
 
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.AssessmentData` to instance
+        Dispatches view and attaches :class:`~makeReports.models.data_models.AssessmentData` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -200,7 +212,7 @@ class DeleteDataCollectionRow(DeptReportMixin,DeleteView):
     View to delete data point
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentData` to delete
+        pk (str): primary key of :class:`~makeReports.models.data_models.AssessmentData` to delete
     """
     model = AssessmentData
     template_name = "makeReports/DataCollection/deleteDataCollection.html"
@@ -227,7 +239,7 @@ class NewSLOStatus(DeptReportMixin,FormView):
         Attaches the SLO to the instance
 
         Keyword Args:
-            slopk (int): primary key of SLO (:class:`~makeReports.models.SLOInReport`) to create status of 
+            slopk (int): primary key of SLO (:class:`~makeReports.models.slo_models.SLOInReport`) to create status of 
         """
         try:
             self.slo = SLOInReport.objects.get(pk=self.kwargs['slopk'])
@@ -285,16 +297,16 @@ class EditSLOStatus(DeptReportMixin,FormView):
     View to edit SLO status
 
     Keyword Args:
-        slopk (str): primary key of :class:`~makeReports.models.report_models.SLO`
-        statuspk (str): primary key of :class:`~makeReports.models.report_models.SLOStatus`
+        slopk (str): primary key of :class:`~makeReports.models.slo_models.SLO`
+        statuspk (str): primary key of :class:`~makeReports.models.data_models.SLOStatus`
     """
     template_name = "makeReports/DataCollection/SLOStatus.html"
     form_class = SLOStatusForm
     
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.SLO`, :class:`~makeReports.models.report_models.SLOInReport`,
-         and :class:`~makeReports.models.report_models.SLOStatus` to the instance
+        Dispatches view and attaches :class:`~makeReports.models.slo_models.SLO`, :class:`~makeReports.models.slo_models.SLOInReport`,
+         and :class:`~makeReports.models.data_models.SLOStatus` to the instance
 
         Args:
             request (HttpRequest): request to view page
@@ -403,14 +415,14 @@ class EditResultCommunication(DeptReportMixin,FormView):
     View to edit result communication
 
     Keyword Args:
-        resultpk (str): primary key of :class:`~makeReports.models.report_models.ResultCommunicate` to edit
+        resultpk (str): primary key of :class:`~makeReports.models.data_models.ResultCommunicate` to edit
     """
     template_name = "makeReports/DataCollection/ResultCommunication.html"
     form_class = ResultCommunicationForm
     
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.ResultCommunicate` to instance
+        Dispatches view and attaches :class:`~makeReports.models.data_models.ResultCommunicate` to instance
 
         Args:
             request (HttpRequest): request to view page
@@ -528,7 +540,7 @@ class DataAssessmentDeleteInfo(DeptReportMixin,DeleteView):
     View to delete additional data information
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.DataAdditionalInformation` to delete
+        pk (str): primary key of :class:`~makeReports.models.data_models.DataAdditionalInformation` to delete
     """
     model = DataAdditionalInformation
     template_name = "makeReports/DataCollection/deleteInfo.html"
@@ -545,7 +557,7 @@ class DataAssessmentUpdateInfo(DeptReportMixin,UpdateView):
     View to update data assessment supplement
     
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.DataAdditionalInformation` to update
+        pk (str): primary key of :class:`~makeReports.models.data_models.DataAdditionalInformation` to update
     """
     model = DataAdditionalInformation
     template_name = "makeReports/DataCollection/updateInfo.html"
@@ -599,7 +611,7 @@ class AssessmentAggregateEdit(DeptReportMixin, UpdateView):
     View to edit assessment aggregate
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.AssessmentAggregate` to update
+        pk (str): primary key of :class:`~makeReports.models.data_models.AssessmentAggregate` to update
     """
     model = AssessmentAggregate
     form_class = AssessmentAggregateForm

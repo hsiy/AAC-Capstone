@@ -2,14 +2,14 @@
 This file contains recipes to create AAC admin models
 
 Attributes:
-    college (Recipe): recipe to create :class:`~makeReports.models.College` model
-    department (Recipe): recipe to create :class:`~makeReports.models.Department` model
-    degreeProgram (Recipe): recipe to create :class:`~makeReports.models.DegreeProgram` model
-    announcement (Recipe): recipe to create :class:`~makeReports.models.Announcement` model
+    college (Recipe): recipe to create :class:`~makeReports.models.aac_models.College` model
+    department (Recipe): recipe to create :class:`~makeReports.models.aac_models.Department` model
+    degreeProgram (Recipe): recipe to create :class:`~makeReports.models.aac_models.DegreeProgram` model
+    announcement (Recipe): recipe to create :class:`~makeReports.models.aac_models.Announcement` model
 """
 from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.aac_models import Announcement, College, Department, DegreeProgram
 
 
 college_names = ["College of Information Science and Technology","College of Arts and Sciences","College of Business", "College of Engineering","College of Education","College of Health and Kineseology"]

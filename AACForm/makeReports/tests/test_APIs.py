@@ -1,15 +1,10 @@
 """
 Tests the APIs work as expected
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import SLOStatus
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
-from makeReports.choices import *
+from .test_basicViews import ReportAACSetupTest, NonAACTest
 
 class APITesting(NonAACTest):
     """

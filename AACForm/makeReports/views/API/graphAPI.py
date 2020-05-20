@@ -1,29 +1,17 @@
 """
 This file contains the APIs to return graphs
 """
-from rest_framework import generics
-from rest_framework import views, status
-from rest_framework.response import Response
-from django_filters import rest_framework as filters
-from rest_framework import serializers
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
-from makeReports.models import *
-from makeReports.choices import *
-from makeReports.views.helperFunctions import text_processing
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
-import tempfile
-import django.core.files as files
-import matplotlib.pyplot as plt
 import io
 from datetime import datetime, timedelta
 from matplotlib.ticker import FuncFormatter
 import pandas as pd
 import json
+import django.core.files as files
 from django.http import Http404
-
+from rest_framework import views, status
+from rest_framework.response import Response
+from makeReports.models import AssessmentAggregate, DegreeProgram, Graph, SLOInReport, SLOStatus
+from makeReports.choices import SLO_STATUS_CHOICES
 
 def get_specificSLO_graph(request):
     """
@@ -179,20 +167,10 @@ def get_degreeProgramSuccess_graph(request):
         sloIR__report__year__lte = endYear,
         sloIR__report__degreeProgram__department__pk = thisDep
         )
-    #dpQS = DegreeProgram.active_objects.all()
     depQS = DegreeProgram.active_objects.filter(department=thisDep)
     dataFrame = {
         'Year':[]
     }
-    index = []
-    
-    # ds = depQS.values('name')
-    
-    # for d in ds.iterator():
-    #     name = d.get('name')+" ("+d.get('level')+")"
-    #     new = {name: []}
-    #     dataFrame.update(new)
-
     for year in range(bYear,eYear+1):
         qYear = queryset.filter(sloIR__report__year=year)
         for d in depQS:
@@ -209,16 +187,6 @@ def get_degreeProgramSuccess_graph(request):
             except:
                 new = {name:[metP]}
                 dataFrame.update(new)
-        # for name in dataFrame.keys():
-        #     if name is not "Year":
-        #         qDP = qYear.filter(report__degreeProgram__name = str(name))
-        #         overall = qDP.count()
-        #         if overall != 0:
-        #             met = qDP.filter(status=SLO_STATUS_CHOICES[0][0]).count()
-        #             metP = met/overall
-        #         else:
-        #             metP = 0
-        #         dataFrame[name].append(metP)
         dataFrame['Year'].append(year)
     df = pd.DataFrame(dataFrame)
     yVals = list(dataFrame.keys()).remove('Year')

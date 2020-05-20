@@ -32,13 +32,13 @@ In order to upgrade python and Django version
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import types
+import csv
 
 from django.core.exceptions import FieldDoesNotExist, ImproperlyConfigured
 from django.http.response import HttpResponse
 from django.utils.encoding import force_text
 from django.views.generic.base import View
 from django.views.generic.list import MultipleObjectMixin
-import csv
 
 def _get_method_type():
     class C(object):

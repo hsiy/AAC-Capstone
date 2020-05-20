@@ -1,14 +1,11 @@
 """
 This tests views relating to the management of rubrics
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import Rubric, RubricItem
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
+from .test_basicViews import ReportAACSetupTest
+
 class RubricMgmtTest(ReportAACSetupTest):
     """
     Tests relating to rubric management
@@ -30,7 +27,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         Tests the rubric list page returns expected results
         """
-        rub2 = baker.make("Rubric",name="nonono")
+        baker.make("Rubric",name="nonono")
         resp = self.client.get(reverse('makeReports:search-rubric-list')+"?date=&name=testytesttest")
         self.assertContains(resp,"testytesttest")
         self.assertNotContains(resp,"nonono")
@@ -161,7 +158,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         self.assertEquals(num,0)
         num = RubricItem.objects.filter(pk=ipk).count()
         self.assertEquals(num,0)
-    def test_addRI_DNE(self):
+    def test_deleteRI_DNE(self):
         """
         Tests the response code from the delete rubric page when the rubric does not exist returns 404
         """
@@ -212,7 +209,6 @@ class RubricMgmtTest(ReportAACSetupTest):
         Tests view to update rubric items via post with too long of DMEtext fails
         """
         rI = baker.make("RubricItem",rubricVersion = self.rubric)
-        pk = rI.pk
         reallyLong = "The conclusions need more attention"*500
         resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
             'text':'Data is used to make decisions.',
@@ -230,7 +226,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         rI = baker.make_recipe("makeReports.rubricItem",rubricVersion = self.rubric)
         pk = rI.pk
-        resp = self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':rI.pk}),{
+        self.client.post(reverse('makeReports:update-RI',kwargs={'rubric':self.rubric.pk,'pk':pk}),{
             'text':'Data is used to make the decisions',
             'abbreviation':'EZ',
             'section':1,
@@ -289,8 +285,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         Tests duplicating a rubric without a name fails
         """
-        preName = self.rubric.name
-        rI = baker.make("RubricItem", rubricVersion=self.rubric)
+        baker.make("RubricItem", rubricVersion=self.rubric)
         resp = self.client.post(reverse('makeReports:dup-rub',kwargs={
             'rubric':self.rubric.pk,
         }),{
@@ -313,7 +308,7 @@ class RubricMgmtTest(ReportAACSetupTest):
         }))
         num=RubricItem.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
-    def test_deleteRI_DNE(self):
+    def test_deleteRI_RIDNE(self):
         """
         Tests the response code from the Delete Rubric Item page when the rubric item does not exist returns 404
         """
@@ -328,9 +323,9 @@ class RubricMgmtTest(ReportAACSetupTest):
         """
         rI = baker.make_recipe("makeReports.rubricItem", rubricVersion=self.rubric)
         pk = rI.pk
-        resp = self.client.post(reverse('makeReports:delete-RI',kwargs={
+        self.client.post(reverse('makeReports:delete-RI',kwargs={
             'rubric':self.rubric.pk,
-            'pk':rI.pk
+            'pk':pk
         }))
         num=RubricItem.objects.filter(pk=pk).count()
         self.assertEquals(num,0)

@@ -1,15 +1,10 @@
 """
 Tests related to testing views for entering decisions and actions
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import DecisionsActions
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
-from makeReports.choices import *
+from .test_basicViews import ReportSetupTest
 
 class DecActViewsTest(ReportSetupTest):
     """
@@ -151,7 +146,7 @@ class DecActViewsTest(ReportSetupTest):
         Tests that too long of text does not change the decision/action text
         """
         dA = baker.make("DecisionsActions",sloIR=self.slo, text="valid text")
-        resp = self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
+        self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
             'pk':dA.pk
@@ -242,7 +237,7 @@ class DecActViewsTestRecipe(DecActViewsTest):
         Tests that posting to view edits the decision/action text with recipe based model
         """
         dA = baker.make_recipe("makeReports.decisionsActions",sloIR=self.slo)
-        resp = self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
+        self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
             'pk':dA.pk
@@ -256,7 +251,7 @@ class DecActViewsTestRecipe(DecActViewsTest):
         Tests the decision/action does not update when the text is too long
         """
         dA = baker.make_recipe("makeReports.decisionsActions",sloIR=self.slo, text="all right text")
-        resp = self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
+        self.client.post(reverse('makeReports:edit-decisions-actions',kwargs={
             'report':self.rpt.pk,
             'slopk':self.slo.pk,
             'pk':dA.pk

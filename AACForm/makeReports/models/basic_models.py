@@ -2,13 +2,8 @@
 Includes most common models used extensively by all users across the site
 """
 from django.db import models
-from makeReports.choices import *
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete
-from django.dispatch import receiver
 from gdstorage.storage import GoogleDriveStorage
-from django.utils.safestring import mark_safe
-import os
 
 gd_storage = GoogleDriveStorage()
 class NonArchivedManager(models.Manager):

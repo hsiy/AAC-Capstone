@@ -3,17 +3,34 @@
 |   This includes administrative home and creating, updating, and deleting colleges, departments, and degree programs.
 |   It also includes pages related to account management and making announcements.
 """
+from datetime import datetime
+from django.http import Http404
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import TemplateView
-from django.urls import reverse_lazy, reverse
-from makeReports.models import *
-from makeReports.forms import *
-from datetime import datetime
-from django.contrib.auth.models import User
-from makeReports.views.helperFunctions.mixins import *
-from django.http import Http404
+from django.urls import reverse_lazy
+from makeReports.models import (
+    Announcement, 
+    College, 
+    Department, 
+    DegreeProgram, 
+    GradedRubric, 
+    Profile, 
+    Report, 
+    RequiredFieldSetting,
+    User
+)
+from makeReports.forms import (
+    AnnouncementForm, 
+    CreateDepartmentForm, 
+    CreateDPByDept, 
+    GenerateReports,
+    MakeNewAccount, 
+    RequiredReportFieldsForm, 
+    UpdateUserForm
+)
 from makeReports.choices import POSSIBLE_REQS
+from makeReports.views.helperFunctions.mixins import AACOnlyMixin
 
 class AdminHome(AACOnlyMixin,FormView):
     """
@@ -77,7 +94,7 @@ class UpdateCollege(AACOnlyMixin,UpdateView):
     Update college, no restrictions compared to new college
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.College` to update
+        pk (str): primary key of :class:`~makeReports.models.aac_models.College` to update
     """
     model = College
     template_name = "makeReports/AACAdmin/CollegeDeptDP/updateCollege.html"
@@ -86,11 +103,11 @@ class UpdateCollege(AACOnlyMixin,UpdateView):
 
 class DeleteCollege(AACOnlyMixin,UpdateView):
     """
-    |  Delete college: marks the :class:`~makeReports.models.report_models.College` as archived
+    |  Delete college: marks the :class:`~makeReports.models.aac_models.College` as archived
     |  Actual deletion is not allowed due to data-loss issues
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.College` to delete
+        pk (str): primary key of :class:`~makeReports.models.aac_models.College` to delete
     """
     model = College
     fields = ['active']
@@ -118,7 +135,7 @@ class RecoverCollege(AACOnlyMixin,UpdateView):
     View to unarchive college
     
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.College` to recover    
+        pk (str): primary key of :class:`~makeReports.models.aac_models.College` to recover    
     """
     model = College
     fields = ['active']
@@ -126,7 +143,7 @@ class RecoverCollege(AACOnlyMixin,UpdateView):
     success_url = reverse_lazy('makeReports:college-list')
 class CollegeList(AACOnlyMixin,ListView):
     """
-    To list all active :class:`~makeReports.models.report_models.College` objects
+    To list all active :class:`~makeReports.models.aac_models.College` objects
     """
     model = College
     template_name = "makeReports/AACAdmin/CollegeDeptDP/collegeList.html"
@@ -135,13 +152,13 @@ class CollegeList(AACOnlyMixin,ListView):
         Returns active colleges in a QuerySet
 
         Returns:
-            QuerySet : QuerySet of all active colleges (:class:`~makeReports.models.report_models.College`)
+            QuerySet : QuerySet of all active colleges (:class:`~makeReports.models.aac_models.College`)
         """
         objs = College.active_objects.all()
         return objs
 class CreateDepartment(AACOnlyMixin,CreateView):
     """
-    View to create a new :class:`~makeReports.models.report_models.Department`
+    View to create a new :class:`~makeReports.models.aac_models.Department`
     """
     model = Department
     #fields = ['name', 'college']
@@ -150,7 +167,7 @@ class CreateDepartment(AACOnlyMixin,CreateView):
     success_url = "/aac/department/list/?college=&name="
 class DepartmentList(AACOnlyMixin,ListView):
     """
-    View that lists all active :class:`~makeReports.models.report_models.Department` objects
+    View that lists all active :class:`~makeReports.models.aac_models.Department` objects
 
     Notes:
         college and name are the GET request parameters to filter on those respective fields
@@ -159,7 +176,7 @@ class DepartmentList(AACOnlyMixin,ListView):
     template_name = "makeReports/AACAdmin/CollegeDeptDP/deptList.html"
     def get_context_data(self, **kwargs):
         """
-        Returns context to pass to template with list of :class:`~makeReports.models.report_models.College` objects
+        Returns context to pass to template with list of :class:`~makeReports.models.aac_models.College` objects
 
         Returns:
             dict : dictionary of context
@@ -170,10 +187,10 @@ class DepartmentList(AACOnlyMixin,ListView):
     def get_queryset(self):
         """
         Returns:
-            QuerySet of :class:`~makeReports.models.report_models.Department` objects meeting search parameters
+            QuerySet of :class:`~makeReports.models.aac_models.Department` objects meeting search parameters
         
         Returns:
-            QuerySet : QuerySet of active departments (:class:`~makeReports.models.report_models.Department`) meeting search criteria
+            QuerySet : QuerySet of active departments (:class:`~makeReports.models.aac_models.Department`) meeting search criteria
         """
 
         objs = Department.active_objects
@@ -189,7 +206,7 @@ class UpdateDepartment(AACOnlyMixin,UpdateView):
     View to update the name or college of a department
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Department` to update
+        pk (str): primary key of :class:`~makeReports.models.aac_models.Department` to update
     """
     model = Department
     fields = ['name', 'college']
@@ -200,7 +217,7 @@ class DeleteDepartment(AACOnlyMixin,UpdateView):
     View to "delete" a department by marking it inactive
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Department` to delete
+        pk (str): primary key of :class:`~makeReports.models.aac_models.Department` to delete
     """
     model = Department
     fields = ['active']
@@ -211,7 +228,7 @@ class RecoverDepartment(AACOnlyMixin,UpdateView):
     View to recover a department by marking it active
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Department` to recover
+        pk (str): primary key of :class:`~makeReports.models.aac_models.Department` to recover
     """
     model = Department
     fields = ['active']
@@ -222,7 +239,7 @@ class CreateDegreeProgram(AACOnlyMixin,CreateView):
     View to create a new degree program
 
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department` to create degree program in
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department` to create degree program in
     """
     model = DegreeProgram
     #fields=['name','level','cycle','startingYear']
@@ -270,8 +287,8 @@ class UpdateDegreeProgram(AACOnlyMixin,UpdateView):
     View to update a degree program
 
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department` of degree program
-        pk (str): primary key of :class:`~makeReports.models.report_models.DegreeProgram` to update
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department` of degree program
+        pk (str): primary key of :class:`~makeReports.models.aac_models.DegreeProgram` to update
     """
     model = DegreeProgram
     form_class = CreateDPByDept
@@ -289,8 +306,8 @@ class DeleteDegreeProgram(AACOnlyMixin,UpdateView):
     View to "delete" degree program by marking it inactive
 
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department` of degree program
-        pk (str): primary key of :class:`~makeReports.models.report_models.DegreeProgram` to delete
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department` of degree program
+        pk (str): primary key of :class:`~makeReports.models.aac_models.DegreeProgram` to delete
     """
     model = DegreeProgram
     fields = ['active']
@@ -308,8 +325,8 @@ class RecoverDegreeProgram(AACOnlyMixin,UpdateView):
     View to recover degree program and mark it active
 
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department` of degree program
-        pk (str): primary key of :class:`~makeReports.models.report_models.DegreeProgram` to recover
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department` of degree program
+        pk (str): primary key of :class:`~makeReports.models.aac_models.DegreeProgram` to recover
     """
     model = DegreeProgram
     fields = ['active']
@@ -327,23 +344,23 @@ class DegreeProgramList(AACOnlyMixin,ListView):
     View to list active degree programs within a department
 
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department`
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department`
     """
     model = DegreeProgram
     template_name = "makeReports/AACAdmin/CollegeDeptDP/dpList.html"
     def dispatch(self, request, *args, **kwargs):
         """
-        Dispatches the view and attaches the :class:`~makeReports.models.report_models.Department` associated with the primary key to the instance
+        Dispatches the view and attaches the :class:`~makeReports.models.aac_models.Department` associated with the primary key to the instance
         
         
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            dept (str): primary key of :class:`~makeReports.models.report_models.Department`
+            dept (str): primary key of :class:`~makeReports.models.aac_models.Department`
 
         Keyword Args:
-            dept (str): primary key of :class:`~makeReports.models.report_models.Department`
+            dept (str): primary key of :class:`~makeReports.models.aac_models.Department`
 
         Returns:
             HttpResponse : response of page to request
@@ -357,7 +374,7 @@ class DegreeProgramList(AACOnlyMixin,ListView):
     def get_queryset(self):
         """
         Returns:
-            QuerySet : contains only active :class:`~makeReports.models.report_models.DegreeProgram` objects within the department
+            QuerySet : contains only active :class:`~makeReports.models.aac_models.DegreeProgram` objects within the department
         """
         objs = DegreeProgram.active_objects.filter(department=self.dept)
         return objs
@@ -380,7 +397,7 @@ class ArchivedColleges(AACOnlyMixin, ListView):
     def get_queryset(self):
         """
         Returns:
-            QuerySet : only inactive colleges (:class:`~makeReports.models.report_models.College`)
+            QuerySet : only inactive colleges (:class:`~makeReports.models.aac_models.College`)
         """
         return College.objects.filter(active=False)
 class ArchivedDepartments(AACOnlyMixin, ListView):
@@ -392,7 +409,7 @@ class ArchivedDepartments(AACOnlyMixin, ListView):
     def get_queryset(self):
         """
         Returns:
-            QuerySet : only inactive departments (:class:`~makeReports.models.report_models.Department`)
+            QuerySet : only inactive departments (:class:`~makeReports.models.aac_models.Department`)
         """
         return Department.objects.filter(active=False)
 class ArchivedDegreePrograms(AACOnlyMixin, ListView):
@@ -400,18 +417,18 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
     View to list archived/inactive degree programs within department
     
     Keyword Args:
-        dept (str): primary key of :class:`~makeReports.models.report_models.Department`
+        dept (str): primary key of :class:`~makeReports.models.aac_models.Department`
     """
     model = DegreeProgram
     template_name = "makeReports/AACAdmin/CollegeDeptDP/archivedDPs.html"
     def dispatch(self, request,*args, **kwargs):
         """
-        Dispatches the view and attaches the :class:`~makeReports.models.report_models.Department` to the instance
+        Dispatches the view and attaches the :class:`~makeReports.models.aac_models.Department` to the instance
 
         Args:
             request (HttpRequest) : request to view page
         Keyword Args:
-            dept (str): primary key of :class:`~makeReports.models.report_models.Department`
+            dept (str): primary key of :class:`~makeReports.models.aac_models.Department`
 
         Returns:
             HttpResponse : response of page to request
@@ -427,7 +444,7 @@ class ArchivedDegreePrograms(AACOnlyMixin, ListView):
         Gets QuerySet of degree programs user has access to
 
         Returns:
-            QuerySet : degree programs (:class:`~makeReports.models.report_models.DegreeProgram`) which are inactive and in the department
+            QuerySet : degree programs (:class:`~makeReports.models.aac_models.DegreeProgram`) which are inactive and in the department
         """
         return DegreeProgram.objects.filter(active=False, department=self.dept)
     def get_context_data(self, **kwargs):
@@ -464,17 +481,17 @@ class ModifyAccount(AACOnlyMixin,FormView):
     View to modify an account (intended for AAC use, not self-service)
     
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Profile` to change
+        pk (str): primary key of :class:`~makeReports.models.basic_models.Profile` to change
     """
     form_class = UpdateUserForm
     success_url = reverse_lazy('makeReports:account-list')
     template_name = "makeReports/AACAdmin/modify_account.html"
     def dispatch(self,request, *args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Profile` to instance
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Profile` to instance
         
         Keyword Args:
-            pk (str): primary key of :class:`~makeReports.models.report_models.Profile` to change
+            pk (str): primary key of :class:`~makeReports.models.basic_models.Profile` to change
         Returns:
             HttpResponse : response of page to request
         Args:
@@ -522,7 +539,7 @@ class InactivateUser(AACOnlyMixin,UpdateView):
     View to inactivate user
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.User` to inactivate
+        pk (str): primary key of :class:`~django.contrib.auth.models.User` to inactivate
     """
     model = User
     success_url = reverse_lazy('makeReports:account-list')
@@ -539,7 +556,7 @@ class AccountList(AACOnlyMixin,ListView):
         Gets all active profiles
 
         Returns:
-            QuerySet : set of :class:`~makeReports.models.report_models.Profile` objects that are active
+            QuerySet : set of :class:`~makeReports.models.basic_models.Profile` objects that are active
         """
         return Profile.objects.filter(user__is_active=True)
 class SearchAccountList(AACOnlyMixin,ListView):
@@ -557,7 +574,7 @@ class SearchAccountList(AACOnlyMixin,ListView):
         Filters the QuerySet based upon the search parameters
 
         Returns:
-            QuerySet : QuerySet matching search with only active profiles (:class:`~makeReports.models.report_models.Profile`)
+            QuerySet : QuerySet matching search with only active profiles (:class:`~makeReports.models.basic_models.Profile`)
         """
         profs = Profile.objects.filter(user__is_active=True)
         keys = self.request.GET.keys()
@@ -580,7 +597,7 @@ class ModifyAnnouncement(AACOnlyMixin,UpdateView):
     View to modify announcement
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Announcement` to update
+        pk (str): primary key of :class:`~makeReports.models.aac_models.Announcement` to update
     """
     model = Announcement
     template_name = "makeReports/AACAdmin/Announcements/editAnnoun.html"
@@ -597,7 +614,7 @@ class ListAnnouncements(AACOnlyMixin,ListView):
         Get not-expired announcements
 
         Returns:
-            QuerySet : announcements (:class:`~makeReports.models.report_models.Announcement`) that are not expired
+            QuerySet : announcements (:class:`~makeReports.models.aac_models.Announcement`) that are not expired
         """
         return Announcement.objects.filter(expiration__gte=datetime.now()).order_by("-creation")
 class DeleteAnnouncement(AACOnlyMixin,DeleteView):
@@ -605,7 +622,7 @@ class DeleteAnnouncement(AACOnlyMixin,DeleteView):
     View to delete announcement
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Announcement` to delete
+        pk (str): primary key of :class:`~makeReports.models.aac_models.Announcement` to delete
     """
     model = Announcement
     template_name = "makeReports/AACAdmin/Announcements/deleteAnn.html"

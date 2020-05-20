@@ -2,11 +2,11 @@
 This file contains recipes to create decisions and actions models
 
 Attributes:
-    decisionsActions (Recipe): recipe for creating :class:`~makeReports.models.DecisionsActions` model
+    decisionsActions (Recipe): recipe for creating :class:`~makeReports.models.decisionsActions_models.DecisionsActions` model
 """
 from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.decisionsActions_models import DecisionsActions
 from .slo_recipes import sloInReport
 
 

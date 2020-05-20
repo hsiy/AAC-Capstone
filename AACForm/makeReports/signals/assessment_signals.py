@@ -1,9 +1,11 @@
 """
 Contains all signals for models relating to Assessment models
 """
-from django.db.models.signals import post_save, pre_delete, post_delete
-from makeReports.models import *
 from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
+from makeReports.models import (
+    AssessmentVersion
+)
 
 
 def post_create_update_assessment_uses(instance):

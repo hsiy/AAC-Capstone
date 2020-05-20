@@ -2,13 +2,13 @@
 This file contains recipes to create data models
 
 Attributes:
-    assessmentData (Recipe): recipe to create :class:`~makeReports.models.AssessmentData` model
-    assessmentAggregate (Recipe): recipe to create :class:`~makeReports.models.AssessmentAggregate` model
-    resultCommunicate (Recipe): recipe to create :class:`~makeReports.models.ResultCommunicate` model
+    assessmentData (Recipe): recipe to create :class:`~makeReports.models.data_models.AssessmentData` model
+    assessmentAggregate (Recipe): recipe to create :class:`~makeReports.models.data_models.AssessmentAggregate` model
+    resultCommunicate (Recipe): recipe to create :class:`~makeReports.models.data_models.ResultCommunicate` model
 """
 from itertools import cycle
 from model_bakery.recipe import Recipe, foreign_key
-from makeReports.models import *
+from makeReports.models.data_models import AssessmentAggregate, AssessmentData, ResultCommunicate
 from .basic_recipes import report
 from .assessment_recipes import assessmentVersion
 

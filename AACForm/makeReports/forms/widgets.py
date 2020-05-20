@@ -1,9 +1,9 @@
 """
 Includes custom widgets, which change how forms are displayed
 """
+import os
 from django import forms
 from django.conf import settings
-import os
 
 class SLOChoicesJSWidget(forms.widgets.Select):
     """

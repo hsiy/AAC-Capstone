@@ -1,15 +1,15 @@
 """
 This file contains all view related to inputting SLOs into the form
 """
+from datetime import datetime
+from django.http import Http404
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, FormView
 from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from datetime import datetime
-from makeReports.views.helperFunctions.mixins import *
+from makeReports.models import AssessmentVersion, DegreeProgram, Report, SLO, SLOInReport, SLOsToStakeholder
+from makeReports.forms import CreateNewSLO, EditImportedSLOForm, ImportSLOForm, ImportStakeholderForm, Single2000Textbox
+from makeReports.views.helperFunctions.mixins import DeptReportMixin
 from .helperFunctions.todos import todoGetter
-from django.http import Http404
 
 class SLOSummary(DeptReportMixin,ListView):
     """
@@ -23,7 +23,7 @@ class SLOSummary(DeptReportMixin,ListView):
         Gets SLOs in report ordered by number
 
         Returns:
-            QuerySet : SLOs (:class:`~makeReports.models.report_models.SLOInReport`) in report
+            QuerySet : SLOs (:class:`~makeReports.models.slo_models.SLOInReport`) in report
         """
         report = self.report
         objs = SLOInReport.objects.filter(report=report).order_by("number")
@@ -150,8 +150,6 @@ class ImportSLO(DeptReportMixin,FormView):
         """
         rpt = self.report
         num = rpt.numberOfSLOs
-        x = form.cleaned_data['slo']
-        y= form.cleaned_data
         for sloInRpt in form.cleaned_data['slo']:
             num += 1
             newS = SLOInReport.objects.create(
@@ -202,19 +200,19 @@ class EditImportedSLO(DeptReportMixin,FormView):
     View to edit imported SLO (more restricted than new SLO)
 
     Keyword Args:
-        sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
+        sloIR (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport` to edit
     """
     template_name = "makeReports/SLO/editImportedSLO.html"
     form_class = EditImportedSLOForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
+        Dispatches view and attaches :class:`~makeReports.models.slo_models.SLOInReport` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
+            sloIR (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport` to edit
             
         Returns:
             HttpResponse : response of page to request
@@ -252,7 +250,6 @@ class EditImportedSLO(DeptReportMixin,FormView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        r = self.report
         self.sloInRpt.date=datetime.now()
         self.sloInRpt.goalText=form.cleaned_data['text']
         self.sloInRpt.changedFromPrior = True
@@ -263,19 +260,19 @@ class EditNewSLO(DeptReportMixin,FormView):
     View to edit new SLO (not-restricted)
 
     Keyword Args:
-        sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
+        sloIR (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport` to edit
     """
     template_name = "makeReports/SLO/editNewSLO.html"
     form_class = CreateNewSLO
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.SLOInReport` to instance
+        Dispatches view and attaches :class:`~makeReports.models.slo_models.SLOInReport` to instance
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            sloIR (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to edit
+            sloIR (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport` to edit
             
         Returns:
             HttpResponse : response of page to request
@@ -348,7 +345,7 @@ class StakeholderEntry(DeptReportMixin,FormView):
     def dispatch(self,request,*args,**kwargs):
         """
         Dispatches view and attaches
-         current stakeholder communication (:class:`~makeReports.models.report_models.SLOsToStakeholder`) to instance
+         current stakeholder communication (:class:`~makeReports.models.slo_models.SLOsToStakeholder`) to instance
         
         Args:
             request (HttpRequest): request to view page
@@ -397,8 +394,8 @@ class StakeholderEntry(DeptReportMixin,FormView):
         try:
             self.sts.text = form.cleaned_data['text']
             self.sts.save()
-        except Exception as e:
-            sTs = SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report=self.report)
+        except Exception:
+            SLOsToStakeholder.objects.create(text=form.cleaned_data['text'], report=self.report)
         return super(StakeholderEntry,self).form_valid(form)
 class ImportStakeholderEntry(DeptReportMixin,FormView):
     """
@@ -451,9 +448,9 @@ class ImportStakeholderEntry(DeptReportMixin,FormView):
                 sts.text = form.cleaned_data['stk'].text
                 sts.save()
             else:
-                sTsNew = SLOsToStakeholder.objects.create(text=form.cleaned_data['stk'].text, report=self.report)
+                SLOsToStakeholder.objects.create(text=form.cleaned_data['stk'].text, report=self.report)
         except:
-            sTs = SLOsToStakeholder.objects.create(text=form.cleaned_data['stk'].text, report=self.report)
+            SLOsToStakeholder.objects.create(text=form.cleaned_data['stk'].text, report=self.report)
         return super(ImportStakeholderEntry,self).form_valid(form)
     def get_context_data(self, **kwargs):
         """
@@ -509,7 +506,7 @@ class DeleteImportedSLO(DeptReportMixin,DeleteView):
     View to delete imported SLO (does not delete super SLO)
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
+        pk (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport` to delete
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"
@@ -532,7 +529,7 @@ class DeleteNewSLO(DeptReportMixin,DeleteView):
     View to delete new SLO (deletes the super SLO as well)
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.SLOInReport` to delete
+        pk (str): primary key of :class:`~makeReports.models.slo_models.SLOInReport` to delete
     """
     model = SLOInReport
     template_name = "makeReports/SLO/deleteSLO.html"

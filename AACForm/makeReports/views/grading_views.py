@@ -1,17 +1,23 @@
 """
 This file contains views related to the AAC grading completed reports
 """
-from django.views.generic.list import ListView
+from django.http import Http404
+from django.utils.safestring import mark_safe
+from django.template.defaulttags import register
 from django.views.generic.edit import UpdateView, FormView
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
-from makeReports.models import *
-from makeReports.forms import *
-from django.template.defaulttags import register
-from makeReports.views.helperFunctions.section_context import *
-from makeReports.views.helperFunctions.mixins import *
+from makeReports.models import GradedRubricItem, ReportSupplement, Report, RubricItem
+from makeReports.forms import SectionRubricForm, OverallCommentForm, SubmitGrade
+from makeReports.views.helperFunctions.section_context import (
+    rubricItemsHelper, 
+    section1Context, 
+    section2Context, 
+    section3Context,
+    section4Context
+)
+from makeReports.views.helperFunctions.mixins import AACReportMixin, AACOnlyMixin, DeptAACMixin
 from makeReports.views.helperFunctions.todos import todoGetter
-from django.http import Http404
 
 
 def generateRubricItems(rIs,form,r):
@@ -19,7 +25,7 @@ def generateRubricItems(rIs,form,r):
     Generates graded rubric items based on grading form
 
     Args:
-        rIs (list) : list of :class:`~makeReports.models.report_models.RubricItem` in rubric
+        rIs (list) : list of :class:`~makeReports.models.grading_models.RubricItem` in rubric
         form (Form) : completed form
         r (Report) : report
     """
@@ -32,13 +38,13 @@ def generateRubricItems(rIs,form,r):
             except:
                 gr = form.cleaned_data["rI"+str(ri.pk)]
                 if gr and (gr != ""):
-                    newGRI = GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
+                    GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
 def getInitialRubric(rIs, r, initial):
     """
     Initializes grading form based upon things already graded
 
     Args:
-        rIs (list) : list of :class:`~makeReports.models.report_models.RubricItem` in rubric
+        rIs (list) : list of :class:`~makeReports.models.grading_models.RubricItem` in rubric
         form (Form) : completed form
         r (Report) : report
     
@@ -58,8 +64,8 @@ def allRubricItemsSomeGrades(rIs,gRIs):
     If no grade, the value is "Not graded"
 
     Args:
-        rIs (list): list of :class:`~makeReports.models.report_models.RubricItem`
-        gRIs (list): list of :class:`~makeReports.models.report_models.GradedRubricItem`
+        rIs (list): list of :class:`~makeReports.models.grading_models.RubricItem`
+        gRIs (list): list of :class:`~makeReports.models.grading_models.GradedRubricItem`
     
     Returns:
         dict : items and grades
@@ -95,7 +101,7 @@ class GradingEntry(AACReportMixin,TemplateView):
     View that provides initial information on report to be graded
 
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report` to grade
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report` to grade
     """
     template_name = 'makeReports/Grading/grading_entry.html'
     def get_context_data(self,**kwargs):
@@ -113,7 +119,7 @@ class GradingView(AACOnlyMixin,FormView):
     View to grade one section of a form
 
     Keyword Args:
-        report (str): primary key of current :class:`~makeReports.models.report_models.Report` to grade
+        report (str): primary key of current :class:`~makeReports.models.basic_models.Report` to grade
     
     Attributes:
         section (int): section number of section currently being graded
@@ -121,15 +127,15 @@ class GradingView(AACOnlyMixin,FormView):
     form_class = SectionRubricForm
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view, and attaches :class:`~makeReports.models.report_models.Report` and 
-        rubric items (:class:`~makeReports.models.report_models.RubricItem`) to instance
+        Dispatches view, and attaches :class:`~makeReports.models.basic_models.Report` and 
+        rubric items (:class:`~makeReports.models.grading_models.RubricItem`) to instance
 
         Args:
             request (HttpRequest): request to view page
 
         
         Keyword Args:
-            report (str): primary key of current :class:`~makeReports.models.report_models.Report` to grade
+            report (str): primary key of current :class:`~makeReports.models.basic_models.Report` to grade
             
         Returns:
             HttpResponse : response of page to request
@@ -371,7 +377,7 @@ class RubricReview(AACReportMixin, FormView):
     form_class = SubmitGrade
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches the view and attaches the graded rubric items (:class:`~makeReports.models.report_models.GradedRubricItem`) to the instance
+        Dispatches the view and attaches the graded rubric items (:class:`~makeReports.models.grading_models.GradedRubricItem`) to the instance
         
         Args:
             request (HttpRequest): request to view page
@@ -444,7 +450,7 @@ class ReturnReport(AACOnlyMixin,UpdateView):
     View to return report to department for modification
 
     Keyword Args:
-        pk (str): primary key of :class:`~makeReports.models.report_models.Report` to return
+        pk (str): primary key of :class:`~makeReports.models.basic_models.Report` to return
     """
     model = Report
     fields = ['returned']
@@ -470,20 +476,20 @@ class Feedback(DeptAACMixin, TemplateView):
     View for department to view AAC feedback
 
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report` to view feedback for
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report` to view feedback for
     """
     model = GradedRubricItem
     template_name = "makeReports/Grading/feedback.html"
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` and 
-        graded items (:class:`~makeReports.models.report_models.GradedRubricItem`) to the view
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` and 
+        graded items (:class:`~makeReports.models.grading_models.GradedRubricItem`) to the view
 
         Args:
             request (HttpRequest): request to view page
         
         Keyword Args:
-            report (str): primary key of :class:`~makeReports.models.report_models.Report` to view feedback for
+            report (str): primary key of :class:`~makeReports.models.basic_models.Report` to view feedback for
             
         Returns:
             HttpResponse : response of page to request

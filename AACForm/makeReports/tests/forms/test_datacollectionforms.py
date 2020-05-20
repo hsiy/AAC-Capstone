@@ -2,15 +2,8 @@
 This tests the data collection related forms work as expected
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
-from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+from makeReports.forms import AddDataCollection, AssessmentAggregateForm, ResultCommunicationForm, SLOStatusForm
+from makeReports.choices import SLO_STATUS_CHOICES
 
 class DataCollectionFormTests(TestCase):
     """
@@ -51,6 +44,7 @@ class DataCollectionFormTests(TestCase):
         f = SLOStatusForm({
             'status':3
         })
+        self.assertFalse(f.is_valid())
     def test_result_comm_valid(self):
         """
         Test ResultCommunicationForm accepts valid data

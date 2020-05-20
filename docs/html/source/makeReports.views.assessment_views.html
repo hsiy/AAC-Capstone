@@ -163,8 +163,8 @@
 <dt id="makeReports.views.assessment_views.AddNewAssessment.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.AddNewAssessment.form_valid" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
-<div class="line">Creates <code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> based upon form</div>
-<div class="line">Updates the numberOfAssess fields for <code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></div>
+<div class="line">Creates <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.Assessment" title="makeReports.models.assessment_models.Assessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a> and <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> based upon form</div>
+<div class="line">Updates the numberOfAssess fields for <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLO" title="makeReports.models.slo_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -221,7 +221,7 @@
 <p>View to add new assessment from the SLO page</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>slo</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code> to add assessment</p>
+<dd class="field-odd"><p><strong>slo</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLO" title="makeReports.models.slo_models.SLO"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLO</span></code></a> to add assessment</p>
 </dd>
 </dl>
 <dl class="method">
@@ -286,7 +286,7 @@
 <dd><p>Returns assessments in report ordered by SLO</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> objects in report</p>
+<dd class="field-odd"><p><a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> objects in report</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -314,7 +314,7 @@
 <p>View to delete imported assessments (more restricted than new assessments)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to “delete”</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to “delete”</p>
 </dd>
 </dl>
 <dl class="method">
@@ -357,7 +357,7 @@
 <p>View to delete new assessment</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> delete</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> delete</p>
 </dd>
 </dl>
 <dl class="method">
@@ -400,7 +400,7 @@
 <p>View to delete supplement</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSupplement</span></code> to delete</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentSupplement" title="makeReports.models.assessment_models.AssessmentSupplement"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSupplement</span></code></a> to delete</p>
 </dd>
 </dl>
 <dl class="method">
@@ -434,22 +434,22 @@
 <dt id="makeReports.views.assessment_views.EditImportedAssessment">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.assessment_views.</code><code class="sig-name descname">EditImportedAssessment</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditImportedAssessment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptReportMixin" title="makeReports.views.helperFunctions.mixins.DeptReportMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.DeptReportMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.FormView</span></code></p>
-<p>View to edit imported assessment (cannot change fields in <code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code>)</p>
+<p>View to edit imported assessment (cannot change fields in <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.Assessment" title="makeReports.models.assessment_models.Assessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to update</p>
+<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to update</p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="makeReports.views.assessment_views.EditImportedAssessment.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditImportedAssessment.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view, and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to instance</p>
+<dd><p>Dispatches view, and attaches <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to update</p>
+<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to update</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>
@@ -500,7 +500,7 @@
 <dl class="method">
 <dt id="makeReports.views.assessment_views.EditImportedAssessment.get_initial">
 <code class="sig-name descname">get_initial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditImportedAssessment.get_initial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets initial form values based upon the current values of the <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></p>
+<dd><p>Gets initial form values based upon the current values of the <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>initial form values</p>
@@ -536,10 +536,10 @@
 <dt id="makeReports.views.assessment_views.EditNewAssessment">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.assessment_views.</code><code class="sig-name descname">EditNewAssessment</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.EditNewAssessment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#makeReports.views.assessment_views.EditImportedAssessment" title="makeReports.views.assessment_views.EditImportedAssessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.assessment_views.EditImportedAssessment</span></code></a></p>
-<p>View to edit new assessments (can change fields in <code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code>)</p>
+<p>View to edit new assessments (can change fields in <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.Assessment" title="makeReports.models.assessment_models.Assessment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to edit</p>
+<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to edit</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -593,7 +593,7 @@
 <p>View to import assessment from within the department</p>
 <p class="rubric">Notes</p>
 <p>Through get request URL, the following search parameters are sent:
-‘year’,’dp: primary key of degree program, ‘slo’: primary key of SLO (<code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code>)</p>
+‘year’,’dp: primary key of degree program, ‘slo’: primary key of SLO (<a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a>)</p>
 <dl class="attribute">
 <dt id="makeReports.views.assessment_views.ImportAssessment.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.assessment_views.ImportAssessment.form_class" title="Permalink to this definition">¶</a></dt>
@@ -604,7 +604,7 @@
 <dt id="makeReports.views.assessment_views.ImportAssessment.form_valid">
 <code class="sig-name descname">form_valid</code><span class="sig-paren">(</span><em class="sig-param">form</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.ImportAssessment.form_valid" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
-<div class="line">Creates <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> from form</div>
+<div class="line">Creates <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> from form</div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -678,19 +678,19 @@ and SLO choices by the report</p>
 <p>Imports assessment for a specific SLO</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>slo</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></p>
+<dd class="field-odd"><p><strong>slo</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a></p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="makeReports.views.assessment_views.ImportAssessmentSLO.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.ImportAssessmentSLO.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view, and attaches the specific <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code> to the instance</p>
+<dd><p>Dispatches the view, and attaches the specific <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> to the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>slo</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></p>
+<dd class="field-even"><p><strong>slo</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>
@@ -704,7 +704,7 @@ and SLO choices by the report</p>
 <dl class="method">
 <dt id="makeReports.views.assessment_views.ImportAssessmentSLO.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.ImportAssessmentSLO.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets context for the template, and attaches the <code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code> to the context</p>
+<dd><p>Gets context for the template, and attaches the <a class="reference internal" href="makeReports.models.slo_models.html#makeReports.models.slo_models.SLOInReport" title="makeReports.models.slo_models.SLOInReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">SLOInReport</span></code></a> to the context</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>context for template</p>
@@ -757,7 +757,7 @@ and SLO choices by the report</p>
 <p>View to import supplement to assessment</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></p>
+<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -766,13 +766,13 @@ and SLO choices by the report</p>
 <dl class="method">
 <dt id="makeReports.views.assessment_views.ImportSupplement.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.assessment_views.ImportSupplement.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code> to instance</p>
+<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a> to instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></p>
+<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>
@@ -926,7 +926,7 @@ the department</p>
 <p>View to upload supplements to assessments</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></p>
+<dd class="field-odd"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a></p>
 </dd>
 </dl>
 <dl class="method">
@@ -938,7 +938,7 @@ the department</p>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></p>
+<dd class="field-even"><p><strong>assessIR</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.assessment_models.html#makeReports.models.assessment_models.AssessmentVersion" title="makeReports.models.assessment_models.AssessmentVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentVersion</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>

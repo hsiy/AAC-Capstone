@@ -1,21 +1,13 @@
 """
 This file contains the APIs the front-end call to trigger an action on the back-end
 """
-from rest_framework import generics
-from rest_framework import views, status
+from django.http import Http404
 from rest_framework.response import Response
-from django_filters import rest_framework as filters
-from rest_framework import serializers
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
-from makeReports.models import *
-from makeReports.choices import *
-from makeReports.views.helperFunctions import text_processing
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-from datetime import datetime, timedelta
-from django.http import Http404
+from makeReports.models import AssessmentAggregate, Report, SLOStatus
 from makeReports.signals import update_status, update_agg
 
 class ClearOverrideAPI(APIView):

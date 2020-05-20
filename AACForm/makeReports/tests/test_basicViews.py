@@ -3,10 +3,7 @@ Tests relating to the basic shared views
 """
 from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import Department, User
 from model_bakery import baker
 
 def getWithReport(name, s, extraKwargs, extraURL):

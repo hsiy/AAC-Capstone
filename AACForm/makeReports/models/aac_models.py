@@ -2,14 +2,9 @@
 Includes models principally managed by the AAC, which act both as Python objects and abstractions for database items
 """
 from django.db import models
-from makeReports.choices import *
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete
-from django.dispatch import receiver
-from gdstorage.storage import GoogleDriveStorage
 from django.utils.safestring import mark_safe
-import os
-from .basic_models import gd_storage, NonArchivedManager
+from makeReports.choices import LEVELS
+from .basic_models import NonArchivedManager
 
 class College(models.Model):
     """

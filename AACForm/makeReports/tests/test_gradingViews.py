@@ -1,17 +1,10 @@
 """
 Tests relating to the grading views
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from makeReports.choices import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
-from datetime import datetime, date, timedelta
-from django.core.files import File
+from .test_basicViews import ReportAACSetupTest
+
 class GradingSectionsTest(ReportAACSetupTest):
     """
     Tests that grading sections works as expected
@@ -89,7 +82,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         Tests that the section 2 grading page works as expected when posting grade
         """
         fieldName = 'rI'+str(self.rInG2.pk)
-        resp = self.client.post(reverse('makeReports:grade-sec2',kwargs={'report':self.rpt.pk}),{
+        self.client.post(reverse('makeReports:grade-sec2',kwargs={'report':self.rpt.pk}),{
             fieldName:"DNM",
             'section_comment':'More students should take assessment 2.'
         })
@@ -102,7 +95,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         Tests that the section 2 grading page works as expected when optional section comment is empty
         """
         fieldName = 'rI'+str(self.rInG2.pk)
-        resp = self.client.post(reverse('makeReports:grade-sec2',kwargs={'report':self.rpt.pk}),{
+        self.client.post(reverse('makeReports:grade-sec2',kwargs={'report':self.rpt.pk}),{
             fieldName:"DNM",
             'section_comment':''
         })
@@ -122,7 +115,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         Tests that the section 3 grading page works as expected when posting grade
         """
         fieldName = 'rI'+str(self.rInG3.pk)
-        resp = self.client.post(reverse('makeReports:grade-sec3',kwargs={'report':self.rpt.pk}),{
+        self.client.post(reverse('makeReports:grade-sec3',kwargs={'report':self.rpt.pk}),{
             fieldName: "MC",
             'section_comment':'More students should take assessment 2 so there can be more data.'
         })
@@ -144,7 +137,7 @@ class GradingSectionsTest(ReportAACSetupTest):
         Tests that the section 4 grading page works as expected when posting grade
         """
         fieldName = 'rI'+str(self.rInG4.pk)
-        resp = self.client.post(reverse('makeReports:grade-sec4',kwargs={'report':self.rpt.pk}),{
+        self.client.post(reverse('makeReports:grade-sec4',kwargs={'report':self.rpt.pk}),{
             fieldName:"ME",
             'section_comment':'Spend more time discussing results with the stakeholders.'
         })

@@ -2,13 +2,12 @@
 Forms relating to inputting and modifying SLOs
 """
 from django import forms
-from makeReports.models import *
-from makeReports.choices import *
-from django_summernote.widgets import SummernoteWidget
-from .cleaners import CleanSummer
-from django.core.exceptions import ValidationError
-from .widgets import SLOChoicesJSWidget, SLOMultipleChoicesJSWidget, StkChoicesJSWidget
 from django.template.defaultfilters import register
+from django_summernote.widgets import SummernoteWidget
+from makeReports.models import GradGoal
+from makeReports.choices import BLOOMS_CHOICES
+from .cleaners import CleanSummer
+from .widgets import SLOMultipleChoicesJSWidget, StkChoicesJSWidget
 
 @register.filter(name='dict_key')
 def dict_key(d, k):
@@ -44,7 +43,7 @@ class ImportSLOForm(forms.Form):
         Initializes form, including setting SLO choices
 
         Keyword Args:
-            sloChoices (QuerySet): SLO choices (of type :class:`~makeReports.models.report_models.SLOInReport`)
+            sloChoices (QuerySet): SLO choices (of type :class:`~makeReports.models.basic_models.SLOInReport`)
         """
         sloChoices = kwargs.pop('sloChoices',None)
         super(ImportSLOForm, self).__init__(*args, **kwargs)

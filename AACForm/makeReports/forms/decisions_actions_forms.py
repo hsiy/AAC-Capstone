@@ -2,9 +2,9 @@
 File contains forms related to inputting decisions/actions
 """
 from django import forms
-from makeReports.models import *
-from .cleaners import CleanSummer
 from django_summernote.widgets import SummernoteWidget
+from makeReports.models import DecisionsActions
+from .cleaners import CleanSummer
 
 class DecActForm1Box(CleanSummer,forms.ModelForm):
     """

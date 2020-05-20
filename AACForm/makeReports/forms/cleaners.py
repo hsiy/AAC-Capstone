@@ -2,8 +2,8 @@
 This file contains class and method related to cleaning user input
 """
 import re
-from django.core.exceptions import ValidationError
 import bleach
+from django.core.exceptions import ValidationError
 
 class CleanSummer():
     """

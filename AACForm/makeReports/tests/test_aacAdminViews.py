@@ -1,15 +1,10 @@
 """
 Tests relating to the AAC administration of the website views
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from makeReports.choices import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import Announcement, College, DegreeProgram, Department, GradGoal,Profile, Report
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest, getWithReport, postWithReport
+from .test_basicViews import ReportAACSetupTest
 from datetime import datetime, date, timedelta
 
 class AACBasicViewsTest(ReportAACSetupTest):
@@ -33,7 +28,7 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         data = {
             'name': 'College of Arts and Sciences'
         }
-        response = self.client.post(reverse('makeReports:add-college'),data)
+        self.client.post(reverse('makeReports:add-college'),data)
         num = College.active_objects.filter(name='College of Arts and Sciences').count()
         self.assertGreaterEqual(num,1)
     def test_list(self):
@@ -60,7 +55,7 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         """
         col = baker.make("College")
         pk = col.pk
-        response = self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
+        self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
         num = College.active_objects.filter(pk=pk).count()
         self.assertEquals(num,0)
     def test_delete_DNE(self):
@@ -75,7 +70,7 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         """
         col = baker.make_recipe("makeReports.college")
         pk = col.pk
-        response = self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
+        self.client.post(reverse('makeReports:delete-college',kwargs={'pk':col.pk}))
         num = College.active_objects.filter(pk=pk).count()
         self.assertEquals(num,0)
     def test_recover(self):
@@ -85,7 +80,7 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         col = baker.make("College",active=False)
         r = self.client.get(reverse('makeReports:recover-college',kwargs={'pk':col.pk}))
         self.assertEquals(r.status_code,200)
-        response = self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
+        self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
         col.refresh_from_db()
         self.assertTrue(col.active)
     def test_recover_DNE(self):
@@ -99,7 +94,7 @@ class AACCollegeViewsTest(ReportAACSetupTest):
         Tests the recover page in fact re-marks the college as active using recipe based model
         """
         col = baker.make_recipe("makeReports.college",active=False)
-        response = self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
+        self.client.post(reverse('makeReports:recover-college',kwargs={'pk':col.pk}),{'active':'on'})
         col.refresh_from_db()
         self.assertTrue(col.active)
     def test_arc_cols(self):
@@ -133,7 +128,7 @@ class DepartmentViewsTest(ReportAACSetupTest):
             'name':'History',
             'college': col.pk
         }
-        r = self.client.post(reverse('makeReports:add-dept'),data)
+        self.client.post(reverse('makeReports:add-dept'),data)
         num = Department.objects.filter(name='History',college=col).count()
         self.assertGreaterEqual(num,1)
     def test_list(self):
@@ -227,7 +222,7 @@ class DegreeProgramAdminTest(ReportAACSetupTest):
         """
         Tests that a degree program is created when cycle and starting year are left blank
         """
-        r = self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
+        self.client.post(reverse('makeReports:add-dp',kwargs={'dept':self.dept.pk}),{
             'name':'Secondary education',
             'level':'GR',
             'cycle': 0
@@ -393,7 +388,7 @@ class ReportAdminViewTests(ReportAACSetupTest):
         """
         Tests the search functionality
         """
-        r = baker.make("Report",submitted=False, year=2118)
+        baker.make("Report",submitted=False, year=2118)
         r2 = baker.make("Report",submitted = True, year=2120)
         response = self.client.get(reverse('makeReports:search-reports')+"?year=2120&submitted=1&dP=&dept=&college=&graded=")
         self.assertContains(response,r2.degreeProgram.name)
@@ -441,7 +436,7 @@ class AccountAdminTests(ReportAACSetupTest):
         Tests the acount list acts as expected
         """
         a = baker.make("User",first_name="Janet")
-        b = baker.make("User",first_name="Tucker")
+        baker.make("User",first_name="Tucker")
         r = self.client.get(reverse('makeReports:search-account-list')+"?f="+a.first_name+"&l="+a.last_name+"&e=")
         self.assertContains(r,a.first_name)
         self.assertNotContains(r,"Tucker")
@@ -526,7 +521,7 @@ class GradGoalAdminTests(ReportAACSetupTest):
         r = baker.make("GradGoal",active=False)
         resp = self.client.get(reverse('makeReports:update-gg',kwargs={'pk':r.pk}))
         self.assertEquals(resp.status_code,200)
-        res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
+        self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
             'active':'on',
             'text':'Students will perform community service.'
         })
@@ -538,7 +533,7 @@ class GradGoalAdminTests(ReportAACSetupTest):
         Tests the update function of the graduate goal with recipe based model
         """
         r = baker.make_recipe("makeReports.gradGoal",active=False)
-        res = self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
+        self.client.post(reverse('makeReports:update-gg',kwargs={'pk':r.pk}),{
             'active':'on',
             'text':'Students will create original content.'
         })
@@ -615,7 +610,7 @@ class AnnouncementsTest(ReportAACSetupTest):
         """
         a = baker.make_recipe("makeReports.announcement")
         pk = a.pk
-        r = self.client.post(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
+        self.client.post(reverse('makeReports:delete-announ',kwargs={'pk':a.pk}))
         num = Announcement.objects.filter(pk=pk).count()
         self.assertEquals(num,0)
     def test_edit(self):
@@ -669,7 +664,7 @@ class AnnouncementsTest(ReportAACSetupTest):
         Tests that the edit page effectively edits announcements using recipe based announcement
         """
         a = baker.make_recipe("makeReports.announcement")
-        r = self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
+        self.client.post(reverse('makeReports:edit-announ',kwargs={'pk':a.pk}),{
             'text':'There are some technical difficulties. Please be paitent and kind.',
             'expiration_month':3,
             'expiration_day': 27,

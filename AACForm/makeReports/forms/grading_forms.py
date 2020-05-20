@@ -2,12 +2,12 @@
 Forms related to AAC grading reports
 """
 from django import forms
-from makeReports.models import *
-from makeReports.choices import *
-from django_summernote.widgets import SummernoteWidget
-from .cleaners import cleanText
 from django.core.exceptions import ValidationError
-from .cleaners import CleanSummer
+from django.utils.safestring import mark_safe
+from django_summernote.widgets import SummernoteWidget
+from makeReports.models import RubricItem
+from makeReports.choices import RUBRIC_GRADES_CHOICES
+from .cleaners import cleanText, CleanSummer
 
 
 class SectionRubricForm(forms.Form):

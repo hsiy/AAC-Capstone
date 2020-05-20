@@ -2,12 +2,9 @@
 This file contains models most directly related to Student Learning Outcomes
 """
 from django.db import models
-from makeReports.choices import *
-from django.contrib.auth.models import User
-from gdstorage.storage import GoogleDriveStorage
 from django.utils.safestring import mark_safe
-import os
-from .basic_models import gd_storage, NonArchivedManager
+from makeReports.choices import BLOOMS_CHOICES
+from .basic_models import NonArchivedManager
 
 class SLO(models.Model):
     """

@@ -384,9 +384,9 @@
 </li>
       <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentParentSerializer.Meta">AssessmentParentSerializer.Meta (class in makeReports.views.API.serializers)</a>
 </li>
-      <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.Assessmentserializer">Assessmentserializer (class in makeReports.views.API.serializers)</a>
+      <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentSerializer">AssessmentSerializer (class in makeReports.views.API.serializers)</a>
 </li>
-      <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.Assessmentserializer.Meta">Assessmentserializer.Meta (class in makeReports.views.API.serializers)</a>
+      <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentSerializer.Meta">AssessmentSerializer.Meta (class in makeReports.views.API.serializers)</a>
 </li>
       <li><a href="source/makeReports.views.assessment_views.html#makeReports.views.assessment_views.AssessmentSummary">AssessmentSummary (class in makeReports.views.assessment_views)</a>
 </li>
@@ -1005,7 +1005,7 @@
 </li>
         <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentParentSerializer.Meta.fields">(makeReports.views.API.serializers.AssessmentParentSerializer.Meta attribute)</a>
 </li>
-        <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.Assessmentserializer.Meta.fields">(makeReports.views.API.serializers.Assessmentserializer.Meta attribute)</a>
+        <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentSerializer.Meta.fields">(makeReports.views.API.serializers.AssessmentSerializer.Meta attribute)</a>
 </li>
         <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.DeptSerializer.Meta.fields">(makeReports.views.API.serializers.DeptSerializer.Meta attribute)</a>
 </li>
@@ -2329,7 +2329,7 @@
 </li>
         <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentParentSerializer.Meta.model">(makeReports.views.API.serializers.AssessmentParentSerializer.Meta attribute)</a>
 </li>
-        <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.Assessmentserializer.Meta.model">(makeReports.views.API.serializers.Assessmentserializer.Meta attribute)</a>
+        <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.AssessmentSerializer.Meta.model">(makeReports.views.API.serializers.AssessmentSerializer.Meta attribute)</a>
 </li>
         <li><a href="source/makeReports.views.API.serializers.html#makeReports.views.API.serializers.DeptSerializer.Meta.model">(makeReports.views.API.serializers.DeptSerializer.Meta attribute)</a>
 </li>
@@ -2419,8 +2419,6 @@
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ModifyAccount">ModifyAccount (class in makeReports.views.AAC.aac_admin_views)</a>
 </li>
       <li><a href="source/makeReports.views.AAC.aac_admin_views.html#makeReports.views.AAC.aac_admin_views.ModifyAnnouncement">ModifyAnnouncement (class in makeReports.views.AAC.aac_admin_views)</a>
-</li>
-      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.my_user_passes_test">my_user_passes_test() (in module makeReports.views.pdf_Generators)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -3526,9 +3524,11 @@
         <li><a href="source/makeReports.views.slo_views.html#makeReports.views.slo_views.StakeholderEntry.template_name">(makeReports.views.slo_views.StakeholderEntry attribute)</a>
 </li>
       </ul></li>
-      <li><a href="source/makeReports.tests.test_mixins.html#makeReports.tests.test_mixins.AACOnlyMixinTest.test_aac">test_aac() (makeReports.tests.test_mixins.AACOnlyMixinTest method)</a>
+      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.test_aac">test_aac() (in module makeReports.views.pdf_Generators)</a>
 
       <ul>
+        <li><a href="source/makeReports.tests.test_mixins.html#makeReports.tests.test_mixins.AACOnlyMixinTest.test_aac">(makeReports.tests.test_mixins.AACOnlyMixinTest method)</a>
+</li>
         <li><a href="source/makeReports.tests.test_mixins.html#makeReports.tests.test_mixins.DeptOnlyMixinTest.test_aac">(makeReports.tests.test_mixins.DeptOnlyMixinTest method)</a>
 </li>
       </ul></li>
@@ -3540,6 +3540,8 @@
         <li><a href="source/makeReports.tests.test_mixins.html#makeReports.tests.test_mixins.DeptOnlyMixinTest.test_aac_indept">(makeReports.tests.test_mixins.DeptOnlyMixinTest method)</a>
 </li>
       </ul></li>
+      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.test_aac_or_dept">test_aac_or_dept() (in module makeReports.views.pdf_Generators)</a>
+</li>
       <li><a href="source/makeReports.tests.test_aacAdminViews.html#makeReports.tests.test_aacAdminViews.AnnouncementsTest.test_add">test_add() (makeReports.tests.test_aacAdminViews.AnnouncementsTest method)</a>
 
       <ul>
@@ -3728,13 +3730,15 @@
 </li>
       <li><a href="source/makeReports.tests.test_dataCollection.html#makeReports.tests.test_dataCollection.DataCollectionMainTableTests.test_deleteDataRow_DNE">test_deleteDataRow_DNE() (makeReports.tests.test_dataCollection.DataCollectionMainTableTests method)</a>
 </li>
-      <li><a href="source/makeReports.tests.test_rubricViews.html#makeReports.tests.test_rubricViews.RubricMgmtTest.test_deleteRI">test_deleteRI() (makeReports.tests.test_rubricViews.RubricMgmtTest method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/makeReports.tests.test_rubricViews.html#makeReports.tests.test_rubricViews.RubricMgmtTest.test_deleteRI">test_deleteRI() (makeReports.tests.test_rubricViews.RubricMgmtTest method)</a>
+</li>
       <li><a href="source/makeReports.tests.test_rubricViews.html#makeReports.tests.test_rubricViews.RubricMgmtTest.test_deleteRI_DNE">test_deleteRI_DNE() (makeReports.tests.test_rubricViews.RubricMgmtTest method)</a>
 </li>
       <li><a href="source/makeReports.tests.test_rubricViews.html#makeReports.tests.test_rubricViews.RubricMgmtTest.test_deleteRI_recipe">test_deleteRI_recipe() (makeReports.tests.test_rubricViews.RubricMgmtTest method)</a>
+</li>
+      <li><a href="source/makeReports.tests.test_rubricViews.html#makeReports.tests.test_rubricViews.RubricMgmtTest.test_deleteRI_RIDNE">test_deleteRI_RIDNE() (makeReports.tests.test_rubricViews.RubricMgmtTest method)</a>
 </li>
       <li><a href="source/makeReports.tests.test_rubricViews.html#makeReports.tests.test_rubricViews.RubricMgmtTest.test_deleteRubric">test_deleteRubric() (makeReports.tests.test_rubricViews.RubricMgmtTest method)</a>
 </li>
@@ -3800,6 +3804,8 @@
 </li>
       <li><a href="source/makeReports.tests.test_dataCollection.html#makeReports.tests.test_dataCollection.DataCollectionExtrasTests.test_editSLOStatus">test_editSLOStatus() (makeReports.tests.test_dataCollection.DataCollectionExtrasTests method)</a>
 </li>
+      <li><a href="source/makeReports.tests.test_dataCollection.html#makeReports.tests.test_dataCollection.DataCollectionExtrasTests.test_editSLOStatus_DNE">test_editSLOStatus_DNE() (makeReports.tests.test_dataCollection.DataCollectionExtrasTests method)</a>
+</li>
       <li><a href="source/makeReports.tests.test_gradingViews.html#makeReports.tests.test_gradingViews.GradingSectionsTest.test_entry">test_entry() (makeReports.tests.test_gradingViews.GradingSectionsTest method)</a>
 </li>
       <li><a href="source/makeReports.views.graphing_views.html#makeReports.views.graphing_views.GraphingDept.test_func">test_func() (makeReports.views.graphing_views.GraphingDept method)</a>
@@ -3816,10 +3822,6 @@
         <li><a href="source/makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.DeptOnlyMixin.test_func">(makeReports.views.helperFunctions.mixins.DeptOnlyMixin method)</a>
 </li>
       </ul></li>
-      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.test_func_a">test_func_a() (in module makeReports.views.pdf_Generators)</a>
-</li>
-      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.test_func_x">test_func_x() (in module makeReports.views.pdf_Generators)</a>
-</li>
       <li><a href="source/makeReports.tests.forms.test_adminforms.html#makeReports.tests.forms.test_adminforms.GradGoalFormTests.test_goal_toolong">test_goal_toolong() (makeReports.tests.forms.test_adminforms.GradGoalFormTests method)</a>
 </li>
       <li><a href="source/makeReports.tests.forms.test_adminforms.html#makeReports.tests.forms.test_adminforms.GradGoalFormTests.test_goal_valid">test_goal_valid() (makeReports.tests.forms.test_adminforms.GradGoalFormTests method)</a>
@@ -4176,6 +4178,8 @@
 </li>
       <li><a href="source/makeReports.tests.test_assessViews.html#makeReports.tests.test_assessViews.EditAssessmentTest.test_view_new_DNE">test_view_new_DNE() (makeReports.tests.test_assessViews.EditAssessmentTest method)</a>
 </li>
+      <li><a href="source/makeReports.tests.test_assessViews.html#makeReports.tests.test_assessViews.EditAssessmentTest.test_view_new_edit_DNE">test_view_new_edit_DNE() (makeReports.tests.test_assessViews.EditAssessmentTest method)</a>
+</li>
       <li><a href="source/makeReports.tests.test_assessViews.html#makeReports.tests.test_assessViews.EditAssessmentTest.test_view_old">test_view_old() (makeReports.tests.test_assessViews.EditAssessmentTest method)</a>
 </li>
       <li><a href="source/makeReports.tests.test_pdfs.html#makeReports.tests.test_pdfs.TestingPDFs">TestingPDFs (class in makeReports.tests.test_pdfs)</a>
@@ -4243,6 +4247,8 @@
       <li><a href="source/makeReports.models.basic_models.html#makeReports.models.basic_models.Profile.user">user (makeReports.models.basic_models.Profile attribute)</a>
 </li>
       <li><a href="source/makeReports.models.basic_models.html#makeReports.models.basic_models.Profile.user_id">user_id (makeReports.models.basic_models.Profile attribute)</a>
+</li>
+      <li><a href="source/makeReports.views.pdf_Generators.html#makeReports.views.pdf_Generators.user_passes_test">user_passes_test() (in module makeReports.views.pdf_Generators)</a>
 </li>
       <li><a href="source/makeReports.tests.forms.test_adminforms.html#makeReports.tests.forms.test_adminforms.UserFormsTest">UserFormsTest (class in makeReports.tests.forms.test_adminforms)</a>
 </li>

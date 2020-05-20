@@ -1,14 +1,9 @@
 """
 This tests views relating to extra views associated with the report but not with sections
 """
-from django.test import TestCase
 from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
 from model_bakery import baker
-from .test_basicViews import ReportAACSetupTest, NonAACTest, ReportSetupTest
+from .test_basicViews import NonAACTest, ReportSetupTest
 
 class ReportFirstPageTest(ReportSetupTest):
     """

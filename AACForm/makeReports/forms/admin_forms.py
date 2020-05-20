@@ -2,13 +2,20 @@
 This file contains forms to administer the website
 """
 from django import forms
-from makeReports.models import *
+from makeReports.models import (
+    Announcement,
+    College,
+    DegreeProgram,
+    Department,
+    GradGoal,
+    Report,
+    Rubric
+)
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from makeReports.choices import *
-from .cleaners import CleanSummer
 from django_summernote.widgets import SummernoteWidget
-from datetime import datetime
+from makeReports.choices import POSSIBLE_REQS
+from .cleaners import CleanSummer
 
 class UpdateUserForm(forms.Form):
     """

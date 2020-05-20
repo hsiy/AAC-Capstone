@@ -2,10 +2,9 @@
 This file contains custom mixins. These mixins are intended to reduce redunancy in logic
 associated with checking if a user is allowed to access a page and between views dealing with a specific report
 """
-from makeReports.models import *
-from makeReports.forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import Http404
+from makeReports.models import Report
 
 class AACOnlyMixin(LoginRequiredMixin,UserPassesTestMixin):
     """
@@ -53,19 +52,19 @@ class DeptAACMixin(LoginRequiredMixin,UserPassesTestMixin):
         return dept or aac
 class DeptReportMixin(DeptAACMixin):
     """
-    Attaches the :class:`~makeReports.models.report_models.Report` matching to the instance and puts it in the context
+    Attaches the :class:`~makeReports.models.basic_models.Report` matching to the instance and puts it in the context
 
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report`
     """
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the instance
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` to the instance
 
         Args:
             request (HttpRequest): request for the page
         Keyword Args:
-            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+            report (str): primary key of :class:`~makeReports.models.basic_models.Report`
         Returns:
             HttpResponse : response with page to request
         """
@@ -86,19 +85,19 @@ class DeptReportMixin(DeptAACMixin):
         return context
 class AACReportMixin(AACOnlyMixin):
     """
-    Attaches :class:`~makeReports.models.report_models.Report` matching to the instance and puts it in the context
+    Attaches :class:`~makeReports.models.basic_models.Report` matching to the instance and puts it in the context
 
     Keyword Args:
-        report (str): primary key of :class:`~makeReports.models.report_models.Report`
+        report (str): primary key of :class:`~makeReports.models.basic_models.Report`
     """
     def dispatch(self,request,*args,**kwargs):
         """
-        Dispatches view and attaches :class:`~makeReports.models.report_models.Report` to the instance
+        Dispatches view and attaches :class:`~makeReports.models.basic_models.Report` to the instance
 
         Args:
             request (HttpRequest): request for the page
         Keyword Args:
-            report (str): primary key of :class:`~makeReports.models.report_models.Report`
+            report (str): primary key of :class:`~makeReports.models.basic_models.Report`
         Returns:
             HttpResponse : response with page to request
         """

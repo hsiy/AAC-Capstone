@@ -2,15 +2,10 @@
 This tests the assessment forms work as expected
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
+from makeReports.models import AssessmentVersion, SLOInReport
 from model_bakery import baker
-from django import forms
-from makeReports.forms import *
-from datetime import datetime
+from makeReports.forms import CreateNewAssessment, ImportAssessmentForm
+from makeReports.choices import FREQUENCY_CHOICES
 
 class AssessmentFormTests(TestCase):
     """

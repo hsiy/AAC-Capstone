@@ -163,7 +163,7 @@
 <dd><p>Gets all active profiles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>set of <code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code> objects that are active</p>
+<dd class="field-odd"><p>set of <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Profile" title="makeReports.models.basic_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> objects that are active</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -251,7 +251,7 @@
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ArchivedColleges.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>only inactive colleges (<code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code>)</p>
+<dd class="field-odd"><p>only inactive colleges (<a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -279,19 +279,19 @@
 <p>View to list archived/inactive degree programs within department</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></p>
+<dd class="field-odd"><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a></p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="makeReports.views.AAC.aac_admin_views.ArchivedDegreePrograms.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ArchivedDegreePrograms.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view and attaches the <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> to the instance</p>
+<dd><p>Dispatches the view and attaches the <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></p>
+<dd class="field-even"><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>response of page to request</p>
@@ -322,7 +322,7 @@
 <dd><p>Gets QuerySet of degree programs user has access to</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>degree programs (<code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code>) which are inactive and in the department</p>
+<dd class="field-odd"><p>degree programs (<a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram" title="makeReports.models.aac_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a>) which are inactive and in the department</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -353,7 +353,7 @@
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ArchivedDepartments.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>only inactive departments (<code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code>)</p>
+<dd class="field-odd"><p>only inactive departments (<a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -413,14 +413,14 @@
 <dt id="makeReports.views.AAC.aac_admin_views.CollegeList">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.AAC.aac_admin_views.</code><code class="sig-name descname">CollegeList</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.CollegeList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
-<p>To list all active <code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code> objects</p>
+<p>To list all active <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a> objects</p>
 <dl class="method">
 <dt id="makeReports.views.AAC.aac_admin_views.CollegeList.get_queryset">
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.CollegeList.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns active colleges in a QuerySet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>QuerySet of all active colleges (<code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code>)</p>
+<dd class="field-odd"><p>QuerySet of all active colleges (<a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -476,7 +476,7 @@
 <p>View to create a new degree program</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> to create degree program in</p>
+<dd class="field-odd"><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to create degree program in</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -533,7 +533,7 @@
 <dt id="makeReports.views.AAC.aac_admin_views.CreateDepartment">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.AAC.aac_admin_views.</code><code class="sig-name descname">CreateDepartment</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.CreateDepartment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.CreateView</span></code></p>
-<p>View to create a new <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></p>
+<p>View to create a new <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a></p>
 <dl class="attribute">
 <dt id="makeReports.views.AAC.aac_admin_views.CreateDepartment.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.CreateDepartment.form_class" title="Permalink to this definition">¶</a></dt>
@@ -565,21 +565,21 @@
 <p>View to list active degree programs within a department</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></p>
+<dd class="field-odd"><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a></p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="makeReports.views.AAC.aac_admin_views.DegreeProgramList.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.DegreeProgramList.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches the view and attaches the <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> associated with the primary key to the instance</p>
+<dd><p>Dispatches the view and attaches the <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> associated with the primary key to the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – request to view page</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></p></li>
-<li><p><strong>dept</strong> – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></p></li>
+<li><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a></p></li>
+<li><p><strong>dept</strong> – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns</dt>
@@ -610,7 +610,7 @@
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.DegreeProgramList.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>contains only active <code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code> objects within the department</p>
+<dd class="field-odd"><p>contains only active <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram" title="makeReports.models.aac_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a> objects within the department</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -638,7 +638,7 @@
 <p>View to delete announcement</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code> to delete</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Announcement" title="makeReports.models.aac_models.Announcement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code></a> to delete</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -664,12 +664,12 @@
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.AAC.aac_admin_views.</code><code class="sig-name descname">DeleteCollege</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.DeleteCollege" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.edit.UpdateView</span></code></p>
 <div class="line-block">
-<div class="line">Delete college: marks the <code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code> as archived</div>
+<div class="line">Delete college: marks the <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a> as archived</div>
 <div class="line">Actual deletion is not allowed due to data-loss issues</div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code> to delete</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a> to delete</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -720,8 +720,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> of degree program</p></li>
-<li><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code> to delete</p></li>
+<li><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> of degree program</p></li>
+<li><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram" title="makeReports.models.aac_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a> to delete</p></li>
 </ul>
 </dd>
 </dl>
@@ -764,7 +764,7 @@
 <p>View to “delete” a department by marking it inactive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> to delete</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to delete</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -794,13 +794,13 @@
 <dt id="makeReports.views.AAC.aac_admin_views.DepartmentList">
 <em class="property">class </em><code class="sig-prename descclassname">makeReports.views.AAC.aac_admin_views.</code><code class="sig-name descname">DepartmentList</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.DepartmentList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="makeReports.views.helperFunctions.mixins.html#makeReports.views.helperFunctions.mixins.AACOnlyMixin" title="makeReports.views.helperFunctions.mixins.AACOnlyMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">makeReports.views.helperFunctions.mixins.AACOnlyMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">django.views.generic.list.ListView</span></code></p>
-<p>View that lists all active <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> objects</p>
+<p>View that lists all active <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> objects</p>
 <p class="rubric">Notes</p>
 <p>college and name are the GET request parameters to filter on those respective fields</p>
 <dl class="method">
 <dt id="makeReports.views.AAC.aac_admin_views.DepartmentList.get_context_data">
 <code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.DepartmentList.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns context to pass to template with list of <code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code> objects</p>
+<dd><p>Returns context to pass to template with list of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a> objects</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>dictionary of context</p>
@@ -816,10 +816,10 @@
 <code class="sig-name descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.DepartmentList.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>QuerySet of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> objects meeting search parameters</p>
+<dd class="field-odd"><p>QuerySet of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> objects meeting search parameters</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>QuerySet of active departments (<code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code>) meeting search criteria</p>
+<dd class="field-even"><p>QuerySet of active departments (<a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a>) meeting search criteria</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>QuerySet</p>
@@ -896,7 +896,7 @@
 <dd><p>Get not-expired announcements</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>announcements (<code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code>) that are not expired</p>
+<dd class="field-odd"><p>announcements (<a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Announcement" title="makeReports.models.aac_models.Announcement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code></a>) that are not expired</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -987,16 +987,16 @@
 <p>View to modify an account (intended for AAC use, not self-service)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code> to change</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Profile" title="makeReports.models.basic_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> to change</p>
 </dd>
 </dl>
 <dl class="method">
 <dt id="makeReports.views.AAC.aac_admin_views.ModifyAccount.dispatch">
 <code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#makeReports.views.AAC.aac_admin_views.ModifyAccount.dispatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dispatches view and attaches <code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code> to instance</p>
+<dd><p>Dispatches view and attaches <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Profile" title="makeReports.models.basic_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> to instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code> to change</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Profile" title="makeReports.models.basic_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a> to change</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>response of page to request</p>
@@ -1066,7 +1066,7 @@
 <p>View to modify announcement</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code> to update</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Announcement" title="makeReports.models.aac_models.Announcement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Announcement</span></code></a> to update</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -1100,7 +1100,7 @@
 <p>View to unarchive college</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code> to recover</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a> to recover</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -1134,8 +1134,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> of degree program</p></li>
-<li><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code> to recover</p></li>
+<li><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> of degree program</p></li>
+<li><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram" title="makeReports.models.aac_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a> to recover</p></li>
 </ul>
 </dd>
 </dl>
@@ -1178,7 +1178,7 @@
 <p>View to recover a department by marking it active</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> to recover</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to recover</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -1218,7 +1218,7 @@ first name, “l” for the last name, and “e” for email</p>
 <dd><p>Filters the QuerySet based upon the search parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>QuerySet matching search with only active profiles (<code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code>)</p>
+<dd class="field-odd"><p>QuerySet matching search with only active profiles (<a class="reference internal" href="makeReports.models.basic_models.html#makeReports.models.basic_models.Profile" title="makeReports.models.basic_models.Profile"><code class="xref py py-class docutils literal notranslate"><span class="pre">Profile</span></code></a>)</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>QuerySet</p>
@@ -1246,7 +1246,7 @@ first name, “l” for the last name, and “e” for email</p>
 <p>Update college, no restrictions compared to new college</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code> to update</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.College" title="makeReports.models.aac_models.College"><code class="xref py py-class docutils literal notranslate"><span class="pre">College</span></code></a> to update</p>
 </dd>
 </dl>
 <dl class="attribute">
@@ -1280,8 +1280,8 @@ first name, “l” for the last name, and “e” for email</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dept</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> of degree program</p></li>
-<li><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code> to update</p></li>
+<li><p><strong>dept</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> of degree program</p></li>
+<li><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.DegreeProgram" title="makeReports.models.aac_models.DegreeProgram"><code class="xref py py-class docutils literal notranslate"><span class="pre">DegreeProgram</span></code></a> to update</p></li>
 </ul>
 </dd>
 </dl>
@@ -1325,7 +1325,7 @@ first name, “l” for the last name, and “e” for email</p>
 <p>View to update the name or college of a department</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
-<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code> to update</p>
+<dd class="field-odd"><p><strong>pk</strong> (<em>str</em>) – primary key of <a class="reference internal" href="makeReports.models.aac_models.html#makeReports.models.aac_models.Department" title="makeReports.models.aac_models.Department"><code class="xref py py-class docutils literal notranslate"><span class="pre">Department</span></code></a> to update</p>
 </dd>
 </dl>
 <dl class="attribute">

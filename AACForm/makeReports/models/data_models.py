@@ -1,12 +1,9 @@
 """
 This file contains models most directly related to data from assessments
 """
-from django.db import models
-from makeReports.choices import *
-from django.contrib.auth.models import User
-from gdstorage.storage import GoogleDriveStorage
-from django.utils.safestring import mark_safe
 import os
+from django.db import models
+from makeReports.choices import SLO_STATUS_CHOICES
 from .basic_models import gd_storage
 
 class AssessmentData(models.Model):

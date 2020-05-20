@@ -2,14 +2,19 @@
 This tests that the AAC admin forms work
 """
 from django.test import TestCase
-from django.urls import reverse
-from makeReports.models import *
-from unittest import mock
-from django.http import HttpResponse
-import requests
 from model_bakery import baker
-from django import forms
-from makeReports.forms import *
+from makeReports.forms import (
+    AnnouncementForm,
+    CreateDepartmentForm, 
+    CreateReportByDept,
+    CreateReportByDPForm,
+    GenerateReports, 
+    GradGoalEditForm,
+    GradGoalForm,
+    MakeNewAccount, 
+    UpdateUserForm, 
+    UserUpdateUserForm
+)
 from datetime import datetime
 
 class UserFormsTest(TestCase):
@@ -33,7 +38,7 @@ class UserFormsTest(TestCase):
         """
         Tests the UpdateUserForm accepts no department
         """
-        d = baker.make("Department")
+        baker.make("Department")
         f = UpdateUserForm({
             'aac':True,
             'first_name':'Ruby-Jane',
@@ -242,7 +247,7 @@ class ReportFormTests(TestCase):
         """
         Tests that the CreateReportByDPForm requires the rubric field
         """
-        r = baker.make("Rubric")
+        baker.make("Rubric")
         f = CreateReportByDPForm({
             'year':2019
         })
