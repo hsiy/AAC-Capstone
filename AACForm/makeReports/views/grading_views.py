@@ -20,7 +20,7 @@ from makeReports.views.helperFunctions.mixins import AACReportMixin, AACOnlyMixi
 from makeReports.views.helperFunctions.todos import todoGetter
 
 
-def generateRubricItems(rIs,form,r):
+def generateRubricItems(rIs,form,r,user,final):
     """
     Generates graded rubric items based on grading form
 
@@ -28,18 +28,27 @@ def generateRubricItems(rIs,form,r):
         rIs (list) : list of :class:`~makeReports.models.grading_models.RubricItem` in rubric
         form (Form) : completed form
         r (Report) : report
+        user (User) : user completing the form
+        final (bool) : whether this is final grade
     """
     for ri in rIs:
         if form.cleaned_data["rI"+str(ri.pk)]:
             try:
-                GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri)
+                GRI = GradedRubricItem.objects.get(rubric=r.rubric, item=ri,reviewer=user.profile)
                 GRI.grade = form.cleaned_data["rI"+str(ri.pk)]
+                GRI.final = final
                 GRI.save()
             except:
                 gr = form.cleaned_data["rI"+str(ri.pk)]
                 if gr and (gr != ""):
-                    GradedRubricItem.objects.create(rubric=r.rubric, item=ri, grade=form.cleaned_data["rI"+str(ri.pk)])
-def getInitialRubric(rIs, r, initial):
+                    GradedRubricItem.objects.create(
+                        rubric=r.rubric, 
+                        item=ri, 
+                        grade=form.cleaned_data["rI"+str(ri.pk)], 
+                        reviewer=user.profile,
+                        final = final
+                        )
+def getInitialRubric(rIs, r, initial, user):
     """
     Initializes grading form based upon things already graded
 
@@ -47,13 +56,14 @@ def getInitialRubric(rIs, r, initial):
         rIs (list) : list of :class:`~makeReports.models.grading_models.RubricItem` in rubric
         form (Form) : completed form
         r (Report) : report
+        user (User) : user logged in
     
     Returns:
         dict : initial rubric values
     """
     for ri in rIs:
         try:
-            GRI = GradedRubricItem.objects.filter(rubric=r.rubric, item=ri).last()
+            GRI = GradedRubricItem.objects.filter(rubric=r.rubric, item=ri, reviewer=user.profile).last()
             initial["rI"+str(ri.pk)]=GRI.grade
         except:
             pass
@@ -177,7 +187,7 @@ class GradingView(AACOnlyMixin,FormView):
         Returns:
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
-        generateRubricItems(self.rubricItems,form,self.report)
+        generateRubricItems(self.rubricItems,form,self.report, self.request.user)
         tempStr = "section"+str(self.section)+"Comment"
         setattr(self.report.rubric,tempStr, form.cleaned_data['section_comment'])
         self.report.rubric.save()

@@ -32,9 +32,13 @@ def rubricItemsHelper(self,context):
     for r in reviewers:
         reviewNames.append(r.first_name+" "+r.last_name)
     extraHelp = dict()
+    otherReviews = dict()
     for rI in self.rubricItems:
+        i = 0
         for r in reviewers:
-            GradedRubricItem.objects.filter(reviwer=r,item=rI)
+            GradedRubricItem.objects.get(reviwer=r,item=rI)
+            i+=1
+            otherReviews["rI"+str(rI.pk)][i] = GradedRubricItem.get_grade_display
         extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
     context['extraHelp']=extraHelp
     return context
@@ -94,16 +98,8 @@ def section3Context(self,context):
         try:
             assessment_data_objs = AssessmentData.objects.filter(assessmentVersion=assessment)
             temp_dict['assess_data'] = assessment_data_objs
-            #temp_dict['num_students_assessed'] = assessment_data_obj.numberStudents
-            #temp_dict['overall_proficient'] = assessment_data_obj.overallProficient
-            #temp_dict['data_range'] = assessment_data_obj.dataRange
-            #temp_dict['assessment_data_id'] = assessment_data_obj.pk
         except:
             temp_dict['assess_data'] = None
-            #temp_dict['num_students_assessed'] = None
-           # temp_dict['overall_proficient'] = None
-            #temp_dict['data_range'] = None
-            #temp_dict['assessment_data_id'] = None
         try:
             aggregate = AssessmentAggregate.objects.get(assessmentVersion=assessment)
             temp_dict['agg'] = aggregate
