@@ -8,6 +8,8 @@ from makeReports.models import (
     AssessmentVersion,
     DataAdditionalInformation,
     DecisionsActions,
+    GradedRubricItem,
+    Profile,
     ResultCommunicate,
     SLOInReport,
     SLOStatus,
@@ -19,12 +21,20 @@ def rubricItemsHelper(self,context):
     Adds the text of each rubric item to the context
 
     Args:
-        context (dict): template context
+        context (dict): template context with rubricItems entry of set of :class:`makeReports.models.grading_models.RubricItem`
     Returns:
         dict : template context
     """
+    reviewNames = []
+    reviewers = Profile.objects.filter(
+        gradedrubricitem_set__rubric__report=self.report
+        ).exclue(pk=self.request.user.profile.pk).order_by('user__last_name', 'user__first_name')
+    for r in reviewers:
+        reviewNames.append(r.first_name+" "+r.last_name)
     extraHelp = dict()
     for rI in self.rubricItems:
+        for r in reviewers:
+            GradedRubricItem.objects.filter(reviwer=r,item=rI)
         extraHelp["rI"+str(rI.pk)] = [rI.DMEtext, rI.MEtext, rI.EEtext]
     context['extraHelp']=extraHelp
     return context

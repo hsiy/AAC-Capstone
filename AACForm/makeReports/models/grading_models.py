@@ -57,3 +57,5 @@ class GradedRubricItem(models.Model):
     rubric = models.ForeignKey('GradedRubric', on_delete=models.CASCADE)
     item = models.ForeignKey(RubricItem, on_delete=models.CASCADE)
     grade = models.CharField(max_length=300, choices=RUBRIC_GRADES_CHOICES)
+    reviewer = models.ForeignKey('Profile', on_delete=models.CASCADE,null=True,blank=True)
+    final = models.BooleanField(default=True)
