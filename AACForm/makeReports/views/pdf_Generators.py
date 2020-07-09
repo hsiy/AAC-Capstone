@@ -53,7 +53,7 @@ def test_aac_or_dept(self,*args,**kwargs):
     dept= (report.degreeProgram.department == self.profile.department)
     aac = getattr(self.profile, "aac")
     return dept or aac
-def test_aac(self):
+def test_aac(self, *args, **kwargs):
     """
     Ensures the user accessing page is in the AAC
     Returns:

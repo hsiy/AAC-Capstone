@@ -20,6 +20,7 @@ class Assessment(models.Model):
     numberOfUses = models.PositiveIntegerField(default=0, verbose_name="number of uses")
     def __str__(self):
         return self.title
+
 class AssessmentVersion(models.Model):
     """
     Specific versions of Assessments that occur within a report

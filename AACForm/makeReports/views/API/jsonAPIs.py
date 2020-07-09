@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Subquery
 from makeReports.models import (
     AssessmentVersion, 
     Department, 
@@ -23,6 +24,7 @@ from .serializers import (
     SLOSerializerWithParent
 )
 
+
 class DeptByColListAPI(generics.ListAPIView):
     """
     JSON API to gets active departments within specified college
@@ -30,7 +32,7 @@ class DeptByColListAPI(generics.ListAPIView):
     Notes:
         'college' is GET parameter to filter college primary key
     """
-    queryset = Department.active_objects.all()
+    queryset = Department.active_objects.all().order_by("name")
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = (['college'])
     serializer_class = DeptSerializer
@@ -41,7 +43,7 @@ class ProgByDeptListAPI(generics.ListAPIView):
     Notes:
         'department' is GET parameter to filter by department primary key
     """
-    queryset = DegreeProgram.active_objects.all()
+    queryset = DegreeProgram.active_objects.all().order_by("name")
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = (['department'])
     serializer_class = ProgSerializer
@@ -71,7 +73,12 @@ class SloByDPListAPI(generics.ListAPIView):
         """
         qS = super(SloByDPListAPI,self).get_queryset()
         qS = qS.order_by('slo','-report__year').distinct('slo')
-        return qS
+        #Only 1 order_by per Queryset, but distinct necessitates the first order_by
+        #The explicit subqery provides a workaround
+        oQS = SLOInReport.objects.all().filter(
+            pk__in = Subquery(qS.values("pk"))
+        ).order_by("goalText")
+        return oQS
 class AssessmentBySLO(generics.ListAPIView):
     """
     Filters AssessmentVersion to get the most recent assessment version for each parent assessment
@@ -97,8 +104,16 @@ class AssessmentBySLO(generics.ListAPIView):
         Notes:
             .order_by(...).distinct(...) is only supported by PostgreSQL
         """
-        qS = super(AssessmentBySLO,self).get_queryset()
-        qS = qS.order_by('assessment','-report__year').distinct('assessment')
+        qS = AssessmentVersion.objects.filter(
+            pk__in = Subquery(
+                super().get_queryset(
+
+                ).order_by(
+                    'assessment',
+                    '-report__year'
+                ).distinct('assessment').values("pk")
+            )
+        ).order_by("assessment__title")
         return qS
 class ImportYearsAPI(APIView):
     """

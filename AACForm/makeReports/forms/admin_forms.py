@@ -16,13 +16,14 @@ from django.contrib.auth.models import User
 from django_summernote.widgets import SummernoteWidget
 from makeReports.choices import POSSIBLE_REQS
 from .cleaners import CleanSummer
+from django.core.exceptions import ValidationError
 
 class UpdateUserForm(forms.Form):
     """
     Form to update a pre-existing user by the AAC
     """
     aac = forms.BooleanField(label="AAC member",required=False)
-    department = forms.ModelChoiceField(queryset=Department.active_objects, required=False, widget=forms.Select(attrs={'class':'form-control col-6'}))
+    department = forms.ModelChoiceField(queryset=Department.active_objects.all().order_by("name"), label="Department", required=False,widget=forms.Select(attrs={'class':'form-control col-6'}))
     first_name = forms.CharField(max_length=30,widget=forms.TextInput(attrs={'class':'form-control col-6'}))
     last_name = forms.CharField(max_length=150,widget=forms.TextInput(attrs={'class':'form-control col-6'}))
     email = forms.CharField(max_length=30,widget=forms.EmailInput(attrs={'class':'form-control col-6'}))
@@ -52,7 +53,7 @@ class CreateDepartmentForm(forms.ModelForm):
         Initializes the form and sets possible colleges to only those which are active
         """
         super(CreateDepartmentForm,self).__init__(*args,**kwargs)
-        self.fields['college'].queryset=College.active_objects.all()
+        self.fields['college'].queryset=College.active_objects.all().order_by("name")
 class GenerateReports(forms.Form):
     """
     Form to generate reports
@@ -65,7 +66,7 @@ class MakeNewAccount(UserCreationForm):
     """
     isaac = forms.BooleanField(required=False, label="Account for AAC member?")
     department = forms.ModelChoiceField(queryset=Department.active_objects, label="Department", required=False,widget=forms.Select(attrs={'class':'form-control col-6'}))
-    college = forms.ModelChoiceField(queryset=College.active_objects, label="College",required=False,widget=forms.Select(attrs={'class':'form-control col-6'}))
+    college = forms.ModelChoiceField(queryset=College.active_objects.all().order_by("name"), label="College",required=False,widget=forms.Select(attrs={'class':'form-control col-6'}))
     class Meta:
         """
         Defines the model type, fields, and widgets for use by the superclass ModelForm when
@@ -81,6 +82,18 @@ class MakeNewAccount(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class':'form-control col-6'}),
             'last_name': forms.TextInput(attrs={'class':'form-control col-6'})
         }
+    def is_valid(self):
+        valid = super().is_valid()
+        if not valid:
+            return valid
+        if (
+            self.cleaned_data["college"] and self.cleaned_data["college"]!=""
+            ) and (
+                not self.cleaned_data["department"] or self.cleaned_data["department"]==""
+                ):
+            self._errors["department"]="If a college is specified, a department must also be specified."
+            return False
+        return True
     def save(self, commit=True):
         """
         Upon creating a new user, both the Django User type and custom profile type must be created
