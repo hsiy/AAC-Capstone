@@ -157,7 +157,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
-            "line": 86,
+            "line": 91,
             "description": "Vue instance to control create account page"
         },
         "importAssessment": {
@@ -345,7 +345,16 @@
     "classitems": [
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
-            "line": 96,
+            "line": 101,
+            "description": "Deparment (primary key) chosen",
+            "itemtype": "property",
+            "name": "department",
+            "type": "integer",
+            "class": "create_account"
+        },
+        {
+            "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
+            "line": 107,
             "description": "List of departments with properties to choose within college",
             "itemtype": "property",
             "name": "depts",
@@ -354,7 +363,7 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
-            "line": 102,
+            "line": 113,
             "description": "Primary key of college chosen",
             "itemtype": "property",
             "name": "college",
@@ -363,10 +372,27 @@
         },
         {
             "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
-            "line": 112,
+            "line": 119,
+            "description": "Whether there was an error upon submission between the college and dept",
+            "itemtype": "property",
+            "name": "error",
+            "type": "Boolean",
+            "class": "create_account"
+        },
+        {
+            "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
+            "line": 129,
             "description": "Calls the API to get the departments within the college",
             "itemtype": "method",
             "name": "updateDept",
+            "class": "create_account"
+        },
+        {
+            "file": "..\\AACForm\\makeReports\\templates\\makeReports\\AACAdmin\\create_account.html",
+            "line": 142,
+            "description": "Makes sure if a college is chosen so is a department before submitting",
+            "itemtype": "method",
+            "name": "vSubmit",
             "class": "create_account"
         },
         {

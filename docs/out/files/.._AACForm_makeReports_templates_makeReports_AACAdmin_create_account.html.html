@@ -111,32 +111,32 @@
 &lt;h3&gt;Create New Account&lt;/h3&gt;
 {{ form.non_field_errors }}
 
-&lt;form method=&quot;post&quot; class=&quot;form col-6&quot; enctype=&quot;multipart/form-data&quot;&gt;
+&lt;form method=&quot;post&quot; class=&quot;form col-6&quot; enctype=&quot;multipart/form-data&quot; @submit.prevent=&quot;&quot; ref=&quot;form&quot;&gt;
     {% csrf_token %}
     &lt;div class=&quot;form-group&quot;&gt;
-            {{ form.first_name.errors }}
+            &lt;p style=&quot;color:red;&quot;&gt;{{ form.first_name.errors }}&lt;/p&gt;
             &lt;label for=&quot;id_first_name&quot;&gt;First name&lt;/label&gt;
 
-            &lt;input type=&quot;text&quot; class=&quot;form-control col-6&quot; id=&quot;id_first_name&quot; name=&quot;first_name&quot;&gt;
+            &lt;input type=&quot;text&quot; class=&quot;form-control col-6&quot; id=&quot;id_first_name&quot; name=&quot;first_name&quot; value={{form.initial.first_name}}&gt;
     &lt;/div&gt;
     &lt;div class=&quot;form-group&quot;&gt;
-            {{ form.last_name.errors }}
+            &lt;p style=&quot;color:red;&quot;&gt;{{ form.last_name.errors }}&lt;/p&gt;
             &lt;label for=&quot;id_last_name&quot;&gt;Last name&lt;/label&gt;
 
             &lt;input type=&quot;text&quot; class=&quot;form-control col-6&quot; id=&quot;id_last_name&quot; name=&quot;last_name&quot;&gt;
     &lt;/div&gt;
     &lt;div class=&quot;form-group&quot;&gt;
-            {{ form.email.errors }}
+        &lt;p style=&quot;color:red;&quot;&gt;{{ form.email.errors }}&lt;/p&gt;
             &lt;label for=&quot;id_email&quot;&gt;Email&lt;/label&gt;
 
             &lt;input type=&quot;email&quot; name=&quot;email&quot; class=&quot;form-control col-6&quot; maxlength=&quot;254&quot; id=&quot;id_email&quot;&gt;
     &lt;/div&gt;&lt;div class=&quot;form-group&quot;&gt;
-            {{ form.username.errors }}
+        &lt;p style=&quot;color:red;&quot;&gt;{{ form.username.errors }}&lt;/p&gt;
             &lt;label for=&quot;id_username&quot;&gt;Username&lt;/label&gt;
 
             &lt;input type=&quot;text&quot; name=&quot;username&quot; class=&quot;form-control col-6&quot; id=&quot;id_username&quot; required=&quot;required&quot;&gt;
     &lt;/div&gt;&lt;div class=&quot;form-group&quot;&gt;
-            {{ form.password1.errors }}
+        &lt;p style=&quot;color:red;&quot;&gt;{{ form.password1.errors }}&lt;/p&gt;
             {% if form.password1.errors %}
                 {{form.password1.help_text}}
             {% endif %}
@@ -144,37 +144,42 @@
 
             &lt;input type=&quot;password&quot; class=&quot;form-control col-6&quot; id=&quot;id_password1&quot; name=&quot;password1&quot; required=&quot;required&quot;&gt;
     &lt;/div&gt;&lt;div class=&quot;form-group&quot;&gt;
-            {{ form.password2.errors }}
+            &lt;p style=&quot;color:red;&quot;&gt;{{ form.password2.errors }}&lt;/p&gt;
             &lt;label for=&quot;id_password2&quot;&gt;Re-enter Password&lt;/label&gt;
 
             &lt;input type=&quot;password&quot; name=&quot;password2&quot; class=&quot;form-control col-6&quot; id=&quot;id_password2&quot; required=&quot;required&quot;&gt;
     &lt;/div&gt;
     &lt;div class=&quot;form-group&quot;&gt;
-            {{ form.college.errors }}
+        &lt;p style=&quot;color:red;&quot;&gt;{{ form.college.errors }}&lt;/p&gt;
             &lt;label for=&quot;id_college&quot;&gt;College&lt;/label&gt;
 
             &lt;select class=&quot;form-control col-6&quot; id=&quot;id_college&quot; v-model=&quot;college&quot; v-on:change=&quot;updateDept&quot; name=&quot;college&quot;&gt;
-                    {% for option in form.fields.college.queryset %}
+                &lt;option value = &quot;&quot;&gt;&lt;/option&gt;    
+                {% for option in form.fields.college.queryset %}
                     &lt;option value=&quot;{{option.pk}}&quot;&gt;{{option}}&lt;/option&gt;
                     {% endfor %}
             &lt;/select&gt;
     &lt;/div&gt;
     &lt;div class=&quot;form-group&quot;&gt;
-            {{ form.department.errors }}
+        &lt;p style=&quot;color:red;&quot;&gt;{{ form.department.errors }}&lt;/p&gt;
+        &lt;template v-if=&quot;error&quot; &gt;
+           &lt;p style=&quot;color:red;&quot;&gt; If a college is selected, a department must be as well.&lt;/p&gt;
+        &lt;/template&gt;
             &lt;label for=&quot;id_department&quot;&gt;Department&lt;/label&gt;
-            &lt;select class=&quot;form-control col-6&quot; id=&quot;id_department&quot; name=&quot;department&quot;&gt;
+            &lt;select class=&quot;form-control col-6&quot; id=&quot;id_department&quot; v-model=&quot;department&quot; name=&quot;department&quot;&gt;
+                &lt;option value = &quot;&quot;&gt;&lt;/option&gt;
                 &lt;template v-for=&quot;d in depts&quot;&gt;
                     &lt;option v-bind:value=&quot;d.pk&quot;&gt;[[d.name]]&lt;/option&gt;
                 &lt;/template&gt;
             &lt;/select&gt;
     &lt;/div&gt;
     &lt;div class=&quot;form-check&quot;&gt;
-            {{ form.isaac.errors }}
+        &lt;p style=&quot;color:red;&quot;&gt;{{ form.isaac.errors }}&lt;/p&gt;
             &lt;input type=&quot;checkbox&quot; class=&quot;form-check-input&quot; id=&quot;id_isaac&quot; name=&quot;isaac&quot;&gt;
             &lt;label class=&quot;form-check-label&quot; for=&quot;id_isaac&quot;&gt;AAC Member &lt;/label&gt;
     &lt;/div&gt;
     {% buttons %}
-        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Add&lt;/button&gt;
+        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot; @click=&quot;vSubmit&quot;&gt;Add&lt;/button&gt;
     {% endbuttons %}
 &lt;/form&gt;
 {% endblock %}
@@ -191,6 +196,12 @@
             delimiters: [&#x27;[[&#x27;, &#x27;]]&#x27;],
             data: { 
                 /**
+                 * Deparment (primary key) chosen
+                 * @property department
+                 * @type integer
+                 */
+                department: null,
+                /**
                  * List of departments with properties to choose within college
                  * @property depts
                  * @type dictionary
@@ -201,7 +212,13 @@
                  * @property college
                  * @type integer
                  */
-                college: null
+                college: null,
+                /**
+                 * Whether there was an error upon submission between the college and dept
+                 * @property error
+                 * @type Boolean
+                 */
+                error: false
             },
             computed: {
             },
@@ -218,6 +235,20 @@
                             this.depts = json;
                         })
                     });
+                },
+                /**
+                 * Makes sure if a college is chosen so is a department before submitting
+                 * @method vSubmit
+                 */
+                vSubmit: function(){
+                    console.log(&quot;here&quot;)
+                    if (this.college==null || this.college ==&quot;&quot;
+                         || ((this.college!=null &amp;&amp; this.college !=&quot;&quot;) &amp;&amp; 
+                         (this.department!=null &amp;&amp; this.department!=&quot;&quot;))){
+                        create_account.$refs.form.submit()
+                    }else{
+                        this.error = true
+                    }
                 }
             }
         });

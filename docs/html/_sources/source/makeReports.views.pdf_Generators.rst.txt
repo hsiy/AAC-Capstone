@@ -1,7 +1,7 @@
-makeReports.views.pdf\_Generators module
+makeReports.views.pdf\_generators module
 ========================================
 
-.. automodule:: makeReports.views.pdf_Generators
+.. automodule:: makeReports.views.pdf_generators
    :members:
    :undoc-members:
    :show-inheritance:

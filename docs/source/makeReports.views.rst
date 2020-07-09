@@ -21,7 +21,7 @@ Submodules
    makeReports.views.decisions_actions_views
    makeReports.views.grading_views
    makeReports.views.graphing_views
-   makeReports.views.pdf_Generators
+   makeReports.views.pdf_generators
    makeReports.views.report_entry_extra_views
    makeReports.views.rubric_views
    makeReports.views.slo_views
