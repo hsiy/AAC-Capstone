@@ -16,7 +16,6 @@ from django.contrib.auth.models import User
 from django_summernote.widgets import SummernoteWidget
 from makeReports.choices import POSSIBLE_REQS
 from .cleaners import CleanSummer
-from django.core.exceptions import ValidationError
 
 class UpdateUserForm(forms.Form):
     """
