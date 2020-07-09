@@ -20,7 +20,7 @@ class GraphingHome(AACOnlyMixin,TemplateView):
             context (dict): dictionary of context including active colleges
         """
         context = super(GraphingHome, self).get_context_data(**kwargs)
-        context['colleges'] = College.active_objects.all
+        context['colleges'] = College.active_objects.all().order_by("name")
         return context
 class GraphingDept(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     """
@@ -188,5 +188,5 @@ class CSVManagement(LoginRequiredMixin, TemplateView):
             context (dict): dictionary of context for template, including active colleges
         """
         context = super(CSVManagement, self).get_context_data(**kwargs)
-        context['colleges'] = College.active_objects.all
+        context['colleges'] = College.active_objects.all().order_by("name")
         return context

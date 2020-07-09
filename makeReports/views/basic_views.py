@@ -40,7 +40,7 @@ class HomePage(ListView):
                 degreeProgram__department=self.request.user.profile.department, 
                 submitted=False, 
                 degreeProgram__active=True
-                )
+                ).order_by("degreeProgram__name")
         except:
             objs = None
         return objs
@@ -54,8 +54,14 @@ class HomePage(ListView):
         context=super(HomePage,self).get_context_data(**kwargs)
         try:
             context['user']=self.request.user
-            context['gReps'] = Report.objects.filter(degreeProgram__department=self.request.user.profile.department,rubric__complete=True, year=int(datetime.now().year))
-            context['announ'] = Announcement.objects.filter(expiration__gte=datetime.now()).order_by("-creation")
+            context['gReps'] = Report.objects.filter(
+                degreeProgram__department=self.request.user.profile.department,
+                rubric__complete=True, 
+                year=int(datetime.now().year)
+                ).order_by("degreeProgram__name")
+            context['announ'] = Announcement.objects.filter(
+                expiration__gte=datetime.now()
+                ).order_by("-creation")
         except:
             pass
         return context
@@ -75,7 +81,7 @@ class FacultyReportList(LoginRequiredMixin,ListView):
         objs = Report.objects.filter(
             degreeProgram__department=self.request.user.profile.department, 
             degreeProgram__active=True
-            )
+            ).order_by("-year",'degreeProgram__name')
         return objs
 class ReportListSearchedDept(LoginRequiredMixin,ListView):
     """
@@ -95,7 +101,10 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
             QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) within department matching search
         """
         keys = self.request.GET.keys()
-        objs = Report.objects.filter(degreeProgram__department=self.request.user.profile.department, degreeProgram__active=True).order_by('submitted','-rubric__complete')
+        objs = Report.objects.filter(
+            degreeProgram__department=self.request.user.profile.department, 
+            degreeProgram__active=True
+            )
         if 'year' in keys:
             year = self.request.GET['year']
             if year!="":
@@ -114,7 +123,7 @@ class ReportListSearchedDept(LoginRequiredMixin,ListView):
                 objs=objs.filter(rubric__complete=False)
         if 'dP' in keys:
             objs=objs.filter(degreeProgram__name__icontains=self.request.GET['dP'])
-        return objs
+        return objs.order_by('submitted','-rubric__complete',"-year","degreeProgram__name")
 class DisplayReport(DeptAACMixin,TemplateView):
     """
     View to see report
@@ -175,6 +184,13 @@ class UserModifyAccount(LoginRequiredMixin,FormView):
         """
         self.userToChange = self.request.user
         return super(UserModifyAccount,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data()
+        context["first_name"] = self.userToChange.first_name
+        context["last_name"] = self.userToChange.last_name
+        context["department"] = self.userToChange.profile.department
+        context["username"] = self.userToChange.username
+        return context
     def get_initial(self):
         """
         Initializes form based upon the current values

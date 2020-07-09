@@ -14,32 +14,32 @@
 <h3>Create New Account</h3>
 {{ form.non_field_errors }}
 
-<form method="post" class="form col-6" enctype="multipart/form-data">
+<form method="post" class="form col-6" enctype="multipart/form-data" @submit.prevent="" ref="form">
     {% csrf_token %}
     <div class="form-group">
-            {{ form.first_name.errors }}
+            <p style="color:red;">{{ form.first_name.errors }}</p>
             <label for="id_first_name">First name</label>
 
-            <input type="text" class="form-control col-6" id="id_first_name" name="first_name">
+            <input type="text" class="form-control col-6" id="id_first_name" name="first_name" value={{form.initial.first_name}}>
     </div>
     <div class="form-group">
-            {{ form.last_name.errors }}
+            <p style="color:red;">{{ form.last_name.errors }}</p>
             <label for="id_last_name">Last name</label>
 
             <input type="text" class="form-control col-6" id="id_last_name" name="last_name">
     </div>
     <div class="form-group">
-            {{ form.email.errors }}
+        <p style="color:red;">{{ form.email.errors }}</p>
             <label for="id_email">Email</label>
 
             <input type="email" name="email" class="form-control col-6" maxlength="254" id="id_email">
     </div><div class="form-group">
-            {{ form.username.errors }}
+        <p style="color:red;">{{ form.username.errors }}</p>
             <label for="id_username">Username</label>
 
             <input type="text" name="username" class="form-control col-6" id="id_username" required="required">
     </div><div class="form-group">
-            {{ form.password1.errors }}
+        <p style="color:red;">{{ form.password1.errors }}</p>
             {% if form.password1.errors %}
                 {{form.password1.help_text}}
             {% endif %}
@@ -47,37 +47,42 @@
 
             <input type="password" class="form-control col-6" id="id_password1" name="password1" required="required">
     </div><div class="form-group">
-            {{ form.password2.errors }}
+            <p style="color:red;">{{ form.password2.errors }}</p>
             <label for="id_password2">Re-enter Password</label>
 
             <input type="password" name="password2" class="form-control col-6" id="id_password2" required="required">
     </div>
     <div class="form-group">
-            {{ form.college.errors }}
+        <p style="color:red;">{{ form.college.errors }}</p>
             <label for="id_college">College</label>
 
             <select class="form-control col-6" id="id_college" v-model="college" v-on:change="updateDept" name="college">
-                    {% for option in form.fields.college.queryset %}
+                <option value = ""></option>    
+                {% for option in form.fields.college.queryset %}
                     <option value="{{option.pk}}">{{option}}</option>
                     {% endfor %}
             </select>
     </div>
     <div class="form-group">
-            {{ form.department.errors }}
+        <p style="color:red;">{{ form.department.errors }}</p>
+        <template v-if="error" >
+           <p style="color:red;"> If a college is selected, a department must be as well.</p>
+        </template>
             <label for="id_department">Department</label>
-            <select class="form-control col-6" id="id_department" name="department">
+            <select class="form-control col-6" id="id_department" v-model="department" name="department">
+                <option value = ""></option>
                 <template v-for="d in depts">
                     <option v-bind:value="d.pk">[[d.name]]</option>
                 </template>
             </select>
     </div>
     <div class="form-check">
-            {{ form.isaac.errors }}
+        <p style="color:red;">{{ form.isaac.errors }}</p>
             <input type="checkbox" class="form-check-input" id="id_isaac" name="isaac">
             <label class="form-check-label" for="id_isaac">AAC Member </label>
     </div>
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary" @click="vSubmit">Add</button>
     {% endbuttons %}
 </form>
 {% endblock %}
@@ -94,6 +99,12 @@
             delimiters: ['[[', ']]'],
             data: { 
                 /**
+                 * Deparment (primary key) chosen
+                 * @property department
+                 * @type integer
+                 */
+                department: null,
+                /**
                  * List of departments with properties to choose within college
                  * @property depts
                  * @type dictionary
@@ -104,7 +115,13 @@
                  * @property college
                  * @type integer
                  */
-                college: null
+                college: null,
+                /**
+                 * Whether there was an error upon submission between the college and dept
+                 * @property error
+                 * @type Boolean
+                 */
+                error: false
             },
             computed: {
             },
@@ -121,6 +138,20 @@
                             this.depts = json;
                         })
                     });
+                },
+                /**
+                 * Makes sure if a college is chosen so is a department before submitting
+                 * @method vSubmit
+                 */
+                vSubmit: function(){
+                    console.log("here")
+                    if (this.college==null || this.college ==""
+                         || ((this.college!=null && this.college !="") && 
+                         (this.department!=null && this.department!=""))){
+                        create_account.$refs.form.submit()
+                    }else{
+                        this.error = true
+                    }
                 }
             }
         });

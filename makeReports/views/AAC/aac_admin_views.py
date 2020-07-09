@@ -154,7 +154,7 @@ class CollegeList(AACOnlyMixin,ListView):
         Returns:
             QuerySet : QuerySet of all active colleges (:class:`~makeReports.models.aac_models.College`)
         """
-        objs = College.active_objects.all()
+        objs = College.active_objects.all().order_by("name")
         return objs
 class CreateDepartment(AACOnlyMixin,CreateView):
     """
@@ -182,7 +182,7 @@ class DepartmentList(AACOnlyMixin,ListView):
             dict : dictionary of context
         """
         context = super(DepartmentList,self).get_context_data(**kwargs)
-        context['college_list'] = College.active_objects.all()
+        context['college_list'] = College.active_objects.all().order_by("name")
         return context
     def get_queryset(self):
         """
@@ -200,7 +200,7 @@ class DepartmentList(AACOnlyMixin,ListView):
             objs=objs.filter(college__name__icontains=get["college"])
         if("name" in keys):
             objs=objs.filter(name__icontains=get["name"])
-        return objs.order_by('college__name')
+        return objs.order_by('college__name',"name")
 class UpdateDepartment(AACOnlyMixin,UpdateView):
     """
     View to update the name or college of a department
@@ -399,7 +399,7 @@ class ArchivedColleges(AACOnlyMixin, ListView):
         Returns:
             QuerySet : only inactive colleges (:class:`~makeReports.models.aac_models.College`)
         """
-        return College.objects.filter(active=False)
+        return College.objects.filter(active=False).order_by("name")
 class ArchivedDepartments(AACOnlyMixin, ListView):
     """
     View to list archived/inactive departments
@@ -502,6 +502,13 @@ class ModifyAccount(AACOnlyMixin,FormView):
         except Profile.DoesNotExist:
             raise Http404("Profile matching URL does not exist.")
         return super(ModifyAccount,self).dispatch(request,*args,**kwargs)
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data()
+        context["first_name"] = self.userToChange.user.first_name
+        context["last_name"] = self.userToChange.user.last_name
+        context["username"] = self.userToChange.user.username
+        context["department"] = self.userToChange.department
+        return context
     def get_initial(self):
         """
         Initialize form to valus of user to update

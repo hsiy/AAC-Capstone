@@ -11,7 +11,7 @@ from .assessment_views import *
 from .report_entry_extra_views import *
 from .data_collection_views import *
 from .decisions_actions_views import *
-from .pdf_Generators import *
+from .pdf_generators import *
 from .API.actionAPIs import *
 from .API.jsonAPIs import *
 from .API.graphAPI import *

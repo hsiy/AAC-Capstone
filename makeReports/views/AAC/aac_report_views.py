@@ -121,7 +121,10 @@ class ReportList(AACOnlyMixin,ListView):
         Returns:
             QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) from this year
         """
-        qs = Report.objects.filter(year=int(datetime.now().year), degreeProgram__active=True).order_by('submitted','-rubric__complete')
+        qs = Report.objects.filter(
+            year=int(datetime.now().year), 
+            degreeProgram__active=True
+            ).order_by('submitted','rubric__complete','year',"degreeProgram__name")
         return qs
 class ReportListSearched(AACOnlyMixin,ListView):
     """
@@ -142,7 +145,9 @@ class ReportListSearched(AACOnlyMixin,ListView):
             QuerySet : reports (:class:`~makeReports.models.basic_models.Report`) meeting search criteria
         """
         keys = self.request.GET.keys()
-        objs = Report.objects.filter(degreeProgram__active=True).order_by('submitted','-rubric__complete')
+        objs = Report.objects.filter(
+            degreeProgram__active=True
+        ).order_by('submitted','rubric__complete','year','degreeProgram__name')
         if 'year' in keys:
             year = self.request.GET['year']
             if year!= "":
