@@ -20,7 +20,6 @@ def post_create_update_assessment_uses(instance):
     instance.assessment.save()
     instance.slo.save()
 
-
 def post_save_update_agg_by_assessment(instance):
     """
     Updates aggregate (AssessmentAggregate) when AssessmentVersion is changed, in case the target value changed
@@ -67,7 +66,6 @@ def post_delete_assessment_update_numbering(sender, instance, **kwargs):
     oldNum = instance.number
     if assessment.numberOfUses <= 1:
         assessment.delete()
-        assessment.save()
     else:
         assessment.numberOfUses -= 1
         assessment.save()
