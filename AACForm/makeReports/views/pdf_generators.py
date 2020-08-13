@@ -172,10 +172,10 @@ class GradedRubricPDFGen(WeasyTemplateView, DeptAACMixin):
         """
         context = super(GradedRubricPDFGen,self).get_context_data(**kwargs)
         context['rubric'] = self.report.rubric
-        context['GRIs1'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=1)
-        context['GRIs2'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=2)
-        context['GRIs3'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=3)
-        context['GRIs4'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=4)
+        context['GRIs1'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=1).order_by("item__order","item__pk")
+        context['GRIs2'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=2).order_by("item__order","item__pk")
+        context['GRIs3'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=3).order_by("item__order","item__pk")
+        context['GRIs4'] = GradedRubricItem.objects.filter(rubric=self.report.rubric, item__section=4).order_by("item__order","item__pk")
         return context
 class ReportPDFGen(WeasyTemplateView, DeptAACMixin):
     """
