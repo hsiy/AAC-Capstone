@@ -25,6 +25,7 @@ class Report(models.Model):
     year = models.PositiveIntegerField()
     author = models.CharField(max_length=100, blank=True)
     degreeProgram = models.ForeignKey('DegreeProgram', on_delete=models.CASCADE, verbose_name="degree program")
+    accredited = models.BooleanField(default=False)
     date_range_of_reported_data = models.CharField(max_length=500,blank=True, null=True)
     rubric = models.OneToOneField('GradedRubric', on_delete=models.SET_NULL, null=True)
     section1Comment = models.CharField(max_length=2000, blank=True, null=True, verbose_name="section I comment")
