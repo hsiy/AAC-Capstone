@@ -203,13 +203,14 @@ class CreateDPByDept(forms.ModelForm):
     """
     Form to create degree program where department is given
     """ 
+    accredited = forms.BooleanField(required=False, label="Externally Accredited?")
     class Meta:
         """
         Defines the model, fields, labels, and widgets for the ModelForm superclass
         to use to make a form
         """
         model = DegreeProgram
-        fields = ['name','level','cycle','startingYear']
+        fields = ['name','level','cycle','startingYear','accredited']
         labels = {
             'name': "Name",
             'level': "Level",

@@ -36,7 +36,7 @@ class ReportFirstPage(DeptAACMixin,UpdateView):
     View to set report wide attributes
     """
     model = Report
-    fields = ['author','date_range_of_reported_data']
+    fields = ['author','date_range_of_reported_data', 'accredited']
     template_name = "makeReports/ReportEntryExtras/first_page.html"
     labels = {
         'author':'Person preparing the report'
