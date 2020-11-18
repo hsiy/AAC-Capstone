@@ -71,6 +71,7 @@ class AddNewAssessment(DeptReportMixin,FormView):
         """
         kwargs = super(AddNewAssessment,self).get_form_kwargs()
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report).order_by("number")
+        kwargs['useaccform'] = self.report.accredited
         return kwargs
     def get_success_url(self):
         """
@@ -98,22 +99,41 @@ class AddNewAssessment(DeptReportMixin,FormView):
             domainProduct=False, 
             domainPerformance=False, 
             directMeasure =form.cleaned_data['directMeasure'])
-        assessRpt = AssessmentVersion.objects.create(
-            date=datetime.now(), 
-            number = form.cleaned_data['slo'].numberOfAssess+1, 
-            assessment=assessObj, 
-            description=form.cleaned_data['description'], 
-            finalTerm=form.cleaned_data['finalTerm'], 
-            where=form.cleaned_data['where'], 
-            allStudents=form.cleaned_data['allStudents'], 
-            sampleDescription=form.cleaned_data['sampleDescription'], 
-            frequency=form.cleaned_data['frequency'], 
-            frequencyChoice = form.cleaned_data['frequencyChoice'],
-            threshold=form.cleaned_data['threshold'], 
-            target=form.cleaned_data['target'],
-            slo=form.cleaned_data['slo'],
-            report=rpt, 
-            changedFromPrior=False)
+        if not rpt.accredited:
+            assessRpt = AssessmentVersion.objects.create(
+                date=datetime.now(), 
+                number = form.cleaned_data['slo'].numberOfAssess+1, 
+                assessment=assessObj, 
+                description=form.cleaned_data['description'], 
+                finalTerm=form.cleaned_data['finalTerm'], 
+                where=form.cleaned_data['where'], 
+                allStudents=form.cleaned_data['allStudents'], 
+                sampleDescription=form.cleaned_data['sampleDescription'], 
+                frequency=form.cleaned_data['frequency'], 
+                frequencyChoice = form.cleaned_data['frequencyChoice'],
+                threshold=form.cleaned_data['threshold'], 
+                target=form.cleaned_data['target'],
+                slo=form.cleaned_data['slo'],
+                report=rpt, 
+                changedFromPrior=False)
+        else:
+            assessRpt = AssessmentVersion.objects.create(
+                date=datetime.now(), 
+                number = form.cleaned_data['slo'].numberOfAssess+1, 
+                assessment=assessObj, 
+                description=form.cleaned_data['description'], 
+                finalTerm=True,
+                where='Ignore - Accredited Form',
+                allStudents=True,
+                sampleDescription='Ignore - Accredited Form',
+                frequency='Ignore - Accredited Form',
+                frequencyChoice = form.cleaned_data['frequencyChoice'],
+                threshold='Ignore - Accredited Form',
+                target=0,
+                slo=form.cleaned_data['slo'],
+                report=rpt, 
+                changedFromPrior=False)
+
         dom = form.cleaned_data['domain']
         if ("Pe" in dom):
             assessObj.domainPerformance = True
@@ -351,6 +371,7 @@ class EditImportedAssessment(DeptReportMixin,FormView):
         """
         kwargs = super(EditImportedAssessment,self).get_form_kwargs()
         kwargs['sloQS'] = SLOInReport.objects.filter(report=self.report).order_by("number")
+        kwargs['useaccform'] = self.report.accredited
         return kwargs
     def get_success_url(self):
         """
