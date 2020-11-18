@@ -124,25 +124,26 @@ def section3ToDo(report):
     """
     toDos, slos, assess = section2ToDo(report)
     data = AssessmentData.objects.filter(assessmentVersion__report=report)
-    for a in assess:
-        if data.filter(assessmentVersion=a).count() == 0:
-            try:
-                setting = RequiredFieldSetting.objects.get(name="data")
-                if setting.required:
-                    toDos['r'].append(("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number),3))
-                else:
+    if not report.accredited: # skip checks for data
+        for a in assess:
+            if data.filter(assessmentVersion=a).count() == 0:
+                try:
+                    setting = RequiredFieldSetting.objects.get(name="data")
+                    if setting.required:
+                        toDos['r'].append(("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number),3))
+                    else:
+                        toDos['s'].append(("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number),3))
+                except:
                     toDos['s'].append(("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number),3))
-            except:
-                toDos['s'].append(("Add data for assessment SLO "+str(a.slo.number)+", measure "+str(a.number),3))
-        elif AssessmentAggregate.objects.filter(assessmentVersion=a).count() == 0:
-            try:
-                setting = RequiredFieldSetting.objects.get(name="agg")
-                if setting.required:
-                    toDos['r'].append(("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number),3))
-                else:
+            elif AssessmentAggregate.objects.filter(assessmentVersion=a).count() == 0:
+                try:
+                    setting = RequiredFieldSetting.objects.get(name="agg")
+                    if setting.required:
+                        toDos['r'].append(("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number),3))
+                    else:
+                        toDos['s'].append(("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number),3))
+                except:
                     toDos['s'].append(("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number),3))
-            except:
-                toDos['s'].append(("Add an aggregation of data for SLO "+str(a.slo.number)+", measure "+str(a.number),3))
     for slo in slos:
         if SLOStatus.objects.filter(sloIR=slo).count() == 0:
             try:
