@@ -60,6 +60,7 @@ class AddNewAssessment(DeptReportMixin,FormView):
     """
     View to add a new assessment
     """
+
     template_name = "makeReports/Assessment/addAssessment.html"
     form_class = CreateNewAssessment
     def get_form_kwargs(self):
@@ -440,6 +441,15 @@ class EditNewAssessment(EditImportedAssessment):
         initial['domainProduct'] = self.assessVers.assessment.domainProduct
         initial['domainExamination'] = self.assessVers.assessment.domainExamination
         initial['directMeasure'] = self.assessVers.assessment.directMeasure
+
+        # domain: ['Pe', 'Pr', 'Ex']
+        initial['domain'] = []
+        if initial['domainPerformance']:
+            initial['domain'].append('Pe')
+        if initial['domainProduct']:
+            initial['domain'].append('Pr')
+        if initial['domainExamination']:
+            initial['domain'].append('Ex')
         return initial
     def form_valid(self, form):
         """
@@ -456,6 +466,11 @@ class EditNewAssessment(EditImportedAssessment):
         self.assessVers.assessment.title = form.cleaned_data['title']
         self.assessVers.assessment.domain = form.cleaned_data['domain']
         self.assessVers.assessment.directMeasure = form.cleaned_data['directMeasure']
+
+        dom = form.cleaned_data['domain']
+        self.assessVers.assessment.domainPerformance = "Pe" in dom
+        self.assessVers.assessment.domainProduct = "Pr" in dom
+        self.assessVers.assessment.domainExamination = "Ex" in dom
         self.assessVers.assessment.save()
         return super(EditNewAssessment,self).form_valid(form)
 class SupplementUpload(DeptReportMixin,CreateView):
