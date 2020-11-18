@@ -6,12 +6,18 @@
     </div>
     <div class="row justify-content-center">
         <div class="col">
-            <h2 style="text-align: center;">Report</h2>
+            <h2 style="text-align: center;">
+                {% if rpt.accredited %}
+                ACCREDITED PROGRAM TEMPLATE
+                {% else %}
+                NON-ACCREDITED PROGRAM TEMPLATE
+                {% endif %}
+            </h2>
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col" style="text-align: center;">
-            <b >{{rpt.year|add:"-1"}}-{{rpt.year}}</b>
+            <b >{{rpt.degreeProgram.get_level_display}} Assessment Report for {{rpt.year|add:"-1"}}-{{rpt.year}}</b>
         </div>
     </div>
     <div class="row">
