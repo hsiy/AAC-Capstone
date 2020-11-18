@@ -74,6 +74,7 @@ class ReportFirstPage(DeptAACMixin,UpdateView):
             str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+
 class FinalReportSupplements(DeptReportMixin, ListView):
     """
     View to list report supplements while entering them
@@ -220,7 +221,7 @@ class SubmitReport(DeptReportMixin, FormView):
             agg = RequiredFieldSetting.objects.get(name="agg").required
         except:
             agg = False
-        if data or agg:
+        if (data or agg) and not self.report.accredited:
             assesses = AssessmentVersion.objects.filter(report=self.report)
             for a in assesses:
                 if data and AssessmentData.objects.filter(assessmentVersion=a).count()<1:

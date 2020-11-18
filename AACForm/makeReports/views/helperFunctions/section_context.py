@@ -60,7 +60,9 @@ def section3Context(self,context):
     Returns:
         dict : template context
     """
-    assessment_data_dict = {'assessments':[], 'slo_statuses':[]}
+    assessment_data_dict = {'useaccform':False, 'assessments':[], 'slo_statuses':[]}
+    if self.report.accredited:
+        assessment_data_dict['useaccform'] = True
     assessments = AssessmentVersion.objects.filter(report=self.report).order_by("slo__number","number")
     for assessment in assessments:
         temp_dict = dict()
