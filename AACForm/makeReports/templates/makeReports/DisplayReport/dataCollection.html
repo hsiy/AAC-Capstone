@@ -1,6 +1,7 @@
 <!--things needed in context: assessment_data_dict,report-->
 <!--when included, the shelves css must also be included-->
 <h3>III. Data Collection and Analysis</h3>
+{% if not assessment_data_dict.useaccform %}
 <div class="row-sh mb-5">
     <div class="column-15">
         <div class="row-sh">
@@ -52,6 +53,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 <div class="row-sh mt-5">
     <div class="column">
         <h4>Supplements</h4>
