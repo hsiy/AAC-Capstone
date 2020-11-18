@@ -64,6 +64,7 @@
                     {% endif %}
                 </td>
             </tr>
+            {% if assessment.threshold != "Ignore - Accredited Form" %}
             <tr>
                 <td>
                     <b>4. Type</b>
@@ -101,8 +102,14 @@
                             <p><i>{{assessment.sampleDescription|safe}}</i></p>
                     {% endif %}
                 </td>
+            </tr>
+            {% endif %}
             <tr>
+                {% if assessment.threshold != "Ignore - Accredited Form" %}
                 <td><b>7. Frequency of Data Collection</b></td>
+                {% else %}
+                <td><b>4. Frequency of Data Collection</b></td>
+                {% endif %}
                 <td>
                     {% if assessment.frequencyChoice == "O" %}
                     {{assessment.frequency|safe}}
@@ -110,6 +117,8 @@
                     {{assessment.get_frequencyChoice_display}}
                     {% endif %}
                 </td>
+            </tr>
+            {% if assessment.threshold != "Ignore - Accredited Form" %}
             <tr>
                 <td>
                     <b>8. Proficiency Threshold</b>
@@ -117,6 +126,7 @@
                 <td>
                     <i>{{assessment.threshold}}</i>
                 </td>
+            </tr>
             <tr>
                 <td>
                     <b>9. Program Proficiency Target</b>
@@ -125,6 +135,7 @@
                     <i>{{assessment.target}}%</i>
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <td><b>Supplements</b></td>
                 <td>
