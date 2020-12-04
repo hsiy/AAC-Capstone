@@ -156,7 +156,9 @@
                         {% endif %}
                         <a  role="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-upload' report=rpt.pk assessIR=assessment.pk %}">Upload Supplement</a>
                         <a  role="button" class="btn btn-primary" href="{% url 'makeReports:assessment-supplement-import' report=rpt.pk assessIR=assessment.pk %}?year={{rpt.year}}&dp={{rpt.degreeProgram.pk}}">Import Supplement</a>
+                        {% if assessment.threshold != "Ignore - Accredited Form" %}
                         <a  role="button" class="btn btn-primary" href="{% url 'makeReports:add-data-collection-assess' report=rpt.pk assessment=assessment.pk %}">Add Data</a>
+                        {% endif %}
                 </td>
             </tr>
         </tbody>
