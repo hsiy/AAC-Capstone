@@ -103,12 +103,14 @@
         </table>
     </div>
 </div>
+{% if not assessment_data_dict.useaccform %}
 <div class="row-sh mt-5">
     <div class="column">
         <h4>Describe how results are communicated within the program</h4>
         {{ assessment_data_dict.result_communication_text|safe }}
     </div>
 </div>
+{% endif %}
 <!--<div class="col-3">
         <h4>Section III.</h4>
         1. Data Collection<br>

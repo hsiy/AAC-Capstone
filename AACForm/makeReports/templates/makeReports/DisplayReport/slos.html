@@ -24,7 +24,11 @@
             {% endfor %}
     </tbody>
 </table>
+
+{% if not rpt.accredited %}
 <h5>Stakeholder Communication</h5>
 {{stk|safe}}
+{% endif %}
+
 <h5>Comment</h5>
 {{rpt.section1Comment|safe}}

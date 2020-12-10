@@ -27,9 +27,17 @@
     </tbody>
 </table>
 </div>
+
+{% if not rpt.accredited %}
 <div class="subsection">B. Stakeholder Communication</div>
 {{stk|safe}}
+{% endif %}
+
 <div class="subsection">
+    {% if not rpt.accredited %}
     C. Comment
+    {% else %}
+    B. Comment
+    {% endif %}
 </div>
 {{rpt.section1Comment|safe}}

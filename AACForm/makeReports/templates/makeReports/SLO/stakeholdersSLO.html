@@ -7,6 +7,7 @@
         <div class="col">
 <a  role="button" class="btn btn-primary" href="{% url 'makeReports:slo-stk-import' report=rpt.pk %}?dp={{rpt.degreeProgram.pk}}&year={{rpt.year}}">Import</a>
 
+{% if not rpt.accredited %}
 <form method="post" class="form" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
@@ -14,6 +15,7 @@
         <button type="submit" class="btn btn-primary">Save</button>
     {% endbuttons %}
 </form>
+{% endif %}
 </div>
 
 </div>
