@@ -94,13 +94,13 @@ class AddNewAssessment(DeptReportMixin,FormView):
             HttpResponseRedirect : redirects to success URL given by get_success_url
         """
         rpt = self.report
-        assessObj = Assessment.objects.create(
-            title=form.cleaned_data['title'], 
-            domainExamination=False, 
-            domainProduct=False, 
-            domainPerformance=False, 
-            directMeasure =form.cleaned_data['directMeasure'])
         if not rpt.accredited:
+            assessObj = Assessment.objects.create(
+                title=form.cleaned_data['title'], 
+                domainExamination=False, 
+                domainProduct=False, 
+                domainPerformance=False, 
+                directMeasure=form.cleaned_data['directMeasure'])
             assessRpt = AssessmentVersion.objects.create(
                 date=datetime.now(), 
                 number = form.cleaned_data['slo'].numberOfAssess+1, 
@@ -118,11 +118,17 @@ class AddNewAssessment(DeptReportMixin,FormView):
                 report=rpt, 
                 changedFromPrior=False)
         else:
+            assessObj = Assessment.objects.create(
+                title=form.cleaned_data['title'], 
+                domainExamination=False, 
+                domainProduct=False, 
+                domainPerformance=False, 
+                directMeasure=True)
             assessRpt = AssessmentVersion.objects.create(
                 date=datetime.now(), 
                 number = form.cleaned_data['slo'].numberOfAssess+1, 
                 assessment=assessObj, 
-                description=form.cleaned_data['description'], 
+                description='Ignore - Accredited Form',
                 finalTerm=True,
                 where='Ignore - Accredited Form',
                 allStudents=True,

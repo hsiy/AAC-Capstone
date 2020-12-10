@@ -60,15 +60,16 @@ def section1ToDo(report):
                 toDos['s'].append(("Create an SLO",1))
         except:
             toDos['r'].append(("Create an SLO",1))
-    if SLOsToStakeholder.objects.filter(report=report).count() == 0:
-        try:
-            setting = RequiredFieldSetting.objects.get(name="sloComm")
-            if setting.required:
+    if not report.accredited: # skip check for stakeholder communication
+        if SLOsToStakeholder.objects.filter(report=report).count() == 0:
+            try:
+                setting = RequiredFieldSetting.objects.get(name="sloComm")
+                if setting.required:
+                    toDos['r'].append(("Add description of how SLOs are communicated to stakeholders",1))
+                else:
+                    toDos['s'].append(("Add description of how SLOs are communicated to stakeholders",1))
+            except:
                 toDos['r'].append(("Add description of how SLOs are communicated to stakeholders",1))
-            else:
-                toDos['s'].append(("Add description of how SLOs are communicated to stakeholders",1))
-        except:
-            toDos['r'].append(("Add description of how SLOs are communicated to stakeholders",1))
     for slo in slos:
         b = blooms_suggestion(slo.goalText)
         if b and b != slo.slo.get_blooms_display and b!="none":
@@ -154,15 +155,16 @@ def section3ToDo(report):
                     toDos['s'].append(("Add a status for SLO "+str(slo.number),3))
             except:
                 toDos['s'].append(("Add a status for SLO "+str(slo.number),3))
-    if ResultCommunicate.objects.filter(report=report).count() == 0:
-        try:
-            setting = RequiredFieldSetting.objects.get(name="results")
-            if setting.required:
+    if not report.accredited: # skip check for stakeholder communication
+        if ResultCommunicate.objects.filter(report=report).count() == 0:
+            try:
+                setting = RequiredFieldSetting.objects.get(name="results")
+                if setting.required:
+                    toDos['r'].append(("Add description of how results are communicated within the program",3))
+                else:
+                    toDos['s'].append(("Add description of how results are communicated within the program",3))
+            except:
                 toDos['r'].append(("Add description of how results are communicated within the program",3))
-            else:
-                toDos['s'].append(("Add description of how results are communicated within the program",3))
-        except:
-            toDos['r'].append(("Add description of how results are communicated within the program",3))
     return toDos, slos, assess, data
 def section4ToDo(report):
     """

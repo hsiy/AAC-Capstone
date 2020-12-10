@@ -14,15 +14,22 @@
                 <td colspan="2">
                     <b>1. Title of Measure: </b><i>{{assessment.assessment.title}}</i>
                 </td>
+            </tr>
+	    {% if assessment.threshold != "Ignore - Accredited Form" %}
             <tr>
                 <td colspan="2">
                     <b>2. Description of How the Measure Aligns to the SLO </b>
                     <p>{{assessment.description|safe}}</p>
                 </td>
             </tr>
+	    {% endif %}
             <tr>
                 <td>
+	        {% if assessment.threshold != "Ignore - Accredited Form" %}
                     <b>3. Domain</b>
+		{% else %}
+                    <b>2. Domain</b>
+		{% endif %}
                 </td>
                 <td>
                         {% if assessment.assessment.domainProduct %}
@@ -82,7 +89,7 @@
 	        {% if assessment.threshold != "Ignore - Accredited Form" %}
                 <td><b>7. Frequency of Data Collection</b></td>
 		{% else %}
-                <td><b>4. Frequency of Data Collection</b></td>
+                <td><b>3. Frequency of Data Collection</b></td>
 		{% endif %}
                 <td>
                     {% if assessment.frequencyChoice is "O" %}

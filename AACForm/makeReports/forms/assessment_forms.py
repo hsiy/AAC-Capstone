@@ -38,6 +38,12 @@ class CreateNewAssessment(forms.Form):
         super(CreateNewAssessment,self).__init__(*args,**kwargs)
         self.fields['slo'].queryset = sloQS
         if useaccform:
+            self.fields['description'].disabled = True
+            self.fields['description'].widget = forms.HiddenInput()
+            self.fields['description'].required = False
+            self.fields['directMeasure'].disabled = True
+            self.fields['directMeasure'].widget = forms.HiddenInput()
+            self.fields['directMeasure'].required = False
             self.fields['finalTerm'].disabled = True
             self.fields['finalTerm'].widget = forms.HiddenInput()
             self.fields['finalTerm'].required = False
@@ -153,6 +159,12 @@ class EditNewAssessmentForm(CreateNewAssessment):
         super(EditNewAssessmentForm,self).__init__(*args,**kwargs)
         self.fields['slo'].queryset = sloQS
         if useaccform:
+            self.fields['description'].disabled = True
+            self.fields['description'].widget = forms.HiddenInput()
+            self.fields['description'].required = False
+            self.fields['directMeasure'].disabled = True
+            self.fields['directMeasure'].widget = forms.HiddenInput()
+            self.fields['directMeasure'].required = False
             self.fields['finalTerm'].disabled = True
             self.fields['finalTerm'].widget = forms.HiddenInput()
             self.fields['finalTerm'].required = False
