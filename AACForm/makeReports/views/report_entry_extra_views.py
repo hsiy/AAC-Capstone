@@ -176,11 +176,11 @@ class SubmitReport(DeptReportMixin, FormView):
         try:
             setting = RequiredFieldSetting.objects.get(name="sloComm")
             if setting.required:
-                if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+                if SLOsToStakeholder.objects.filter(report=self.report).count() == 0 and not self.report.accredited:
                     valid = False
                     eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
         except:
-            if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+            if SLOsToStakeholder.objects.filter(report=self.report).count() == 0 and not self.report.accredited:
                 valid = False
                 eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
         try:
@@ -234,7 +234,7 @@ class SubmitReport(DeptReportMixin, FormView):
             result = RequiredFieldSetting.objects.get(name="results").required
         except:
             result = True
-        if result and ResultCommunicate.objects.filter(report=self.report).count() == 0:
+        if result and ResultCommunicate.objects.filter(report=self.report).count() == 0 and not self.report.accredited:
             valid = False
             eMsg = eMsg+"There is no description of communicating results.\n"
         kwargs['valid'] = valid
