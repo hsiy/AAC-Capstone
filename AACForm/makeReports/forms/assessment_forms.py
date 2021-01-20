@@ -162,9 +162,10 @@ class EditNewAssessmentForm(CreateNewAssessment):
             self.fields['description'].disabled = True
             self.fields['description'].widget = forms.HiddenInput()
             self.fields['description'].required = False
-            self.fields['directMeasure'].disabled = True
-            self.fields['directMeasure'].widget = forms.HiddenInput()
-            self.fields['directMeasure'].required = False
+            if 'directMeasure' in self.fields: # imported assessments do not have options for direct/indirect measures 
+                self.fields['directMeasure'].disabled = True
+                self.fields['directMeasure'].widget = forms.HiddenInput()
+                self.fields['directMeasure'].required = False
             self.fields['finalTerm'].disabled = True
             self.fields['finalTerm'].widget = forms.HiddenInput()
             self.fields['finalTerm'].required = False
