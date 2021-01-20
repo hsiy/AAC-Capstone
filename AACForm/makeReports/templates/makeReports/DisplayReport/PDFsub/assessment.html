@@ -94,7 +94,7 @@
                             <td><b>3. Frequency of Data Collection</b></td>
 			    {% endif %}
                             <td>
-                                {% if assessment.frequencyChoice is "O" %}
+                                {% if assessment.frequencyChoice == "O" %}
                                 {{assessment.frequency|safe}}
                                 {% else %}
                                 {{assessment.get_frequencyChoice_display}}

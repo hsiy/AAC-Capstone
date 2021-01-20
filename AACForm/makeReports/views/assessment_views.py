@@ -133,7 +133,7 @@ class AddNewAssessment(DeptReportMixin,FormView):
                 where='Ignore - Accredited Form',
                 allStudents=True,
                 sampleDescription='Ignore - Accredited Form',
-                frequency='Ignore - Accredited Form',
+                frequency=form.cleaned_data['frequency'], 
                 frequencyChoice = form.cleaned_data['frequencyChoice'],
                 threshold='Ignore - Accredited Form',
                 target=0,
