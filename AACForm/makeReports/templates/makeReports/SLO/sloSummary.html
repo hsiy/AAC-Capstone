@@ -70,6 +70,7 @@
         3. <a href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Additional Comments</a>
     </div>-->
 </div>
+{% if not rpt.accredited %}
 <div class="row mt-5">
     <div class="col-7">
         <h4>Communication to Stakeholders</h4>
@@ -79,6 +80,7 @@
             <a  role="button" class="btn btn-primary" href="{% url 'makeReports:slo-stakeholders' report=rpt.pk %}">Edit</a>
     </div>
 </div>
+{% endif %}
 <div class="row mt-5">
     <div class="col-7">
         <h4>

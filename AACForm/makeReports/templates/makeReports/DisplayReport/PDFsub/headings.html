@@ -1,12 +1,18 @@
 <table style="width: 100%;">
 <tr>
         <td colspan="2">
-            <h2 style="text-align: center;">Report</h2>
+            <h2 style="text-align: center;">
+                {% if rpt.accredited %}
+                ACCREDITED PROGRAM TEMPLATE
+                {% else %}
+                NON-ACCREDITED PROGRAM TEMPLATE
+                {% endif %}
+	    </h2>
         </td>
     </tr>
     <tr>
         <td style="text-align: center;" colspan="2">
-            <b >{{rpt.year|add:"-1"}}-{{rpt.year}}</b>
+            <b >{{rpt.degreeProgram.get_level_display}} Assessment Report for {{rpt.year|add:"-1"}}-{{rpt.year}}</b>
         </td>
     </tr>
     <tr>

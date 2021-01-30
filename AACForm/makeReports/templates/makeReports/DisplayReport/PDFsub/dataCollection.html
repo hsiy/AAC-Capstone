@@ -1,5 +1,6 @@
 <!--things needed in context: assessment_data_dict,report-->
 <h3>III. Data Collection and Analysis</h3>
+{% if not assessment_data_dict.useaccform %}
 <div class="bT">
     <div class="subsection">A. Results Table</div>
     <div class="row-sh mb-5">
@@ -51,7 +52,12 @@
             </div>
         </div>
 </div>
+{% endif %}
+{% if not assessment_data_dict.useaccform %}
 <div class="subsection">B. SLO Status Table
+{% else %}
+<div class="subsection">A. SLO Status Table
+{% endif %}
 <div class="bT">
 <table class="table" style="page-break-inside: avoid;">
     <tbody>
@@ -73,8 +79,14 @@
 </table>
 </div>
 </div>
+{% if not assessment_data_dict.useaccform %}
 <div class="subsection">C. Description of how results are communicated within the program</div>
 <p>{{ assessment_data_dict.result_communication_text|safe }}</p>
+{% endif %}
 
+{% if not assessment_data_dict.useaccform %}
 <div class="subsection">D. Comment</div>
+{% else %}
+<div class="subsection">B. Comment</div>
+{% endif %}
 {{rpt.section3Comment|safe}}

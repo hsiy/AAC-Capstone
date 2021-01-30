@@ -12,6 +12,7 @@
             {% include 'makeReports/toDoList.html' %}
         </div>
     </div>
+{% if not assessment_data_dict.useaccform %}
 <div class="row-sh mb-5">
     <div class="column-15">
         <div class="row-sh">
@@ -96,6 +97,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 <div class="row-sh mt-5">
     <div class="column">
         <h4>Supplements</h4>
@@ -167,6 +169,7 @@
         </table>
     </div>
 </div>
+{% if not assessment_data_dict.useaccform %}
 <div class="row-sh mt-5">
     <div class="column">
 
@@ -198,6 +201,7 @@
         </table>
     </div>
 </div>
+{% endif %}
 <!--<div class="col-3">
         <h4>Section III.</h4>
         1. Data Collection<br>

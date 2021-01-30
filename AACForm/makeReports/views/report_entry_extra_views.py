@@ -36,7 +36,7 @@ class ReportFirstPage(DeptAACMixin,UpdateView):
     View to set report wide attributes
     """
     model = Report
-    fields = ['author','date_range_of_reported_data']
+    fields = ['author','date_range_of_reported_data', 'accredited']
     template_name = "makeReports/ReportEntryExtras/first_page.html"
     labels = {
         'author':'Person preparing the report'
@@ -74,6 +74,7 @@ class ReportFirstPage(DeptAACMixin,UpdateView):
             str : URL of SLO summary page (:class:`~makeReports.views.slo_views.SLOSummary`)
         """
         return reverse_lazy('makeReports:slo-summary', args=[self.report.pk])
+
 class FinalReportSupplements(DeptReportMixin, ListView):
     """
     View to list report supplements while entering them
@@ -175,11 +176,11 @@ class SubmitReport(DeptReportMixin, FormView):
         try:
             setting = RequiredFieldSetting.objects.get(name="sloComm")
             if setting.required:
-                if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+                if SLOsToStakeholder.objects.filter(report=self.report).count() == 0 and not self.report.accredited:
                     valid = False
                     eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
         except:
-            if SLOsToStakeholder.objects.filter(report=self.report).count() == 0:
+            if SLOsToStakeholder.objects.filter(report=self.report).count() == 0 and not self.report.accredited:
                 valid = False
                 eMsg = eMsg+"There is no description of sharing SLOs with stakeholders.\n"
         try:
@@ -220,7 +221,7 @@ class SubmitReport(DeptReportMixin, FormView):
             agg = RequiredFieldSetting.objects.get(name="agg").required
         except:
             agg = False
-        if data or agg:
+        if (data or agg) and not self.report.accredited:
             assesses = AssessmentVersion.objects.filter(report=self.report)
             for a in assesses:
                 if data and AssessmentData.objects.filter(assessmentVersion=a).count()<1:
@@ -233,7 +234,7 @@ class SubmitReport(DeptReportMixin, FormView):
             result = RequiredFieldSetting.objects.get(name="results").required
         except:
             result = True
-        if result and ResultCommunicate.objects.filter(report=self.report).count() == 0:
+        if result and ResultCommunicate.objects.filter(report=self.report).count() == 0 and not self.report.accredited:
             valid = False
             eMsg = eMsg+"There is no description of communicating results.\n"
         kwargs['valid'] = valid

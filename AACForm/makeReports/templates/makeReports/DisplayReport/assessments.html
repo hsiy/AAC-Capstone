@@ -14,15 +14,22 @@
                 <td colspan="2">
                     <b>1. Title of Measure: </b><i>{{assessment.assessment.title}}</i>
                 </td>
+            </tr>
+	    {% if assessment.threshold != "Ignore - Accredited Form" %}
             <tr>
                 <td colspan="2">
                     <b>2. Description of How the Measure Aligns to the SLO </b>
                     <p>{{assessment.description|safe}}</p>
                 </td>
             </tr>
+	    {% endif %}
             <tr>
                 <td>
+	        {% if assessment.threshold != "Ignore - Accredited Form" %}
                     <b>3. Domain</b>
+		{% else %}
+                    <b>2. Domain</b>
+		{% endif %}
                 </td>
                 <td>
                         {% if assessment.assessment.domainProduct %}
@@ -38,6 +45,7 @@
                     {% endif %}
                 </td>
             </tr>
+	    {% if assessment.threshold != "Ignore - Accredited Form" %}
             <tr>
                 <td>
                     <b>4. Type</b>
@@ -75,15 +83,23 @@
                             <p><i>{{assessment.sampleDescription|safe}}</i></p>
                     {% endif %}
                 </td>
+            </tr>
+	    {% endif %}
             <tr>
+	        {% if assessment.threshold != "Ignore - Accredited Form" %}
                 <td><b>7. Frequency of Data Collection</b></td>
+		{% else %}
+                <td><b>3. Frequency of Data Collection</b></td>
+		{% endif %}
                 <td>
-                    {% if assessment.frequencyChoice is "O" %}
+                    {% if assessment.frequencyChoice == "O" %}
                     {{assessment.frequency|safe}}
                     {% else %}
                     {{assessment.get_frequencyChoice_display}}
                     {% endif %}
                 </td>
+            </tr>
+	    {% if assessment.threshold != "Ignore - Accredited Form" %}
             <tr>
                 <td>
                     <b>8. Proficiency Threshold</b>
@@ -99,6 +115,7 @@
                     <i>{{assessment.target}}%</i>
                 </td>
             </tr>
+	    {% endif %}
             <tr>
                 <td>Supplements</td>
                 <td>

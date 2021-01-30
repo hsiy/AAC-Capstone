@@ -34,8 +34,34 @@ class CreateNewAssessment(forms.Form):
             sloQS (QuerySet): SLOs to be picked from (generally those within report)
         """
         sloQS = kwargs.pop('sloQS',None)
+        useaccform = kwargs.pop('useaccform', None)
         super(CreateNewAssessment,self).__init__(*args,**kwargs)
         self.fields['slo'].queryset = sloQS
+        if useaccform:
+            self.fields['description'].disabled = True
+            self.fields['description'].widget = forms.HiddenInput()
+            self.fields['description'].required = False
+            self.fields['directMeasure'].disabled = True
+            self.fields['directMeasure'].widget = forms.HiddenInput()
+            self.fields['directMeasure'].required = False
+            self.fields['finalTerm'].disabled = True
+            self.fields['finalTerm'].widget = forms.HiddenInput()
+            self.fields['finalTerm'].required = False
+            self.fields['where'].disabled = True
+            self.fields['where'].widget = forms.HiddenInput()
+            self.fields['where'].required = False
+            self.fields['allStudents'].disabled = True
+            self.fields['allStudents'].widget = forms.HiddenInput()
+            self.fields['allStudents'].required = False
+            self.fields['sampleDescription'].disabled = True
+            self.fields['sampleDescription'].widget = forms.HiddenInput()
+            self.fields['sampleDescription'].required = False
+            self.fields['threshold'].disabled = True
+            self.fields['threshold'].widget = forms.HiddenInput()
+            self.fields['threshold'].required = False
+            self.fields['target'].disabled = True
+            self.fields['target'].widget = forms.HiddenInput()
+            self.fields['target'].required = False
     def clean_description(self):
         """
         Cleans out malicious or excess (from copying/pasting from Word) meta-data from rich text of the description
@@ -129,8 +155,35 @@ class EditNewAssessmentForm(CreateNewAssessment):
             sloQS (QuerySet): set of SLOs to choose from
         """
         sloQS = kwargs.pop('sloQS',None)
+        useaccform = kwargs.pop('useaccform', None)
         super(EditNewAssessmentForm,self).__init__(*args,**kwargs)
         self.fields['slo'].queryset = sloQS
+        if useaccform:
+            self.fields['description'].disabled = True
+            self.fields['description'].widget = forms.HiddenInput()
+            self.fields['description'].required = False
+            if 'directMeasure' in self.fields: # imported assessments do not have options for direct/indirect measures 
+                self.fields['directMeasure'].disabled = True
+                self.fields['directMeasure'].widget = forms.HiddenInput()
+                self.fields['directMeasure'].required = False
+            self.fields['finalTerm'].disabled = True
+            self.fields['finalTerm'].widget = forms.HiddenInput()
+            self.fields['finalTerm'].required = False
+            self.fields['where'].disabled = True
+            self.fields['where'].widget = forms.HiddenInput()
+            self.fields['where'].required = False
+            self.fields['allStudents'].disabled = True
+            self.fields['allStudents'].widget = forms.HiddenInput()
+            self.fields['allStudents'].required = False
+            self.fields['sampleDescription'].disabled = True
+            self.fields['sampleDescription'].widget = forms.HiddenInput()
+            self.fields['sampleDescription'].required = False
+            self.fields['threshold'].disabled = True
+            self.fields['threshold'].widget = forms.HiddenInput()
+            self.fields['threshold'].required = False
+            self.fields['target'].disabled = True
+            self.fields['target'].widget = forms.HiddenInput()
+            self.fields['target'].required = False
 
 class EditImportedAssessmentForm(EditNewAssessmentForm):
     """

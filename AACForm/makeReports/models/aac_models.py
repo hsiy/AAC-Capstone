@@ -40,6 +40,7 @@ class DegreeProgram(models.Model):
     startingYear = models.PositiveIntegerField(blank=True, null=True, verbose_name="starting year of cycle")
     #not all degree programs are on a clear cycle
     active = models.BooleanField(default=True)
+    accredited = models.BooleanField(default=False)
     objects = models.Manager()
     active_objects = NonArchivedManager()
     def __str__(self):
