@@ -28,7 +28,8 @@ class ResultCommunicationForm(CleanSummer,forms.Form):
     """
     text = forms.CharField(
         widget=SummernoteWidget(attrs={'style':'width:750px'}), 
-        label="Describe how results are communicated within the program. Address each SLO."
+        #label="Describe how results are communicated within the program. Address each SLO."
+        label=""
         )
     summer_max_length = 3000
 class AssessmentAggregateForm(forms.ModelForm):
