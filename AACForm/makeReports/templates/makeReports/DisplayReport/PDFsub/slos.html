@@ -28,6 +28,14 @@
 </table>
 </div>
 
+{% if rpt.accreditorRevSLOs %}
+<b>These SLOs are reviewed by an external accrediting body.</b>
+{% else %}
+    {% if rpt.accreditorEstSLOs %}
+    <b>These SLOs are established by an external accrediting body.</b>
+    {% endif %}
+{% endif %}
+
 {% if not rpt.accredited %}
 <div class="subsection">B. Stakeholder Communication</div>
 {{stk|safe}}

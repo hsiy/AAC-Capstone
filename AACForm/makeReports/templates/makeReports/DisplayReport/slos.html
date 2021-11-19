@@ -25,6 +25,14 @@
     </tbody>
 </table>
 
+{% if rpt.accreditorRevSLOs %}
+<h5>These SLOs are reviewed by an external accrediting body.</h5>
+{% else %}
+    {% if rpt.accreditorEstSLOs %}
+    <h5>These SLOs are established by an external accrediting body.</h5>
+    {% endif %}
+{% endif %}
+
 {% if not rpt.accredited %}
 <h5>Stakeholder Communication</h5>
 {{stk|safe}}

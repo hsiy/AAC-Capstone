@@ -70,6 +70,24 @@
         3. <a href="{% url 'makeReports:slo-comment' report=rpt.pk %}">Additional Comments</a>
     </div>-->
 </div>
+
+
+{% if rpt.accreditorRevSLOs %}
+<div class="row mt-5">
+    <div class="col-7">
+    <h4>These SLOs are reviewed by an external accrediting body.</h4>
+    </div>
+</div>
+{% else %}
+    {% if rpt.accreditorEstSLOs %}
+    <div class="row mt-5">
+        <div class="col-7">
+	<h4>These SLOs are established by an external accrediting body.</h4>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+
 {% if not rpt.accredited %}
 <div class="row mt-5">
     <div class="col-7">
