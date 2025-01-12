@@ -9,7 +9,7 @@
                 <link href="{% static 'css/shelves.css' %}" rel="stylesheet">
         </head>
     <body>
-    Non-PDF Supplements
+    Other Supplements
     <div class="bT">
         <table class='table' style="width: 70%">
             <tbody>
@@ -18,7 +18,11 @@
                 </tr>
                 {% for name, url in urls %}
                     <tr>
-                        <td>{{name}}</td><td><a href="{{url}}">Download</a></td>
+                      {% if "not found" in url %}
+                            <td>{{name}}</td><td>File not found</td>
+                      {% else %}
+                            <td>{{name}}</td><td><a href="{{url}}">Download</a></td>
+                      {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

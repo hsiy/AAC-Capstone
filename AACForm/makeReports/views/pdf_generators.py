@@ -233,7 +233,10 @@ def addSupplements(sups,merged):
     nonPdfs = []
     for sup in sups:
         if Path(sup.supplement.name).suffix[1:].lower() == "pdf":
-            merged.append(PdfFileReader(sup.supplement.open()))
+            try:
+                merged.append(PdfFileReader(sup.supplement.open()))
+            except Exception as e:
+                nonPdfs.append((sup.supplement.name,"not found"))
         else:
             nonPdfs.append((sup.supplement.name,sup.supplement.url))
     if len(nonPdfs)>0:
